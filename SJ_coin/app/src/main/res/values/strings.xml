@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SJ_coin</string>
+    <string name="screen_login_email_hint">Email</string>
+    <string name="screen_login_password_hint">Password</string>
+    <string name="screen_login_login_button">Login</string>
+    <string name="screen_login_create_account_link">No account yet? Create one</string>
 </resources>
