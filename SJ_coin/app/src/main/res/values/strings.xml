@@ -4,4 +4,10 @@
     <string name="screen_login_password_hint">Password</string>
     <string name="screen_login_login_button">Login</string>
     <string name="screen_login_create_account_link">No account yet? Create one</string>
+    <string name="get_machine">Get All Info</string>
+
+    <string-array name="machines">
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

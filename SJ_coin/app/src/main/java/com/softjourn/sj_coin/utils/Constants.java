@@ -15,5 +15,12 @@ public interface Constants {
     String URL_COIN_SERVICE = BASE_URL + ":8080/";
 
     String GRANT_TYPE = "password";
+
+    /**
+     * Headers
+     */
+    String OAUTH = "OAUTH";
+    String VENDING = "VENDING";
+    String COINS = "COINS";
 }
 

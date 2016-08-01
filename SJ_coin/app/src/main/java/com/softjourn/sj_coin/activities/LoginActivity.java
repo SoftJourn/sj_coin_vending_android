@@ -2,21 +2,21 @@ package com.softjourn.sj_coin.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.api.ApiInterface;
 import com.softjourn.sj_coin.api.ApiClient;
+import com.softjourn.sj_coin.api.ApiInterface;
 import com.softjourn.sj_coin.model.Session;
+import com.softjourn.sj_coin.utils.Connections;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.ServerErrors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,15 +41,16 @@ public class LoginActivity extends Activity implements Constants{
     @Bind(R.id.btn_login)
     Button loginButton;
 
-    @Bind(R.id.link_signup)
-    TextView signUpLink;
+    ProgressDialog progressDialog;
 
     @OnClick(R.id.btn_login)
     public void loginProcess(){
-        login();
+        if (Connections.isNetworkEnabled()) {
+            login();
+        } else {
+            Toast.makeText(this,"Internet should be turned on",Toast.LENGTH_LONG).show();
+        }
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,11 +69,11 @@ public class LoginActivity extends Activity implements Constants{
         }
 
         loginButton.setEnabled(false);
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+        progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
-        //progressDialog.show();
+        progressDialog.show();
 
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
@@ -82,29 +83,33 @@ public class LoginActivity extends Activity implements Constants{
 
     public void makeLoginRequest(String email, String password, String type) {
 
-        ApiInterface apiInterface = ApiClient.getOAuthClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient(OAUTH,URL_AUTH_SERVICE).create(ApiInterface.class);
         Call<Session> call = apiInterface.getAccessToken(email,password,type);
         call.enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if(!response.isSuccessful()){
-                    Toast.makeText(LoginActivity.this,"Not Authenticated",Toast.LENGTH_LONG).show();
+                    ServerErrors.showErrorToast(LoginActivity.this,response.code());
                     Log.d("Tag", (String.valueOf(response.code())));
+                    Log.d("Tag", response.body().toString());
+
                     loginButton.setEnabled(true);
+                    progressDialog.dismiss();
                 } else {
                     Preferences.storeString(ACCESS_TOKEN,response.body().getAccessToken());
                     Preferences.storeString(REFRESH_TOKEN,response.body().getRefreshToken());
-
+                    Log.d("Tag", response.body().toString());
                     onLoginSuccess();
                 }
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                Log.d("Tag",t.toString());
+                Log.d("TagActivity",t.toString());
                     onLoginFailed();
             }
         });
+
     }
 
     @Override
@@ -113,13 +118,13 @@ public class LoginActivity extends Activity implements Constants{
     }
 
     public void onLoginSuccess() {
-        //progressDialog.dismiss();
+        progressDialog.dismiss();
         Navigation.goToVendingActivity(LoginActivity.this);
         finish();
     }
 
     public void onLoginFailed() {
-        //progressDialog.dismiss();
+        progressDialog.dismiss();
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
         loginButton.setEnabled(true);
     }
