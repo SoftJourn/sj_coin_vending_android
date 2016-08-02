@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 /**
  * Created by Ad1 on 29.07.2016.
  */
-public interface ApiInterface {
+public interface ApiService {
 
     @FormUrlEncoded
     @POST("oauth/token")
@@ -24,5 +24,5 @@ public interface ApiInterface {
 
 
     @GET("v1/machines/{id}")
-    Call<Machine> getMachine(@Path("id")String id);
+    Call<Machine> getMachine(@Path("id") String id);
 }

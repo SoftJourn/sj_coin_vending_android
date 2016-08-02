@@ -28,10 +28,20 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.1.1'
+
+    //ButterKnife
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    //Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+
+    //Lombok
     provided "org.projectlombok:lombok:1.12.6"
+
+    //EventBus
+    compile "org.greenrobot:eventbus:3.0.0"
 }

@@ -16,6 +16,9 @@ public interface Constants {
 
     String GRANT_TYPE = "password";
 
+    boolean CALL_FAILED = false;
+    boolean CALL_SUCCEED = true;
+
     /**
      * Headers
      */

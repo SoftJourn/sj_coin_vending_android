@@ -10,14 +10,22 @@
         android:id="@+id/btnMachine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:enabled="false"
-        android:gravity="center"
-        android:text="@string/get_machine"/>
+        android:text="@string/get_machine" />
 
     <Spinner
         android:id="@+id/machines_spinner"
+        style="@android:style/Widget.Holo.Light.Spinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"/>
+        android:layout_gravity="center_horizontal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/machine_items_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
 
 </LinearLayout>
