@@ -3,9 +3,12 @@ package com.softjourn.sj_coin.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.softjourn.sj_coin.model.Machines.Machine;
 import com.softjourn.sj_coin.model.Session;
+import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Constants;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Callback;
@@ -49,8 +52,18 @@ public class ApiClient implements ApiProvider,Constants{
     }
 
     @Override
-    public void getSelectedMachine(String selectedMachine, Callback<Machine> callback) {
-        mApiService.getMachine(selectedMachine).enqueue(callback);
+    public void getMachines(Callback<List<Machines>> callback) {
+        mApiService.getMachines().enqueue(callback);
+    }
+
+    @Override
+    public void getConcreteMachine(String machineID, Callback<Machines> callback) {
+        mApiService.getConcreteMachine(machineID).enqueue(callback);
+    }
+
+    @Override
+    public void getProductsList(String selectedMachine, Callback<List<Product>> callback) {
+        mApiService.getProductsList(selectedMachine).enqueue(callback);
     }
 
 

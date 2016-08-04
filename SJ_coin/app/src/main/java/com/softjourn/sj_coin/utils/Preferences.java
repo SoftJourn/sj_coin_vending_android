@@ -13,12 +13,21 @@ public class Preferences implements Constants {
     private static SharedPreferences sharedPreferences = App.getContext().getSharedPreferences(SJ_COINS_PREFERENCES, Context.MODE_PRIVATE);
     private static SharedPreferences.Editor editor = sharedPreferences.edit();
 
-    public static String retrieveObject(String keyValue) {
+    public static String retrieveStringObject(String keyValue) {
         return sharedPreferences.getString(keyValue, null);
     }
 
-    public static void storeString(String key, String value) {
+    public static int retrieveIntObject(String keyValue) {
+        return sharedPreferences.getInt(keyValue, 1);
+    }
+
+    public static void storeObject(String key, String value) {
         editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static void storeObject(String key, int value){
+        editor.putInt(key,value);
         editor.apply();
     }
 }

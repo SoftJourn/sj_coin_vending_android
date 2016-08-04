@@ -1,7 +1,10 @@
 package com.softjourn.sj_coin.api;
 
-import com.softjourn.sj_coin.model.Machines.Machine;
 import com.softjourn.sj_coin.model.Session;
+import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.model.products.Product;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -23,6 +26,12 @@ public interface ApiService {
             @Field("grant_type") String grantType);
 
 
+    @GET("v1/machines")
+    Call<List<Machines>> getMachines();
+
     @GET("v1/machines/{id}")
-    Call<Machine> getMachine(@Path("id") String id);
+    Call<Machines> getConcreteMachine(@Path("id") String machineID);
+
+    @GET("/v1/machines/{machineID}/products")
+    Call<List<Product>> getProductsList(@Path("machineID") String machineID);
 }

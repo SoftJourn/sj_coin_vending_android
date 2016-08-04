@@ -13,7 +13,7 @@ public class ProgressDialogUtils {
     private static ProgressDialog mProgressDialog;
 
     public static void showDialog(Context context, String message) {
-        mProgressDialog = new ProgressDialog(context,R.style.Theme_AppCompat_Dialog);
+        mProgressDialog = new ProgressDialog(context,R.style.Base_V7_Theme_AppCompat_Dialog);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(message);
         mProgressDialog.show();

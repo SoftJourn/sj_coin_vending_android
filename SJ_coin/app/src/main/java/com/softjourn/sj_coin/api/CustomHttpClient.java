@@ -61,7 +61,6 @@ public class CustomHttpClient implements Constants{
                             }
                         }
 
-
                         public void checkServerTrusted(X509Certificate[] certs, String authType) {
                             try {
                                 origTrustManager.checkServerTrusted(certs, authType);
@@ -110,7 +109,7 @@ public class CustomHttpClient implements Constants{
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         Request orRequest = request.newBuilder()
-                                .addHeader("Authorization", "Bearer "+ Preferences.retrieveObject(ACCESS_TOKEN))
+                                .addHeader("Authorization", "Bearer "+ Preferences.retrieveStringObject(ACCESS_TOKEN))
                                 .build();
                         return chain.proceed(orRequest);
                     }

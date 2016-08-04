@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -76,6 +77,11 @@ public class LoginActivity extends BaseActivity implements Constants{
         moveTaskToBack(true);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
     @Subscribe
     public void onEvent(OnLogin event) {
         if(event.isSuccess()){
@@ -84,7 +90,6 @@ public class LoginActivity extends BaseActivity implements Constants{
             onLoginFailed();
         }
     }
-
 
     public void onLoginSuccess() {
         ProgressDialogUtils.dismiss();

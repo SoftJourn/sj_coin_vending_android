@@ -1,8 +1,6 @@
 package com.softjourn.sj_coin.activities;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +10,11 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.adapters.MachineItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
+import com.softjourn.sj_coin.callbacks.OnConcreteMachineReceived;
 import com.softjourn.sj_coin.callbacks.OnLogin;
-import com.softjourn.sj_coin.callbacks.OnVendingMachineReceived;
-import com.softjourn.sj_coin.model.Machines.Field;
-import com.softjourn.sj_coin.model.Machines.Machine;
+import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
+import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.presenters.IVendingMachinePresenter;
 import com.softjourn.sj_coin.presenters.VendingMachinePresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -27,6 +24,7 @@ import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,22 +33,19 @@ import butterknife.OnClick;
 
 public class VendingActivity extends BaseActivity implements Constants {
 
-    Machine mMachine;
-
-    String mSelectedMachine;
+    public String mSelectedMachine;
+    List<Machines> mMachines;
+    ArrayAdapter<String> adapter;
     @Bind(R.id.btnMachine)
     Button btnMachine;
     @Bind(R.id.machines_spinner)
     Spinner spinnerMachine;
-    @Bind(R.id.machine_items_recycler_view)
-    RecyclerView machineItems;
+
     private IVendingMachinePresenter mPresenter;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @OnClick(R.id.btnMachine)
-    public void getMachine() {
-        makeRequest();
+    public void getProducts() {
+        callProductsList();
     }
 
     @Override
@@ -58,22 +53,17 @@ public class VendingActivity extends BaseActivity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        BaseActivity.mActivity = this;
+
         ButterKnife.bind(this);
 
-        machineItems.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        machineItems.setLayoutManager(mLayoutManager);
-
-/*        mAdapter = new MachineItemsAdapter(mMield);
-        machineItems.setAdapter(mAdapter);*/
-
-        if (TextUtils.isEmpty(Preferences.retrieveObject(ACCESS_TOKEN))) {
+        if (TextUtils.isEmpty(Preferences.retrieveStringObject(ACCESS_TOKEN))) {
             Navigation.goToLoginActivity(this);
         }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.machines, android.R.layout.simple_spinner_item);
-
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new ArrayList<String>());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinnerMachine.setAdapter(adapter);
 
         spinnerMachine.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -89,38 +79,28 @@ public class VendingActivity extends BaseActivity implements Constants {
                 btnMachine.setEnabled(false);
             }
         });
+        callMachinesList();
 
     }
 
-    private void makeRequest() {
-        mPresenter = new VendingMachinePresenter(mSelectedMachine);
-        mPresenter.callVendingMachine();
+    private void callMachinesList() {
+        mPresenter = new VendingMachinePresenter();
+        mPresenter.callMachinesList();
         ProgressDialogUtils.showDialog(this, "Loading");
     }
 
-    private void setFields() {
-        List<Field> field;
-        for (int i = 0; i < mMachine.getRows().size() - 1; i++) {
-            field = mMachine.getRows().get(i).getFields();
-            for (int j = 0; j < field.size() - 1; j++) {
-                mAdapter = new MachineItemsAdapter(field.get(j));
-                machineItems.setAdapter(mAdapter);
-            }
+    private void callProductsList() {
+        Navigation.goToListView(this);
+        mPresenter = new VendingMachinePresenter();
+        mPresenter.callConcreteMachine(mSelectedMachine);
+    }
+
+    private void updateSpinnerData() {
+        for (int i = 0; i < mMachines.size(); i++) {
+            adapter.add(mMachines.get(i).getId().toString());
         }
-    }
-
-    public void onCallSuccess() {
-        ProgressDialogUtils.dismiss();
-        setFields();
-    }
-
-    public void onCallFailed() {
-        ProgressDialogUtils.dismiss();
-    }
-
-    @Subscribe
-    public void OnEvent(OnVendingMachineReceived event) {
-        mMachine = event.getMachine();
+        adapter.notifyDataSetChanged();
+        spinnerMachine.setSelection(0);
     }
 
     @Subscribe
@@ -130,6 +110,21 @@ public class VendingActivity extends BaseActivity implements Constants {
         } else {
             onCallFailed();
         }
+    }
+
+    @Subscribe
+    public void OnEvent(OnMachinesListReceived event) {
+        onCallSuccess();
+        mMachines = event.getMachinesList();
+        updateSpinnerData();
+    }
+
+    @Subscribe
+    public void OnEvent(OnConcreteMachineReceived event) {
+        Preferences.storeObject(SELECTED_MACHINE_ROWS,event.getСoncreteMachines().getSize().getRows());
+        Preferences.storeObject(SELECTED_MACHINE_COLUMNS,event.getСoncreteMachines().getSize().getColumns());
+        Preferences.storeObject(SELECTED_MACHINE_ID,event.getСoncreteMachines().getId());
+        Preferences.storeObject(SELECTED_MACHINE_NAME,event.getСoncreteMachines().getName());
     }
 
 }

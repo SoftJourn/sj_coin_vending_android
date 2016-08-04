@@ -21,11 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/machine_items_recycler_view"
+    <LinearLayout
+        android:id="@+id/container_fragment_products_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
-
+        android:orientation="vertical" />
 
 </LinearLayout>

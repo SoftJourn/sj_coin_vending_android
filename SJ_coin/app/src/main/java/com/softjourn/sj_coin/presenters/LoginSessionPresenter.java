@@ -40,8 +40,8 @@ public class LoginSessionPresenter extends BasePresenter implements ILoginSessio
                     mEventBus.post(new OnLogin(CALL_FAILED));
                 } else {
 
-                    Preferences.storeString(ACCESS_TOKEN, response.body().getAccessToken());
-                    Preferences.storeString(REFRESH_TOKEN, response.body().getRefreshToken());
+                    Preferences.storeObject(ACCESS_TOKEN, response.body().getAccessToken());
+                    Preferences.storeObject(REFRESH_TOKEN, response.body().getRefreshToken());
 
                     mEventBus.post(new OnLogin(CALL_SUCCEED));
                 }
