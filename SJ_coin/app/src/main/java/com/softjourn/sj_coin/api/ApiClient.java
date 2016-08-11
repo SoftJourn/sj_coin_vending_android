@@ -3,6 +3,7 @@ package com.softjourn.sj_coin.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.softjourn.sj_coin.model.Balance;
 import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
@@ -18,37 +19,40 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Ad1 on 29.07.2016.
  */
-public class ApiClient implements ApiProvider,Constants{
+public class ApiClient implements ApiProvider, Constants {
 
     private static Gson gson = new GsonBuilder()
             .setLenient()
             .create();
     private ApiService mApiService;
 
-    public ApiClient(String headers, String URL){
+    public ApiClient(String headers, String URL) {
         OkHttpClient okHttpClient;
-        switch (headers){
+        switch (headers) {
             case OAUTH:
                 okHttpClient = new CustomHttpClient().okhttpOAuth();
                 break;
             case VENDING:
                 okHttpClient = new CustomHttpClient().okhttpVending();
                 break;
+            case COINS:
+                okHttpClient = new CustomHttpClient().okhttpVending();
+                break;
             default:
                 okHttpClient = new CustomHttpClient().okhttpOAuth();
         }
 
-            this.mApiService = new Retrofit.Builder()
-                    .baseUrl(URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(okHttpClient)
-                    .build()
-                    .create(ApiService.class);
+        this.mApiService = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build()
+                .create(ApiService.class);
     }
 
     @Override
     public void makeLoginRequest(String email, String password, String type, Callback<Session> callback) {
-        mApiService.getAccessToken(email,password,type).enqueue(callback);
+        mApiService.getAccessToken(email, password, type).enqueue(callback);
     }
 
     @Override
@@ -66,5 +70,9 @@ public class ApiClient implements ApiProvider,Constants{
         mApiService.getProductsList(selectedMachine).enqueue(callback);
     }
 
-
+    @Override
+    public void getBalance(Callback<Balance> callback) {
+        mApiService.getBalance().enqueue(callback);
+    }
 }
+

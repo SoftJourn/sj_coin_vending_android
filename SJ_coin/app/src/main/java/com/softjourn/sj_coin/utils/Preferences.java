@@ -30,4 +30,14 @@ public class Preferences implements Constants {
         editor.putInt(key,value);
         editor.apply();
     }
+
+    public static void clearIntObject(String key){
+        editor.putInt(key,0);
+        editor.apply();
+    }
+
+    public static void clearStringObject(String key){
+        editor.putString(key,null);
+        editor.apply();
+    }
 }

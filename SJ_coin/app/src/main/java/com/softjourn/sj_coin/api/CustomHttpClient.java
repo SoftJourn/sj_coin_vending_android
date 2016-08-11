@@ -35,10 +35,10 @@ import okhttp3.Response;
  */
 public class CustomHttpClient implements Constants{
 
-    protected SSLSocketFactory trustCert(Context context, int rawRes){
+    protected SSLSocketFactory trustCert(Context context){
         try {
             KeyStore ksTrust = KeyStore.getInstance("BKS");
-            InputStream inStream = context.getResources().openRawResource(rawRes);
+            InputStream inStream = context.getResources().openRawResource(R.raw.coin);
             ksTrust.load(inStream, "changeit".toCharArray());
             // TrustManager decides which certificate authorities to use.
             TrustManagerFactory tmf = TrustManagerFactory
@@ -92,7 +92,7 @@ public class CustomHttpClient implements Constants{
                         return chain.proceed(orRequest);
                     }
                 })
-                .sslSocketFactory(trustCert(App.getContext(), R.raw.sj_coins_cert))
+                .sslSocketFactory(trustCert(App.getContext()))
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
@@ -114,7 +114,7 @@ public class CustomHttpClient implements Constants{
                         return chain.proceed(orRequest);
                     }
                 })
-                .sslSocketFactory(trustCert(App.getContext(), R.raw.vending))
+                .sslSocketFactory(trustCert(App.getContext()))
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {

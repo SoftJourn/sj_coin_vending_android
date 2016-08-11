@@ -3,14 +3,18 @@
     <item
         android:id="@+id/list_view"
         android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="List View" />
-    |
+        android:title="@string/main_menu_list_view" />
     <item
         android:id="@+id/machine_view"
         android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="Machine View" />
+        android:title="@string/main_menu_machine_view" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="@string/profile" />
+
     <item
         android:id="@+id/logout"
         android:icon="@android:drawable/ic_menu_set_as"
-        android:title="Log Out"/>
+        android:title="@string/main_menu_log_out" />
 </menu>

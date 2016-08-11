@@ -31,26 +31,26 @@ import butterknife.ButterKnife;
 /**
  * Created by Ad1 on 04.08.2016.
  */
-public class ProductsMachineViewFragment extends BaseFragment implements IProductsListFragment,Constants{
+public class ProductsListOtherFragment extends BaseFragment implements IProductsListFragment,Constants{
 
     private static final String EXTRAS_PRODUCTS_MACHINE_LIST = "PRODUCTS_MACHINE_LIST";
     List<Product> mProductList;
     @Bind(R.id.list_items_recycler_view)
     RecyclerView machineItems;
-    private int mRows;
+
     private int mColumns;
     private String mSelectedMachine;
     private IVendingMachinePresenter mPresenter;
     private ProductItemsAdapter mProductAdapter;
 
-    public static ProductsMachineViewFragment newInstance() {
-        return new ProductsMachineViewFragment();
+    public static ProductsListOtherFragment newInstance() {
+        return new ProductsListOtherFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_products_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_products_machine_view, container, false);
 
         ButterKnife.bind(this, view);
 

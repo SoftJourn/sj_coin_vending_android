@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Ad1 on 04.08.2016.
  */
-public class ProductsListFragment extends BaseFragment implements IProductsListFragment,Constants {
+public class ProductsListSnacksFragment extends BaseFragment implements IProductsListFragment,Constants {
 
     private static final String EXTRAS_PRODUCTS_LIST = "PRODUCTS_LIST";
 
@@ -42,8 +42,8 @@ public class ProductsListFragment extends BaseFragment implements IProductsListF
     private IVendingMachinePresenter mPresenter;
     private ProductItemsAdapter mProductAdapter;
 
-    public static ProductsListFragment newInstance() {
-        return new ProductsListFragment();
+    public static ProductsListSnacksFragment newInstance() {
+        return new ProductsListSnacksFragment();
     }
 
     @Override

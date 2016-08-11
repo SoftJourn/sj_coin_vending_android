@@ -15,7 +15,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- *  Class used for making availabele https connection for Picasso as
+ *  Class used for making available https connection for Picasso as
  *  standard Picasso don't work with secure connections.
  *
  *  Uses:

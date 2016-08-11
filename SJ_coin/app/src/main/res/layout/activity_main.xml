@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:enabled="false"
-        android:text="@string/get_machine" />
+        android:text="@string/get_products_button_text" />
 
     <Spinner
         android:id="@+id/machines_spinner"
@@ -21,10 +21,56 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
 
-    <LinearLayout
-        android:id="@+id/container_fragment_products_list"
+    <TextView
+        android:id="@+id/textViewSnacks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/switch_thumb_disabled_material_light"
+        android:text="Snacks"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <LinearLayout
+        android:id="@+id/container_fragment_products_list_snacks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical"/>
+
+    <TextView
+        android:id="@+id/textViewDrinks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/switch_thumb_disabled_material_light"
+        android:text="Drinks"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <LinearLayout
+        android:id="@+id/container_fragment_products_list_drinks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/textViewOther"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/switch_thumb_disabled_material_light"
+        android:text="Other"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <LinearLayout
+        android:id="@+id/container_fragment_products_list_other"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical"/>
+
 
 </LinearLayout>

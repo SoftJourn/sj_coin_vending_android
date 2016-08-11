@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
@@ -61,7 +62,7 @@ public class VendingActivity extends BaseActivity implements Constants {
             Navigation.goToLoginActivity(this);
         }
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new ArrayList<String>());
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<String>());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerMachine.setAdapter(adapter);
@@ -90,9 +91,23 @@ public class VendingActivity extends BaseActivity implements Constants {
     }
 
     private void callProductsList() {
-        Navigation.goToListView(this);
-        mPresenter = new VendingMachinePresenter();
-        mPresenter.callConcreteMachine(mSelectedMachine);
+        if(!mSelectedMachine.equals(String.valueOf(Preferences.retrieveIntObject(SELECTED_MACHINE_ID)))){
+            mPresenter = new VendingMachinePresenter();
+            mPresenter.callConcreteMachine(mSelectedMachine);
+            switch (Preferences.retrieveIntObject(SELECTED_VIEW)){
+                case LIST_VIEW:
+                    Navigation.goToListView(this);
+                    break;
+                case MACHINE_VIEW:
+                    Navigation.goToMachineView(this);
+                    break;
+                default:
+                    Navigation.goToListView(this);
+                    break;
+            }
+        } else{
+            Toast.makeText(this,"You have chosen the same machine",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void updateSpinnerData() {
@@ -100,7 +115,7 @@ public class VendingActivity extends BaseActivity implements Constants {
             adapter.add(mMachines.get(i).getId().toString());
         }
         adapter.notifyDataSetChanged();
-        spinnerMachine.setSelection(0);
+        btnMachine.setEnabled(false);
     }
 
     @Subscribe

@@ -1,5 +1,17 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- Activity margins. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--Fragment List View margins. -->
+    <dimen name="recycler_view_layout_left_margin">10dp</dimen>
+    <dimen name="recycler_view_layout_text_view_container_top_margin">5dp</dimen>
+    <dimen name="recycler_view_layout_text_view_container_bottom_margin">5dp</dimen>
+    <dimen name="recycler_view_layout_text_view_container_left_margin">16dp</dimen>
+
+    <!-- Fragment Machine View margins. -->
+    <dimen name="recycler_view_machine_layout_left_margin">10dp</dimen>
+    <dimen name="recycler_view_machine_layout_top_margin">10dp</dimen>
+    <dimen name="recycler_view_machine_layout_bottom_margin">10dp</dimen>
+    <dimen name="recycler_view_machine_layout_right_margin">10dp</dimen>
 </resources>

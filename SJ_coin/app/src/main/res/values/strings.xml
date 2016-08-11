@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">SJ_coin</string>
-    <string name="screen_login_email_hint">Email</string>
+    <string name="screen_login_username_hint">Login</string>
     <string name="screen_login_password_hint">Password</string>
     <string name="screen_login_login_button">Login</string>
-    <string name="screen_login_create_account_link">No account yet? Create one</string>
-    <string name="get_machine">Get All Info</string>
+    <string name="get_products_button_text">Get Products</string>
+    <string name="dummy_text_view_text">Dummy text</string>
+    <string name="product_image">Product Image</string>
+    <string name="company_logo">Company Logo</string>
+    <string name="main_menu_list_view">List View</string>
+    <string name="main_menu_machine_view">Machine View</string>
+    <string name="main_menu_log_out">Log Out</string>
+    <string name="profile">Profile</string>
+    <string name="profile_name_surname">Name Surname</string>
+    <string name="profile_amount_available">9999</string>
+    <string name="coins">coins</string>
 
-    <string-array name="machines">
-        <item>2</item>
-        <item>3</item>
-    </string-array>
 </resources>

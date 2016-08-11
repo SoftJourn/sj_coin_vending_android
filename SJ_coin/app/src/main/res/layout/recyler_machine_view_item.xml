@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/recycler_view_machine_layout_bottom_margin"
+    android:layout_marginLeft="@dimen/recycler_view_machine_layout_left_margin"
+    android:layout_marginRight="@dimen/recycler_view_machine_layout_right_margin"
+    android:layout_marginTop="@dimen/recycler_view_machine_layout_top_margin"
     android:background="@android:color/holo_green_light"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="RtlHardcoded">
+
     <ImageView
         android:id="@+id/layout_item_product_img"
         android:layout_width="wrap_content"
@@ -16,29 +20,33 @@
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="6dp"
-        android:src="@drawable/softjourn_logo"/>
+        android:contentDescription="@string/product_image"
+        android:src="@drawable/softjourn_logo" />
+
     <TextView
         android:id="@+id/layout_item_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Name"
+        android:text="@string/dummy_text_view_text"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/layout_item_product_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Price"
-        android:textSize="16sp"/>
+        android:text="@string/dummy_text_view_text"
+        android:textSize="16sp" />
+
     <TextView
         android:id="@+id/layout_item_product_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Price"
-        android:textSize="16sp"/>
+        android:text="@string/dummy_text_view_text"
+        android:textSize="16sp" />
 
 
 </LinearLayout>
