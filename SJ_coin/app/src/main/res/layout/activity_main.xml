@@ -1,76 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activities.VendingActivity">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnMachine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:enabled="false"
-        android:text="@string/get_products_button_text" />
-
-    <Spinner
-        android:id="@+id/machines_spinner"
-        style="@android:style/Widget.Holo.Light.Spinner"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/textViewSnacks"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context=".activities.VendingActivity">
+
+            <View style="@style/VendingActivitySplitter" />
+
+            <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+
+                <TextView
+                    android:id="@+id/textViewLastPurchasesDrinks"
+                    style="@style/VendingActivityCategoryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/layout_vending_last_purchases" />
+
+                <TextView
+                    android:id="@+id/textViewLastPurchasesSeeAll"
+                    style="@style/SeeAllTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_fragment_products_list_last_purchases"
+                style="@style/VendingActivityCategoryContainer" />
+
+            <View style="@style/VendingActivitySplitter" />
+
+            <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+
+                <TextView
+                    android:id="@+id/textViewDrinks"
+                    style="@style/VendingActivityCategoryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/layout_vending_featured" />
+
+                <TextView
+                    android:id="@+id/textViewFeaturedSeeAll"
+                    style="@style/SeeAllTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_fragment_products_list_featured"
+                style="@style/VendingActivityCategoryContainer" />
+
+            <View style="@style/VendingActivitySplitter" />
+
+            <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+
+                <TextView
+                    android:id="@+id/textViewBestSellers"
+                    style="@style/VendingActivityCategoryText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/layout_vending_best_sellers" />
+
+                <TextView
+                    android:id="@+id/textViewBestSellersSeeAll"
+                    style="@style/SeeAllTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_fragment_products_list_best_sellers"
+                style="@style/VendingActivityCategoryContainer" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!--<LinearLayout
+        android:id="@+id/myFooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/switch_thumb_disabled_material_light"
-        android:text="Snacks"
-        android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:layout_alignParentBottom="true"
+        style="@android:style/ButtonBar">
 
-    <LinearLayout
-        android:id="@+id/container_fragment_products_list_snacks"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="vertical"/>
-
-    <TextView
-        android:id="@+id/textViewDrinks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/switch_thumb_disabled_material_light"
-        android:text="Drinks"
-        android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-    <LinearLayout
-        android:id="@+id/container_fragment_products_list_drinks"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="vertical" />
-
-    <TextView
-        android:id="@+id/textViewOther"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/switch_thumb_disabled_material_light"
-        android:text="Other"
-        android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-    <LinearLayout
-        android:id="@+id/container_fragment_products_list_other"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="vertical"/>
-
-
-</LinearLayout>
+        <Button
+            android:id="@+id/footerBtn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>-->
+</RelativeLayout>

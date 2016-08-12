@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/list_view"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="@string/main_menu_list_view" />
-    <item
-        android:id="@+id/machine_view"
-        android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="@string/main_menu_machine_view" />
-    <item
         android:id="@+id/profile"
         android:icon="@android:drawable/ic_menu_myplaces"
-        android:title="@string/profile" />
+        android:title="@string/main_menu_profile" />
 
     <item
         android:id="@+id/logout"

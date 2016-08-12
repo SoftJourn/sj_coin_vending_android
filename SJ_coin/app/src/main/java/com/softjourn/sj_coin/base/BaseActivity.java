@@ -8,11 +8,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.callbacks.OnLogin;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 import com.softjourn.sj_coin.utils.ServerErrors;
 
@@ -69,30 +70,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.list_view:
-                try {
-                    android.app.Fragment fragment = this.getFragmentManager().findFragmentByTag(TAG_PRODUCTS_LIST_FRAGMENT);
-                    if (fragment == null) {
-                        Navigation.goToListView(mActivity);
-                        return true;
-                    } else return false;
-                } catch (NullPointerException e) {
-                    return false;
-                }
-            case R.id.machine_view:
-                try {
-                    android.app.Fragment machineFragment = this.getFragmentManager().findFragmentByTag(TAG_PRODUCTS_MACHINE_FRAGMENT);
-                    if (machineFragment == null) {
-                        Navigation.goToMachineView(mActivity);
-                        return true;
-                    } else return false;
-                } catch (NullPointerException e) {
-                    return false;
-                }
             case R.id.profile:
                 Navigation.goToProfileActivity(this);
                 return true;
             case R.id.logout:
+                Preferences.clearStringObject(ACCESS_TOKEN);
+                Preferences.clearStringObject(REFRESH_TOKEN);
+                Navigation.goToVendingActivity(this);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -113,9 +98,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(App.getContext(), ServerErrors.showErrorMessage(event.getMessage()), Toast.LENGTH_LONG).show();
+                Toast.makeText(BaseActivity.this, ServerErrors.showErrorMessage(event.getMessage()), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Subscribe
+    public void onEvent(final OnLogin event){
+        if (event.isSuccess()) {
+            onCallSuccess();
+        } else {
+            onCallFailed();
+        }
     }
 
 

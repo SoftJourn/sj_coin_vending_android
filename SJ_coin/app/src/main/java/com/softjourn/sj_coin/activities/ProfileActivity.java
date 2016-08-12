@@ -57,7 +57,7 @@ public class ProfileActivity extends BaseActivity implements Constants{
     private void callBalance() {
         mPresenter = new BalancePresenter();
         mPresenter.callBalance();
-        ProgressDialogUtils.showDialog(this, "Loading");
+        ProgressDialogUtils.showDialog(this, getString(R.string.progress_loading));
     }
 
     private String getUserName() throws UnsupportedEncodingException {
@@ -67,7 +67,7 @@ public class ProfileActivity extends BaseActivity implements Constants{
         String decodedString = new String(data,"UTF-8");
 
         //Work with decoded String
-        int tempStart = decodedString.indexOf("user_name");
+        int tempStart = decodedString.indexOf(getString(R.string.activity_profile_username_key));
         String startOfUserName = decodedString.substring(tempStart+12);
         int endOfUserName = startOfUserName.indexOf("\"");
         return startOfUserName.substring(0,endOfUserName);
@@ -82,6 +82,7 @@ public class ProfileActivity extends BaseActivity implements Constants{
     @Subscribe
     public void OnEvent(OnBalanceReceivedEvent event){
         mUserBalance.setText(event.getBalance().getAmount());
+        onCallSuccess();
     }
 
     @Subscribe

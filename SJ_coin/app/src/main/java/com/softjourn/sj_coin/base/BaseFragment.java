@@ -4,12 +4,9 @@ package com.softjourn.sj_coin.base;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.callbacks.OnLogin;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
-import com.softjourn.sj_coin.utils.ServerErrors;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,8 +44,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Subscribe
-    public void onEvent(final OnServerErrorEvent event) {
-        Toast.makeText(App.getContext(), ServerErrors.showErrorMessage(event.getMessage()), Toast.LENGTH_LONG).show();
+    public void onEvent(final OnLogin event){
+        if (event.isSuccess()) {
+            onCallSuccess();
+        } else {
+            onCallFailed();
+        }
     }
 
 }

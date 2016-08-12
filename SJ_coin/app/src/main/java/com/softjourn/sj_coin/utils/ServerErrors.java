@@ -1,19 +1,19 @@
 package com.softjourn.sj_coin.utils;
 
-/**
- * Created by Ad1 on 01.08.2016.
- */
+import com.softjourn.sj_coin.App;
+import com.softjourn.sj_coin.R;
+
 public class ServerErrors {
     public static String showErrorMessage(int code){
         switch(code){
             case 400:
-                return  "The request was malformed.";
+                return App.getContext().getString(R.string.server_error_400);
             case 404:
-                return  "The requested resource did not exist.";
+                return  App.getContext().getString(R.string.server_error_404);
             case 409:
-                return "Cant process request due to error like such item already presented or not enough money to buy item.";
+                return App.getContext().getString(R.string.server_error_409);
             default:
-                return "Server error. Please try again later or reinstall the app";
+                return App.getContext().getString(R.string.server_error_other);
         }
     }
 }

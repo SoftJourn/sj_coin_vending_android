@@ -15,17 +15,13 @@ public interface Constants {
     String SELECTED_MACHINE_ROWS = "SELECTED_MACHINE_ROWS";
     String SELECTED_MACHINE_COLUMNS = "SELECTED_MACHINE_COLUMNS";
 
-    String SELECTED_VIEW = "SELECTED_VIEW";
-
-
-    //View IDs
-    int LIST_VIEW = 1;
-    int MACHINE_VIEW = 2;
-
     //Fragments tags
-    String TAG_PRODUCTS_LIST_FRAGMENT = "PRODUCTS_LIST";
-    String TAG_PRODUCTS_MACHINE_FRAGMENT = "PRODUCTS_MACHINE";
+    String TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT = "TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT";
+    String TAG_PRODUCTS_FEATURED_FRAGMENT = "TAG_PRODUCTS_FEATURED_FRAGMENT";
+    String TAG_PRODUCTS_BEST_SELLERS_FRAGMENT = "TAG_PRODUCTS_BEST_SELLERS_FRAGMENT";
+    String TAG_PRODUCTS_SEE_ALL_LAST_PURCHASES_FRAGMENT = "TAG_PRODUCTS_SEE_ALL_LAST_PURCHASES_FRAGMENT";
 
+    //URLs
     String BASE_URL = "https://sjcoins.testing.softjourn.if.ua";
 
     String URL_AUTH_SERVICE = BASE_URL + "/auth/";
@@ -43,5 +39,13 @@ public interface Constants {
     String OAUTH = "OAUTH";
     String VENDING = "VENDING";
     String COINS = "COINS";
+
+    //Recycler View Types
+    String DEFAULT_RECYCLER_VIEW = "DEFAULT";
+    String SEE_ALL_RECYCLER_VIEW = "SEE_ALL";
+
+    String LAST_PURCHASES = "Last purchases";
+    String FEATURED = "Featured";
+    String BEST_SELLERS = "Best Sellers";
 }
 

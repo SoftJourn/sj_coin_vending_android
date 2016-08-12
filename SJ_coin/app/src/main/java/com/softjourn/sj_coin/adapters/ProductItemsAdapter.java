@@ -1,5 +1,6 @@
 package com.softjourn.sj_coin.adapters;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,12 +23,16 @@ import java.util.List;
 public class ProductItemsAdapter extends
         android.support.v7.widget.RecyclerView.Adapter<ProductItemsAdapter.MachineViewHolder> implements Constants {
 
-    private int mItemsView;
+    private String mRecyclerViewType;
 
     private List<Product> mProduct;
 
-    public ProductItemsAdapter(int view) {
-        this.mItemsView = view;
+    public ProductItemsAdapter(@Nullable String recyclerViewType) {
+        if (recyclerViewType != null) {
+            mRecyclerViewType = recyclerViewType;
+        } else {
+            mRecyclerViewType = DEFAULT_RECYCLER_VIEW;
+        }
     }
 
     public void setData(List<Product> data) {
@@ -38,10 +43,16 @@ public class ProductItemsAdapter extends
     @Override
     public MachineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
-        if (mItemsView == LIST_VIEW) {
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_view_item, parent, false);
-        } else {v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);}
-
+        switch (mRecyclerViewType){
+            case "DEFAULT":
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);
+                break;
+            case "SEE_ALL":
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_see_all_product_list, parent, false);
+                break;
+            default:
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);
+        }
         return new MachineViewHolder(v);
     }
 
@@ -56,7 +67,7 @@ public class ProductItemsAdapter extends
         if (TextUtils.isEmpty(product.getImageUrl())) {
             Picasso.with(App.getContext()).load(R.drawable.softjourn_logo).into(holder.mProductImage);
         } else {
-            PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE+product.getImageUrl()).into(holder.mProductImage);
+            PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(holder.mProductImage);
         }
     }
 

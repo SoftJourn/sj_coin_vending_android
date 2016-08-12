@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity implements Constants{
         if (Connections.isNetworkEnabled()) {
             login();
         } else {
-            Toast.makeText(this,"Internet should be turned on",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.internet_turned_off,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity implements Constants{
         }
 
         loginButton.setEnabled(false);
-        ProgressDialogUtils.showDialog(this,"Authenticating...");
+        ProgressDialogUtils.showDialog(this,getString(R.string.progress_authenticating));
 
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity implements Constants{
 
     public void onLoginFailed() {
         ProgressDialogUtils.dismiss();
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), R.string.activity_login_login_failed, Toast.LENGTH_LONG).show();
         loginButton.setEnabled(true);
     }
 
@@ -110,14 +110,14 @@ public class LoginActivity extends BaseActivity implements Constants{
         String password = passwordText.getText().toString();
 
         if (email.isEmpty() ) {
-            emailText.setError("Enter a valid email address");
+            emailText.setError(getString(R.string.activity_login_invalid_email));
             valid = false;
         } else {
             emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            passwordText.setError("Password should be between 4 and 10 alphanumeric characters");
+            passwordText.setError(getString(R.string.activity_login_invalid_password));
             valid = false;
         } else {
             passwordText.setError(null);

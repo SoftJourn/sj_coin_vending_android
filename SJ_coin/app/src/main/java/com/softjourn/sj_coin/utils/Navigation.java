@@ -7,14 +7,16 @@ import android.content.Intent;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.LoginActivity;
 import com.softjourn.sj_coin.activities.ProfileActivity;
+import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
-import com.softjourn.sj_coin.activities.fragments.ProductsListOtherFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductsListSnacksFragment;
+import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
+import com.softjourn.sj_coin.activities.fragments.ProductsListFeaturedFragment;
+import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
 
 /**
  * Created by Ad1 on 29.07.2016.
  */
-public class Navigation implements Constants {
+public class Navigation implements Constants,Extras {
 
     public static void goToVendingActivity(Context context) {
         Intent intent = new Intent(context, VendingActivity.class);
@@ -31,19 +33,18 @@ public class Navigation implements Constants {
         context.startActivity(intent);
     }
 
-    public static void goToMachineView(Activity activity) {
-
-        activity.getFragmentManager().beginTransaction()
-                .replace(R.id.container_fragment_products_list, ProductsListOtherFragment.newInstance(), TAG_PRODUCTS_MACHINE_FRAGMENT)
-                .commit();
-        Preferences.storeObject(SELECTED_VIEW, MACHINE_VIEW);
+    public static void goToSeeAllActivity(Context context, String category){
+        Intent intent = new Intent(context, SeeAllActivity.class);
+        intent.putExtra(EXTRAS_CATEGORY,category);
+        context.startActivity(intent);
     }
 
-    public static void goToListView(Activity activity) {
-
+    public static void goToProductListFragments(Activity activity) {
         activity.getFragmentManager().beginTransaction()
-                .replace(R.id.container_fragment_products_list, ProductsListSnacksFragment.newInstance(), TAG_PRODUCTS_LIST_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_last_purchases, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_featured, ProductsListFeaturedFragment.newInstance(), TAG_PRODUCTS_FEATURED_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_best_sellers, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                 .commit();
-        Preferences.storeObject(SELECTED_VIEW, LIST_VIEW);
     }
+
 }

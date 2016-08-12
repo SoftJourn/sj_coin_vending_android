@@ -8,4 +8,41 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SeeAllTextView">
+        <item name="android:text">@string/layout_vending_see_all</item>
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="VendingActivityCategoryText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="VendingActivitySplitter">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/switch_thumb_disabled_material_light</item>
+    </style>
+
+    <style name="VendingActivityCategoryContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">200dp</item>
+        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="VendingActivityLayoutCategoryHeaders">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/recycler_view_machine_layout_bottom_margin</item>
+        <item name="android:layout_marginLeft">@dimen/recycler_view_machine_layout_left_margin</item>
+        <item name="android:layout_marginRight">@dimen/recycler_view_machine_layout_right_margin</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
 </resources>

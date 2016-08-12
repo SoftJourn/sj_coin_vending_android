@@ -29,6 +29,9 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:label="Profile" />
+        <activity
+            android:name=".activities.SeeAllActivity"
+            android:label="All Products" />
     </application>
 
 </manifest>

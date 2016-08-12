@@ -18,15 +18,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Ad1 on 02.08.2016.
- */
 public class VendingMachinePresenter extends BasePresenter implements IVendingMachinePresenter, Constants {
 
 
 
     public VendingMachinePresenter() {
-
     }
 
     @Override
@@ -44,6 +40,7 @@ public class VendingMachinePresenter extends BasePresenter implements IVendingMa
                     Log.d("Tag", response.body().toString());
                     List<Machines> machines = response.body();
                     mEventBus.post(new OnMachinesListReceived(machines));
+                    mEventBus.post(new OnLogin(CALL_SUCCEED));
                 }
             }
 
@@ -70,6 +67,7 @@ public class VendingMachinePresenter extends BasePresenter implements IVendingMa
                     Log.d("Tag", response.body().toString());
                     Machines machines = response.body();
                     mEventBus.post(new OnConcreteMachineReceived(machines));
+                    mEventBus.post(new OnLogin(CALL_SUCCEED));
                 }
             }
 
@@ -97,6 +95,7 @@ public class VendingMachinePresenter extends BasePresenter implements IVendingMa
                     Log.d("Tag", response.body().toString());
                     List<Product> products = response.body();
                     mEventBus.post(new OnProductsListReceived(products));
+                    mEventBus.post(new OnLogin(CALL_SUCCEED));
                 }
             }
 
