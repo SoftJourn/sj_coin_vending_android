@@ -30,9 +30,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * Created by Ad1 on 02.08.2016.
- */
+
 public class CustomHttpClient implements Constants{
 
     protected SSLSocketFactory trustCert(Context context){

@@ -1,8 +1,5 @@
 package com.softjourn.sj_coin.utils;
 
-/**
- * Created by Ad1 on 12.08.2016.
- */
 public interface Extras {
     String EXTRAS_PRODUCTS_FEATURED_LIST = "PRODUCTS_FEATURED_LIST";
     String EXTRAS_PRODUCTS_BEST_SELLER_LIST = "EXTRAS_PRODUCTS_BEST_SELLER_LIST";

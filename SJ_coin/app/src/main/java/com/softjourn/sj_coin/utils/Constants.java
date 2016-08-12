@@ -1,8 +1,5 @@
 package com.softjourn.sj_coin.utils;
 
-/**
- * Created by Ad1 on 28.07.2016.
- */
 public interface Constants {
 
     //Preferences Storage Keys

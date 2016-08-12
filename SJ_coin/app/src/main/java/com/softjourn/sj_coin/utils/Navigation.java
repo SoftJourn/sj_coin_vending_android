@@ -13,9 +13,7 @@ import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragmen
 import com.softjourn.sj_coin.activities.fragments.ProductsListFeaturedFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
 
-/**
- * Created by Ad1 on 29.07.2016.
- */
+
 public class Navigation implements Constants,Extras {
 
     public static void goToVendingActivity(Context context) {

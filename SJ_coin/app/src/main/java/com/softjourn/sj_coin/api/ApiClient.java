@@ -16,9 +16,6 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Ad1 on 29.07.2016.
- */
 public class ApiClient implements ApiProvider, Constants {
 
     private static Gson gson = new GsonBuilder()

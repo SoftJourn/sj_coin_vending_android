@@ -17,8 +17,8 @@
             android:id="@+id/layout_item_product_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:contentDescription="@string/product_image"
-            android:src="@drawable/softjourn_logo"/>
+            android:src="@drawable/softjourn_logo"
+            android:contentDescription="@string/product_image" />
 
         <LinearLayout
             android:layout_width="match_parent"

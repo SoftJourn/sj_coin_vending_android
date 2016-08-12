@@ -13,17 +13,6 @@ import lombok.Data;
 @Data
 public class Balance implements Parcelable{
 
-    public static final Creator<Balance> CREATOR = new Creator<Balance>() {
-        @Override
-        public Balance createFromParcel(Parcel in) {
-            return new Balance(in);
-        }
-
-        @Override
-        public Balance[] newArray(int size) {
-            return new Balance[size];
-        }
-    };
     @SerializedName("amount")
     private String amount;
 
@@ -35,6 +24,18 @@ public class Balance implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(amount);
     }
+
+    public static final Creator<Balance> CREATOR = new Creator<Balance>() {
+        @Override
+        public Balance createFromParcel(Parcel in) {
+            return new Balance(in);
+        }
+
+        @Override
+        public Balance[] newArray(int size) {
+            return new Balance[size];
+        }
+    };
 
     @Override
     public int describeContents() {

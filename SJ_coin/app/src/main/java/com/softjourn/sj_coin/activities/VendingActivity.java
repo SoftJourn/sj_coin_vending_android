@@ -57,20 +57,7 @@ public class VendingActivity extends BaseActivity implements Constants {
 
     private IVendingMachinePresenter mPresenter;
 
-    @OnClick({R.id.textViewLastPurchasesSeeAll,R.id.textViewFeaturedSeeAll,R.id.textViewBestSellersSeeAll})
-    public void seeAll(View v){
-        switch (v.getId()){
-            case R.id.textViewLastPurchasesSeeAll:
-                Navigation.goToSeeAllActivity(this,LAST_PURCHASES);
-                break;
-            case R.id.textViewFeaturedSeeAll:
-                Navigation.goToSeeAllActivity(this,FEATURED);
-                break;
-            case R.id.textViewBestSellersSeeAll:
-                Navigation.goToSeeAllActivity(this,BEST_SELLERS);
-                break;
-        }
-    }    private BottomBar mBottomBar;
+    private BottomBar mBottomBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
