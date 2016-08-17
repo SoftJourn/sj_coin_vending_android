@@ -5,6 +5,8 @@ package com.softjourn.sj_coin.presenters;
  */
 public interface IVendingMachinePresenter {
     void callProductsList(String machineID);
+
     void callMachinesList();
+
     void callConcreteMachine(String machineID);
 }

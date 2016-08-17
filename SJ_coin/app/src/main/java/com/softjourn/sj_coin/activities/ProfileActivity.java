@@ -8,7 +8,8 @@ import android.widget.TextView;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnLogin;
+import com.softjourn.sj_coin.callbacks.OnCallEvent;
+import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.presenters.BalancePresenter;
 import com.softjourn.sj_coin.presenters.IBalancePresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -18,6 +19,7 @@ import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,8 +54,11 @@ public class ProfileActivity extends BaseActivity implements Constants {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
-            callBalance();
+            if (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(EXPIRATION_DATE))) {
+                callRefreshToken();
+            } else {
+                callBalance();
+            }
         }
     }
 
@@ -80,12 +85,6 @@ public class ProfileActivity extends BaseActivity implements Constants {
         return startOfUserName.substring(0, endOfUserName);
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
-
-
     @Subscribe
     public void OnEvent(OnBalanceReceivedEvent event) {
         mUserBalance.setText(event.getBalance().getAmount());
@@ -93,9 +92,19 @@ public class ProfileActivity extends BaseActivity implements Constants {
     }
 
     @Subscribe
-    public void OnEvent(OnLogin event) {
+    public void OnEvent(OnCallEvent event) {
         if (event.isSuccess()) {
             onCallSuccess();
+        } else {
+            onCallFailed();
+        }
+    }
+
+    @Subscribe
+    public void OnEvent(OnTokenRefreshed event){
+        if (event.isSuccess()) {
+            onCallSuccess();
+            callBalance();
         } else {
             onCallFailed();
         }

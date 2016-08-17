@@ -9,8 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.callbacks.OnLogin;
+import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.presenters.ILoginSessionPresenter;
+import com.softjourn.sj_coin.presenters.LoginSessionPresenter;
 import com.softjourn.sj_coin.utils.Connections;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
@@ -75,12 +77,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
             case R.id.logout:
                 Preferences.clearStringObject(ACCESS_TOKEN);
                 Preferences.clearStringObject(REFRESH_TOKEN);
-                Navigation.goToVendingActivity(this);
+                Navigation.goToLoginActivity(this);
                 finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+       finish();
     }
 
     public void onCallSuccess() {
@@ -94,6 +101,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     protected void onNoInternetAvailable() {
         showToast(getString(R.string.internet_turned_off));
         ProgressDialogUtils.dismiss();
+    }
+
+    protected void callRefreshToken() {
+        if (!isInternetAvailable()) {
+            onNoInternetAvailable();
+        } else {
+            ILoginSessionPresenter mLoginPresenter = new LoginSessionPresenter(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            mLoginPresenter.callAccessTokenViaRefresh();
+            ProgressDialogUtils.showDialog(this, getString(R.string.progress_authenticating));
+        }
     }
 
     public boolean isInternetAvailable() {
@@ -116,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     }
 
     @Subscribe
-    public void onEvent(final OnLogin event){
+    public void onEvent(final OnCallEvent event){
         if (event.isSuccess()) {
             onCallSuccess();
         } else {

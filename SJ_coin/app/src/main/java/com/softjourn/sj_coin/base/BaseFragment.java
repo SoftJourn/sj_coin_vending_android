@@ -5,7 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
 
-import com.softjourn.sj_coin.callbacks.OnLogin;
+import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Subscribe
-    public void onEvent(final OnLogin event){
+    public void onEvent(final OnCallEvent event){
         if (event.isSuccess()) {
             onCallSuccess();
         } else {

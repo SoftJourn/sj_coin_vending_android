@@ -18,7 +18,6 @@ import com.softjourn.sj_coin.presenters.VendingMachinePresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -66,7 +65,6 @@ public class ProductsListBestSellersFragment extends BaseFragment implements IPr
         mPresenter = new VendingMachinePresenter();
         if (savedInstanceState == null) {
             mPresenter.callProductsList(mSelectedMachine);
-            ProgressDialogUtils.showDialog(getActivity(),getString(R.string.progress_loading));
         } else {
             mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_BEST_SELLER_LIST);
             loadData(mProductList);

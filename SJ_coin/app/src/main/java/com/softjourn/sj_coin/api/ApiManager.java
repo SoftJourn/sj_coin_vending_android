@@ -1,29 +1,31 @@
 package com.softjourn.sj_coin.api;
 
-/**
- * Created by Ad1 on 02.08.2016.
- */
 public class ApiManager {
 
     private static ApiManager instance;
-    private static ApiProvider mApiProvider;
 
-
-    public ApiManager(String inHeaders, String inURL){
-        mApiProvider = new ApiClient(inHeaders,inURL);
+    public ApiManager(){
     }
 
-    public static ApiManager getInstance(String mHeaders,String mURL) {
-        instance = new ApiManager(mHeaders,mURL);
+    public static ApiManager getInstance() {
+        instance = new ApiManager();
 
         if (instance == null) {
-            return new ApiManager(mHeaders,mURL);
+            return new ApiManager();
         } else {
             return instance;
         }
     }
 
-    public ApiProvider getApiProvider() {
-        return mApiProvider;
+    public ApiProvider getOauthApiProvider() {
+        return new OAuthApiClient();
+    }
+
+    public ApiProvider getVendingProcessApiProvider(){
+        return new VendingProcessApiClient();
+    }
+
+    public ApiProvider getCoinsApiProvider(){
+        return new CoinsApiClient();
     }
 }

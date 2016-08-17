@@ -2,12 +2,10 @@ package com.softjourn.sj_coin.api;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.base.BaseApiClient;
-import com.softjourn.sj_coin.model.machines.Machines;
-import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.Balance;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -18,10 +16,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Callback;
 
-public class VendingProcessApiClient extends BaseApiClient {
+/**
+ * Created by Ad1 on 17.08.2016.
+ */
+public class CoinsApiClient extends BaseApiClient {
 
-    public VendingProcessApiClient() {
-        super(URL_VENDING_SERVICE);
+    public CoinsApiClient() {
+        super(URL_COIN_SERVICE);
     }
 
     @Override
@@ -48,18 +49,7 @@ public class VendingProcessApiClient extends BaseApiClient {
     }
 
     @Override
-    public void getMachines(Callback<List<Machines>> callback) {
-        mApiService.getMachines().enqueue(callback);
+    public void getBalance(Callback<Balance> callback) {
+        mApiService.getBalance().enqueue(callback);
     }
-
-    @Override
-    public void getConcreteMachine(String machineID, Callback<Machines> callback) {
-        mApiService.getConcreteMachine(machineID).enqueue(callback);
-    }
-
-    @Override
-    public void getProductsList(String selectedMachine, Callback<List<Product>> callback) {
-        mApiService.getProductsList(selectedMachine).enqueue(callback);
-    }
-
 }

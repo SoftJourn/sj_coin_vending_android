@@ -1,10 +1,9 @@
 package com.softjourn.sj_coin.presenters;
 
-import android.util.Log;
-
+import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnLogin;
+import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Balance;
 import com.softjourn.sj_coin.utils.Constants;
@@ -18,18 +17,15 @@ public class BalancePresenter extends BasePresenter implements Constants, IBalan
 
     @Override
     public void callBalance() {
-        createApiManager(COINS, URL_COIN_SERVICE);
+        createApiManager();
 
         Callback<Balance> callback = new Callback<Balance>() {
             @Override
             public void onResponse(Call<Balance> call, Response<Balance> response) {
                 if (!response.isSuccessful()) {
-                    Log.d("Tag", "" + response.code());
-                    Log.d("Tag", "" + response.message());
                     mEventBus.post(new OnServerErrorEvent(response.code()));
-                    mEventBus.post(new OnLogin(CALL_FAILED));
+                    mEventBus.post(new OnCallEvent(CALL_FAILED));
                 } else {
-                    Log.d("Tag", response.body().toString());
                     Balance balance = response.body();
                     mEventBus.post(new OnBalanceReceivedEvent(balance));
                 }
@@ -37,10 +33,15 @@ public class BalancePresenter extends BasePresenter implements Constants, IBalan
 
             @Override
             public void onFailure(Call<Balance> call, Throwable t) {
-                mEventBus.post(new OnLogin(CALL_FAILED));
+                mEventBus.post(new OnCallEvent(CALL_FAILED));
             }
         };
         mApiProvider.getBalance(callback);
+    }
+
+    @Override
+    public void createApiManager() {
+        mApiProvider = ApiManager.getInstance().getCoinsApiProvider();
     }
 }
 

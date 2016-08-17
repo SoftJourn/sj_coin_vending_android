@@ -10,13 +10,11 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
+import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnConcreteMachineReceived;
-import com.softjourn.sj_coin.callbacks.OnLogin;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
-import com.softjourn.sj_coin.presenters.ILoginSessionPresenter;
 import com.softjourn.sj_coin.presenters.IVendingMachinePresenter;
-import com.softjourn.sj_coin.presenters.LoginSessionPresenter;
 import com.softjourn.sj_coin.presenters.VendingMachinePresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
@@ -61,7 +59,6 @@ public class VendingActivity extends BaseActivity implements Constants {
     public String mSelectedMachine = "1";
 
     private IVendingMachinePresenter mPresenter;
-    private ILoginSessionPresenter mLoginPresenter;
 
     private BottomBar mBottomBar;
 
@@ -102,16 +99,6 @@ public class VendingActivity extends BaseActivity implements Constants {
         }
     }
 
-    private void callRefreshToken() {
-        if (!isInternetAvailable()) {
-            onNoInternetAvailable();
-        } else {
-            mLoginPresenter = new LoginSessionPresenter(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            mLoginPresenter.callAccessTokenViaRefresh();
-            ProgressDialogUtils.showDialog(this, getString(R.string.progress_authenticating));
-        }
-    }
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -130,7 +117,7 @@ public class VendingActivity extends BaseActivity implements Constants {
     }
 
     @Subscribe
-    public void OnEvent(OnLogin event) {
+    public void OnEvent(OnCallEvent event) {
         if (event.isSuccess()) {
             onCallSuccess();
         } else {

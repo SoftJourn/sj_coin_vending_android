@@ -1,7 +1,8 @@
 package com.softjourn.sj_coin.presenters;
 
+import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.base.BasePresenter;
-import com.softjourn.sj_coin.callbacks.OnLogin;
+import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.model.Session;
@@ -31,7 +32,7 @@ public class LoginSessionPresenter extends BasePresenter implements ILoginSessio
 
     @Override
     public void callAccessTokenViaRefresh() {
-        createApiManager(OAUTH, URL_AUTH_SERVICE);
+        createApiManager();
 
         Callback<Session> callback = new Callback<Session>() {
             @Override
@@ -58,32 +59,37 @@ public class LoginSessionPresenter extends BasePresenter implements ILoginSessio
     @Override
     public void callLogin() {
 
-        createApiManager(OAUTH, URL_AUTH_SERVICE);
+        createApiManager();
 
         Callback<Session> callback = new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (!response.isSuccessful()) {
                     mEventBus.post(new OnServerErrorEvent(response.code()));
-                    mEventBus.post(new OnLogin(CALL_FAILED));
+                    mEventBus.post(new OnCallEvent(CALL_FAILED));
                 } else {
                     try {
                         Preferences.storeObject(ACCESS_TOKEN, response.body().getAccessToken());
                         Preferences.storeObject(REFRESH_TOKEN, response.body().getRefreshToken());
                         Preferences.storeObject(EXPIRATION_DATE, String.valueOf((new Date().getTime() / 1000) + Long.parseLong(response.body().getExpireIn())));
 
-                        mEventBus.post(new OnLogin(CALL_SUCCEED));
+                        mEventBus.post(new OnCallEvent(CALL_SUCCEED));
                     } catch (NullPointerException e) {
-                        mEventBus.post(new OnLogin(CALL_FAILED));
+                        mEventBus.post(new OnCallEvent(CALL_FAILED));
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                mEventBus.post(new OnLogin(CALL_FAILED));
+                mEventBus.post(new OnCallEvent(CALL_FAILED));
             }
         };
         mApiProvider.makeLoginRequest(mEmail, mPassword, GRANT_TYPE_PASSWORD, callback);
+    }
+
+    @Override
+    public void createApiManager() {
+        mApiProvider = ApiManager.getInstance().getOauthApiProvider();
     }
 }

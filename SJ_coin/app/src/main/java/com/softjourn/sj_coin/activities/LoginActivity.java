@@ -1,7 +1,6 @@
 package com.softjourn.sj_coin.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,7 +8,7 @@ import android.widget.Toast;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
-import com.softjourn.sj_coin.callbacks.OnLogin;
+import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.presenters.ILoginSessionPresenter;
 import com.softjourn.sj_coin.presenters.LoginSessionPresenter;
 import com.softjourn.sj_coin.utils.Connections;
@@ -23,12 +22,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Ad1 on 28.07.2016.
- */
-public class LoginActivity extends BaseActivity implements Constants{
 
-    private static final String TAG = "LoginActivity";
+public class LoginActivity extends BaseActivity implements Constants {
+
     @Bind(R.id.input_email)
     EditText emailText;
     @Bind(R.id.input_password)
@@ -38,11 +34,11 @@ public class LoginActivity extends BaseActivity implements Constants{
     private ILoginSessionPresenter mPresenter;
 
     @OnClick(R.id.btn_login)
-    public void loginProcess(){
+    public void loginProcess() {
         if (Connections.isNetworkEnabled()) {
             login();
         } else {
-            Toast.makeText(this, R.string.internet_turned_off,Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.internet_turned_off, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -55,7 +51,6 @@ public class LoginActivity extends BaseActivity implements Constants{
     }
 
     public void login() {
-        Log.d(TAG, "Login");
 
         if (!validate()) {
             onLoginFailed();
@@ -63,12 +58,12 @@ public class LoginActivity extends BaseActivity implements Constants{
         }
 
         loginButton.setEnabled(false);
-        ProgressDialogUtils.showDialog(this,getString(R.string.progress_authenticating));
+        ProgressDialogUtils.showDialog(this, getString(R.string.progress_authenticating));
 
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        mPresenter = new LoginSessionPresenter(email,password);
+        mPresenter = new LoginSessionPresenter(email, password);
         mPresenter.callLogin();
     }
 
@@ -83,8 +78,8 @@ public class LoginActivity extends BaseActivity implements Constants{
     }
 
     @Subscribe
-    public void onEvent(OnLogin event) {
-        if(event.isSuccess()){
+    public void onEvent(OnCallEvent event) {
+        if (event.isSuccess()) {
             onLoginSuccess();
         } else {
             onLoginFailed();
@@ -109,7 +104,7 @@ public class LoginActivity extends BaseActivity implements Constants{
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
-        if (email.isEmpty() ) {
+        if (email.isEmpty()) {
             emailText.setError(getString(R.string.activity_login_invalid_email));
             valid = false;
         } else {

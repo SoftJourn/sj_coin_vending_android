@@ -8,9 +8,6 @@ import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
 
-/**
- * Created by Ad1 on 16.08.2016.
- */
 public class SplashActivity extends AppCompatActivity implements Constants {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
