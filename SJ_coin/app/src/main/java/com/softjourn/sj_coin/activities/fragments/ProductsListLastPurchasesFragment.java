@@ -79,7 +79,9 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements I
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST, new ArrayList<Parcelable>(mProductList));
+        if (outState != null) {
+            outState.putParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST, new ArrayList<Parcelable>(mProductList));
+        }
     }
 
     @Override

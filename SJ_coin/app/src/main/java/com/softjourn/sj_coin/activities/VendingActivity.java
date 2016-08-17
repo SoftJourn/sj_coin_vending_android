@@ -2,7 +2,6 @@ package com.softjourn.sj_coin.activities;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -14,13 +13,19 @@ import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnConcreteMachineReceived;
 import com.softjourn.sj_coin.callbacks.OnLogin;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
+import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
+import com.softjourn.sj_coin.presenters.ILoginSessionPresenter;
 import com.softjourn.sj_coin.presenters.IVendingMachinePresenter;
+import com.softjourn.sj_coin.presenters.LoginSessionPresenter;
 import com.softjourn.sj_coin.presenters.VendingMachinePresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,17 +42,17 @@ public class VendingActivity extends BaseActivity implements Constants {
     @Bind(R.id.textViewBestSellersSeeAll)
     TextView seeAllBestSellersBtn;
 
-    @OnClick({R.id.textViewLastPurchasesSeeAll,R.id.textViewFeaturedSeeAll,R.id.textViewBestSellersSeeAll})
-    public void seeAll(View v){
-        switch (v.getId()){
+    @OnClick({R.id.textViewLastPurchasesSeeAll, R.id.textViewFeaturedSeeAll, R.id.textViewBestSellersSeeAll})
+    public void seeAll(View v) {
+        switch (v.getId()) {
             case R.id.textViewLastPurchasesSeeAll:
-                Navigation.goToSeeAllActivity(this,LAST_PURCHASES);
+                Navigation.goToSeeAllActivity(this, LAST_PURCHASES);
                 break;
             case R.id.textViewFeaturedSeeAll:
-                Navigation.goToSeeAllActivity(this,FEATURED);
+                Navigation.goToSeeAllActivity(this, FEATURED);
                 break;
             case R.id.textViewBestSellersSeeAll:
-                Navigation.goToSeeAllActivity(this,BEST_SELLERS);
+                Navigation.goToSeeAllActivity(this, BEST_SELLERS);
                 break;
         }
     }
@@ -56,11 +61,13 @@ public class VendingActivity extends BaseActivity implements Constants {
     public String mSelectedMachine = "1";
 
     private IVendingMachinePresenter mPresenter;
+    private ILoginSessionPresenter mLoginPresenter;
 
     private BottomBar mBottomBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -68,7 +75,7 @@ public class VendingActivity extends BaseActivity implements Constants {
 
         ButterKnife.bind(this);
 
-        mBottomBar = BottomBar.attach(this,savedInstanceState);
+        mBottomBar = BottomBar.attach(this, savedInstanceState);
 
         mBottomBar.setItems(R.menu.bottombar_menu);
 
@@ -76,23 +83,32 @@ public class VendingActivity extends BaseActivity implements Constants {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.bottomBarItemOne) {
-                    Log.d("Tag","first");
+                    Log.d("Tag", "first");
                 }
             }
 
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.bottomBarItemOne) {
-                    Log.d("Tag","firstReselected");
+                    Log.d("Tag", "firstReselected");
                 }
             }
         });
 
-        if (TextUtils.isEmpty(Preferences.retrieveStringObject(ACCESS_TOKEN))) {
-            Navigation.goToLoginActivity(this);
-            finish();
+        if (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(EXPIRATION_DATE))) {
+            callRefreshToken();
         } else {
             callProductsList();
+        }
+    }
+
+    private void callRefreshToken() {
+        if (!isInternetAvailable()) {
+            onNoInternetAvailable();
+        } else {
+            mLoginPresenter = new LoginSessionPresenter(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            mLoginPresenter.callAccessTokenViaRefresh();
+            ProgressDialogUtils.showDialog(this, getString(R.string.progress_authenticating));
         }
     }
 
@@ -103,10 +119,14 @@ public class VendingActivity extends BaseActivity implements Constants {
     }
 
     private void callProductsList() {
-        mPresenter = new VendingMachinePresenter();
-        //mPresenter.callMachinesList();
-        mPresenter.callConcreteMachine(mSelectedMachine);
-        Navigation.goToProductListFragments(this);
+        if (!isInternetAvailable()) {
+            onNoInternetAvailable();
+        } else {
+            mPresenter = new VendingMachinePresenter();
+            mPresenter.callConcreteMachine(mSelectedMachine);
+            Navigation.goToProductListFragments(this);
+            ProgressDialogUtils.showDialog(this, getString(R.string.progress_loading));
+        }
     }
 
     @Subscribe
@@ -129,5 +149,15 @@ public class VendingActivity extends BaseActivity implements Constants {
         Preferences.storeObject(SELECTED_MACHINE_COLUMNS, event.getСoncreteMachines().getSize().getColumns());
         Preferences.storeObject(SELECTED_MACHINE_ID, event.getСoncreteMachines().getId());
         Preferences.storeObject(SELECTED_MACHINE_NAME, event.getСoncreteMachines().getName());
+    }
+
+    @Subscribe
+    public void OnEvent(OnTokenRefreshed event) {
+        if (event.isSuccess()) {
+            onCallSuccess();
+            callProductsList();
+        } else {
+            onCallFailed();
+        }
     }
 }

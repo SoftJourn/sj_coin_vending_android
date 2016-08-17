@@ -22,10 +22,7 @@ import java.io.UnsupportedEncodingException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by Ad1 on 10.08.2016.
- */
-public class ProfileActivity extends BaseActivity implements Constants{
+public class ProfileActivity extends BaseActivity implements Constants {
 
     @Bind(R.id.profile_user_photo)
     ImageView mUserPhoto;
@@ -43,34 +40,44 @@ public class ProfileActivity extends BaseActivity implements Constants{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        ButterKnife.bind(this);
+        if (!isInternetAvailable()) {
+            onNoInternetAvailable();
+            finish();
+        } else {
 
-        try {
-            mUserName.setText(getUserName());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            ButterKnife.bind(this);
+
+            try {
+                mUserName.setText(getUserName());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            callBalance();
         }
-
-        callBalance();
     }
 
     private void callBalance() {
-        mPresenter = new BalancePresenter();
-        mPresenter.callBalance();
-        ProgressDialogUtils.showDialog(this, getString(R.string.progress_loading));
+        if (!isInternetAvailable()) {
+            onNoInternetAvailable();
+        } else {
+            mPresenter = new BalancePresenter();
+            mPresenter.callBalance();
+            ProgressDialogUtils.showDialog(this, getString(R.string.progress_loading));
+        }
     }
 
     private String getUserName() throws UnsupportedEncodingException {
 
-        String source = Preferences.retrieveStringObject(ACCESS_TOKEN).replaceFirst("[a-zA-Z,0-9]*\\.","").replaceFirst("\\.[a-zA-Z,0-9]*","");
-        byte[] data = Base64.decode(source,Base64.DEFAULT);
-        String decodedString = new String(data,"UTF-8");
+        String source = Preferences.retrieveStringObject(ACCESS_TOKEN).replaceFirst("[a-zA-Z,0-9]*\\.", "").replaceFirst("\\.[a-zA-Z,0-9]*", "");
+        byte[] data = Base64.decode(source, Base64.DEFAULT);
+        String decodedString = new String(data, "UTF-8");
 
         //Work with decoded String
         int tempStart = decodedString.indexOf(getString(R.string.activity_profile_username_key));
-        String startOfUserName = decodedString.substring(tempStart+12);
+        String startOfUserName = decodedString.substring(tempStart + 12);
         int endOfUserName = startOfUserName.indexOf("\"");
-        return startOfUserName.substring(0,endOfUserName);
+        return startOfUserName.substring(0, endOfUserName);
     }
 
     @Override
@@ -80,7 +87,7 @@ public class ProfileActivity extends BaseActivity implements Constants{
 
 
     @Subscribe
-    public void OnEvent(OnBalanceReceivedEvent event){
+    public void OnEvent(OnBalanceReceivedEvent event) {
         mUserBalance.setText(event.getBalance().getAmount());
         onCallSuccess();
     }

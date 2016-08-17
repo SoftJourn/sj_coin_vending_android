@@ -8,6 +8,8 @@ public class ServerErrors {
         switch(code){
             case 400:
                 return App.getContext().getString(R.string.server_error_400);
+            case 401:
+                return App.getContext().getString(R.string.server_error_401);
             case 404:
                 return  App.getContext().getString(R.string.server_error_404);
             case 409:

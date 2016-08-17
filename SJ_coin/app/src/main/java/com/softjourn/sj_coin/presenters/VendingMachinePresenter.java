@@ -20,8 +20,6 @@ import retrofit2.Response;
 
 public class VendingMachinePresenter extends BasePresenter implements IVendingMachinePresenter, Constants {
 
-
-
     public VendingMachinePresenter() {
     }
 

@@ -3,26 +3,25 @@ package com.softjourn.sj_coin.base;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnLogin;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.utils.Connections;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 import com.softjourn.sj_coin.utils.ServerErrors;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-/**
- * Created by Ad1 on 02.08.2016.
- */
 public abstract class BaseActivity extends AppCompatActivity implements Constants {
 
     public static Activity mActivity;
@@ -92,13 +91,26 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
         ProgressDialogUtils.dismiss();
     }
 
+    protected void onNoInternetAvailable() {
+        showToast(getString(R.string.internet_turned_off));
+        ProgressDialogUtils.dismiss();
+    }
+
+    public boolean isInternetAvailable() {
+        return Connections.isNetworkEnabled();
+    }
+
+    public void showToast(String text) {
+        Utils.showErrorToast(this, text, Gravity.CENTER);
+    }
+
 
     @Subscribe
     public void onEvent(final OnServerErrorEvent event) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(BaseActivity.this, ServerErrors.showErrorMessage(event.getMessage()), Toast.LENGTH_LONG).show();
+                showToast(ServerErrors.showErrorMessage(event.getMessage()));
             }
         });
     }

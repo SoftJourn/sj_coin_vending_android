@@ -31,8 +31,9 @@
 
     <!--Server Errors-->
     <string name="server_error_400">The request was malformed.</string>
+    <string name="server_error_401">Probably something wrong with your credentials.</string>
     <string name="server_error_404">The requested resource did not exist.</string>
-    <string name="server_error_409">Cant process request due to error like such item already presented or not enough money to buy item.</string>
+    <string name="server_error_409">Can\'t process request due to error like such item already presented or not enough money to buy item.</string>
     <string name="server_error_other">Server error. Please try again later or reinstall the app</string>
 
     <!--Toast Messages-->

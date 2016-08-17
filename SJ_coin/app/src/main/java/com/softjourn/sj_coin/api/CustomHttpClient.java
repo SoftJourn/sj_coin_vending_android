@@ -33,7 +33,7 @@ import okhttp3.Response;
 
 public class CustomHttpClient implements Constants{
 
-    protected SSLSocketFactory trustCert(Context context){
+    public static SSLSocketFactory trustCert(Context context) {
         try {
             KeyStore ksTrust = KeyStore.getInstance("BKS");
             InputStream inStream = context.getResources().openRawResource(R.raw.coin);
@@ -77,7 +77,7 @@ public class CustomHttpClient implements Constants{
         return null;
     }
 
-    protected OkHttpClient okhttpOAuth() {
+    public OkHttpClient okhttpOAuth() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -100,7 +100,7 @@ public class CustomHttpClient implements Constants{
                 .build();
     }
 
-    protected OkHttpClient okhttpVending() {
+    public OkHttpClient okhttpVending() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override

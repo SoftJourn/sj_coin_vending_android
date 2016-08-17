@@ -28,9 +28,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by Ad1 on 04.08.2016.
- */
 public class ProductsListBestSellersFragment extends BaseFragment implements IProductsListFragment,Constants,Extras{
 
     List<Product> mProductList;

@@ -16,4 +16,7 @@ public class Session {
     @SerializedName("refresh_token")
     private String refreshToken;
 
+    @SerializedName("expires_in")
+    private String expireIn;
+
 }

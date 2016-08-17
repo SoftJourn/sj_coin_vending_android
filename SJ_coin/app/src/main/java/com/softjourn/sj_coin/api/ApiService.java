@@ -26,6 +26,11 @@ public interface ApiService {
             @Field("password") String password,
             @Field("grant_type") String grantType);
 
+    @FormUrlEncoded
+    @POST("oauth/token")
+    Call<Session> getAccessTokenViaRefreshToken(
+            @Field("refresh_token") String refreshToken,
+            @Field("grant_type") String grantType);
 
     @GET("v1/machines")
     Call<List<Machines>> getMachines();
