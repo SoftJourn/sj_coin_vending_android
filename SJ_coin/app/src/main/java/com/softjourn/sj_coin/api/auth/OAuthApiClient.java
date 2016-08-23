@@ -1,9 +1,9 @@
-package com.softjourn.sj_coin.api;
+package com.softjourn.sj_coin.api.auth;
 
 import com.softjourn.sj_coin.App;
+import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.base.BaseApiClient;
-import com.softjourn.sj_coin.model.Balance;
-import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.model.Session;
 
 import java.io.IOException;
 
@@ -16,13 +16,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Callback;
 
-/**
- * Created by Ad1 on 17.08.2016.
- */
-public class CoinsApiClient extends BaseApiClient {
+public class OAuthApiClient extends BaseApiClient implements OAuthApiProvider {
 
-    public CoinsApiClient() {
-        super(URL_COIN_SERVICE);
+    public OAuthApiClient() {
+        super(URL_AUTH_SERVICE);
     }
 
     @Override
@@ -33,7 +30,8 @@ public class CoinsApiClient extends BaseApiClient {
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         Request orRequest = request.newBuilder()
-                                .addHeader("Authorization", "Bearer " + Preferences.retrieveStringObject(ACCESS_TOKEN))
+                                .addHeader("Authorization", "Basic dXNlcl9jcmVkOnN1cGVyc2VjcmV0")
+                                .addHeader("Content-Type", "application/x-www-form-urlencoded")
                                 .build();
                         return chain.proceed(orRequest);
                     }
@@ -49,7 +47,12 @@ public class CoinsApiClient extends BaseApiClient {
     }
 
     @Override
-    public void getBalance(Callback<Balance> callback) {
-        mApiService.getBalance().enqueue(callback);
+    public void makeLoginRequest(String email, String password, String type, Callback<Session> callback) {
+        mApiService.getAccessToken(email, password, type).enqueue(callback);
+    }
+
+    @Override
+    public void makeRefreshToken(String refreshToken, String type, Callback<Session> callback) {
+        mApiService.getAccessTokenViaRefreshToken(refreshToken, type).enqueue(callback);
     }
 }

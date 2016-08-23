@@ -5,9 +5,6 @@ import android.content.Context;
 
 import com.softjourn.sj_coin.R;
 
-/**
- * Created by Ad1 on 02.08.2016.
- */
 public class ProgressDialogUtils {
 
     private static ProgressDialog mProgressDialog;

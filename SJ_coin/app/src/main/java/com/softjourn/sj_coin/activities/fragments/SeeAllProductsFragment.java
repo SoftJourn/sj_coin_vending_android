@@ -12,12 +12,11 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.ProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
+import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.presenters.IVendingMachinePresenter;
-import com.softjourn.sj_coin.presenters.VendingMachinePresenter;
+import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
-import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -28,19 +27,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SeeAllProductsFragment extends BaseFragment implements IProductsListFragment,Constants,Extras {
+public class SeeAllProductsFragment extends BaseFragment implements VendingContract.View,Constants,Extras {
+
+    public static SeeAllProductsFragment newInstance() {
+        return new SeeAllProductsFragment();
+    }
+
     List<Product> mProductList;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView machineItems;
 
-    private String mSelectedMachine;
-    private IVendingMachinePresenter mPresenter;
+    private VendingContract.Presenter mPresenter;
     private ProductItemsAdapter mProductAdapter;
-
-    public static SeeAllProductsFragment newInstance() {
-        return new SeeAllProductsFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,20 +53,19 @@ public class SeeAllProductsFragment extends BaseFragment implements IProductsLis
         mProductAdapter = new ProductItemsAdapter(SEE_ALL_RECYCLER_VIEW);
         machineItems.setAdapter(mProductAdapter);
 
-        mSelectedMachine = String.valueOf(Preferences.retrieveIntObject(SELECTED_MACHINE_ID));
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new VendingMachinePresenter();
+        mPresenter = new VendingPresenter(this);
+
         if (savedInstanceState == null) {
-            mPresenter.callProductsList(mSelectedMachine);
-            ProgressDialogUtils.showDialog(getActivity(),getString(R.string.progress_loading));
+            mPresenter.getProductList(MACHINE_ID);
         } else {
-            mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_SEE_ALL_LAST_PURCHASES_FRAGMENT);
+
+            mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_SEE_ALL_FRAGMENT);
             loadData(mProductList);
         }
     }
@@ -75,20 +73,40 @@ public class SeeAllProductsFragment extends BaseFragment implements IProductsLis
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(EXTRAS_PRODUCTS_SEE_ALL_LAST_PURCHASES_FRAGMENT, new ArrayList<Parcelable>(mProductList));
+        outState.putParcelableArrayList(EXTRAS_PRODUCTS_SEE_ALL_FRAGMENT, new ArrayList<Parcelable>(mProductList));
+    }
+
+    @Override
+    public void showProgress(String message) {
+        ProgressDialogUtils.showDialog(getActivity(),message);
+    }
+
+    @Override
+    public void hideProgress() {
+        super.hideProgress();
+    }
+
+    @Override
+    public void showToastMessage() {
+
+    }
+
+    @Override
+    public void showNoInternetError() {
+        onNoInternetAvailable();
     }
 
     @Override
     public void loadData(List<Product> data) {
         mProductList = data;
         mProductAdapter.setData(data);
-        onCallSuccess();
+        hideProgress();
     }
-
 
     @Subscribe
     public void OnEvent(OnProductsListReceived event) {
         mProductList = event.getProductsList();
+        hideProgress();
         loadData(mProductList);
     }
 }

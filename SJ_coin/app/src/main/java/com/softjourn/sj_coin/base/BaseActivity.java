@@ -1,6 +1,5 @@
 package com.softjourn.sj_coin.base;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -9,11 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
-import com.softjourn.sj_coin.presenters.ILoginSessionPresenter;
-import com.softjourn.sj_coin.presenters.LoginSessionPresenter;
-import com.softjourn.sj_coin.utils.Connections;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -23,15 +18,11 @@ import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public abstract class BaseActivity extends AppCompatActivity implements Constants {
 
-    public static Activity mActivity;
-    public EventBus mEventBus;
-
-    {
-        mEventBus = EventBus.getDefault();
-    }
+    public EventBus mEventBus = EventBus.getDefault();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,14 +78,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
     @Override
     public void onBackPressed() {
-       finish();
+        finish();
     }
 
-    public void onCallSuccess() {
-        ProgressDialogUtils.dismiss();
-    }
-
-    public void onCallFailed() {
+    public void hideProgress() {
         ProgressDialogUtils.dismiss();
     }
 
@@ -103,43 +90,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
         ProgressDialogUtils.dismiss();
     }
 
-    protected void callRefreshToken() {
-        if (!isInternetAvailable()) {
-            onNoInternetAvailable();
-        } else {
-            ILoginSessionPresenter mLoginPresenter = new LoginSessionPresenter(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            mLoginPresenter.callAccessTokenViaRefresh();
-            ProgressDialogUtils.showDialog(this, getString(R.string.progress_authenticating));
-        }
-    }
-
-    public boolean isInternetAvailable() {
-        return Connections.isNetworkEnabled();
-    }
-
     public void showToast(String text) {
         Utils.showErrorToast(this, text, Gravity.CENTER);
     }
 
-
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final OnServerErrorEvent event) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showToast(ServerErrors.showErrorMessage(event.getMessage()));
-            }
-        });
+        showToast(ServerErrors.showErrorMessage(event.getMessage()));
     }
-
-    @Subscribe
-    public void onEvent(final OnCallEvent event){
-        if (event.isSuccess()) {
-            onCallSuccess();
-        } else {
-            onCallFailed();
-        }
-    }
-
-
 }

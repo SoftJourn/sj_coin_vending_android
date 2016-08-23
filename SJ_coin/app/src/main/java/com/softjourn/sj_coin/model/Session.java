@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-/**
- * Created by Ad1 on 29.07.2016.
- */
 @Data
 public class Session {
 

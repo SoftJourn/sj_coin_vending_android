@@ -4,42 +4,34 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
-import com.softjourn.sj_coin.callbacks.OnCallEvent;
-import com.softjourn.sj_coin.presenters.ILoginSessionPresenter;
-import com.softjourn.sj_coin.presenters.LoginSessionPresenter;
-import com.softjourn.sj_coin.utils.Connections;
+import com.softjourn.sj_coin.contratcts.LoginContract;
+import com.softjourn.sj_coin.presenters.LoginPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class LoginActivity extends BaseActivity implements Constants {
+public class LoginActivity extends BaseActivity implements LoginContract.View, Constants {
 
     @Bind(R.id.input_email)
-    EditText emailText;
+    EditText mUserName;
     @Bind(R.id.input_password)
-    EditText passwordText;
+    EditText mPasswordText;
     @Bind(R.id.btn_login)
-    Button loginButton;
-    private ILoginSessionPresenter mPresenter;
+    Button mLoginButton;
+
+    private LoginContract.Presenter mPresenter;
 
     @OnClick(R.id.btn_login)
     public void loginProcess() {
-        if (Connections.isNetworkEnabled()) {
-            login();
-        } else {
-            Toast.makeText(this, R.string.internet_turned_off, Toast.LENGTH_LONG).show();
-        }
+        login();
     }
 
     @Override
@@ -48,23 +40,17 @@ public class LoginActivity extends BaseActivity implements Constants {
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
+
+        mPresenter = new LoginPresenter(this);
+
     }
 
     public void login() {
 
-        if (!validate()) {
-            onLoginFailed();
-            return;
-        }
+        String userName = mUserName.getText().toString();
+        String password = mPasswordText.getText().toString();
 
-        loginButton.setEnabled(false);
-        ProgressDialogUtils.showDialog(this, getString(R.string.progress_authenticating));
-
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-
-        mPresenter = new LoginSessionPresenter(email, password);
-        mPresenter.callLogin();
+        mPresenter.login(userName, password);
     }
 
     @Override
@@ -77,46 +63,40 @@ public class LoginActivity extends BaseActivity implements Constants {
         return false;
     }
 
-    @Subscribe
-    public void onEvent(OnCallEvent event) {
-        if (event.isSuccess()) {
-            onLoginSuccess();
-        } else {
-            onLoginFailed();
-        }
+    @Override
+    public void showProgress(String message) {
+        ProgressDialogUtils.showDialog(this, message);
     }
 
-    public void onLoginSuccess() {
+    @Override
+    public void hideProgress() {
         ProgressDialogUtils.dismiss();
+    }
+
+    @Override
+    public void setUsernameError() {
+        mUserName.setError(getString(R.string.activity_login_invalid_email));
+    }
+
+    @Override
+    public void setPasswordError() {
+        mPasswordText.setError(getString(R.string.activity_login_invalid_password));
+    }
+
+    @Override
+    public void navigateToMain() {
+        mPresenter.onDestroy();
         Navigation.goToVendingActivity(LoginActivity.this);
         finish();
     }
 
-    public void onLoginFailed() {
-        ProgressDialogUtils.dismiss();
-        Toast.makeText(getBaseContext(), R.string.activity_login_login_failed, Toast.LENGTH_LONG).show();
-        loginButton.setEnabled(true);
+    @Override
+    public void showToastMessage() {
+        showToast(getString(R.string.activity_login_login_failed));
     }
 
-    public boolean validate() {
-        boolean valid = true;
-
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-
-        if (email.isEmpty()) {
-            emailText.setError(getString(R.string.activity_login_invalid_email));
-            valid = false;
-        } else {
-            emailText.setError(null);
-        }
-
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            passwordText.setError(getString(R.string.activity_login_invalid_password));
-            valid = false;
-        } else {
-            passwordText.setError(null);
-        }
-        return valid;
+    @Override
+    public void showNoInternetError() {
+        onNoInternetAvailable();
     }
 }

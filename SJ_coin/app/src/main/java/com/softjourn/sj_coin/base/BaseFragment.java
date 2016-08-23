@@ -3,13 +3,14 @@ package com.softjourn.sj_coin.base;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 
-import com.softjourn.sj_coin.callbacks.OnCallEvent;
+import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -35,21 +36,14 @@ public abstract class BaseFragment extends Fragment {
         mEventBus.unregister(this);
     }
 
-    public void onCallSuccess() {
+    protected void onNoInternetAvailable() {
+        showToast(getString(R.string.internet_turned_off));
         ProgressDialogUtils.dismiss();
     }
 
-    public void onCallFailed() {
-        ProgressDialogUtils.dismiss();
+    public void showToast(String text) {
+        Utils.showErrorToast(getActivity(), text, Gravity.CENTER);
     }
 
-    @Subscribe
-    public void onEvent(final OnCallEvent event){
-        if (event.isSuccess()) {
-            onCallSuccess();
-        } else {
-            onCallFailed();
-        }
-    }
-
+    public void hideProgress(){ProgressDialogUtils.dismiss();}
 }

@@ -17,7 +17,7 @@ public interface Constants {
     String TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT = "TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT";
     String TAG_PRODUCTS_FEATURED_FRAGMENT = "TAG_PRODUCTS_FEATURED_FRAGMENT";
     String TAG_PRODUCTS_BEST_SELLERS_FRAGMENT = "TAG_PRODUCTS_BEST_SELLERS_FRAGMENT";
-    String TAG_PRODUCTS_SEE_ALL_LAST_PURCHASES_FRAGMENT = "TAG_PRODUCTS_SEE_ALL_LAST_PURCHASES_FRAGMENT";
+    String TAG_PRODUCTS_SEE_ALL_FRAGMENT = "TAG_PRODUCTS_SEE_ALL_FRAGMENT";
 
     //URLs
     String BASE_URL = "https://sjcoins.testing.softjourn.if.ua";
@@ -35,13 +35,6 @@ public interface Constants {
     boolean TOKEN_REFRESHED = true;
     boolean TOKEN_NOT_REFRESHED = false;
 
-    /**
-     * Headers
-     */
-    String OAUTH = "OAUTH";
-    String VENDING = "VENDING";
-    String COINS = "COINS";
-
     //Recycler View Types
     String DEFAULT_RECYCLER_VIEW = "DEFAULT";
     String SEE_ALL_RECYCLER_VIEW = "SEE_ALL";
@@ -49,5 +42,7 @@ public interface Constants {
     String LAST_PURCHASES = "Last purchases";
     String FEATURED = "Featured";
     String BEST_SELLERS = "Best Sellers";
+
+    String MACHINE_ID = "1";
 }
 

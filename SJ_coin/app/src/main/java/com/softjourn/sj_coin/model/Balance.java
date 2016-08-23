@@ -7,9 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-/**
- * Created by Ad1 on 10.08.2016.
- */
 @Data
 public class Balance implements Parcelable{
 

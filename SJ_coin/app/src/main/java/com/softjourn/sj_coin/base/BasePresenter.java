@@ -1,14 +1,12 @@
 package com.softjourn.sj_coin.base;
 
-import com.softjourn.sj_coin.api.ApiProvider;
+public interface BasePresenter{
 
-import org.greenrobot.eventbus.EventBus;
+    void onCreate();
 
-public abstract class BasePresenter{
+    void onDestroy();
 
-    protected ApiProvider mApiProvider;
-    protected EventBus mEventBus = EventBus.getDefault();
+    void refreshToken(String refreshToken);
 
-
-    public abstract void createApiManager();
+    boolean makeNetworkChecking();
 }

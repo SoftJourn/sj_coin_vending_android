@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 
 import com.softjourn.sj_coin.App;
 
-/**
- * Created by Ad1 on 29.07.2016.
- */
 public class Preferences implements Constants {
 
     private static SharedPreferences sharedPreferences = App.getContext().getSharedPreferences(SJ_COINS_PREFERENCES, Context.MODE_PRIVATE);
@@ -18,7 +15,7 @@ public class Preferences implements Constants {
     }
 
     public static int retrieveIntObject(String keyValue) {
-        return sharedPreferences.getInt(keyValue, 1);
+        return sharedPreferences.getInt(keyValue, 0);
     }
 
     public static void storeObject(String key, String value) {
@@ -31,18 +28,11 @@ public class Preferences implements Constants {
         editor.apply();
     }
 
-    public static void storeObject(String key, long value) {
-        editor.putLong(key, value);
-        editor.apply();
-    }
-
     public static void clearIntObject(String key){
-        editor.putInt(key,0);
-        editor.apply();
+        editor.remove(key);
     }
 
     public static void clearStringObject(String key){
-        editor.putString(key,null);
-        editor.apply();
+       editor.remove(key);
     }
 }

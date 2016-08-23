@@ -28,6 +28,7 @@ public class Navigation implements Constants,Extras {
 
     public static void goToProfileActivity(Context context){
         Intent intent = new Intent(context, ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         context.startActivity(intent);
     }
 

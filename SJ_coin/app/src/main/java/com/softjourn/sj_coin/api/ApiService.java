@@ -14,11 +14,11 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-/**
- * Created by Ad1 on 29.07.2016.
- */
 public interface ApiService {
 
+    /**
+     * OAuth Server endpoints
+     */
     @FormUrlEncoded
     @POST("oauth/token")
     Call<Session> getAccessToken(
@@ -32,6 +32,10 @@ public interface ApiService {
             @Field("refresh_token") String refreshToken,
             @Field("grant_type") String grantType);
 
+
+    /**
+     * Vending Server endpoints
+     */
     @GET("v1/machines")
     Call<List<Machines>> getMachines();
 
@@ -41,6 +45,10 @@ public interface ApiService {
     @GET("v1/machines/{machineID}/products")
     Call<List<Product>> getProductsList(@Path("machineID") String machineID);
 
+
+    /**
+     * Coin server endpoints.
+     */
     @GET("api/v1/amount")
     Call<Balance> getBalance();
 }

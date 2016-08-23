@@ -17,9 +17,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by Ad1 on 02.08.2016.
- */
 public class ProductItemsAdapter extends
         android.support.v7.widget.RecyclerView.Adapter<ProductItemsAdapter.MachineViewHolder> implements Constants {
 

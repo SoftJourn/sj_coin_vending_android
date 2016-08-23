@@ -1,6 +1,7 @@
-package com.softjourn.sj_coin.api;
+package com.softjourn.sj_coin.api.vending;
 
 import com.softjourn.sj_coin.App;
+import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
@@ -18,7 +19,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Callback;
 
-public class VendingProcessApiClient extends BaseApiClient {
+public class VendingProcessApiClient extends BaseApiClient implements VendingApiProvider {
 
     public VendingProcessApiClient() {
         super(URL_VENDING_SERVICE);

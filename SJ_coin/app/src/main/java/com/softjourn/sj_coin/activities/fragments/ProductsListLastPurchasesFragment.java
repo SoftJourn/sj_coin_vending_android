@@ -12,12 +12,12 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.ProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
+import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.presenters.IVendingMachinePresenter;
-import com.softjourn.sj_coin.presenters.VendingMachinePresenter;
+import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
-import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -27,23 +27,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by Ad1 on 04.08.2016.
- */
-public class ProductsListLastPurchasesFragment extends BaseFragment implements IProductsListFragment,Constants,Extras {
-
-
-    List<Product> mProductList;
-    @Bind(R.id.list_items_recycler_view)
-    RecyclerView machineItems;
-
-    private String mSelectedMachine;
-    private IVendingMachinePresenter mPresenter;
-    private ProductItemsAdapter mProductAdapter;
+public class ProductsListLastPurchasesFragment extends BaseFragment implements VendingContract.View,Constants,Extras {
 
     public static ProductsListLastPurchasesFragment newInstance() {
         return new ProductsListLastPurchasesFragment();
     }
+
+    List<Product> mProductList;
+
+    @Bind(R.id.list_items_recycler_view)
+    RecyclerView machineItems;
+
+    private VendingContract.Presenter mPresenter;
+    private ProductItemsAdapter mProductAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,8 +47,6 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements I
         View view = inflater.inflate(R.layout.fragment_products_list, container, false);
 
         ButterKnife.bind(this, view);
-
-        mSelectedMachine = String.valueOf(Preferences.retrieveIntObject(SELECTED_MACHINE_ID));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         machineItems.setLayoutManager(mLayoutManager);
@@ -65,10 +59,12 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements I
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new VendingMachinePresenter();
+        mPresenter = new VendingPresenter(this);
+
         if (savedInstanceState == null) {
-            mPresenter.callProductsList(mSelectedMachine);
+            mPresenter.getProductList(MACHINE_ID);
         } else {
+
             mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST);
             loadData(mProductList);
         }
@@ -83,16 +79,34 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements I
     }
 
     @Override
+    public void showProgress(String message) {
+        ProgressDialogUtils.showDialog(getActivity(),message);
+    }
+
+    @Override
+    public void hideProgress() {
+        super.hideProgress();
+    }
+
+    @Override
+    public void showToastMessage() {
+
+    }
+
+    @Override
+    public void showNoInternetError() {
+        onNoInternetAvailable();
+    }
+
+    @Override
     public void loadData(List<Product> data) {
         mProductList = data;
         mProductAdapter.setData(data);
-        onCallSuccess();
     }
 
     @Subscribe
     public void OnEvent(OnProductsListReceived event) {
         mProductList = event.getProductsList();
-        onCallSuccess();
         loadData(mProductList);
     }
 }

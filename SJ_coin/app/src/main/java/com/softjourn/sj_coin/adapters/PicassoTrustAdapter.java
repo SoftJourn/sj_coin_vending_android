@@ -15,16 +15,24 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- *  Class used for making available https connection for Picasso as
- *  standard Picasso don't work with secure connections.
- *
- *  Uses:
- *  PicassoTrustAdapter.getInstance(context).load(URL).into(imageHolder);
+ * Class used for making available https connection for Picasso as
+ * standard Picasso don't work with secure connections.
+ * <p>
+ * Uses:
+ * PicassoTrustAdapter.getInstance(context).load(URL).into(imageHolder);
  */
 public class PicassoTrustAdapter {
-    private static Picasso mInstance = null;
+    private static Picasso sInstance;
 
-    private PicassoTrustAdapter(Context context) {
+    public static Picasso getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = createPicassoTrustAdapter(context);
+        }
+        return sInstance;
+    }
+
+
+    private static Picasso createPicassoTrustAdapter(Context context) {
         OkHttpClient client = new OkHttpClient();
         client.setHostnameVerifier(new HostnameVerifier() {
             @Override
@@ -32,7 +40,7 @@ public class PicassoTrustAdapter {
                 return true;
             }
         });
-        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
             @Override
             public void checkClientTrusted(
                     java.security.cert.X509Certificate[] x509Certificates,
@@ -47,9 +55,9 @@ public class PicassoTrustAdapter {
 
             @Override
             public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                return new java.security.cert.X509Certificate[] {};
+                return new java.security.cert.X509Certificate[]{};
             }
-        } };
+        }};
         try {
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
@@ -58,7 +66,7 @@ public class PicassoTrustAdapter {
             e.printStackTrace();
         }
 
-        mInstance = new Picasso.Builder(context)
+        sInstance = new Picasso.Builder(context)
                 .downloader(new OkHttpDownloader(client))
                 .listener(new Picasso.Listener() {
                     @Override
@@ -67,12 +75,6 @@ public class PicassoTrustAdapter {
                     }
                 }).build();
 
-    }
-
-    public static Picasso getInstance(Context context) {
-        if (mInstance == null) {
-            new PicassoTrustAdapter(context);
-        }
-        return mInstance;
+        return sInstance;
     }
 }
