@@ -39,9 +39,13 @@ public interface Constants {
     String DEFAULT_RECYCLER_VIEW = "DEFAULT";
     String SEE_ALL_RECYCLER_VIEW = "SEE_ALL";
 
-    String LAST_PURCHASES = "Last purchases";
-    String FEATURED = "Featured";
+    //See All button Tags
+    //are using for correct appearance of SeeAllActivity Label
+    String NEW_PRODUCTS = "New Products";
+    String LAST_PURCHASES = "Last Purchases";
     String BEST_SELLERS = "Best Sellers";
+    String SNACKS = "Snacks";
+    String DRINKS = "Drinks";
 
     String MACHINE_ID = "1";
 }

@@ -18,6 +18,7 @@ public class SplashActivity extends AppCompatActivity implements Constants {
             finish();
         } else {
             Navigation.goToVendingActivity(this);
+            finish();
         }
     }
 }

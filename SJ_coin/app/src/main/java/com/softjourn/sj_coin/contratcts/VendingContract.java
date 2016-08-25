@@ -21,6 +21,8 @@ public interface VendingContract {
 
         void getProductList(String machineID);
 
+        void getLocalProductList();
+
         boolean checkExpirationDate();
     }
 
@@ -31,5 +33,7 @@ public interface VendingContract {
         void callConcreteMachine(String machineID);
 
         void callProductsList(String machineID);
+
+        List<Product> loadLocalProductList();
     }
 }

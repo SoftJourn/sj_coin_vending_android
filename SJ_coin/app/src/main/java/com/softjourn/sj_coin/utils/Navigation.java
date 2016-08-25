@@ -40,8 +40,8 @@ public class Navigation implements Constants,Extras {
 
     public static void goToProductListFragments(Activity activity) {
         activity.getFragmentManager().beginTransaction()
-                .replace(R.id.container_fragment_products_list_last_purchases, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
-                .replace(R.id.container_fragment_products_list_featured, ProductsListFeaturedFragment.newInstance(), TAG_PRODUCTS_FEATURED_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_new_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_last_purchase, ProductsListFeaturedFragment.newInstance(), TAG_PRODUCTS_FEATURED_FRAGMENT)
                 .replace(R.id.container_fragment_products_list_best_sellers, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                 .commit();
     }

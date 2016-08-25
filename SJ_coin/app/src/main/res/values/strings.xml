@@ -40,7 +40,12 @@
     <string name="internet_turned_off">Internet should be turned on</string>
     <string name="layout_vending_last_purchases">Last Purchases</string>
     <string name="layout_vending_see_all">See All</string>
-    <string name="layout_vending_featured">Featured</string>
+    <string name="bottom_bar_featured">Featured</string>
     <string name="layout_vending_best_sellers">Best Sellers</string>
+    <string name="layout_vending_new_products">New Products</string>
+    <string name="bottom_bar_all_products">All Products</string>
+    <string name="bottom_bar_profile">Profile</string>
+    <string name="layout_vending_snacks">Snacks</string>
+    <string name="layout_vending_drinks">Drinks</string>
 
 </resources>

@@ -3,7 +3,7 @@ package com.softjourn.sj_coin.presenters;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.LoginModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.callbacks.OnCallEvent;
+import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.contratcts.LoginContract;
 import com.softjourn.sj_coin.utils.Connections;
 
@@ -71,7 +71,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
     }
 
     @Subscribe
-    public void onEvent(OnCallEvent event) {
+    public void onEvent(OnLoginCallEvent event) {
         if (event.isSuccess()) {
             mLoginView.hideProgress();
             mLoginView.navigateToMain();

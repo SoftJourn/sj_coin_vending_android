@@ -20,6 +20,5 @@ public class SeeAllActivity extends BaseActivity implements Constants, Extras {
         this.getFragmentManager().beginTransaction()
                 .replace(R.id.container_for_see_all_products, SeeAllProductsFragment.newInstance(), TAG_PRODUCTS_SEE_ALL_FRAGMENT)
                 .commit();
-
     }
 }

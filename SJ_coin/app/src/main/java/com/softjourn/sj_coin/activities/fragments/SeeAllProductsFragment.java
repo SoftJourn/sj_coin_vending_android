@@ -11,15 +11,12 @@ import android.view.ViewGroup;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.ProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
-import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +59,7 @@ public class SeeAllProductsFragment extends BaseFragment implements VendingContr
         mPresenter = new VendingPresenter(this);
 
         if (savedInstanceState == null) {
-            mPresenter.getProductList(MACHINE_ID);
+            mPresenter.getLocalProductList();
         } else {
 
             mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_SEE_ALL_FRAGMENT);
@@ -73,7 +70,11 @@ public class SeeAllProductsFragment extends BaseFragment implements VendingContr
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(EXTRAS_PRODUCTS_SEE_ALL_FRAGMENT, new ArrayList<Parcelable>(mProductList));
+        if (outState != null) {
+            outState.putParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST, new ArrayList<Parcelable>(mProductList));
+        } else {
+            mPresenter.getLocalProductList();
+        }
     }
 
     @Override
@@ -101,12 +102,5 @@ public class SeeAllProductsFragment extends BaseFragment implements VendingContr
         mProductList = data;
         mProductAdapter.setData(data);
         hideProgress();
-    }
-
-    @Subscribe
-    public void OnEvent(OnProductsListReceived event) {
-        mProductList = event.getProductsList();
-        hideProgress();
-        loadData(mProductList);
     }
 }

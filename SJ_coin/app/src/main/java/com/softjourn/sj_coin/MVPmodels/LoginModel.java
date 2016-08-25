@@ -1,12 +1,11 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
-import android.util.Log;
-
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.auth.OAuthApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnCallEvent;
+import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.LoginContract;
 import com.softjourn.sj_coin.model.Session;
@@ -55,11 +54,10 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (!response.isSuccessful()) {
-                    mEventBus.post(new OnCallEvent(Constants.CALL_FAILED));
+                    mEventBus.post(new OnLoginCallEvent(Constants.CALL_FAILED));
                 } else {
                     Utils.storeSessionInfo(response.body());
-                    mEventBus.post(new OnCallEvent(Constants.CALL_SUCCEED));
-                    Log.d("TAG","success");
+                    mEventBus.post(new OnLoginCallEvent(Constants.CALL_SUCCEED));
                 }
             }
 

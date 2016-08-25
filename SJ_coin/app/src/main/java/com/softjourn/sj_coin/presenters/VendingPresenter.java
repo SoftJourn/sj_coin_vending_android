@@ -2,7 +2,9 @@ package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
+import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.utils.Connections;
@@ -38,15 +40,21 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
         if (!makeNetworkChecking()) {
             mView.showNoInternetError();
+            getLocalProductList();
         } else {
             if (checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Constants.REFRESH_TOKEN);
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.callProductsList(mMachineID);
             }
         }
+    }
+
+    @Override
+    public void getLocalProductList() {
+        mView.loadData(mModel.loadLocalProductList());
     }
 
     @Override
@@ -74,9 +82,10 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         }
     }
 
-    /*@Subscribe
+    @Subscribe
     public void OnEvent(OnProductsListReceived event) {
         mView.hideProgress();
-        mView.loadData(event.getProductsList());
-    }*/
+        ProductsListSingleton.getInstance().setData(event.getProductsList());
+        getLocalProductList();
+    }
 }

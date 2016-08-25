@@ -11,15 +11,12 @@ import android.view.ViewGroup;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.ProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
-import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.ProgressDialogUtils;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +59,7 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
         mPresenter = new VendingPresenter(this);
 
         if (savedInstanceState == null) {
-            mPresenter.getProductList(MACHINE_ID);
+            mPresenter.getLocalProductList();
         } else {
 
             mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST);
@@ -75,6 +72,8 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
         super.onSaveInstanceState(outState);
         if (outState != null) {
             outState.putParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST, new ArrayList<Parcelable>(mProductList));
+        } else {
+            mPresenter.getLocalProductList();
         }
     }
 
@@ -102,11 +101,5 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
     public void loadData(List<Product> data) {
         mProductList = data;
         mProductAdapter.setData(data);
-    }
-
-    @Subscribe
-    public void OnEvent(OnProductsListReceived event) {
-        mProductList = event.getProductsList();
-        loadData(mProductList);
     }
 }

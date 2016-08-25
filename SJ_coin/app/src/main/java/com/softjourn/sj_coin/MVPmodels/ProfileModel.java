@@ -5,11 +5,9 @@ import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.coins.CoinsApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.Balance;
-import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Utils;
 
 import retrofit2.Call;
@@ -29,7 +27,6 @@ public class ProfileModel extends BaseModel implements ProfileContract.Model{
             public void onResponse(Call<Balance> call, Response<Balance> response) {
                 if (!response.isSuccessful()) {
                     mEventBus.post(new OnServerErrorEvent(response.code()));
-                    mEventBus.post(new OnCallEvent(Constants.CALL_FAILED));
                 } else {
                     Balance balance = response.body();
                     mEventBus.post(new OnBalanceReceivedEvent(balance));
@@ -38,7 +35,6 @@ public class ProfileModel extends BaseModel implements ProfileContract.Model{
 
             @Override
             public void onFailure(Call<Balance> call, Throwable t) {
-                mEventBus.post(new OnCallEvent(Constants.CALL_FAILED));
             }
         };
         mApiProvider.getBalance(callback);

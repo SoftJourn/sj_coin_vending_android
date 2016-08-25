@@ -65,7 +65,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
 
     @Override
     public void showProgress(String message) {
-        ProgressDialogUtils.showDialog(this, message);
+        ProgressDialogUtils.showDialog(this,message);
     }
 
     @Override

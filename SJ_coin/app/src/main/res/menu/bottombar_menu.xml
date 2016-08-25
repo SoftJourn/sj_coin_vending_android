@@ -2,14 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/bottomBarItemOne"
-        android:icon="@android:drawable/ic_menu_myplaces"
-        android:title="Recents" />
+        android:title="@string/bottom_bar_featured"/>
     <item
         android:id="@+id/bottomBarItemTwo"
-        android:icon="@android:drawable/ic_menu_set_as"
-        android:title="Favorites"/>
+        android:title="@string/bottom_bar_all_products"/>
     <item
         android:id="@+id/bottomBarItemThree"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Something"/>
+        android:title="@string/bottom_bar_profile"/>
 </menu>

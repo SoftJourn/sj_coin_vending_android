@@ -17,6 +17,7 @@ import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.NoSubscriberEvent;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -98,4 +99,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     public void onEvent(final OnServerErrorEvent event) {
         showToast(ServerErrors.showErrorMessage(event.getMessage()));
     }
+
+    @Subscribe
+    public void OnEvent(NoSubscriberEvent event){
+        hideProgress();
+    }
+
+
+
 }

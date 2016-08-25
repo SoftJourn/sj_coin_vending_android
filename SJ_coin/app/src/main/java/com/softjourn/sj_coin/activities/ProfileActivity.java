@@ -55,7 +55,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
     @Override
     public void showProgress(String message) {
-        ProgressDialogUtils.showDialog(this, message);
+        ProgressDialogUtils.showDialog(this,message);
     }
 
     @Override

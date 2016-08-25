@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/recycler_view_machine_layout_bottom_margin"
     android:layout_marginLeft="@dimen/recycler_view_machine_layout_left_margin"
     android:layout_marginRight="@dimen/recycler_view_machine_layout_right_margin"
     android:layout_marginTop="@dimen/recycler_view_machine_layout_top_margin"
-    android:background="@drawable/abc_popup_background_mtrl_mult"
+    android:background="@android:drawable/dialog_holo_light_frame"
     android:orientation="vertical"
     tools:ignore="RtlHardcoded">
 
