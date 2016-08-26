@@ -3,7 +3,7 @@ package com.softjourn.sj_coin.api.coins;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.base.BaseApiClient;
-import com.softjourn.sj_coin.model.Balance;
+import com.softjourn.sj_coin.model.Account;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
     }
 
     @Override
-    public void getBalance(Callback<Balance> callback) {
+    public void getBalance(Callback<Account> callback) {
         mApiService.getBalance().enqueue(callback);
     }
 }

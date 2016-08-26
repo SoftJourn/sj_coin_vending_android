@@ -10,17 +10,6 @@ import lombok.Data;
 @Data
 public class Product implements Parcelable {
 
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
     @SerializedName("id")
     public Integer id;
     @SerializedName("price")
@@ -51,4 +40,16 @@ public class Product implements Parcelable {
         parcel.writeString(imageUrl);
         parcel.writeParcelable(this.position,i);
     }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }

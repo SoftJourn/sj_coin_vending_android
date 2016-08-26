@@ -5,12 +5,15 @@ import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
+import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Utils;
 
 import java.util.List;
@@ -19,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VendingModel extends BaseModel implements VendingContract.Model {
+public class VendingModel extends BaseModel implements VendingContract.Model,Constants {
 
     private VendingApiProvider mApiProvider;
 
@@ -98,6 +101,29 @@ public class VendingModel extends BaseModel implements VendingContract.Model {
     @Override
     public List<Product> loadLocalProductList() {
         return ProductsListSingleton.getInstance().getData();
+    }
+
+    @Override
+    public void buyProductByID(String id) {
+        createApiManager();
+
+        Callback<TransactionResponse> callback = new Callback<TransactionResponse>() {
+
+            @Override
+            public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
+                if (!response.isSuccessful()) {
+                    mEventBus.post(new OnServerErrorEvent(response.code()));
+                } else {
+                    mEventBus.post(new OnBoughtEvent(CALL_SUCCEED));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TransactionResponse> call, Throwable t) {
+                mEventBus.post(new OnBoughtEvent(CALL_FAILED));
+            }
+        };
+        mApiProvider.buyProductByID(id, callback);
     }
 
     public void createApiManager() {

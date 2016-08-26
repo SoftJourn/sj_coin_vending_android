@@ -15,6 +15,9 @@ public interface VendingContract {
         void hideProgress();
 
         void loadData(List<Product> data);
+
+        void navigateToBuyProduct(Product product);
+
     }
 
     interface Presenter extends BasePresenter{
@@ -24,9 +27,13 @@ public interface VendingContract {
         void getLocalProductList();
 
         boolean checkExpirationDate();
+
+        void buyProduct(String id);
     }
 
     interface Model{
+
+        void buyProductByID(String id);
 
         void callMachinesList();
 

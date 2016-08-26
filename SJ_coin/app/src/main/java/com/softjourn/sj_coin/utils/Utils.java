@@ -38,8 +38,13 @@ public class Utils {
     }
 
     public static String getUserNameFromToken() {
-        String source = Preferences.retrieveStringObject(Constants.ACCESS_TOKEN).replaceFirst("[a-zA-Z,0-9]*\\.", "").replaceFirst("\\.[a-zA-Z,0-9]*", "");
-        byte[] data = Base64.decode(source, Base64.DEFAULT);
+        String source = "";
+        try {
+            source = Preferences.retrieveStringObject(Constants.ACCESS_TOKEN).replaceFirst("[a-zA-Z,0-9]*\\.", "").replaceFirst("\\.[a-zA-Z,0-9]*", "");
+        } catch (IllegalArgumentException e) {
+            showErrorToast(App.getContext(),App.getContext().getString(R.string.error_unexpected));
+        }
+        byte[] data = Base64.decode(source, Base64.NO_WRAP);
         String decodedString = null;
         try {
             decodedString = new String(data, "UTF-8");

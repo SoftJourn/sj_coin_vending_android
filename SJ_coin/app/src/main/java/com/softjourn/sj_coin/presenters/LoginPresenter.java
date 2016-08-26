@@ -77,7 +77,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
             mLoginView.navigateToMain();
         } else {
             mLoginView.hideProgress();
-            mLoginView.showToastMessage();
+            mLoginView.showToastMessage(App.getContext().getString(R.string.activity_login_login_failed));
         }
     }
 }

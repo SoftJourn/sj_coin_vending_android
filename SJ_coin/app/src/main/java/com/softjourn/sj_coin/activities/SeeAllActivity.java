@@ -3,7 +3,8 @@ package com.softjourn.sj_coin.activities;
 import android.os.Bundle;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.fragments.SeeAllProductsFragment;
+import com.softjourn.sj_coin.activities.fragments.seeAll.SeeAllProductsFragment;
+import com.softjourn.sj_coin.activities.fragments.seeAll.SeeAllSnacksDrinksFragment;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
@@ -17,8 +18,22 @@ public class SeeAllActivity extends BaseActivity implements Constants, Extras {
         setContentView(R.layout.activity_see_all);
 
         setTitle(getIntent().getStringExtra(EXTRAS_CATEGORY));
+
+        switch (getIntent().getStringExtra(EXTRAS_CATEGORY)){
+            case SNACKS:
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, SeeAllSnacksDrinksFragment.newInstance(), TAG_PRODUCTS_SEE_ALL_SNACKS_FRAGMENT)
+                        .commit();
+                break;
+            case DRINKS:
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, SeeAllSnacksDrinksFragment.newInstance(), TAG_PRODUCTS_SEE_ALL_DRINKS_FRAGMENT)
+                        .commit();
+                break;
+            default:
         this.getFragmentManager().beginTransaction()
                 .replace(R.id.container_for_see_all_products, SeeAllProductsFragment.newInstance(), TAG_PRODUCTS_SEE_ALL_FRAGMENT)
                 .commit();
+        }
     }
 }

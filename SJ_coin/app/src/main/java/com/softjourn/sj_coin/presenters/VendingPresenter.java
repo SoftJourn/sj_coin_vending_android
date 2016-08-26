@@ -4,6 +4,8 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
+import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -22,6 +24,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private LoginPresenter mLoginPresenter;
 
     private String mMachineID;
+    private String mId;
 
     public VendingPresenter(VendingContract.View vendingView) {
 
@@ -63,6 +66,24 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
+    public void buyProduct(String id) {
+
+        this.mId = id;
+
+        if (!makeNetworkChecking()) {
+            mView.showNoInternetError();
+        } else {
+            if (checkExpirationDate()) {
+                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            } else {
+                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                mModel.buyProductByID(id);
+            }
+        }
+    }
+
+    @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
     }
@@ -76,7 +97,12 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
             mView.hideProgress();
-            mModel.callProductsList(mMachineID);
+            if (mView.getClass().getName().equals("ProductActivity.java"))
+            {
+                mModel.buyProductByID(mId);
+            } else {
+                mModel.callProductsList(mMachineID);
+            }
         } else {
             mView.hideProgress();
         }
@@ -87,5 +113,19 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.hideProgress();
         ProductsListSingleton.getInstance().setData(event.getProductsList());
         getLocalProductList();
+    }
+
+    @Subscribe
+    public void OnEvent(OnBoughtEvent event){
+        if (event.isSuccess()){
+            mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
+        } else {
+            mView.showToastMessage(App.getContext().getString(R.string.toast_we_can_not_proceed_your_request));
+        }
+    }
+
+    @Subscribe
+    public void OnEvent(OnProductItemClickEvent event){
+        mView.navigateToBuyProduct(event.getProduct());
     }
 }

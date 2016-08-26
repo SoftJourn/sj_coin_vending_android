@@ -1,7 +1,6 @@
 package com.softjourn.sj_coin.activities.fragments;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,9 +15,8 @@ import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
-import com.softjourn.sj_coin.utils.ProgressDialogUtils;
+import com.softjourn.sj_coin.utils.Navigation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -70,26 +68,21 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (outState != null) {
+        /*if (outState != null) {
             outState.putParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST, new ArrayList<Parcelable>(mProductList));
         } else {
             mPresenter.getLocalProductList();
-        }
+        }*/
     }
 
     @Override
     public void showProgress(String message) {
-        ProgressDialogUtils.showDialog(getActivity(),message);
+        super.showProgress(message);
     }
 
     @Override
     public void hideProgress() {
         super.hideProgress();
-    }
-
-    @Override
-    public void showToastMessage() {
-
     }
 
     @Override
@@ -101,5 +94,15 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
     public void loadData(List<Product> data) {
         mProductList = data;
         mProductAdapter.setData(data);
+    }
+
+    @Override
+    public void navigateToBuyProduct(Product product) {
+        Navigation.goToProductActivity(getActivity(),product);
+    }
+
+    @Override
+    public void showToastMessage(String message) {
+
     }
 }

@@ -1,57 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_item_user_parent_view"
+    android:id="@+id/layout_item_product_parent_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:gravity="center"
+        android:gravity="left"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/layout_item_product_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/softjourn_logo"
             android:contentDescription="@string/product_image"
-            android:layout_gravity="right"/>
+            android:src="@drawable/softjourn_logo" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="5dp"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/layout_item_product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/dummy_text_view_text"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageViewFavorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_favorite_border" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/layout_item_product_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dummy_text_view_text"/>
+                android:text="@string/dummy_text_view_text" />
 
             <TextView
-                android:id="@+id/layout_item_product_name"
+                android:id="@+id/layout_item_product_buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dummy_text_view_text"/>
-
-            <TextView
-                android:id="@+id/layout_item_product_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dummy_text_view_text"/>
+                android:text="@string/item_product_buy"
+                android:textColor="@android:color/holo_blue_dark" />
         </LinearLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
+        <ImageView
+            android:id="@+id/imageViewArrowRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:src="@drawable/ic_arrow_right" />
 
     </LinearLayout>
 
-    <View
-        style="@style/VendingActivitySplitter" />
+    <View style="@style/VendingActivitySplitter" />
+
 </LinearLayout>

@@ -7,7 +7,7 @@ public interface BaseView {
 
     void hideProgress();
 
-    void showToastMessage();
+    void showToastMessage(String message);
 
     void showNoInternetError();
 }

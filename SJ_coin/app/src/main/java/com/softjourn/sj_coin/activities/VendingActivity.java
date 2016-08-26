@@ -1,13 +1,12 @@
 package com.softjourn.sj_coin.activities;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
+import com.roughike.bottombar.OnTabClickListener;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -15,7 +14,6 @@ import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
-import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import java.util.List;
 
@@ -24,9 +22,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
-        VendingContract.View,Constants {
+        VendingContract.View, Constants {
 
     private VendingContract.Presenter mPresenter;
+
 
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -45,15 +44,15 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
                 Navigation.goToSeeAllActivity(this, BEST_SELLERS);
                 break;
             case R.id.textViewSnacksSeeAll:
-                Navigation.goToSeeAllActivity(this,SNACKS);
+                Navigation.goToSeeAllActivity(this, SNACKS);
                 break;
             case R.id.textViewDrinksSeeAll:
-                Navigation.goToSeeAllActivity(this,DRINKS);
+                Navigation.goToSeeAllActivity(this, DRINKS);
                 break;
         }
     }
 
-    private BottomBar mBottomBar;
+    private Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,27 +62,24 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         mPresenter = new VendingPresenter(this);
 
+        mContext = this;
+
         ButterKnife.bind(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
-        mBottomBar.setTextAppearance(R.style.BottomBarItem);
-        mBottomBar.setItems(R.menu.bottombar_menu);
-        mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
+        mBottomBar.setOnTabClickListener(new OnTabClickListener() {
             @Override
-            public void onMenuTabSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.bottomBarItemOne) {
-
+            public void onTabSelected(int position) {
+                if (position == R.id.bottomBarAllProducts) {
+                    Navigation.goToAllProductsActivity(mContext);
                 }
             }
 
             @Override
-            public void onMenuTabReSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.bottomBarItemOne) {
+            public void onTabReSelected(int position) {
 
-                }
             }
         });
         loadProductList();
@@ -104,12 +100,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void showProgress(String message) {
-        ProgressDialogUtils.showDialog(this,message);
+        super.showProgress(message);
     }
 
     @Override
-    public void showToastMessage() {
-
+    public void hideProgress() {
+        super.hideProgress();
     }
 
     @Override
@@ -123,13 +119,17 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void hideProgress() {
-        ProgressDialogUtils.dismiss();
+    public void navigateToBuyProduct(Product product) {
+
     }
 
-    private void loadProductList(){
+    @Override
+    public void showToastMessage(String message) {
+
+    }
+
+    private void loadProductList() {
         mPresenter.getProductList(MACHINE_ID);
     }
-
 }
 

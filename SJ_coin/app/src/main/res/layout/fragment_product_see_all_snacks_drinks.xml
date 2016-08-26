@@ -13,22 +13,24 @@
         <Button
             android:id="@+id/fragment_button_sort_price"
             style="@style/SortButtonBar"
-            android:text="Price"/>
+            android:text="@string/fragment_button_sort_price"/>
 
         <Button
             android:id="@+id/fragment_button_sort_popular"
             style="@style/SortButtonBar"
-            android:text="Popular"/>
+            android:text="@string/fragment_button_sort_popular"/>
 
         <Button
             android:id="@+id/fragment_button_sort_new"
             style="@style/SortButtonBar"
-            android:text="New"/>
+            android:text="@string/fragment_button_sort_new"/>
 
     </LinearLayout>
 
+    <View style="@style/VendingActivitySplitter" />
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_items_recycler_view"
+        android:id="@+id/list_items_recycler_view_snacks_drinks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="horizontal" />

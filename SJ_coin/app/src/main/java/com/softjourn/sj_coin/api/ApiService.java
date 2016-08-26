@@ -1,7 +1,8 @@
 package com.softjourn.sj_coin.api;
 
-import com.softjourn.sj_coin.model.Balance;
+import com.softjourn.sj_coin.model.Account;
 import com.softjourn.sj_coin.model.Session;
+import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
 
@@ -45,10 +46,13 @@ public interface ApiService {
     @GET("v1/machines/{machineID}/products")
     Call<List<Product>> getProductsList(@Path("machineID") String machineID);
 
+    @POST ("v1/machines/0/products/{id}")
+    Call<TransactionResponse> buyProductByID(@Path("id") String id);
+
 
     /**
      * Coin server endpoints.
      */
-    @GET("api/v1/amount")
-    Call<Balance> getBalance();
+    @GET("api/v1/account")
+    Call<Account> getBalance();
 }

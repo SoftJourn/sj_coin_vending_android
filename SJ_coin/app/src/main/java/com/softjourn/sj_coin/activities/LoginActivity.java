@@ -11,7 +11,6 @@ import com.softjourn.sj_coin.contratcts.LoginContract;
 import com.softjourn.sj_coin.presenters.LoginPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
-import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -65,12 +64,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
 
     @Override
     public void showProgress(String message) {
-        ProgressDialogUtils.showDialog(this,message);
+        super.showProgress(message);
     }
 
     @Override
     public void hideProgress() {
-        ProgressDialogUtils.dismiss();
+        super.hideProgress();
     }
 
     @Override
@@ -91,8 +90,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
     }
 
     @Override
-    public void showToastMessage() {
-        showToast(getString(R.string.activity_login_login_failed));
+    public void showToastMessage(String message) {
+        showToast(message);
     }
 
     @Override

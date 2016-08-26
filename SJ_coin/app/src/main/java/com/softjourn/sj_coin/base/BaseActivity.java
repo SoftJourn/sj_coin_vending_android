@@ -1,5 +1,6 @@
 package com.softjourn.sj_coin.base;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -7,12 +8,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.roughike.bottombar.BottomBar;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.ProgressDialogUtils;
 import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -25,11 +26,21 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
     public EventBus mEventBus = EventBus.getDefault();
 
+    protected boolean mProfileIsVisible = false;
+
+    ProgressDialog mProgressDialog;
+
+    public BottomBar mBottomBar;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEventBus.register(this);
-    }
+
+        mBottomBar = BottomBar.attach(this, savedInstanceState);
+        mBottomBar.setTextAppearance(R.style.BottomBarItem);
+        mBottomBar.setItems(R.menu.bottombar_menu);    }
 
     @Override
     protected void onResume() {
@@ -64,8 +75,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.profile:
-                Navigation.goToProfileActivity(this);
-                return true;
+                if (!mProfileIsVisible) {
+                    Navigation.goToProfileActivity(this);
+                    return true;
+                } else {
+                    return false;
+                }
             case R.id.logout:
                 Preferences.clearStringObject(ACCESS_TOKEN);
                 Preferences.clearStringObject(REFRESH_TOKEN);
@@ -83,12 +98,20 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     }
 
     public void hideProgress() {
-        ProgressDialogUtils.dismiss();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    public void showProgress(String message) {
+        mProgressDialog = new ProgressDialog(this, R.style.Base_V7_Theme_AppCompat_Dialog);
+        mProgressDialog.setMessage(message);
+        mProgressDialog.show();
     }
 
     protected void onNoInternetAvailable() {
         showToast(getString(R.string.internet_turned_off));
-        ProgressDialogUtils.dismiss();
+        hideProgress();
     }
 
     public void showToast(String text) {
@@ -101,10 +124,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     }
 
     @Subscribe
-    public void OnEvent(NoSubscriberEvent event){
+    public void OnEvent(NoSubscriberEvent event) {
         hideProgress();
     }
-
-
-
 }

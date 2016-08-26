@@ -3,16 +3,10 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/fragment_product_list_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_items_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="horizontal"/>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
