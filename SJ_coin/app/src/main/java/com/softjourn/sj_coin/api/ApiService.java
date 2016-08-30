@@ -5,6 +5,7 @@ import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.products.Products;
 
 import java.util.List;
 
@@ -42,6 +43,9 @@ public interface ApiService {
 
     @GET("v1/machines/{id}")
     Call<Machines> getConcreteMachine(@Path("id") String machineID);
+
+    @GET("v1/machines/{machineID}/features")
+    Call<Products> getFeaturedProductsList(@Path("machineID") String machineID);
 
     @GET("v1/machines/{machineID}/products")
     Call<List<Product>> getProductsList(@Path("machineID") String machineID);

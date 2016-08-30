@@ -2,7 +2,13 @@ package com.softjourn.sj_coin.contratcts;
 
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
+import com.softjourn.sj_coin.model.products.BestSeller;
+import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.MyLastPurchase;
+import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.products.Products;
+import com.softjourn.sj_coin.model.products.Snack;
 
 import java.util.List;
 
@@ -16,11 +22,35 @@ public interface VendingContract {
 
         void loadData(List<Product> data);
 
+        void loadNewProductsData(List<NewProduct> data);
+
+        void loadBestSellerData(List<BestSeller> data);
+
+        void loadMyLastPurchaseData(List<MyLastPurchase> data);
+
+        void loadSnackData(List<Snack> data);
+
+        void loadDrinkData(List<Drink> data);
+
         void navigateToBuyProduct(Product product);
 
     }
 
     interface Presenter extends BasePresenter{
+
+        void getFeaturedProductsList(String machineID);
+
+        void getLocalFeaturedProductsList();
+
+        void getLocalNewProducts();
+
+        void getLocalBestSellers();
+
+        void getLocalMyLastPurchase();
+
+        void getLocalSnacks();
+
+        void getLocalDrinks();
 
         void getProductList(String machineID);
 
@@ -39,8 +69,22 @@ public interface VendingContract {
 
         void callConcreteMachine(String machineID);
 
+        void callFeaturedProductsList(String machineID);
+
         void callProductsList(String machineID);
 
         List<Product> loadLocalProductList();
+
+        Products loadLocalFeaturedProductList();
+
+        List<BestSeller> loadBestSellers();
+
+        List<NewProduct> loadNewProduct();
+
+        List<MyLastPurchase> loadMyLastPurchase();
+
+        List<Drink> loadDrink();
+
+        List<Snack> loadSnack();
     }
 }

@@ -6,6 +6,7 @@ import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;
@@ -57,6 +58,11 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
     @Override
     public void getConcreteMachine(String machineID, Callback<Machines> callback) {
         mApiService.getConcreteMachine(machineID).enqueue(callback);
+    }
+
+    @Override
+    public void getFeaturedProductsList(String selectedMachine, Callback<Products> callback) {
+        mApiService.getFeaturedProductsList(selectedMachine).enqueue(callback);
     }
 
     @Override

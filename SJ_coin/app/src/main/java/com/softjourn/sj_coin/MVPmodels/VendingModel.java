@@ -1,18 +1,26 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
+import com.softjourn.sj_coin.FeaturedProductsSingleton;
 import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
+import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.model.products.BestSeller;
+import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.MyLastPurchase;
+import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.products.Products;
+import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -22,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VendingModel extends BaseModel implements VendingContract.Model,Constants {
+public class VendingModel extends BaseModel implements VendingContract.Model, Constants {
 
     private VendingApiProvider mApiProvider;
 
@@ -73,6 +81,32 @@ public class VendingModel extends BaseModel implements VendingContract.Model,Con
     }
 
     @Override
+    public void callFeaturedProductsList(String machineID) {
+
+        createApiManager();
+
+        Callback<Products> callback = new Callback<Products>() {
+
+            @Override
+            public void onResponse(Call<Products> call, Response<Products> response) {
+                if (!response.isSuccessful()) {
+                    mEventBus.post(new OnServerErrorEvent(response.code()));
+                } else {
+                    Products products = response.body();
+                    mEventBus.post(new OnFeaturedProductsListReceived(products));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Products> call, Throwable t) {
+
+            }
+
+        };
+        mApiProvider.getFeaturedProductsList(machineID, callback);
+    }
+
+    @Override
     public void callProductsList(String machineID) {
 
         createApiManager();
@@ -96,11 +130,6 @@ public class VendingModel extends BaseModel implements VendingContract.Model,Con
 
         };
         mApiProvider.getProductsList(machineID, callback);
-    }
-
-    @Override
-    public List<Product> loadLocalProductList() {
-        return ProductsListSingleton.getInstance().getData();
     }
 
     @Override
@@ -130,4 +159,38 @@ public class VendingModel extends BaseModel implements VendingContract.Model,Con
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
     }
 
+    @Override
+    public List<Product> loadLocalProductList() {
+        return ProductsListSingleton.getInstance().getData();
+    }
+
+    @Override
+    public Products loadLocalFeaturedProductList() {
+        return FeaturedProductsSingleton.getInstance().getData();
+    }
+
+    @Override
+    public List<BestSeller> loadBestSellers() {
+        return FeaturedProductsSingleton.getInstance().getData().getBestSellers();
+    }
+
+    @Override
+    public List<NewProduct> loadNewProduct() {
+        return FeaturedProductsSingleton.getInstance().getData().getNewProducts();
+    }
+
+    @Override
+    public List<MyLastPurchase> loadMyLastPurchase() {
+        return FeaturedProductsSingleton.getInstance().getData().getMyLastPurchases();
+    }
+
+    @Override
+    public List<Drink> loadDrink() {
+        return FeaturedProductsSingleton.getInstance().getData().getDrink();
+    }
+
+    @Override
+    public List<Snack> loadSnack() {
+        return FeaturedProductsSingleton.getInstance().getData().getSnack();
+    }
 }

@@ -8,10 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.adapters.ProductItemsAdapter;
+import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.products.BestSeller;
+import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.MyLastPurchase;
+import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
@@ -28,24 +33,42 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
         return new ProductsListLastPurchasesFragment();
     }
 
-    List<Product> mProductList;
+    List<MyLastPurchase> mProductList;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView machineItems;
 
     private VendingContract.Presenter mPresenter;
-    private ProductItemsAdapter mProductAdapter;
+    private FeaturedProductItemsAdapter mProductAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_products_list, container, false);
+        View view;
 
-        ButterKnife.bind(this, view);
+        RecyclerView.LayoutManager mLayoutManager;
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        switch (getActivity().getLocalClassName()) {
+            case "VendingActivity":
+                view = inflater.inflate(R.layout.fragment_products_list, container, false);
+                ButterKnife.bind(this, view);
+                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                break;
+
+            case "SeeAllActivity":
+                view = inflater.inflate(R.layout.fragment_products_see_all, container, false);
+                ButterKnife.bind(this, view);
+                mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+                break;
+
+            default:
+                view = inflater.inflate(R.layout.fragment_products_list, container, false);
+                ButterKnife.bind(this, view);
+                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                break;
+        }
         machineItems.setLayoutManager(mLayoutManager);
-        mProductAdapter = new ProductItemsAdapter(null);
+        mProductAdapter = new FeaturedProductItemsAdapter(LAST_PURCHASES,null);
         machineItems.setAdapter(mProductAdapter);
 
         return view;
@@ -57,11 +80,11 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
         mPresenter = new VendingPresenter(this);
 
         if (savedInstanceState == null) {
-            mPresenter.getLocalProductList();
+            mPresenter.getLocalMyLastPurchase();
         } else {
 
             mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_LAST_PURCHASES_LIST);
-            loadData(mProductList);
+            loadMyLastPurchaseData(mProductList);
         }
     }
 
@@ -92,8 +115,33 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
 
     @Override
     public void loadData(List<Product> data) {
+
+    }
+
+    @Override
+    public void loadNewProductsData(List<NewProduct> data) {
+
+    }
+
+    @Override
+    public void loadBestSellerData(List<BestSeller> data) {
+
+    }
+
+    @Override
+    public void loadMyLastPurchaseData(List<MyLastPurchase> data) {
         mProductList = data;
-        mProductAdapter.setData(data);
+        mProductAdapter.setMyLastPurchaseData(data);
+    }
+
+    @Override
+    public void loadSnackData(List<Snack> data) {
+
+    }
+
+    @Override
+    public void loadDrinkData(List<Drink> data) {
+
     }
 
     @Override

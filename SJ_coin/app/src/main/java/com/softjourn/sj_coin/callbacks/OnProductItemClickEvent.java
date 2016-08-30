@@ -1,15 +1,15 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 
 public class OnProductItemClickEvent {
-    private Product mProduct;
+    private CustomizedProduct mProduct;
 
-    public OnProductItemClickEvent(Product product) {
+    public OnProductItemClickEvent(CustomizedProduct product){
         this.mProduct = product;
     }
 
-    public Product getProduct(){
+    public CustomizedProduct getProduct(){
         return mProduct;
     }
 }

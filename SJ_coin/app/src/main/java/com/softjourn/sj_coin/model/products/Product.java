@@ -24,6 +24,8 @@ public class Product implements Parcelable {
     protected Product(Parcel in) {
         name = in.readString();
         imageUrl = in.readString();
+        price = in.readInt();
+        id = in.readInt();
         position = in.readParcelable(Position.class.getClassLoader());
     }
 

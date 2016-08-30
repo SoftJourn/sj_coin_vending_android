@@ -1,10 +1,12 @@
 package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
+import com.softjourn.sj_coin.FeaturedProductsSingleton;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
+import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
@@ -61,6 +63,59 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
+    public void getFeaturedProductsList(String machineID) {
+
+        mMachineID = machineID;
+
+        if (!makeNetworkChecking()) {
+            mView.showNoInternetError();
+            getLocalFeaturedProductsList();
+        } else {
+            if (checkExpirationDate()) {
+                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            } else {
+                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                mModel.callFeaturedProductsList(mMachineID);
+            }
+        }
+    }
+
+    @Override
+    public void getLocalFeaturedProductsList() {
+        getLocalNewProducts();
+        getLocalBestSellers();
+        getLocalMyLastPurchase();
+        getLocalSnacks();
+        getLocalDrinks();
+    }
+
+    @Override
+    public void getLocalNewProducts() {
+        mView.loadNewProductsData(mModel.loadNewProduct());
+    }
+
+    @Override
+    public void getLocalBestSellers() {
+        mView.loadBestSellerData(mModel.loadBestSellers());
+    }
+
+    @Override
+    public void getLocalMyLastPurchase() {
+        mView.loadMyLastPurchaseData(mModel.loadMyLastPurchase());
+    }
+
+    @Override
+    public void getLocalSnacks() {
+        mView.loadSnackData(mModel.loadSnack());
+    }
+
+    @Override
+    public void getLocalDrinks() {
+        mView.loadDrinkData(mModel.loadDrink());
+    }
+
+    @Override
     public boolean checkExpirationDate() {
         return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(EXPIRATION_DATE)));
     }
@@ -113,6 +168,13 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.hideProgress();
         ProductsListSingleton.getInstance().setData(event.getProductsList());
         getLocalProductList();
+    }
+
+    @Subscribe
+    public void OnEvent(OnFeaturedProductsListReceived event) {
+        mView.hideProgress();
+        FeaturedProductsSingleton.getInstance().setData(event.getProductsList());
+        getLocalFeaturedProductsList();
     }
 
     @Subscribe

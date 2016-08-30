@@ -9,10 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.adapters.ProductItemsAdapter;
+import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.products.BestSeller;
+import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.MyLastPurchase;
+import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
@@ -36,10 +41,11 @@ public class SeeAllProductsFragment extends BaseFragment implements VendingContr
     RecyclerView machineItems;
 
     private VendingContract.Presenter mPresenter;
-    private ProductItemsAdapter mProductAdapter;
+    private FeaturedProductItemsAdapter mProductAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 
         View view = inflater.inflate(R.layout.fragment_products_see_all, container, false);
 
@@ -47,7 +53,7 @@ public class SeeAllProductsFragment extends BaseFragment implements VendingContr
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         machineItems.setLayoutManager(mLayoutManager);
-        mProductAdapter = new ProductItemsAdapter(SEE_ALL_RECYCLER_VIEW);
+        mProductAdapter = new FeaturedProductItemsAdapter(getActivity().getIntent().getStringExtra(EXTRAS_CATEGORY),SEE_ALL_RECYCLER_VIEW);
         machineItems.setAdapter(mProductAdapter);
 
         return view;
@@ -97,6 +103,31 @@ public class SeeAllProductsFragment extends BaseFragment implements VendingContr
         mProductList = data;
         mProductAdapter.setData(data);
         hideProgress();
+    }
+
+    @Override
+    public void loadNewProductsData(List<NewProduct> data) {
+
+    }
+
+    @Override
+    public void loadBestSellerData(List<BestSeller> data) {
+
+    }
+
+    @Override
+    public void loadMyLastPurchaseData(List<MyLastPurchase> data) {
+
+    }
+
+    @Override
+    public void loadSnackData(List<Snack> data) {
+
+    }
+
+    @Override
+    public void loadDrinkData(List<Drink> data) {
+
     }
 
     @Override
