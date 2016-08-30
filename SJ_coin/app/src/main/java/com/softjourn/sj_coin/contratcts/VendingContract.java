@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.contratcts;
 
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
@@ -32,7 +33,9 @@ public interface VendingContract {
 
         void loadDrinkData(List<Drink> data);
 
-        void navigateToBuyProduct(Product product);
+        void navigateToBuyProduct(CustomizedProduct product);
+
+        void navigateToFragments();
 
     }
 

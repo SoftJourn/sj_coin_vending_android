@@ -52,6 +52,6 @@ public interface Constants {
     String SNACKS = "Snacks";
     String DRINKS = "Drinks";
 
-    String MACHINE_ID = "1";
+    String MACHINE_ID = "3";
 }
 

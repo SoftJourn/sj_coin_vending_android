@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.roughike.bottombar.BottomBar;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.utils.Constants;
@@ -30,17 +29,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
     ProgressDialog mProgressDialog;
 
-    public BottomBar mBottomBar;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEventBus.register(this);
-
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
-        mBottomBar.setTextAppearance(R.style.BottomBarItem);
-        mBottomBar.setItems(R.menu.bottombar_menu);    }
+    }
 
     @Override
     protected void onResume() {
@@ -74,6 +68,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.allProducts:
+                Navigation.goToAllProductsActivity(this);
+                return true;
+            case R.id.favorites:
+                return false;
             case R.id.profile:
                 if (!mProfileIsVisible) {
                     Navigation.goToProfileActivity(this);

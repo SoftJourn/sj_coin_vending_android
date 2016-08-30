@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
@@ -20,14 +22,13 @@ import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
-import com.softjourn.sj_coin.utils.Navigation;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProductListSnacksFragment extends BaseFragment implements VendingContract.View,Constants,Extras {
+public class ProductListSnacksFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
 
     public static ProductListSnacksFragment newInstance() {
         return new ProductListSnacksFragment();
@@ -36,40 +37,47 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
     List<Snack> mProductList;
 
     @Bind(R.id.list_items_recycler_view)
-    RecyclerView machineItems;
+    RecyclerView mMachineItems;
+
+    @Bind(R.id.textNoItems)
+    TextView mNoProducts;
+
 
     private VendingContract.Presenter mPresenter;
     private FeaturedProductItemsAdapter mProductAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view;
 
-        RecyclerView.LayoutManager mLayoutManager;
-
         switch (getActivity().getLocalClassName()) {
-            case "VendingActivity":
+            case "activities.VendingActivity":
                 view = inflater.inflate(R.layout.fragment_products_list, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                mProductAdapter = new FeaturedProductItemsAdapter(SNACKS, null);
                 break;
 
-            case "SeeAllActivity":
+            case "activities.SeeAllActivity":
                 view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
                 ButterKnife.bind(this, view);
-                mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                mProductAdapter = new FeaturedProductItemsAdapter(SNACKS, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
                 break;
 
             default:
                 view = inflater.inflate(R.layout.fragment_products_list, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                mProductAdapter = new FeaturedProductItemsAdapter(SNACKS, null);
                 break;
         }
-        machineItems.setLayoutManager(mLayoutManager);
-        mProductAdapter = new FeaturedProductItemsAdapter(SNACKS,null);
-        machineItems.setAdapter(mProductAdapter);
+
+        mMachineItems.setLayoutManager(mLayoutManager);
+
+        mMachineItems.setAdapter(mProductAdapter);
 
         return view;
     }
@@ -80,9 +88,9 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
         mPresenter = new VendingPresenter(this);
 
         if (savedInstanceState == null) {
-            mPresenter.getLocalProductList();
+            mPresenter.getLocalSnacks();
         } else {
-            mProductList = savedInstanceState.getParcelableArrayList(EXTRAS_PRODUCTS_SNACKS_LIST);
+            mProductList = savedInstanceState.getParcelable(EXTRAS_PRODUCTS_SNACKS_LIST);
             loadSnackData(mProductList);
         }
     }
@@ -90,11 +98,11 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        /*if (outState != null) {
-            outState.putParcelableArrayList(EXTRAS_PRODUCTS_SNACKS_LIST, new ArrayList<Parcelable>(mProductList));
+        if (outState != null) {
+            outState.putParcelable(EXTRAS_PRODUCTS_SNACKS_LIST, mLayoutManager.onSaveInstanceState());
         } else {
-            mPresenter.getLocalProductList();
-        }*/
+            mPresenter.getLocalSnacks();
+        }
     }
 
     @Override
@@ -134,9 +142,11 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
 
     @Override
     public void loadSnackData(List<Snack> data) {
-        mProductList = data;
-        mProductAdapter.setSnackData(data);
-        hideProgress();
+        if (data.size() > 0) {
+            mNoProducts.setVisibility(View.INVISIBLE);
+            mProductList = data;
+            mProductAdapter.setSnackData(data);
+        }
     }
 
     @Override
@@ -145,8 +155,13 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
     }
 
     @Override
-    public void navigateToBuyProduct(Product product) {
-        Navigation.goToProductActivity(getActivity(),product);
+    public void navigateToBuyProduct(CustomizedProduct product) {
+
+    }
+
+    @Override
+    public void navigateToFragments() {
+
     }
 
     @Override

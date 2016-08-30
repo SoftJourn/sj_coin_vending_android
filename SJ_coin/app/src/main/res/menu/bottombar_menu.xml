@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/bottomBarFeatured"
-        android:title="@string/bottom_bar_featured"/>
-    <item
-        android:id="@+id/bottomBarAllProducts"
-        android:title="@string/bottom_bar_all_products"/>
-</menu>

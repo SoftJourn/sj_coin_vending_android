@@ -46,6 +46,8 @@
                     android:id="@+id/container_fragment_products_list_new_products"
                     style="@style/VendingActivityCategoryContainer"/>
 
+
+
                 <View style="@style/VendingActivitySplitter" />
 
                 <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
@@ -67,7 +69,7 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_last_purchase"
-                    style="@style/VendingActivityCategoryContainer" />
+                    style="@style/VendingActivityCategoryContainer"/>
 
                 <View style="@style/VendingActivitySplitter" />
 
@@ -90,7 +92,7 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_best_sellers"
-                    style="@style/VendingActivityCategoryContainer" />
+                    style="@style/VendingActivityCategoryContainer"/>
 
                 <View style="@style/VendingActivitySplitter" />
 
@@ -113,7 +115,7 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_snacks"
-                    style="@style/VendingActivityCategoryContainer" />
+                    style="@style/VendingActivityCategoryContainer"/>
 
                 <View style="@style/VendingActivitySplitter" />
 
@@ -136,7 +138,7 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_drinks"
-                    style="@style/VendingActivityCategoryContainer" />
+                    style="@style/VendingActivityCategoryContainer"/>
 
                 <View style="@style/VendingActivitySplitter" />
 

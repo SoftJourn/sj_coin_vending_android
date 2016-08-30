@@ -10,8 +10,8 @@
     <dimen name="recycler_view_layout_text_view_container_left_margin">16dp</dimen>
 
     <!-- Fragment Machine View margins. -->
-    <dimen name="recycler_view_machine_layout_left_margin">10dp</dimen>
-    <dimen name="recycler_view_machine_layout_top_margin">10dp</dimen>
-    <dimen name="recycler_view_machine_layout_bottom_margin">10dp</dimen>
-    <dimen name="recycler_view_machine_layout_right_margin">10dp</dimen>
+    <dimen name="recycler_view_machine_layout_left_margin">2dp</dimen>
+    <dimen name="recycler_view_machine_layout_top_margin">2dp</dimen>
+    <dimen name="recycler_view_machine_layout_bottom_margin">2dp</dimen>
+    <dimen name="recycler_view_machine_layout_right_margin">2dp</dimen>
 </resources>

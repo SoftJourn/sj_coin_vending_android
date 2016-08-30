@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FeaturedProductItemsAdapter extends
@@ -37,7 +38,9 @@ public class FeaturedProductItemsAdapter extends
 
     private List<CustomizedProduct> mListProducts;
 
-    public FeaturedProductItemsAdapter(String featureCategory,@Nullable String recyclerViewType) {
+    private String mCoins = " "+App.getContext().getString(R.string.item_coins);
+
+    public FeaturedProductItemsAdapter(String featureCategory, @Nullable String recyclerViewType) {
         this.mProductCategory = featureCategory;
 
         if (recyclerViewType != null) {
@@ -48,30 +51,35 @@ public class FeaturedProductItemsAdapter extends
     }
 
     public void setNewProductData(List<NewProduct> data) {
+        mListProducts=new ArrayList<CustomizedProduct>();
         for(int i=0; i<data.size();i++){
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setBestSellerData(List<BestSeller> data) {
+        mListProducts=new ArrayList<CustomizedProduct>();
         for(int i=0; i<data.size();i++){
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setMyLastPurchaseData(List<MyLastPurchase> data) {
+        mListProducts=new ArrayList<CustomizedProduct>();
         for(int i=0; i<data.size();i++){
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setSnackData(List<Snack> data) {
+        mListProducts=new ArrayList<CustomizedProduct>();
         for(int i=0; i<data.size();i++){
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setDrinkData(List<Drink> data) {
+        mListProducts=new ArrayList<CustomizedProduct>();
         for(int i=0; i<data.size();i++){
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
@@ -84,11 +92,8 @@ public class FeaturedProductItemsAdapter extends
             case "DEFAULT":
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);
                 break;
-            case "SEE_ALL":
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_see_all_product_list, parent, false);
-                break;
             case "SEE_ALL_SNACKS_DRINKS":
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_see_all_snacks_drinks_item, parent, false);
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_see_all_item, parent, false);
                 break;
             default:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);
@@ -101,21 +106,12 @@ public class FeaturedProductItemsAdapter extends
 
         final CustomizedProduct product = mListProducts.get(position);
 
-            //holder.mParentView.setTag(product.getId());
+            holder.mProductName.setTag(product.getId());
             holder.mProductName.setText(product.getName());
-            holder.mProductPrice.setText(String.valueOf(product.getPrice()));
+            holder.mProductPrice.setText(String.valueOf(product.getPrice())+mCoins);
 
             if (holder.mProductDescription != null) {
                 holder.mProductDescription.setText(product.getDescription());
-            }
-
-            if (holder.mArrowImage != null) {
-                holder.mArrowImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(position)));
-                    }
-                });
             }
 
             if (holder.mParentView != null) {
@@ -167,7 +163,6 @@ public class FeaturedProductItemsAdapter extends
         public TextView mProductDescription;
 
         public ImageView mProductImage;
-        public ImageView mArrowImage;
         public ImageView mAddFavorite;
 
         public FeaturedViewHolder(View v) {
@@ -178,7 +173,6 @@ public class FeaturedProductItemsAdapter extends
             mProductName = (TextView) v.findViewById(R.id.layout_item_product_name);
             mBuyProduct = (TextView) v.findViewById(R.id.layout_item_product_buy);
             mProductDescription = (TextView) v.findViewById(R.id.layout_item_product_description);
-            mArrowImage = (ImageView) v.findViewById(R.id.imageViewArrowRight);
             mAddFavorite = (ImageView) v.findViewById(R.id.imageViewFavorite);
         }
     }

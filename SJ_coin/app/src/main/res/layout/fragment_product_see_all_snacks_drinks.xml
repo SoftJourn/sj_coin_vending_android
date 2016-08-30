@@ -30,9 +30,20 @@
     <View style="@style/VendingActivitySplitter" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_items_recycler_view_snacks_drinks"
+        android:id="@+id/list_items_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="horizontal" />
+
+    <TextView
+        android:id="@+id/textNoItems"
+        style="@style/VendingActivityCategoryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/there_are_no_items"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal"
+        android:textSize="12sp"
+        android:visibility="invisible"/>
 
 </LinearLayout>

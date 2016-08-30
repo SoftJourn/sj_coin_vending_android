@@ -1,13 +1,16 @@
 package com.softjourn.sj_coin.model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 
-public class CustomizedProduct {
+public class CustomizedProduct implements Parcelable {
 
     private int id;
     private int price;
@@ -15,6 +18,8 @@ public class CustomizedProduct {
     private String imageUrl;
     private String description;
     private String category;
+
+    public CustomizedProduct(){}
 
     public CustomizedProduct(NewProduct product){
         this.id = product.id;
@@ -61,6 +66,8 @@ public class CustomizedProduct {
         this.category = product.category;
     }
 
+
+
     public int getId() {
         return id;
     }
@@ -84,4 +91,40 @@ public class CustomizedProduct {
     public String getCategory() {
         return category;
     }
+
+    protected CustomizedProduct(Parcel in) {
+        id = in.readInt();
+        price = in.readInt();
+        name = in.readString();
+        imageUrl = in.readString();
+        description = in.readString();
+        category = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeInt(id);
+        parcel.writeInt(price);
+        parcel.writeString(name);
+        parcel.writeString(imageUrl);
+        parcel.writeString(description);
+        parcel.writeString(category);
+    }
+
+    public static final Creator<CustomizedProduct> CREATOR = new Creator<CustomizedProduct>() {
+        @Override
+        public CustomizedProduct createFromParcel(Parcel in) {
+            return new CustomizedProduct(in);
+        }
+
+        @Override
+        public CustomizedProduct[] newArray(int size) {
+            return new CustomizedProduct[size];
+        }
+    };
 }

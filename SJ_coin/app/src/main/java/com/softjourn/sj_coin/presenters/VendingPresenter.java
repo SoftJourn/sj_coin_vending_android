@@ -7,6 +7,7 @@ import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
@@ -156,7 +157,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             {
                 mModel.buyProductByID(mId);
             } else {
-                mModel.callProductsList(mMachineID);
+                mModel.callFeaturedProductsList(mMachineID);
             }
         } else {
             mView.hideProgress();
@@ -174,7 +175,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void OnEvent(OnFeaturedProductsListReceived event) {
         mView.hideProgress();
         FeaturedProductsSingleton.getInstance().setData(event.getProductsList());
-        getLocalFeaturedProductsList();
+        mView.navigateToFragments();
     }
 
     @Subscribe
@@ -189,5 +190,10 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnProductItemClickEvent event){
         mView.navigateToBuyProduct(event.getProduct());
+    }
+
+    @Subscribe
+    public void OnEvent(OnProductBuyClickEvent event){
+        mView.navigateToBuyProduct(event.buyProduct());
     }
 }

@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
-import com.roughike.bottombar.OnTabClickListener;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
@@ -30,7 +30,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         VendingContract.View, Constants {
 
     private VendingContract.Presenter mPresenter;
-
 
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -74,27 +73,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
-        mBottomBar.setOnTabClickListener(new OnTabClickListener() {
-            @Override
-            public void onTabSelected(int position) {
-                if (position == R.id.bottomBarAllProducts) {
-                    Navigation.goToAllProductsActivity(mContext);
-                }
-            }
-
-            @Override
-            public void onTabReSelected(int position) {
-
-            }
-        });
         loadProductList();
-        Navigation.goToProductListFragments(this);
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mBottomBar.onSaveInstanceState(outState);
     }
 
     @Override
@@ -149,8 +134,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void navigateToBuyProduct(Product product) {
+    public void navigateToBuyProduct(CustomizedProduct product) {
 
+    }
+
+    @Override
+    public void navigateToFragments() {
+        Navigation.goToProductListFragments(this);
     }
 
     @Override
@@ -161,5 +151,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     private void loadProductList() {
         mPresenter.getFeaturedProductsList(MACHINE_ID);
     }
+
 }
 

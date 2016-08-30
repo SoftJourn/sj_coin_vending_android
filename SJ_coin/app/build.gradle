@@ -47,7 +47,4 @@ dependencies {
 
     //Picasso
     compile "com.squareup.picasso:picasso:2.5.2"
-
-    //Bottom Bar
-    compile 'com.roughike:bottom-bar:1.4.0.1'
 }

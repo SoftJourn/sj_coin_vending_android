@@ -4,57 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <SearchView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchView"
-        android:layout_gravity="center_horizontal" />
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
-
-                <TextView
-                    android:id="@+id/textViewSnacks"
-                    style="@style/VendingActivityCategoryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/layout_vending_snacks" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/container_fragment_products_list_snacks"
-                style="@style/AllProductsContainer" />
-
-            <View style="@style/VendingActivitySplitter" />
-
-            <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
-
-                <TextView
-                    android:id="@+id/textViewDrinks"
-                    style="@style/VendingActivityCategoryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/layout_vending_drinks" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/container_fragment_products_list_drinks"
-                style="@style/AllProductsContainer" />
-
-            <View style="@style/VendingActivitySplitter" />
-
-        </LinearLayout>
 
     </ScrollView>
 
