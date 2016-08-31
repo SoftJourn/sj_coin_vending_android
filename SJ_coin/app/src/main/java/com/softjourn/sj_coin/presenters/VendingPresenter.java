@@ -7,11 +7,11 @@ import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
-import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Connections;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -19,6 +19,7 @@ import com.softjourn.sj_coin.utils.Preferences;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
+import java.util.List;
 
 public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Constants {
 
@@ -60,7 +61,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getLocalProductList() {
-        mView.loadData(mModel.loadLocalProductList());
+        mView.loadData(mModel.loadDrink(),mModel.loadSnack());
     }
 
     @Override
@@ -140,6 +141,16 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
+    public void sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
+        mView.setSortedData(mModel.sortByName(product,isSortingForward));
+    }
+
+    @Override
+    public void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward) {
+        mView.setSortedData(mModel.sortByPrice(product, isSortingForward));
+    }
+
+    @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
     }
@@ -192,8 +203,4 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.navigateToBuyProduct(event.getProduct());
     }
 
-    @Subscribe
-    public void OnEvent(OnProductBuyClickEvent event){
-        mView.navigateToBuyProduct(event.buyProduct());
-    }
 }

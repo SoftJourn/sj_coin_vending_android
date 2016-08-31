@@ -38,9 +38,9 @@ public class FeaturedProductItemsAdapter extends
 
     private List<CustomizedProduct> mListProducts;
 
-    private String mCoins = " "+App.getContext().getString(R.string.item_coins);
+    private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
-    public FeaturedProductItemsAdapter(String featureCategory, @Nullable String recyclerViewType) {
+    public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
         this.mProductCategory = featureCategory;
 
         if (recyclerViewType != null) {
@@ -50,39 +50,59 @@ public class FeaturedProductItemsAdapter extends
         }
     }
 
+    public void setAllProducts(List<Drink> drinks, List<Snack> snacks) {
+        mListProducts = new ArrayList<CustomizedProduct>();
+        for (int i = 0; i < drinks.size(); i++) {
+            mListProducts.add(new CustomizedProduct(drinks.get(i)));
+        }
+        for (int j = 0; j < snacks.size(); j++) {
+            mListProducts.add(new CustomizedProduct(snacks.get(j)));
+        }
+    }
+
+
     public void setNewProductData(List<NewProduct> data) {
-        mListProducts=new ArrayList<CustomizedProduct>();
-        for(int i=0; i<data.size();i++){
+        mListProducts = new ArrayList<CustomizedProduct>();
+        for (int i = 0; i < data.size(); i++) {
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setBestSellerData(List<BestSeller> data) {
-        mListProducts=new ArrayList<CustomizedProduct>();
-        for(int i=0; i<data.size();i++){
+        mListProducts = new ArrayList<CustomizedProduct>();
+        for (int i = 0; i < data.size(); i++) {
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setMyLastPurchaseData(List<MyLastPurchase> data) {
-        mListProducts=new ArrayList<CustomizedProduct>();
-        for(int i=0; i<data.size();i++){
+        mListProducts = new ArrayList<CustomizedProduct>();
+        for (int i = 0; i < data.size(); i++) {
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setSnackData(List<Snack> data) {
-        mListProducts=new ArrayList<CustomizedProduct>();
-        for(int i=0; i<data.size();i++){
+        mListProducts = new ArrayList<CustomizedProduct>();
+        for (int i = 0; i < data.size(); i++) {
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
     }
 
     public void setDrinkData(List<Drink> data) {
-        mListProducts=new ArrayList<CustomizedProduct>();
-        for(int i=0; i<data.size();i++){
+        mListProducts = new ArrayList<CustomizedProduct>();
+        for (int i = 0; i < data.size(); i++) {
             mListProducts.add(new CustomizedProduct(data.get(i)));
         }
+    }
+
+    public void setSortedData(List<CustomizedProduct> data){
+        mListProducts = data;
+        notifyDataSetChanged();
+    }
+
+    public List<CustomizedProduct> getCustomizedProductList(){
+        return mListProducts;
     }
 
     @Override
@@ -106,47 +126,47 @@ public class FeaturedProductItemsAdapter extends
 
         final CustomizedProduct product = mListProducts.get(position);
 
-            holder.mProductName.setTag(product.getId());
-            holder.mProductName.setText(product.getName());
-            holder.mProductPrice.setText(String.valueOf(product.getPrice())+mCoins);
+        //holder.mProductName.setTag(product.getId());
+        holder.mProductName.setText(product.getName());
+        holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
 
-            if (holder.mProductDescription != null) {
-                holder.mProductDescription.setText(product.getDescription());
-            }
-
-            if (holder.mParentView != null) {
-                holder.mParentView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(position)));
-                    }
-                });
-            }
-
-            if (holder.mBuyProduct != null) {
-                holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EventBus.getDefault().post(new OnProductBuyClickEvent(mListProducts.get(position)));
-                    }
-                });
-            }
-
-            if (holder.mAddFavorite != null) {
-                holder.mAddFavorite.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(position)));
-                    }
-                });
-            }
-
-            if (TextUtils.isEmpty(product.getImageUrl())) {
-                Picasso.with(App.getContext()).load(R.drawable.softjourn_logo).into(holder.mProductImage);
-            } else {
-                PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(holder.mProductImage);
-            }
+        if (holder.mProductDescription != null) {
+            holder.mProductDescription.setText(product.getDescription());
         }
+
+        if (holder.mParentView != null) {
+            holder.mParentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(position)));
+                }
+            });
+        }
+
+        if (holder.mBuyProduct != null) {
+            holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new OnProductBuyClickEvent(mListProducts.get(position)));
+                }
+            });
+        }
+
+        if (holder.mAddFavorite != null) {
+            holder.mAddFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(position)));
+                }
+            });
+        }
+
+        if (TextUtils.isEmpty(product.getImageUrl())) {
+            Picasso.with(App.getContext()).load(R.drawable.softjourn_logo).into(holder.mProductImage);
+        } else {
+            PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(holder.mProductImage);
+        }
+    }
 
 
     @Override

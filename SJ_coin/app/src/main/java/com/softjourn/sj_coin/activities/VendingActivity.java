@@ -1,10 +1,10 @@
 package com.softjourn.sj_coin.activities;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
@@ -14,7 +14,6 @@ import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.NewProduct;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -56,8 +55,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         }
     }
 
-    private Context mContext;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -65,8 +62,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         setContentView(R.layout.activity_main);
 
         mPresenter = new VendingPresenter(this);
-
-        mContext = this;
 
         ButterKnife.bind(this);
 
@@ -104,7 +99,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadData(List<Product> data) {
+    public void loadData(List<Drink> drinks,List<Snack> snacks) {
 
     }
 
@@ -135,12 +130,17 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void navigateToBuyProduct(CustomizedProduct product) {
-
+        onCreateDialog(product,mPresenter);
     }
 
     @Override
     public void navigateToFragments() {
         Navigation.goToProductListFragments(this);
+    }
+
+    @Override
+    public void setSortedData(List<CustomizedProduct> product) {
+        
     }
 
     @Override
@@ -152,5 +152,23 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mPresenter.getFeaturedProductsList(MACHINE_ID);
     }
 
+    public void hideContainer(int headers, int fragmentContainerId) {
+        View view = (View) findViewById(headers);
+        View fragmentContainer = (View) findViewById(fragmentContainerId);
+
+        view.setVisibility(View.INVISIBLE);
+        fragmentContainer.setVisibility(View.INVISIBLE);
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        params.height = 0;
+        params.setMargins(0, 0, 0, 0);
+
+        LinearLayout.LayoutParams frParams = (LinearLayout.LayoutParams) fragmentContainer.getLayoutParams();
+        frParams.height = 0;
+        frParams.setMargins(0, 0, 0, 0);
+
+        view.setLayoutParams(params);
+        fragmentContainer.setLayoutParams(frParams);
+    }
 }
 

@@ -23,9 +23,9 @@
                 android:orientation="vertical"
                 tools:context=".activities.VendingActivity">
 
-                <View style="@style/VendingActivitySplitter" />
-
-                <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+                <LinearLayout
+                    android:id="@+id/newProductsHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
 
                     <TextView
                         android:id="@+id/textViewNewProducts"
@@ -48,9 +48,9 @@
 
 
 
-                <View style="@style/VendingActivitySplitter" />
-
-                <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+                <LinearLayout
+                    android:id="@+id/lastPurchaseHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
 
                     <TextView
                         android:id="@+id/textViewLastPurchase"
@@ -69,11 +69,13 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_last_purchase"
-                    style="@style/VendingActivityCategoryContainer"/>
+                    style="@style/VendingActivityCategoryContainer" />
 
-                <View style="@style/VendingActivitySplitter" />
 
-                <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+
+                <LinearLayout
+                    android:id="@+id/bestSellersHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
 
                     <TextView
                         android:id="@+id/textViewBestSellers"
@@ -92,11 +94,13 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_best_sellers"
-                    style="@style/VendingActivityCategoryContainer"/>
+                    style="@style/VendingActivityCategoryContainer" />
 
-                <View style="@style/VendingActivitySplitter" />
 
-                <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+
+                <LinearLayout
+                    android:id="@+id/snacksHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
 
                     <TextView
                         android:id="@+id/textViewSnacks"
@@ -115,11 +119,13 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_snacks"
-                    style="@style/VendingActivityCategoryContainer"/>
+                    style="@style/VendingActivityCategoryContainer" />
 
-                <View style="@style/VendingActivitySplitter" />
 
-                <LinearLayout style="@style/VendingActivityLayoutCategoryHeaders">
+
+                <LinearLayout
+                    android:id="@+id/drinksHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
 
                     <TextView
                         android:id="@+id/textViewDrinks"
@@ -138,9 +144,9 @@
 
                 <LinearLayout
                     android:id="@+id/container_fragment_products_list_drinks"
-                    style="@style/VendingActivityCategoryContainer"/>
+                    style="@style/VendingActivityCategoryContainer" />
 
-                <View style="@style/VendingActivitySplitter" />
+
 
             </LinearLayout>
 

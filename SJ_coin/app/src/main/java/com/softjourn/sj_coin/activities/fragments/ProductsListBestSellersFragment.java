@@ -1,6 +1,7 @@
 package com.softjourn.sj_coin.activities.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -17,7 +19,6 @@ import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.NewProduct;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -38,6 +39,8 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
+
+    Parcelable mListState;
 
     @Bind(R.id.textNoItems)
     TextView mNoProducts;
@@ -91,8 +94,7 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
         if (savedInstanceState == null) {
             mPresenter.getLocalBestSellers();
         } else {
-            mProductList = savedInstanceState.getParcelable(EXTRAS_PRODUCTS_BEST_SELLER_LIST);
-            loadBestSellerData(mProductList);
+            mMachineItems.getLayoutManager().onRestoreInstanceState(mListState);
         }
     }
 
@@ -101,9 +103,18 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
         super.onSaveInstanceState(outState);
 
         if (outState != null) {
-            outState.putParcelable(EXTRAS_PRODUCTS_BEST_SELLER_LIST, mLayoutManager.onSaveInstanceState());
+            mListState = mLayoutManager.onSaveInstanceState();
+            outState.putParcelable(EXTRAS_PRODUCTS_BEST_SELLER_LIST, mListState);
         } else {
             mPresenter.getLocalBestSellers();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mListState!=null){
+            mLayoutManager.onRestoreInstanceState(mListState);
         }
     }
 
@@ -123,7 +134,7 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
     }
 
     @Override
-    public void loadData(List<Product> data) {
+    public void loadData(List<Drink> drinks,List<Snack> snacks) {
 
     }
 
@@ -138,6 +149,8 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
             mNoProducts.setVisibility(View.INVISIBLE);
             mProductList = data;
             mProductAdapter.setBestSellerData(data);
+        } else {
+            ((VendingActivity) getActivity()).hideContainer(R.id.bestSellersHeader, R.id.container_fragment_products_list_best_sellers);
         }
     }
 
@@ -163,6 +176,11 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
 
     @Override
     public void navigateToFragments() {
+
+    }
+
+    @Override
+    public void setSortedData(List<CustomizedProduct> product) {
 
     }
 

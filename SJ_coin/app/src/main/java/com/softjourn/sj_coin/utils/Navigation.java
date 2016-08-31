@@ -3,12 +3,10 @@ package com.softjourn.sj_coin.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.AllProducts;
 import com.softjourn.sj_coin.activities.LoginActivity;
-import com.softjourn.sj_coin.activities.ProductActivity;
 import com.softjourn.sj_coin.activities.ProfileActivity;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
@@ -17,7 +15,6 @@ import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListNewProductsFragment;
-import com.softjourn.sj_coin.model.CustomizedProduct;
 
 
 public class Navigation implements Constants,Extras {
@@ -41,12 +38,6 @@ public class Navigation implements Constants,Extras {
     public static void goToSeeAllActivity(Context context, String category){
         Intent intent = new Intent(context, SeeAllActivity.class);
         intent.putExtra(EXTRAS_CATEGORY,category);
-        context.startActivity(intent);
-    }
-
-    public static void goToProductActivity(Context context, CustomizedProduct product){
-        Intent intent = new Intent(context, ProductActivity.class);
-        intent.putExtra(EXTRAS_CONCRETE_PRODUCT, (Parcelable) product);
         context.startActivity(intent);
     }
 

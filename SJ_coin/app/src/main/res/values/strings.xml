@@ -43,17 +43,16 @@
     <!--Toast Messages-->
     <string name="internet_turned_off">Internet should be turned on</string>
     <string name="layout_vending_last_purchases">Last Purchases</string>
-    <string name="layout_vending_see_all">See All</string>
-    <string name="bottom_bar_featured">Featured</string>
+    <string name="layout_vending_see_all">SEE ALL</string>
     <string name="layout_vending_best_sellers">Best Sellers</string>
     <string name="layout_vending_new_products">New Products</string>
     <string name="bottom_bar_all_products">All Products</string>
     <string name="bottom_bar_profile">Profile</string>
     <string name="layout_vending_snacks">Snacks</string>
     <string name="layout_vending_drinks">Drinks</string>
-    <string name="error_unexpected">Oops... Something weird. Try Again</string>
-    <string name="fragment_button_sort_price">Price</string>
-    <string name="fragment_button_sort_popular">Popular</string>
+    <string name="error_unexpected">Oops… Something weird. Try Again</string>
+    <string name="button_sort_name">Name</string>
+    <string name="button_sort_price">Price</string>
     <string name="fragment_button_sort_new">New</string>
     <string name="item_product_buy">Buy</string>
     <string name="activity_product_description">Lorem ipsum dolor sit amet, ut ceteros consulatu nec, usu ex impetus percipit tractatos. Qui omnes dissentiet ea, ei mei paulo voluptua, duis eirmod honestatis te vix. Vel mundi pertinax cu, iudicabit definitiones eu has. Ad eius inermis epicuri nec, erant aperiri sapientem ne quo, mundi conclusionemque sed ut.\n\n Officiis concludaturque pro in. Clita utinam reprimique ne has. Partem fierent inimicus his te, ex pri illum consequuntur. Cu eos voluptatum comprehensam. Cu mel vero nusquam consetetur, duo apeirian corrumpit ea. Et sed soleat viderer pertinacia, justo maiestatis ad ius. Eius soluta consulatu vis ut, nominati sapientem an pri.</string>

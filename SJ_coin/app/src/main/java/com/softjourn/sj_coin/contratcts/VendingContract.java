@@ -21,7 +21,7 @@ public interface VendingContract {
 
         void hideProgress();
 
-        void loadData(List<Product> data);
+        void loadData(List<Drink> drinks,List<Snack> snacks);
 
         void loadNewProductsData(List<NewProduct> data);
 
@@ -36,6 +36,8 @@ public interface VendingContract {
         void navigateToBuyProduct(CustomizedProduct product);
 
         void navigateToFragments();
+
+        void setSortedData(List<CustomizedProduct> product);
 
     }
 
@@ -62,6 +64,10 @@ public interface VendingContract {
         boolean checkExpirationDate();
 
         void buyProduct(String id);
+
+        void sortByName(List<CustomizedProduct> product, boolean isSortingForward);
+
+        void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);
     }
 
     interface Model{
@@ -89,5 +95,9 @@ public interface VendingContract {
         List<Drink> loadDrink();
 
         List<Snack> loadSnack();
+
+        List<CustomizedProduct> sortByName(List<CustomizedProduct> product, boolean isSortingForward);
+
+        List<CustomizedProduct> sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);
     }
 }

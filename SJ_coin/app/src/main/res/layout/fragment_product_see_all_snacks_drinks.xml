@@ -11,19 +11,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/fragment_button_sort_price"
+            android:id="@+id/button_sort_name"
             style="@style/SortButtonBar"
-            android:text="@string/fragment_button_sort_price"/>
+            android:text="@string/button_sort_name"/>
 
         <Button
-            android:id="@+id/fragment_button_sort_popular"
+            android:id="@+id/button_sort_price"
             style="@style/SortButtonBar"
-            android:text="@string/fragment_button_sort_popular"/>
-
-        <Button
-            android:id="@+id/fragment_button_sort_new"
-            style="@style/SortButtonBar"
-            android:text="@string/fragment_button_sort_new"/>
+            android:text="@string/button_sort_price"/>
 
     </LinearLayout>
 

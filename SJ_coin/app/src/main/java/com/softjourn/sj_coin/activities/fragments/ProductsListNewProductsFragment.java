@@ -1,6 +1,7 @@
 package com.softjourn.sj_coin.activities.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -17,7 +19,6 @@ import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.NewProduct;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -41,6 +42,8 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
 
     @Bind(R.id.textNoItems)
     TextView mNoProducts;
+
+    Parcelable mListState;
 
     private VendingContract.Presenter mPresenter;
     private FeaturedProductItemsAdapter mProductAdapter;
@@ -89,8 +92,7 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
         if (savedInstanceState == null) {
             mPresenter.getLocalNewProducts();
         } else {
-            mProductList = savedInstanceState.getParcelable(EXTRAS_PRODUCTS_NEW_PRODUCTS_LIST);
-            loadNewProductsData(mProductList);
+            mMachineItems.getLayoutManager().onRestoreInstanceState(mListState);
         }
     }
 
@@ -98,9 +100,18 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (outState != null) {
-            outState.putParcelable(EXTRAS_PRODUCTS_NEW_PRODUCTS_LIST, mLayoutManager.onSaveInstanceState());
+            mListState = mLayoutManager.onSaveInstanceState();
+            outState.putParcelable(EXTRAS_PRODUCTS_NEW_PRODUCTS_LIST, mListState);
         } else {
             mPresenter.getLocalNewProducts();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mListState!=null){
+            mLayoutManager.onRestoreInstanceState(mListState);
         }
     }
 
@@ -120,7 +131,7 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
     }
 
     @Override
-    public void loadData(List<Product> data) {
+    public void loadData(List<Drink> drinks,List<Snack> snacks) {
 
     }
 
@@ -130,6 +141,9 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
             mNoProducts.setVisibility(View.INVISIBLE);
             mProductList = data;
             mProductAdapter.setNewProductData(data);
+        }
+        else{
+            ((VendingActivity)getActivity()).hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
         }
     }
 
@@ -153,6 +167,8 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
 
     }
 
+
+
     @Override
     public void navigateToBuyProduct(CustomizedProduct product) {
 
@@ -160,6 +176,11 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
 
     @Override
     public void navigateToFragments() {
+
+    }
+
+    @Override
+    public void setSortedData(List<CustomizedProduct> product) {
 
     }
 

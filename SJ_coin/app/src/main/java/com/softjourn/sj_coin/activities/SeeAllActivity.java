@@ -1,27 +1,35 @@
 package com.softjourn.sj_coin.activities;
 
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductListDrinksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListNewProductsFragment;
+import com.softjourn.sj_coin.adapters.PicassoTrustAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
+import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.NewProduct;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -76,7 +84,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
-    public void loadData(List<Product> data) {
+    public void loadData(List<Drink> drinks,List<Snack> snacks) {
 
     }
 
@@ -116,6 +124,11 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
+    public void setSortedData(List<CustomizedProduct> product) {
+
+    }
+
+    @Override
     public void showToastMessage(String message) {
 
     }
@@ -126,25 +139,37 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     private void onCreateDialog(final CustomizedProduct product){
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("Purchase confirmation");
-        builder.setMessage("Buy " + product.getName());
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_confirm);
+        dialog.setTitle("Title...");
 
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        // set the custom dialog components
+        TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText("Buy "+product.getName() + " for " + product.getPrice() + " coins?");
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(image);
+
+        Button okButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        okButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 mPresenter.buyProduct(String.valueOf(product.getId()));
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        Button cancelButton = (Button)dialog.findViewById(R.id.dialogButtonCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 dialog.dismiss();
             }
         });
 
-        android.support.v7.app.AlertDialog confirmationDialog = builder.create();
-        confirmationDialog.show();
+        dialog.show();
+    }
+
+    @Subscribe
+    public void OnEvent(OnProductBuyClickEvent event){
+        navigateToBuyProduct(event.buyProduct());
     }
 }

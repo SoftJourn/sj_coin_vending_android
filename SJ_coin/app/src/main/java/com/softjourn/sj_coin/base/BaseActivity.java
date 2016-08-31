@@ -1,5 +1,6 @@
 package com.softjourn.sj_coin.base;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +8,17 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.adapters.PicassoTrustAdapter;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -115,6 +124,39 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
     public void showToast(String text) {
         Utils.showErrorToast(this, text, Gravity.CENTER);
+    }
+
+    protected void onCreateDialog(final CustomizedProduct product, final VendingContract.Presenter presenter){
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_confirm);
+        dialog.setTitle("Title...");
+
+        // set the custom dialog components
+        TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText("Buy "+product.getName() + " for " + product.getPrice() + " coins?");
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(image);
+
+        Button okButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.buyProduct(String.valueOf(product.getId()));
+            }
+        });
+
+        Button cancelButton = (Button)dialog.findViewById(R.id.dialogButtonCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

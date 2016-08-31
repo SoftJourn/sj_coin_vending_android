@@ -12,6 +12,7 @@ import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.BestSeller;
@@ -24,6 +25,8 @@ import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Utils;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -192,5 +195,47 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
     @Override
     public List<Snack> loadSnack() {
         return FeaturedProductsSingleton.getInstance().getData().getSnack();
+    }
+
+    @Override
+    public List<CustomizedProduct> sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
+        if (isSortingForward) {
+            Collections.sort(product, new Comparator<CustomizedProduct>() {
+                @Override
+                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
+                    return lhs.getName().compareTo(rhs.getName());
+                }
+            });
+            return product;
+        } else {
+            Collections.sort(product, new Comparator<CustomizedProduct>() {
+                @Override
+                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
+                    return rhs.getName().compareTo(lhs.getName());
+                }
+            });
+            return product;
+        }
+    }
+
+    @Override
+    public List<CustomizedProduct> sortByPrice(List<CustomizedProduct> product, boolean isSortingForward) {
+        if (isSortingForward) {
+            Collections.sort(product, new Comparator<CustomizedProduct>() {
+                @Override
+                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
+                    return lhs.getPrice() - rhs.getPrice();
+                }
+            });
+            return product;
+        } else {
+            Collections.sort(product, new Comparator<CustomizedProduct>() {
+                @Override
+                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
+                    return rhs.getPrice() - lhs.getPrice();
+                }
+            });
+            return product;
+        }
     }
 }
