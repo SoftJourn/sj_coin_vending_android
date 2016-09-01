@@ -4,8 +4,14 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
@@ -21,6 +27,7 @@ import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
+import com.softjourn.sj_coin.utils.Navigation;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -79,10 +86,58 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
 
         mPresenter = new VendingPresenter(this);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.activityCategory, R.layout.spinner_dropdown_item);
+        Spinner navigationSpinner = new Spinner(getApplicationContext());
+        navigationSpinner.setAdapter(spinnerAdapter);
+        toolbar.addView(navigationSpinner,0);
+        toolbar.canShowOverflowMenu();
+        toolbar.showOverflowMenu();
+
+        navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                navigationOnCategories(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         if (mListState != null){
             mMachineItems.getLayoutManager().onRestoreInstanceState(mListState);
         } else {
             mPresenter.getLocalProductList();
+        }
+    }
+
+    public void navigationOnCategories(int position){
+        switch (position){
+            case 1:
+                Navigation.goToSeeAllActivity(this, NEW_PRODUCTS);
+                finish();
+                break;
+            case 2:
+                Navigation.goToSeeAllActivity(this, LAST_PURCHASES);
+                finish();
+                break;
+            case 3:
+                Navigation.goToSeeAllActivity(this, BEST_SELLERS);
+                finish();
+                break;
+            case 4:
+                Navigation.goToSeeAllActivity(this, SNACKS);
+                finish();
+                break;
+            case 5:
+                Navigation.goToSeeAllActivity(this, DRINKS);
+                finish();
+                break;
         }
     }
 

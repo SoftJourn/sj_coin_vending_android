@@ -9,18 +9,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.adapters.PicassoTrustAdapter;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
@@ -38,12 +39,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
     ProgressDialog mProgressDialog;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEventBus.register(this);
     }
+
 
     @Override
     protected void onResume() {
@@ -105,6 +106,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
         finish();
     }
 
+
+
     public void hideProgress() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
@@ -129,8 +132,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     protected void onCreateDialog(final CustomizedProduct product, final VendingContract.Presenter presenter){
 
         final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_confirm);
-        dialog.setTitle("Title...");
 
         // set the custom dialog components
         TextView text = (TextView) dialog.findViewById(R.id.text);

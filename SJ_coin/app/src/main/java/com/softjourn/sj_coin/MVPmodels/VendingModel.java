@@ -1,8 +1,6 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
-import com.softjourn.sj_coin.FeaturedProductsSingleton;
-import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
@@ -24,6 +22,8 @@ import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Utils;
+import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
+import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
 
 import java.util.Collections;
 import java.util.Comparator;

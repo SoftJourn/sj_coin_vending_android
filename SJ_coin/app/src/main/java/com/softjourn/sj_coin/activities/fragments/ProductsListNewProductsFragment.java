@@ -2,11 +2,13 @@ package com.softjourn.sj_coin.activities.fragments;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
@@ -28,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ProductsListNewProductsFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
 
@@ -37,11 +40,33 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
 
     List<NewProduct> mProductList;
 
+    List<CustomizedProduct> mCustomizedList;
+
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
 
     @Bind(R.id.textNoItems)
     TextView mNoProducts;
+
+    @Nullable
+    @Bind(R.id.button_sort_name)
+    Button mButtonSortByName;
+
+    @Nullable
+    @Bind(R.id.button_sort_price)
+    Button mButtonSortByPrice;
+
+    @Nullable
+    @OnClick(R.id.button_sort_name)
+    public void onClickSortByName() {
+        sortByName(mSortingByNameForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
+    }
+
+    @Nullable
+    @OnClick(R.id.button_sort_price)
+    public void onClickSortByPrice() {
+        sortByPrice(mSortingByPriceForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
+    }
 
     Parcelable mListState;
 
@@ -141,6 +166,8 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
             mNoProducts.setVisibility(View.INVISIBLE);
             mProductList = data;
             mProductAdapter.setNewProductData(data);
+
+            mCustomizedList = mProductAdapter.getCustomizedProductList();
         }
         else{
             ((VendingActivity)getActivity()).hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
@@ -181,7 +208,7 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
 
     @Override
     public void setSortedData(List<CustomizedProduct> product) {
-
+        mProductAdapter.setSortedData(mCustomizedList);
     }
 
     @Override

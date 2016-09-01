@@ -1,21 +1,20 @@
 package com.softjourn.sj_coin.activities;
 
-import android.app.Dialog;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
-import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductListDrinksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListNewProductsFragment;
-import com.softjourn.sj_coin.adapters.PicassoTrustAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -28,6 +27,7 @@ import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Extras;
+import com.softjourn.sj_coin.utils.Navigation;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -47,30 +47,92 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
         setTitle(getIntent().getStringExtra(EXTRAS_CATEGORY));
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.activityCategory, R.layout.spinner_dropdown_item);
+        Spinner navigationSpinner = new Spinner(getApplicationContext());
+        navigationSpinner.setAdapter(spinnerAdapter);
+        toolbar.addView(navigationSpinner,0);
+        toolbar.canShowOverflowMenu();
+        toolbar.showOverflowMenu();
+
+        navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                navigationOnCategories(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         switch (getIntent().getStringExtra(EXTRAS_CATEGORY)){
             case SNACKS:
+                navigationSpinner.setSelection(4);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
                         .commit();
                 break;
             case DRINKS:
+                navigationSpinner.setSelection(5);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
                         .commit();
                 break;
             case BEST_SELLERS:
+                navigationSpinner.setSelection(3);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
             case NEW_PRODUCTS:
+                navigationSpinner.setSelection(1);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListNewProductsFragment.newInstance(), TAG_PRODUCTS_NEW_PRODUCT_FRAGMENT)
                         .commit();
                 break;
             case LAST_PURCHASES:
+                navigationSpinner.setSelection(2);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
+                        .commit();
+                break;
+        }
+    }
+
+    public void navigationOnCategories(int position){
+        switch (position){
+            case 0:
+                Navigation.goToAllProductsActivity(SeeAllActivity.this);
+                finish();
+                break;
+            case 1:
+                SeeAllActivity.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListNewProductsFragment.newInstance(), TAG_PRODUCTS_NEW_PRODUCT_FRAGMENT)
+                        .commit();
+                break;
+            case 2:
+                SeeAllActivity.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
+                        .commit();
+                break;
+            case 3:
+                SeeAllActivity.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
+                        .commit();
+                break;
+            case 4:
+                SeeAllActivity.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
+                        .commit();
+                break;
+            case 5:
+                SeeAllActivity.this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
                         .commit();
                 break;
         }
@@ -115,7 +177,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void navigateToBuyProduct(CustomizedProduct product) {
-        onCreateDialog(product);
+        onCreateDialog(product,mPresenter);
     }
 
     @Override
@@ -136,36 +198,6 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     @Override
     public void showNoInternetError() {
 
-    }
-
-    private void onCreateDialog(final CustomizedProduct product){
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_confirm);
-        dialog.setTitle("Title...");
-
-        // set the custom dialog components
-        TextView text = (TextView) dialog.findViewById(R.id.text);
-        text.setText("Buy "+product.getName() + " for " + product.getPrice() + " coins?");
-        ImageView image = (ImageView) dialog.findViewById(R.id.image);
-        PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(image);
-
-        Button okButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.buyProduct(String.valueOf(product.getId()));
-            }
-        });
-
-        Button cancelButton = (Button)dialog.findViewById(R.id.dialogButtonCancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
     @Subscribe

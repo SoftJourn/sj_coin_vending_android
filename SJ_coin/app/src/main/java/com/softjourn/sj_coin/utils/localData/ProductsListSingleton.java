@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin;
+package com.softjourn.sj_coin.utils.localData;
 
 
 import com.softjourn.sj_coin.model.products.Product;

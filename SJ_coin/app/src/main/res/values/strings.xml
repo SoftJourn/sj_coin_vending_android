@@ -60,5 +60,14 @@
     <string name="toast_we_can_not_proceed_your_request">Unfortunately we can not proceed with your request. Please try again later</string>
     <string name="there_are_no_items">Currently there are no products in this category</string>
 
+    <string-array name="activityCategory">
+        <item>All Products</item>
+        <item>New Products</item>
+        <item>Last Purchase</item>
+        <item>Best Sellers</item>
+        <item>See all Snacks</item>
+        <item>See all Drinks</item>
+    </string-array>
+
 
 </resources>

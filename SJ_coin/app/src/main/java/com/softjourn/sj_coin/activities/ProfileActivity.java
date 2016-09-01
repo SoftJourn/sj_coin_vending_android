@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.adapters.PicassoTrustAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.Account;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;

@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.adapters;
+package com.softjourn.sj_coin.utils;
 
 import android.content.Context;
 import android.net.Uri;

@@ -1,9 +1,7 @@
 package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.FeaturedProductsSingleton;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
-import com.softjourn.sj_coin.ProductsListSingleton;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
@@ -15,6 +13,8 @@ import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Connections;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
+import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
 
 import org.greenrobot.eventbus.Subscribe;
 

@@ -6,13 +6,23 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Utils;
+
+import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
     ProgressDialog mProgressDialog;
+
+    public boolean mSortingByNameForward = true;
+    public boolean mSortingByPriceForward = true;
+
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -53,4 +63,17 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public void sortByName(boolean isSortingForward, List<CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+        buttonName.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
+        buttonPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
+        presenter.sortByName(product, isSortingForward);
+        mSortingByNameForward = !mSortingByNameForward;
+    }
+
+    public void sortByPrice(boolean isSortingForward, List<CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+        buttonPrice.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
+        buttonName.setBackgroundColor(getResources().getColor(R.color.transparent));
+        presenter.sortByPrice(product, isSortingForward);
+        mSortingByPriceForward = !mSortingByPriceForward;
+    }
 }

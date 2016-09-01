@@ -15,7 +15,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.VendingActivity"
-            android:label="Home"></activity>
+            android:label="Home">
+
+        </activity>
 
         <activity
             android:name=".activities.SplashActivity"
@@ -38,7 +40,8 @@
 
         <activity
             android:name=".activities.SeeAllActivity"
-            android:label="All Products">
+            android:label="All Products"
+            android:theme="@style/AppThemeForCustomToolbar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -49,7 +52,8 @@
 
         <activity
             android:name=".activities.AllProducts"
-            android:label="All Products">
+            android:label="All Products"
+            android:theme="@style/AppThemeForCustomToolbar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

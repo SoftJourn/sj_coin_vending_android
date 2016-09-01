@@ -22,6 +22,7 @@ import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
