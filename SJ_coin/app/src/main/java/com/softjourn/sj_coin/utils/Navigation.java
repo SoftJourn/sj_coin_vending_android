@@ -13,8 +13,8 @@ import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.activities.fragments.ProductListDrinksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
+import com.softjourn.sj_coin.activities.fragments.ProductsListLastAddedFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductsListNewProductsFragment;
 
 
 public class Navigation implements Constants,Extras {
@@ -48,7 +48,7 @@ public class Navigation implements Constants,Extras {
 
     public static void goToProductListFragments(Activity activity) {
         activity.getFragmentManager().beginTransaction()
-                .replace(R.id.container_fragment_products_list_new_products, ProductsListNewProductsFragment.newInstance(), TAG_PRODUCTS_NEW_PRODUCT_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_new_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                 .replace(R.id.container_fragment_products_list_last_purchase, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
                 .replace(R.id.container_fragment_products_list_best_sellers, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                 .replace(R.id.container_fragment_products_list_snacks, ProductListSnacksFragment.newInstance(),TAG_PRODUCTS_SNACKS_FRAGMENT)

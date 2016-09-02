@@ -15,8 +15,8 @@ import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.model.products.Snack;
@@ -178,7 +178,7 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
     }
 
     @Override
-    public List<NewProduct> loadNewProduct() {
+    public List<LastAdded> loadLastAdded() {
         return FeaturedProductsSingleton.getInstance().getData().getNewProducts();
     }
 

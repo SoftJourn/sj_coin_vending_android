@@ -3,8 +3,10 @@ package com.softjourn.sj_coin.activities;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
@@ -12,8 +14,8 @@ import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -30,15 +32,18 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     private VendingContract.Presenter mPresenter;
 
+    @Bind(R.id.balance)
+    TextView mBalance;
+
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @OnClick({R.id.textViewNewProductsSeeAll, R.id.textViewLastPurchaseSeeAll,
+    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewLastPurchaseSeeAll,
             R.id.textViewBestSellersSeeAll, R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
     public void seeAll(View v) {
         switch (v.getId()) {
-            case R.id.textViewNewProductsSeeAll:
-                Navigation.goToSeeAllActivity(this, NEW_PRODUCTS);
+            case R.id.textViewLastAddedSeeAll:
+                Navigation.goToSeeAllActivity(this, LAST_ADDED);
                 break;
             case R.id.textViewLastPurchaseSeeAll:
                 Navigation.goToSeeAllActivity(this, LAST_PURCHASES);
@@ -69,12 +74,17 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
         loadProductList();
-
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
@@ -104,7 +114,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadNewProductsData(List<NewProduct> data) {
+    public void loadLastAddedData(List<LastAdded> data) {
 
     }
 
@@ -144,12 +154,18 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
+    public void loadUserBalance() {
+        mPresenter.getBalance();
+    }
+
+    @Override
     public void showToastMessage(String message) {
 
     }
 
     private void loadProductList() {
         mPresenter.getFeaturedProductsList(MACHINE_ID);
+        loadUserBalance();
     }
 
     public void hideContainer(int headers, int fragmentContainerId) {
@@ -169,6 +185,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         view.setLayoutParams(params);
         fragmentContainer.setLayoutParams(frParams);
+    }
+
+    @Override
+    public void updateBalanceAmount(String balance) {
+        mBalance.setVisibility(View.VISIBLE);
+        mBalance.setText(getString(R.string.your_balance_is) +balance+ getString(R.string.coins));
     }
 }
 

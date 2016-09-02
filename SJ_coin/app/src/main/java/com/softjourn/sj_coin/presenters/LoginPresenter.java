@@ -9,7 +9,7 @@ import com.softjourn.sj_coin.utils.Connections;
 
 import org.greenrobot.eventbus.Subscribe;
 
-public class LoginPresenter extends BasePresenterImpl implements LoginContract.Presenter{
+public class LoginPresenter extends BasePresenterImpl implements LoginContract.Presenter {
 
     private LoginContract.View mLoginView;
     private LoginContract.Model mModel;
@@ -31,11 +31,9 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
     @Override
     public void login(String userName, String password) {
-        if (mLoginView != null) {
-            mLoginView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-        }
 
         if (validateCredentials(userName, password)) {
+            mLoginView.showProgress(App.getContext().getString(R.string.progress_authenticating));
             if (makeNetworkChecking()) {
                 mModel.makeLoginCall(userName, password);
             } else {
@@ -46,7 +44,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
     @Override
     public void refreshToken(String refreshToken) {
-            mModel.makeRefreshToken(refreshToken);
+        mModel.makeRefreshToken(refreshToken);
     }
 
     @Override
@@ -58,7 +56,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
             valid = false;
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4) {
             mLoginView.setPasswordError();
             valid = false;
         }

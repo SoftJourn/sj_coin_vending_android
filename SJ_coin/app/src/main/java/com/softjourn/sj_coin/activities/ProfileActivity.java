@@ -1,27 +1,25 @@
 package com.softjourn.sj_coin.activities;
 
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.ImageView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
-import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.adapters.PurchaseHistoryItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
-import com.softjourn.sj_coin.model.Account;
+import com.softjourn.sj_coin.model.History;
+import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Constants;
-import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
-import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProfileActivity extends BaseActivity implements ProfileContract.View, Constants {
-
-    @Bind(R.id.profile_user_photo)
-    ImageView mUserPhoto;
 
     @Bind(R.id.profile_user_name)
     TextView mUserName;
@@ -29,7 +27,12 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     @Bind(R.id.profile_amount_available)
     TextView mUserBalance;
 
+    @Bind(R.id.list_items_recycler_view)
+    RecyclerView mHistoryList;
+
     private ProfileContract.Presenter mPresenter;
+    private PurchaseHistoryItemsAdapter mHistoryAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,12 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
         mPresenter = new ProfilePresenter(this);
 
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mHistoryAdapter = new PurchaseHistoryItemsAdapter();
+        mHistoryList.setLayoutManager(mLayoutManager);
+        mHistoryList.setAdapter(mHistoryAdapter);
+
+        mPresenter.getHistory();
         mPresenter.getAccount();
     }
 
@@ -68,12 +77,8 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     }
 
     @Override
-    public void setPhoto(Account account) {
-        if (TextUtils.isEmpty(account.getImage())) {
-            Picasso.with(App.getContext()).load(R.drawable.softjourn_logo).into(mUserPhoto);
-        } else {
-            PicassoTrustAdapter.getInstance(App.getContext()).load(URL_COIN_SERVICE + account.getImage()).into(mUserPhoto);
-        }
+    public void setData(List<History> data) {
+        mHistoryAdapter.setData(data);
     }
 
     @Override

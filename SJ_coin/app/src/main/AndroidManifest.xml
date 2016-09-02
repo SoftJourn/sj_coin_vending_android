@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.VendingActivity"
-            android:label="Home">
+            android:label="Vending Machine">
 
         </activity>
 

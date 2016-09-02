@@ -45,6 +45,24 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     }
 
     @Override
+    public void getBalance() {
+        if (!makeNetworkChecking()) {
+            mView.showNoInternetError();
+        } else {
+            if (checkExpirationDate()) {
+                refreshToken(Constants.REFRESH_TOKEN);
+            } else {
+                mModel.makeBalanceCall();
+            }
+        }
+    }
+
+    @Override
+    public void getHistory() {
+        mView.setData(mModel.loadHistory());
+    }
+
+    @Override
     public boolean checkExpirationDate() {
         return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(EXPIRATION_DATE)));
     }
@@ -64,11 +82,10 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         mView.hideProgress();
         mView.showBalance(event.getAccount());
         mView.setUserName(event.getAccount().getName()+" "+event.getAccount().getSurname());
-        mView.setPhoto(event.getAccount());
     }
 
     @Subscribe
-    public void OnEvent(OnTokenRefreshed event){
+    public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
             mView.hideProgress();
             mModel.makeAccountCall();

@@ -13,16 +13,16 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductListDrinksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
+import com.softjourn.sj_coin.activities.fragments.ProductsListLastAddedFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductsListNewProductsFragment;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -89,10 +89,10 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
                         .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
-            case NEW_PRODUCTS:
+            case LAST_ADDED:
                 navigationSpinner.setSelection(1);
                 this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListNewProductsFragment.newInstance(), TAG_PRODUCTS_NEW_PRODUCT_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
                 break;
             case LAST_PURCHASES:
@@ -112,7 +112,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
                 break;
             case 1:
                 SeeAllActivity.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListNewProductsFragment.newInstance(), TAG_PRODUCTS_NEW_PRODUCT_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
                 break;
             case 2:
@@ -151,7 +151,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
-    public void loadNewProductsData(List<NewProduct> data) {
+    public void loadLastAddedData(List<LastAdded> data) {
 
     }
 
@@ -187,6 +187,16 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void setSortedData(List<CustomizedProduct> product) {
+
+    }
+
+    @Override
+    public void loadUserBalance() {
+
+    }
+
+    @Override
+    public void updateBalanceAmount(String amount) {
 
     }
 

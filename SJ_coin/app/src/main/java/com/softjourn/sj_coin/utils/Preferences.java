@@ -33,6 +33,7 @@ public class Preferences implements Constants {
     }
 
     public static void clearStringObject(String key){
-       editor.remove(key);
+        editor.putString(key, "");
+        editor.apply();
     }
 }

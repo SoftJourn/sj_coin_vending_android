@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
@@ -19,8 +20,8 @@ import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -32,13 +33,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductsListNewProductsFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
+public class ProductsListLastAddedFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
 
-    public static ProductsListNewProductsFragment newInstance() {
-        return new ProductsListNewProductsFragment();
+    public static ProductsListLastAddedFragment newInstance() {
+        return new ProductsListLastAddedFragment();
     }
 
-    List<NewProduct> mProductList;
+    List<LastAdded> mProductList;
 
     List<CustomizedProduct> mCustomizedList;
 
@@ -84,21 +85,21 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
                 view = inflater.inflate(R.layout.fragment_products_list, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(NEW_PRODUCTS, null);
+                mProductAdapter = new FeaturedProductItemsAdapter(LAST_ADDED, null);
                 break;
 
             case "activities.SeeAllActivity":
                 view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(NEW_PRODUCTS, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
+                mProductAdapter = new FeaturedProductItemsAdapter(LAST_ADDED, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
                 break;
 
             default:
                 view = inflater.inflate(R.layout.fragment_products_list, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(NEW_PRODUCTS, null);
+                mProductAdapter = new FeaturedProductItemsAdapter(LAST_ADDED, null);
                 break;
         }
 
@@ -115,7 +116,7 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
         mPresenter = new VendingPresenter(this);
 
         if (savedInstanceState == null) {
-            mPresenter.getLocalNewProducts();
+            mPresenter.getLocalLastAddedProducts();
         } else {
             mMachineItems.getLayoutManager().onRestoreInstanceState(mListState);
         }
@@ -128,14 +129,14 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
             mListState = mLayoutManager.onSaveInstanceState();
             outState.putParcelable(EXTRAS_PRODUCTS_NEW_PRODUCTS_LIST, mListState);
         } else {
-            mPresenter.getLocalNewProducts();
+            mPresenter.getLocalLastAddedProducts();
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mListState!=null){
+        if (mListState != null) {
             mLayoutManager.onRestoreInstanceState(mListState);
         }
     }
@@ -156,21 +157,24 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
     }
 
     @Override
-    public void loadData(List<Drink> drinks,List<Snack> snacks) {
+    public void loadData(List<Drink> drinks, List<Snack> snacks) {
 
     }
 
     @Override
-    public void loadNewProductsData(List<NewProduct> data) {
-        if (data.size()>0) {
+    public void loadLastAddedData(List<LastAdded> data) {
+        if (data.size() > 0) {
             mNoProducts.setVisibility(View.INVISIBLE);
             mProductList = data;
-            mProductAdapter.setNewProductData(data);
+            mProductAdapter.setLastAddedData(data);
 
             mCustomizedList = mProductAdapter.getCustomizedProductList();
-        }
-        else{
-            ((VendingActivity)getActivity()).hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
+        } else {
+            try {
+                ((VendingActivity) getActivity()).hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
+            } catch (ClassCastException e) {
+                ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+            }
         }
     }
 
@@ -195,7 +199,6 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
     }
 
 
-
     @Override
     public void navigateToBuyProduct(CustomizedProduct product) {
 
@@ -209,6 +212,16 @@ public class ProductsListNewProductsFragment extends BaseFragment implements Ven
     @Override
     public void setSortedData(List<CustomizedProduct> product) {
         mProductAdapter.setSortedData(mCustomizedList);
+    }
+
+    @Override
+    public void loadUserBalance() {
+
+    }
+
+    @Override
+    public void updateBalanceAmount(String amount) {
+
     }
 
     @Override

@@ -23,19 +23,30 @@
                 android:orientation="vertical"
                 tools:context=".activities.VendingActivity">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/recycler_view_layout_left_margin"
+                    android:layout_marginBottom="@dimen/recycler_view_layout_left_margin"
+                    android:text="@string/profile_name_surname"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:id="@+id/balance"
+                    android:layout_gravity="center_horizontal" />
+
                 <LinearLayout
                     android:id="@+id/newProductsHeader"
                     style="@style/VendingActivityLayoutCategoryHeaders">
 
                     <TextView
-                        android:id="@+id/textViewNewProducts"
+                        android:id="@+id/textViewLastAdded"
                         style="@style/VendingActivityCategoryText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/layout_vending_new_products" />
 
                     <TextView
-                        android:id="@+id/textViewNewProductsSeeAll"
+                        android:id="@+id/textViewLastAddedSeeAll"
                         style="@style/SeeAllTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />

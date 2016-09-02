@@ -6,8 +6,8 @@ import android.os.Parcelable;
 
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 
 public class CustomizedProduct implements Parcelable {
@@ -21,7 +21,7 @@ public class CustomizedProduct implements Parcelable {
 
     public CustomizedProduct(){}
 
-    public CustomizedProduct(NewProduct product){
+    public CustomizedProduct(LastAdded product){
         this.id = product.id;
         this.description = product.description;
         this.name = product.name;

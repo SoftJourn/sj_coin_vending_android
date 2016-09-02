@@ -13,7 +13,8 @@ public class SplashActivity extends AppCompatActivity implements Constants {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (TextUtils.isEmpty(Preferences.retrieveStringObject(ACCESS_TOKEN))) {
+        if (TextUtils.isEmpty(Preferences.retrieveStringObject(ACCESS_TOKEN))
+                && TextUtils.isEmpty(Preferences.retrieveStringObject(REFRESH_TOKEN))) {
             Navigation.goToLoginActivity(this);
             finish();
         } else {

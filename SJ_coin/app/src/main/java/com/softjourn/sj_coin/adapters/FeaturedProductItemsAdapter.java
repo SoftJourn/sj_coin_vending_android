@@ -18,8 +18,8 @@ import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
@@ -33,8 +33,6 @@ import java.util.List;
 public class FeaturedProductItemsAdapter extends
         android.support.v7.widget.RecyclerView.Adapter<FeaturedProductItemsAdapter.FeaturedViewHolder> implements Constants {
 
-    private String mProductCategory;
-
     private String mRecyclerViewType;
 
     private List<CustomizedProduct> mListProducts;
@@ -42,7 +40,6 @@ public class FeaturedProductItemsAdapter extends
     private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
-        this.mProductCategory = featureCategory;
 
         if (recyclerViewType != null) {
             mRecyclerViewType = recyclerViewType;
@@ -62,7 +59,7 @@ public class FeaturedProductItemsAdapter extends
     }
 
 
-    public void setNewProductData(List<NewProduct> data) {
+    public void setLastAddedData(List<LastAdded> data) {
         mListProducts = new ArrayList<CustomizedProduct>();
         for (int i = 0; i < data.size(); i++) {
             mListProducts.add(new CustomizedProduct(data.get(i)));

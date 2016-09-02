@@ -20,8 +20,8 @@ import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -162,7 +162,7 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
     }
 
     @Override
-    public void loadNewProductsData(List<NewProduct> data) {
+    public void loadLastAddedData(List<LastAdded> data) {
 
     }
 
@@ -211,6 +211,16 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
     @Override
     public void setSortedData(List<CustomizedProduct> product) {
         mProductAdapter.setSortedData(mCustomizedList);
+    }
+
+    @Override
+    public void loadUserBalance() {
+
+    }
+
+    @Override
+    public void updateBalanceAmount(String amount) {
+
     }
 
     @Override

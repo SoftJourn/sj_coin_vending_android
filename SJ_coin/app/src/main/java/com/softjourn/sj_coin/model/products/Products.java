@@ -21,7 +21,7 @@ public class Products implements Parcelable{
     @SerializedName("Snack")
     public List<Snack> snack = new ArrayList<Snack>();
     @SerializedName("New products")
-    public List<NewProduct> newProducts = new ArrayList<NewProduct>();
+    public List<LastAdded> newProducts = new ArrayList<LastAdded>();
     @SerializedName("Best sellers")
     public List<BestSeller> bestSellers = new ArrayList<BestSeller>();
 
@@ -29,7 +29,7 @@ public class Products implements Parcelable{
         myLastPurchases = in.createTypedArrayList(MyLastPurchase.CREATOR);
         drink = in.createTypedArrayList(Drink.CREATOR);
         snack = in.createTypedArrayList(Snack.CREATOR);
-        newProducts = in.createTypedArrayList(NewProduct.CREATOR);
+        newProducts = in.createTypedArrayList(LastAdded.CREATOR);
         bestSellers = in.createTypedArrayList(BestSeller.CREATOR);
     }
 

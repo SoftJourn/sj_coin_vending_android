@@ -8,7 +8,7 @@
         android:id="@+id/textTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Confirm Purchase"
+        android:text="@string/confirm_purchase"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="10dp"
@@ -57,7 +57,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:layout_gravity="right"
-            android:text="Ok" />
+            android:text="@string/confirm_dialog_ok" />
 
         <Button
             android:id="@+id/dialogButtonCancel"
@@ -68,7 +68,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:layout_gravity="right"
-            android:text="Cancel" />
+            android:text="@string/confirm_dialog_cancel" />
     </LinearLayout>
 
 </LinearLayout>

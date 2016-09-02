@@ -6,20 +6,11 @@
     android:background="@color/colorScreenBackground"
     android:weightSum="1">
 
-
-    <ImageView
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/profile_user_photo"
-        android:src="@drawable/softjourn_logo"
-        android:layout_gravity="center_horizontal" />
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.15" />
+        android:layout_weight="0.2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,6 +41,19 @@
         android:text="@string/coins"
         android:id="@+id/profile_coins_label"
         android:layout_gravity="center_horizontal" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.15" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_items_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:scrollbars="horizontal"/>
 
 
 </LinearLayout>

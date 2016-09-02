@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
@@ -19,8 +20,8 @@ import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -162,7 +163,7 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
     }
 
     @Override
-    public void loadNewProductsData(List<NewProduct> data) {
+    public void loadLastAddedData(List<LastAdded> data) {
 
     }
 
@@ -175,7 +176,11 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
 
             mCustomizedList = mProductAdapter.getCustomizedProductList();
         } else {
-            ((VendingActivity) getActivity()).hideContainer(R.id.bestSellersHeader, R.id.container_fragment_products_list_best_sellers);
+            try {
+                ((VendingActivity) getActivity()).hideContainer(R.id.bestSellersHeader, R.id.container_fragment_products_list_best_sellers);
+            } catch (ClassCastException e) {
+                ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+            }
         }
     }
 
@@ -207,6 +212,16 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
     @Override
     public void setSortedData(List<CustomizedProduct> product) {
         mProductAdapter.setSortedData(mCustomizedList);
+    }
+
+    @Override
+    public void loadUserBalance() {
+
+    }
+
+    @Override
+    public void updateBalanceAmount(String amount) {
+
     }
 
     @Override

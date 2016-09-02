@@ -5,8 +5,8 @@ import com.softjourn.sj_coin.base.BaseView;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.NewProduct;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.model.products.Snack;
@@ -23,7 +23,7 @@ public interface VendingContract {
 
         void loadData(List<Drink> drinks,List<Snack> snacks);
 
-        void loadNewProductsData(List<NewProduct> data);
+        void loadLastAddedData(List<LastAdded> data);
 
         void loadBestSellerData(List<BestSeller> data);
 
@@ -39,6 +39,9 @@ public interface VendingContract {
 
         void setSortedData(List<CustomizedProduct> product);
 
+        void loadUserBalance();
+
+        void updateBalanceAmount(String amount);
     }
 
     interface Presenter extends BasePresenter{
@@ -47,7 +50,7 @@ public interface VendingContract {
 
         void getLocalFeaturedProductsList();
 
-        void getLocalNewProducts();
+        void getLocalLastAddedProducts();
 
         void getLocalBestSellers();
 
@@ -68,6 +71,8 @@ public interface VendingContract {
         void sortByName(List<CustomizedProduct> product, boolean isSortingForward);
 
         void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);
+
+        void getBalance();
     }
 
     interface Model{
@@ -88,7 +93,7 @@ public interface VendingContract {
 
         List<BestSeller> loadBestSellers();
 
-        List<NewProduct> loadNewProduct();
+        List<LastAdded> loadLastAdded();
 
         List<MyLastPurchase> loadMyLastPurchase();
 

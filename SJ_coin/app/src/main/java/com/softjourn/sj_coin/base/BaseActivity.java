@@ -78,6 +78,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.home:
+                Navigation.goToVendingActivity(this);
+                return true;
             case R.id.allProducts:
                 Navigation.goToAllProductsActivity(this);
                 return true;

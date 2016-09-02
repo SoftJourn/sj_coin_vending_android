@@ -1,8 +1,9 @@
 package com.softjourn.sj_coin.api;
 
-import com.softjourn.sj_coin.model.Account;
 import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.model.TransactionResponse;
+import com.softjourn.sj_coin.model.accountInfo.Account;
+import com.softjourn.sj_coin.model.accountInfo.Balance;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Products;
@@ -59,4 +60,7 @@ public interface ApiService {
      */
     @GET("api/v1/account")
     Call<Account> getBalance();
+
+    @GET("api/v1/amount")
+    Call<Balance> getAmount();
 }

@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.model;
+package com.softjourn.sj_coin.model.accountInfo;
 
 import android.os.Parcel;
 import android.os.Parcelable;

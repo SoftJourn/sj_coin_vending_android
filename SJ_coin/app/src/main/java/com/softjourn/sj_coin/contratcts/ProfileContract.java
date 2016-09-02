@@ -2,7 +2,10 @@ package com.softjourn.sj_coin.contratcts;
 
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
-import com.softjourn.sj_coin.model.Account;
+import com.softjourn.sj_coin.model.History;
+import com.softjourn.sj_coin.model.accountInfo.Account;
+
+import java.util.List;
 
 public interface ProfileContract {
 
@@ -12,13 +15,17 @@ public interface ProfileContract {
 
         void setUserName(String userName);
 
-        void setPhoto(Account account);
+        void setData(List<History> data);
 
     }
 
     interface Presenter extends BasePresenter {
 
         void getAccount();
+
+        void getBalance();
+
+        void getHistory();
 
         boolean checkExpirationDate();
 
@@ -27,6 +34,10 @@ public interface ProfileContract {
     interface Model {
 
         void makeAccountCall();
+
+        void makeBalanceCall();
+
+        List<History> loadHistory();
 
     }
 }

@@ -2,6 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/home"
+        android:title="@string/main_menu_home" />
+
+    <item
+        android:id="@+id/favorites"
+        android:title="@string/menu_item_favorites" />
+
+    <item
+        android:id="@+id/allProducts"
+        android:title="@string/menu_item_all_products" />
 
     <item
         android:id="@+id/profile"
@@ -14,25 +25,10 @@
         android:title="@string/main_menu_log_out" />
 
     <item
-        android:id="@+id/allProducts"
-        android:title="@string/menu_item_all_products"/>
-
-    <item
-        android:id="@+id/favorites"
-        android:title="@string/menu_item_favorites"/>
-
-    <item
-        android:id="@+id/balance"
-        app:showAsAction="always"
-        android:visible="false"
-        android:title="balance"/>
-
-
-    <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/menu_item_search"
-        android:visible="false"/>
+        android:visible="false"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always" />
 </menu>

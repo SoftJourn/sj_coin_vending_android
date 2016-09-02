@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class NewProduct implements Parcelable{
+public class LastAdded implements Parcelable{
     @SerializedName("id")
     public Integer id;
 
@@ -24,7 +24,7 @@ public class NewProduct implements Parcelable{
     @SerializedName("category")
     public String category;
 
-    protected NewProduct(Parcel in) {
+    protected LastAdded(Parcel in) {
         id = in.readInt();
         price = in.readInt();
         name = in.readString();
@@ -48,15 +48,15 @@ public class NewProduct implements Parcelable{
         parcel.writeString(category);
     }
 
-    public static final Parcelable.Creator<NewProduct> CREATOR = new Parcelable.Creator<NewProduct>() {
+    public static final Parcelable.Creator<LastAdded> CREATOR = new Parcelable.Creator<LastAdded>() {
         @Override
-        public NewProduct createFromParcel(Parcel in) {
-            return new NewProduct(in);
+        public LastAdded createFromParcel(Parcel in) {
+            return new LastAdded(in);
         }
 
         @Override
-        public NewProduct[] newArray(int size) {
-            return new NewProduct[size];
+        public LastAdded[] newArray(int size) {
+            return new LastAdded[size];
         }
     };
 }
