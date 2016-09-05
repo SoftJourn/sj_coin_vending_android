@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,11 +33,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeaturedProductItemsAdapter extends
-        android.support.v7.widget.RecyclerView.Adapter<FeaturedProductItemsAdapter.FeaturedViewHolder> implements Constants {
+        android.support.v7.widget.RecyclerView.Adapter<FeaturedProductItemsAdapter.FeaturedViewHolder> implements Constants,
+        Filterable{
 
     private String mRecyclerViewType;
 
     private List<CustomizedProduct> mListProducts;
+
+    private List<CustomizedProduct> mOriginal;
+
+    private List<CustomizedProduct> mSearchedList;
 
     private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
@@ -172,7 +179,36 @@ public class FeaturedProductItemsAdapter extends
         return mListProducts == null ? 0 : mListProducts.size();
     }
 
-    public static class FeaturedViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final List<CustomizedProduct> results = new ArrayList<CustomizedProduct>();
+                if (mOriginal == null)
+                    mOriginal = mListProducts;
+                if (constraint != null) {
+                    if (mOriginal != null & mOriginal.size() > 0) {
+                        for (final CustomizedProduct g : mOriginal) {
+                            if (g.getName().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    oReturn.values = results;
+                }
+                return oReturn;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                mListProducts = (ArrayList<CustomizedProduct>)results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+        public static class FeaturedViewHolder extends RecyclerView.ViewHolder {
 
         public View mParentView;
         public TextView mProductPrice;

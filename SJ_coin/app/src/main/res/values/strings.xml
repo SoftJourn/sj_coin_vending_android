@@ -36,7 +36,7 @@
     <!--Profile Screen-->
     <string name="profile_name_surname">Name Surname</string>
     <string name="profile_amount_available">9999</string>
-    <string name="coins">coins</string>
+    <string name="coins">" coins"</string>
     <string name="activity_profile_username_key">user_name</string>
 
     <!--Progress Messages-->
@@ -69,7 +69,7 @@
     <string name="namepurchase_history_name">Name</string>
     <string name="purchase_history_date">11/11/2011</string>
     <string name="main_menu_home">Home</string>
-    <string name="your_balance_is">"Your Balance is "</string>
+    <string name="your_balance_is">"Your balance is "</string>
 
     <!-- Purchase History Item Labels-->
 

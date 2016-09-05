@@ -63,7 +63,7 @@
     <style name="VendingActivityLayoutCategoryHeaders">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/recycler_view_machine_layout_bottom_margin</item>
+        <item name="android:layout_marginBottom">@dimen/category_header_bottom_margin</item>
         <item name="android:layout_marginLeft">@dimen/recycler_view_machine_layout_left_margin</item>
         <item name="android:layout_marginRight">@dimen/recycler_view_machine_layout_right_margin</item>
         <item name="android:orientation">horizontal</item>

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
@@ -47,9 +46,6 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
     RecyclerView mMachineItems;
 
     Parcelable mListState;
-
-    @Bind(R.id.textNoItems)
-    TextView mNoProducts;
 
     @Nullable
     @Bind(R.id.button_sort_name)
@@ -106,6 +102,12 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
         mMachineItems.setLayoutManager(mLayoutManager);
 
         mMachineItems.setAdapter(mProductAdapter);
+
+        if (getActivity().getLocalClassName().equals("activities.SeeAllActivity"))
+        {
+            ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
+            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
+        }
 
         return view;
     }
@@ -170,7 +172,6 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
     @Override
     public void loadBestSellerData(List<BestSeller> data) {
         if (data.size() > 0) {
-            mNoProducts.setVisibility(View.INVISIBLE);
             mProductList = data;
             mProductAdapter.setBestSellerData(data);
 

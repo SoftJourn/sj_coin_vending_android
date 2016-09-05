@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Utils;
@@ -75,5 +76,9 @@ public abstract class BaseFragment extends Fragment {
         buttonName.setBackgroundColor(getResources().getColor(R.color.transparent));
         presenter.sortByPrice(product, isSortingForward);
         mSortingByPriceForward = !mSortingByPriceForward;
+    }
+
+    public interface SearchableProductsList{
+        void productsList(FeaturedProductItemsAdapter products);
     }
 }

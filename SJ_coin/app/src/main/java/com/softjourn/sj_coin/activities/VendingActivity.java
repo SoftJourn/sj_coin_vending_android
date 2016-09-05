@@ -190,7 +190,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void updateBalanceAmount(String balance) {
         mBalance.setVisibility(View.VISIBLE);
-        mBalance.setText(getString(R.string.your_balance_is) +balance+ getString(R.string.coins));
+        mBalance.setText(getString(R.string.your_balance_is) + balance + getString(R.string.coins));
     }
 }
 

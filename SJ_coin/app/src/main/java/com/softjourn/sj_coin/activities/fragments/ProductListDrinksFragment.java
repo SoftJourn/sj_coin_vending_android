@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
@@ -45,9 +45,6 @@ public class ProductListDrinksFragment extends BaseFragment implements VendingCo
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
-
-    @Bind(R.id.textNoItems)
-    TextView mNoProducts;
 
     @Nullable
     @Bind(R.id.button_sort_name)
@@ -106,6 +103,12 @@ public class ProductListDrinksFragment extends BaseFragment implements VendingCo
         mMachineItems.setLayoutManager(mLayoutManager);
 
         mMachineItems.setAdapter(mProductAdapter);
+
+        if (getActivity().getLocalClassName().equals("activities.SeeAllActivity"))
+        {
+            ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
+            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
+        }
 
         return view;
     }
@@ -184,7 +187,6 @@ public class ProductListDrinksFragment extends BaseFragment implements VendingCo
     @Override
     public void loadDrinkData(List<Drink> data) {
         if (data.size() > 0) {
-            mNoProducts.setVisibility(View.INVISIBLE);
             mProductList = data;
             mProductAdapter.setDrinkData(data);
 

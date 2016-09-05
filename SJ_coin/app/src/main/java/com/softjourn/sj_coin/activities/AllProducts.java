@@ -2,15 +2,16 @@ package com.softjourn.sj_coin.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,7 +20,6 @@ import android.widget.SpinnerAdapter;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
-import com.softjourn.sj_coin.adapters.SearchAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -51,6 +51,8 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     List<Snack> mProductSnackList;
 
     private Menu menu;
+
+    SearchView mSearch;
 
     List<CustomizedProduct> mProductList;
 
@@ -171,29 +173,45 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_search).setVisible(true);
-        this.menu=menu;
+        this.menu = menu;
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearch = (SearchView) menu.findItem(R.id.action_search).getActionView();
 
-        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+        mSearch.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
 
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(AllProducts.this.getCurrentFocus().getWindowToken(), 0);
+                mSearch.clearFocus();
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
 
-                loadHistory(query);
-
+                if (TextUtils.isEmpty(query)) {
+                    mProductAdapter.getFilter().filter("");
+                } else {
+                    mProductAdapter.getFilter().filter(query.toString());
+                }
+                buttonSortByName.setEnabled(false);
+                buttonSortByPrice.setEnabled(false);
                 return true;
-
             }
 
+        });
+
+        mSearch.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                buttonSortByName.setEnabled(true);
+                buttonSortByPrice.setEnabled(true);
+                return false;
+            }
         });
 
         return true;
@@ -274,41 +292,15 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
         buttonSortByPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
         mPresenter.sortByName(mProductList, isSortingForward);
         mSortingByNameForward = !mSortingByNameForward;
+        mSearch.clearFocus();
     }
 
     private void sortByPrice(boolean isSortingForward) {
         buttonSortByPrice.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
         buttonSortByName.setBackgroundColor(getResources().getColor(R.color.transparent));
         mPresenter.sortByPrice(mProductList, isSortingForward);
-        mSortingByPriceForward = !mSortingByPriceForward;
+        mSortingByPriceForward = !mSortingByPriceForward;;
     }
-
-    private void loadHistory(String query) {
-
-        // Cursor
-        String[] columns = new String[]{"_id", "text"};
-        Object[] temp = new Object[]{0, "default"};
-
-        MatrixCursor cursor = new MatrixCursor(columns);
-
-        for (int i = 0; i < mProductList.size(); i++) {
-
-            temp[0] = i;
-            temp[1] = mProductList.get(i);
-
-            cursor.addRow(temp);
-
-        }
-
-        // SearchView
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-        final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-
-        search.setSuggestionsAdapter(new SearchAdapter(this, cursor, mProductList));
-
-    }
-
 
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event) {

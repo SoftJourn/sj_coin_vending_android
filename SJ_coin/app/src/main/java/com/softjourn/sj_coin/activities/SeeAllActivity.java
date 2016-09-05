@@ -1,11 +1,17 @@
 package com.softjourn.sj_coin.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -15,6 +21,7 @@ import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastAddedFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
+import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -33,9 +40,18 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-public class SeeAllActivity extends BaseActivity implements VendingContract.View,Constants, Extras {
+public class SeeAllActivity extends BaseActivity implements VendingContract.View,Constants, Extras{
 
     private VendingContract.Presenter mPresenter;
+
+    FeaturedProductItemsAdapter mAdapter;
+
+    private Menu menu;
+
+    SearchView mSearch;
+
+    Button mFragmentsSortNameButton;
+    Button mFragmentsSortPriceButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +120,11 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         }
     }
 
+    public void setButtons(Button button, Button button2){
+        this.mFragmentsSortNameButton = button;
+        this.mFragmentsSortPriceButton = button2;
+    }
+
     public void navigationOnCategories(int position){
         switch (position){
             case 0:
@@ -142,6 +163,47 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_search).setVisible(true);
+        this.menu = menu;
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        mSearch = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        mSearch.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(SeeAllActivity.this.getCurrentFocus().getWindowToken(), 0);
+                mSearch.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                if (TextUtils.isEmpty(query)) {
+                    mAdapter.getFilter().filter("");
+                } else {
+                    mAdapter.getFilter().filter(query.toString());
+                }
+                mFragmentsSortNameButton.setEnabled(false);
+                mFragmentsSortPriceButton.setEnabled(false);
+                return true;
+            }
+
+        });
+
+        mSearch.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mFragmentsSortNameButton.setEnabled(true);
+                mFragmentsSortPriceButton.setEnabled(true);
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -213,5 +275,9 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event){
         navigateToBuyProduct(event.buyProduct());
+    }
+
+    public void productsList(FeaturedProductItemsAdapter adapter) {
+        mAdapter = adapter;
     }
 }
