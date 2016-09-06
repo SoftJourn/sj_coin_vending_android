@@ -16,6 +16,7 @@
     <string name="layout_vending_drinks">Drinks</string>
     <string name="layout_vending_last_purchases">Last Purchases</string>
     <string name="layout_vending_see_all">SEE ALL</string>
+    <string name="your_balance_is">"Your balance is "</string>
 
     <!-- Item Labels-->
     <string name="dummy_text_view_text">Dummy text</string>
@@ -31,13 +32,19 @@
     <string name="menu_item_all_products">All Products</string>
     <string name="menu_item_favorites">Favorites</string>
     <string name="menu_item_search">Search</string>
-    <string name="menu_item_balance">balance</string>
+    <string name="main_menu_home">Home</string>
 
     <!--Profile Screen-->
     <string name="profile_name_surname">Name Surname</string>
     <string name="profile_amount_available">9999</string>
     <string name="coins">" coins"</string>
     <string name="activity_profile_username_key">user_name</string>
+
+    <!--Purchase History-->
+    <string name="purchase_history_price">20 Coins</string>
+    <string name="namepurchase_history_name">Name</string>
+    <string name="purchase_history_date">11/11/2011</string>
+    <string name="purchase_history">Purchase History</string>
 
     <!--Progress Messages-->
     <string name="progress_loading">Loading</string>
@@ -65,14 +72,7 @@
     <string name="confirm_purchase">Confirm Purchase</string>
     <string name="confirm_dialog_ok">Ok</string>
     <string name="confirm_dialog_cancel">Cancel</string>
-    <string name="purchase_history_price">20 Coins</string>
-    <string name="namepurchase_history_name">Name</string>
-    <string name="purchase_history_date">11/11/2011</string>
-    <string name="main_menu_home">Home</string>
-    <string name="your_balance_is">"Your balance is "</string>
-
-    <!-- Purchase History Item Labels-->
-
+    <string name="search_hint">Product Name</string>
 
     <!-- Toolbar Spinner Items-->
     <string-array name="activityCategory">

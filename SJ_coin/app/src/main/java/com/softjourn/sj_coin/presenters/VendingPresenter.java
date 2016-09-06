@@ -10,7 +10,6 @@ import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
-import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Connections;
@@ -27,9 +26,9 @@ import java.util.List;
 public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Constants {
 
     private VendingContract.View mView;
-    private VendingContract.Model mModel;
+    private VendingModel mModel;
     private LoginPresenter mLoginPresenter;
-    private ProfileContract.Model mProfileModel;
+    private ProfileModel mProfileModel;
 
     private String mMachineID;
 

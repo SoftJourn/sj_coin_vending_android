@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class LoginPresenter extends BasePresenterImpl implements LoginContract.Presenter {
 
     private LoginContract.View mLoginView;
-    private LoginContract.Model mModel;
+    private LoginModel mModel;
 
     public LoginPresenter(LoginContract.View loginView) {
 
@@ -56,7 +56,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
             valid = false;
         }
 
-        if (password.isEmpty() || password.length() < 4) {
+        if (password.isEmpty()) {
             mLoginView.setPasswordError();
             valid = false;
         }

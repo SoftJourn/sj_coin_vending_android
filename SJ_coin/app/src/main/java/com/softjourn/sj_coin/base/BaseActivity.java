@@ -22,7 +22,6 @@ import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
-import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -94,8 +93,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
                     return false;
                 }
             case R.id.logout:
-                Preferences.clearStringObject(ACCESS_TOKEN);
-                Preferences.clearStringObject(REFRESH_TOKEN);
+                Utils.clearUsersData();
                 Navigation.goToLoginActivity(this);
                 finish();
                 return true;
@@ -108,7 +106,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     public void onBackPressed() {
         finish();
     }
-
 
 
     public void hideProgress() {

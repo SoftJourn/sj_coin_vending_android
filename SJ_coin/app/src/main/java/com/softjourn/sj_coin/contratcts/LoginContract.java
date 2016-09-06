@@ -22,11 +22,4 @@ public interface LoginContract {
         boolean validateCredentials(String userName, String password);
 
     }
-
-    interface Model {
-
-        void makeRefreshToken(String refreshToken);
-
-        void makeLoginCall(String userName, String password);
-    }
 }
