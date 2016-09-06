@@ -33,7 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductListDrinksFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
+public class ProductListDrinksFragment extends BaseFragment implements VendingContract.View, Constants, Extras{
 
     public static ProductListDrinksFragment newInstance() {
         return new ProductListDrinksFragment();
@@ -107,7 +107,7 @@ public class ProductListDrinksFragment extends BaseFragment implements VendingCo
         if (getActivity().getLocalClassName().equals("activities.SeeAllActivity"))
         {
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
-            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
+            ((SeeAllActivity)getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
         }
 
         return view;
@@ -225,6 +225,4 @@ public class ProductListDrinksFragment extends BaseFragment implements VendingCo
     public void showToastMessage(String message) {
 
     }
-
-
 }

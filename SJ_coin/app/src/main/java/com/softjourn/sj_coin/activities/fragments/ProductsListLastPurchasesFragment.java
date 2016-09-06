@@ -106,7 +106,7 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
         if (getActivity().getLocalClassName().equals("activities.SeeAllActivity"))
         {
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
-            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
+            ((SeeAllActivity)getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
         }
 
         return view;

@@ -32,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductsListLastAddedFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
+public class ProductsListLastAddedFragment extends BaseFragment implements VendingContract.View, Constants, Extras{
 
     public static ProductsListLastAddedFragment newInstance() {
         return new ProductsListLastAddedFragment();
@@ -86,6 +86,10 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
 
             case "activities.SeeAllActivity":
                 view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
+
+                mButtonSortByPrice = (Button)view.findViewById(R.id.button_sort_price);
+                mButtonSortByName = (Button)view.findViewById(R.id.button_sort_name);
+
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(LAST_ADDED, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
@@ -106,7 +110,7 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
         if (getActivity().getLocalClassName().equals("activities.SeeAllActivity"))
         {
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
-            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
+            ((SeeAllActivity)getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
         }
         return view;
     }
@@ -228,5 +232,4 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
     public void showToastMessage(String message) {
 
     }
-
 }

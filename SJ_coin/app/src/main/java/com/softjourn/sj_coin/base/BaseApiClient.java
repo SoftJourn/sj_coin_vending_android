@@ -32,5 +32,4 @@ public abstract class BaseApiClient implements Constants {
     public OkHttpClient createOkHttpClient() {
         return new OkHttpClient();
     }
-
 }

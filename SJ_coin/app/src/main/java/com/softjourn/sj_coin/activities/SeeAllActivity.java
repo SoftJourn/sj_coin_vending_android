@@ -46,8 +46,6 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     FeaturedProductItemsAdapter mAdapter;
 
-    private Menu menu;
-
     SearchView mSearch;
 
     Button mFragmentsSortNameButton;
@@ -87,6 +85,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         });
 
         switch (getIntent().getStringExtra(EXTRAS_CATEGORY)){
+
             case SNACKS:
                 navigationSpinner.setSelection(4);
                 this.getFragmentManager().beginTransaction()
@@ -163,12 +162,14 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_search).setVisible(true);
-        this.menu = menu;
+
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         mSearch = (SearchView) menu.findItem(R.id.action_search).getActionView();
 
         mSearch.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        mSearch.setQueryHint("Product Name");
 
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -182,7 +183,6 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
             @Override
             public boolean onQueryTextChange(String query) {
-
                 if (TextUtils.isEmpty(query)) {
                     mAdapter.getFilter().filter("");
                 } else {
@@ -190,6 +190,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
                 }
                 mFragmentsSortNameButton.setEnabled(false);
                 mFragmentsSortPriceButton.setEnabled(false);
+
                 return true;
             }
 
