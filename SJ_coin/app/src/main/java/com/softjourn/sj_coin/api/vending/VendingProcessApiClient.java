@@ -75,4 +75,9 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
         mApiService.buyProductByID(id).enqueue(callback);
     }
 
+    @Override
+    public void addProductToFavorites(String id, Callback<TransactionResponse> callback) {
+        mApiService.addProductToFavorites(id).enqueue(callback);
+    }
+
 }

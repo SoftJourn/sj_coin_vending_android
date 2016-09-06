@@ -54,6 +54,9 @@ public interface ApiService {
     @POST ("v1/machines/0/products/{id}")
     Call<TransactionResponse> buyProductByID(@Path("id") String id);
 
+    @POST ("v1/favorites/{id}")
+    Call<TransactionResponse> addProductToFavorites(@Path("id") String id);
+
 
     /**
      * Coin server endpoints.

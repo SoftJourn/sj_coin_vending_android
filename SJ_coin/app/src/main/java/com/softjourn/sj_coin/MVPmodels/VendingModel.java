@@ -4,6 +4,7 @@ package com.softjourn.sj_coin.MVPmodels;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
+import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
@@ -152,9 +153,33 @@ public class VendingModel extends BaseModel implements Constants {
         mApiProvider.buyProductByID(id, callback);
     }
 
+    public void addProductToFavorite(String id) {
+        createApiManager();
+
+        Callback<TransactionResponse> callback = new Callback<TransactionResponse>() {
+
+            @Override
+            public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
+                if (!response.isSuccessful()) {
+                    mEventBus.post(new OnServerErrorEvent(response.code()));
+                } else {
+                    mEventBus.post(new OnAddedToFavorites(CALL_SUCCEED));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TransactionResponse> call, Throwable t) {
+                mEventBus.post(new OnBoughtEvent(CALL_FAILED));
+            }
+        };
+        mApiProvider.addProductToFavorites(id, callback);
+    }
+
     public void createApiManager() {
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
     }
+
+
 
     public List<Product> loadLocalProductList() {
         return ProductsListSingleton.getInstance().getData();

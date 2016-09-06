@@ -21,6 +21,7 @@ import android.widget.SpinnerAdapter;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
+import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
@@ -282,6 +283,11 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event) {
         navigateToBuyProduct(event.buyProduct());
+    }
+
+    @Subscribe
+    public void OnEvent(OnAddFavoriteEvent event){
+        mPresenter.addToFavorite(String.valueOf(event.addFavorite().getId()));
     }
 
 }

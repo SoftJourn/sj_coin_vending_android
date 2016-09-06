@@ -1,9 +1,12 @@
 package com.softjourn.sj_coin.presenters;
 
+import android.util.Log;
+
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
@@ -142,6 +145,21 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
+    public void addToFavorite(String id) {
+        if (!makeNetworkChecking()) {
+            mView.showNoInternetError();
+        } else {
+            if (checkExpirationDate()) {
+                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            } else {
+                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                mModel.addProductToFavorite(id);
+            }
+        }
+    }
+
+    @Override
     public void sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
         mView.setSortedData(mModel.sortByName(product, isSortingForward));
     }
@@ -216,6 +234,11 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnBalanceReceivedEvent event) {
         mView.updateBalanceAmount(event.getBalance());
+    }
+
+    @Subscribe
+    public void OnEvent(OnAddedToFavorites event){
+        Log.d("Tag","True");
     }
 
 

@@ -66,6 +66,8 @@ public interface VendingContract {
 
         void buyProduct(String id);
 
+        void addToFavorite(String id);
+
         void sortByName(List<CustomizedProduct> product, boolean isSortingForward);
 
         void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);

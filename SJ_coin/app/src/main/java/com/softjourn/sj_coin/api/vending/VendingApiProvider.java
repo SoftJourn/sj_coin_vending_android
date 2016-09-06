@@ -20,4 +20,6 @@ public interface VendingApiProvider {
     void getProductsList(String selectedMachine, Callback<List<Product>> callback);
 
     void buyProductByID(String id, Callback<TransactionResponse> callback);
+
+    void addProductToFavorites(String id, Callback<TransactionResponse> callback);
 }
