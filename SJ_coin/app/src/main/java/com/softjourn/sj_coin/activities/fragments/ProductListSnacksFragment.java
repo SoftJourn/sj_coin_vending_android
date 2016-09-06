@@ -32,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductListSnacksFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
+public class ProductListSnacksFragment extends BaseFragment implements VendingContract.View, Constants, Extras{
 
     public static ProductListSnacksFragment newInstance() {
         return new ProductListSnacksFragment();
@@ -106,7 +106,7 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
         if (getActivity().getLocalClassName().equals("activities.SeeAllActivity"))
         {
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
-            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
+            ((SeeAllActivity)getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
         }
 
         return view;

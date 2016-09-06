@@ -11,4 +11,5 @@
     android:textColor="@color/white"
     android:textSize="18sp"
     android:textStyle="bold"
+    android:textAlignment="center"
     android:textAppearance="?android:attr/textAppearanceListItemSmall" />

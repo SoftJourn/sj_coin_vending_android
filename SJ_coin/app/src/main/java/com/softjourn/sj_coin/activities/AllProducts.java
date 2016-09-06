@@ -180,6 +180,8 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
 
         mSearch.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
 
+        mSearch.setQueryHint("Product Name");
+
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
