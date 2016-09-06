@@ -51,6 +51,8 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     Button mFragmentsSortNameButton;
     Button mFragmentsSortPriceButton;
 
+    Spinner mNavigationSpinner;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -66,16 +68,16 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.activityCategory, R.layout.spinner_dropdown_item);
-        Spinner navigationSpinner = new Spinner(getApplicationContext());
-        navigationSpinner.setAdapter(spinnerAdapter);
-        toolbar.addView(navigationSpinner,0);
+        mNavigationSpinner = new Spinner(getApplicationContext());
+        mNavigationSpinner.setAdapter(spinnerAdapter);
+        toolbar.addView(mNavigationSpinner,0);
         toolbar.canShowOverflowMenu();
         toolbar.showOverflowMenu();
 
-        navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mNavigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                navigationOnCategories(position);
+                Navigation.navigationOnCategoriesSeeAll(position,SeeAllActivity.this);
             }
 
             @Override
@@ -84,78 +86,8 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
             }
         });
 
-        switch (getIntent().getStringExtra(EXTRAS_CATEGORY)){
+        attachFragment(getIntent().getStringExtra(EXTRAS_CATEGORY));
 
-            case SNACKS:
-                navigationSpinner.setSelection(4);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
-                        .commit();
-                break;
-            case DRINKS:
-                navigationSpinner.setSelection(5);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
-                        .commit();
-                break;
-            case BEST_SELLERS:
-                navigationSpinner.setSelection(3);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
-                        .commit();
-                break;
-            case LAST_ADDED:
-                navigationSpinner.setSelection(1);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
-                        .commit();
-                break;
-            case LAST_PURCHASES:
-                navigationSpinner.setSelection(2);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
-                        .commit();
-                break;
-        }
-    }
-
-    public void setButtons(Button button, Button button2){
-        this.mFragmentsSortNameButton = button;
-        this.mFragmentsSortPriceButton = button2;
-    }
-
-    public void navigationOnCategories(int position){
-        switch (position){
-            case 0:
-                Navigation.goToAllProductsActivity(SeeAllActivity.this);
-                finish();
-                break;
-            case 1:
-                SeeAllActivity.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
-                        .commit();
-                break;
-            case 2:
-                SeeAllActivity.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
-                        .commit();
-                break;
-            case 3:
-                SeeAllActivity.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
-                        .commit();
-                break;
-            case 4:
-                SeeAllActivity.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
-                        .commit();
-                break;
-            case 5:
-                SeeAllActivity.this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
-                        .commit();
-                break;
-        }
     }
 
     @Override
@@ -169,7 +101,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
         mSearch.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
 
-        mSearch.setQueryHint("Product Name");
+        mSearch.setQueryHint(getString(R.string.search_hint));
 
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -206,6 +138,51 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         });
 
         return true;
+    }
+
+    private void attachFragment(String stringExtra) {
+        switch (stringExtra){
+
+            case SNACKS:
+                mNavigationSpinner.setSelection(4);
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
+                        .commit();
+                break;
+            case DRINKS:
+                mNavigationSpinner.setSelection(5);
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
+                        .commit();
+                break;
+            case BEST_SELLERS:
+                mNavigationSpinner.setSelection(3);
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
+                        .commit();
+                break;
+            case LAST_ADDED:
+                mNavigationSpinner.setSelection(1);
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
+                        .commit();
+                break;
+            case LAST_PURCHASES:
+                mNavigationSpinner.setSelection(2);
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
+                        .commit();
+                break;
+        }
+    }
+
+    public void setButtons(Button button, Button button2){
+        this.mFragmentsSortNameButton = button;
+        this.mFragmentsSortPriceButton = button2;
+    }
+
+    public void productsList(FeaturedProductItemsAdapter adapter) {
+        mAdapter = adapter;
     }
 
     @Override
@@ -276,9 +253,5 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event){
         navigateToBuyProduct(event.buyProduct());
-    }
-
-    public void productsList(FeaturedProductItemsAdapter adapter) {
-        mAdapter = adapter;
     }
 }

@@ -38,6 +38,10 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
         return new ProductsListBestSellersFragment();
     }
 
+    private VendingContract.Presenter mPresenter;
+    private FeaturedProductItemsAdapter mProductAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     List<BestSeller> mProductList;
 
     List<CustomizedProduct> mCustomizedList;
@@ -67,9 +71,7 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
         sortByPrice(mSortingByPriceForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
     }
 
-    private VendingContract.Presenter mPresenter;
-    private FeaturedProductItemsAdapter mProductAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

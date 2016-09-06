@@ -38,9 +38,15 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
         return new ProductsListLastAddedFragment();
     }
 
+    private VendingContract.Presenter mPresenter;
+    private FeaturedProductItemsAdapter mProductAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     List<LastAdded> mProductList;
 
     List<CustomizedProduct> mCustomizedList;
+
+    Parcelable mListState;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
@@ -64,12 +70,6 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
     public void onClickSortByPrice() {
         sortByPrice(mSortingByPriceForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
     }
-
-    Parcelable mListState;
-
-    private VendingContract.Presenter mPresenter;
-    private FeaturedProductItemsAdapter mProductAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

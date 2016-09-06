@@ -7,7 +7,6 @@ import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
-import com.softjourn.sj_coin.contratcts.LoginContract;
 import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Utils;
@@ -16,11 +15,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginModel extends BaseModel implements LoginContract.Model {
+public class LoginModel extends BaseModel{
 
     private OAuthApiProvider mApiProvider;
 
-    @Override
     public void makeRefreshToken(String refreshToken) {
         createApiManager();
 
@@ -45,7 +43,6 @@ public class LoginModel extends BaseModel implements LoginContract.Model {
 
 
 
-    @Override
     public void makeLoginCall(String userName, String password) {
 
         createApiManager();

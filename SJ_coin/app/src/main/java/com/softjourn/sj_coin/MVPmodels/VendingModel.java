@@ -9,7 +9,6 @@ import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
-import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
@@ -33,11 +32,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VendingModel extends BaseModel implements VendingContract.Model, Constants {
+public class VendingModel extends BaseModel implements Constants {
 
     private VendingApiProvider mApiProvider;
 
-    @Override
     public void callMachinesList() {
 
         createApiManager();
@@ -60,7 +58,6 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
         mApiProvider.getMachines(callback);
     }
 
-    @Override
     public void callConcreteMachine(String machineID) {
 
         createApiManager();
@@ -83,7 +80,6 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
         mApiProvider.getConcreteMachine(machineID, callback);
     }
 
-    @Override
     public void callFeaturedProductsList(String machineID) {
 
         createApiManager();
@@ -109,7 +105,6 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
         mApiProvider.getFeaturedProductsList(machineID, callback);
     }
 
-    @Override
     public void callProductsList(String machineID) {
 
         createApiManager();
@@ -135,7 +130,6 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
         mApiProvider.getProductsList(machineID, callback);
     }
 
-    @Override
     public void buyProductByID(String id) {
         createApiManager();
 
@@ -162,42 +156,34 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
     }
 
-    @Override
     public List<Product> loadLocalProductList() {
         return ProductsListSingleton.getInstance().getData();
     }
 
-    @Override
     public Products loadLocalFeaturedProductList() {
         return FeaturedProductsSingleton.getInstance().getData();
     }
 
-    @Override
     public List<BestSeller> loadBestSellers() {
         return FeaturedProductsSingleton.getInstance().getData().getBestSellers();
     }
 
-    @Override
     public List<LastAdded> loadLastAdded() {
         return FeaturedProductsSingleton.getInstance().getData().getNewProducts();
     }
 
-    @Override
     public List<MyLastPurchase> loadMyLastPurchase() {
         return FeaturedProductsSingleton.getInstance().getData().getMyLastPurchases();
     }
 
-    @Override
     public List<Drink> loadDrink() {
         return FeaturedProductsSingleton.getInstance().getData().getDrink();
     }
 
-    @Override
     public List<Snack> loadSnack() {
         return FeaturedProductsSingleton.getInstance().getData().getSnack();
     }
 
-    @Override
     public List<CustomizedProduct> sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
         if (isSortingForward) {
             Collections.sort(product, new Comparator<CustomizedProduct>() {
@@ -218,7 +204,6 @@ public class VendingModel extends BaseModel implements VendingContract.Model, Co
         }
     }
 
-    @Override
     public List<CustomizedProduct> sortByPrice(List<CustomizedProduct> product, boolean isSortingForward) {
         if (isSortingForward) {
             Collections.sort(product, new Comparator<CustomizedProduct>() {

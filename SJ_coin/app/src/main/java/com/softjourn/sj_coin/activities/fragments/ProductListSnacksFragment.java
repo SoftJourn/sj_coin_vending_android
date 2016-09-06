@@ -38,9 +38,15 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
         return new ProductListSnacksFragment();
     }
 
+    private VendingContract.Presenter mPresenter;
+    private FeaturedProductItemsAdapter mProductAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     List<Snack> mProductList;
 
     List<CustomizedProduct> mCustomizedList;
+
+    Parcelable mListState;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
@@ -65,11 +71,6 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
         sortByPrice(mSortingByPriceForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
     }
 
-    Parcelable mListState;
-
-    private VendingContract.Presenter mPresenter;
-    private FeaturedProductItemsAdapter mProductAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

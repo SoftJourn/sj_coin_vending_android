@@ -7,7 +7,6 @@ import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
-import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
@@ -19,11 +18,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileModel extends BaseModel implements ProfileContract.Model{
+public class ProfileModel extends BaseModel{
 
     private CoinsApiProvider mApiProvider;
 
-    @Override
     public void makeAccountCall() {
         createApiManager();
 
@@ -45,7 +43,6 @@ public class ProfileModel extends BaseModel implements ProfileContract.Model{
         mApiProvider.getBalance(callback);
     }
 
-    @Override
     public void makeBalanceCall() {
         createApiManager();
 
@@ -68,7 +65,7 @@ public class ProfileModel extends BaseModel implements ProfileContract.Model{
     }
 
     //This method is based on dummy data to show work on UI
-    @Override
+
     public List<History> loadHistory() {
 
         History history = new History();

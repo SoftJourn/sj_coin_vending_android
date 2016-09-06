@@ -50,7 +50,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     List<Drink> mProductDrinkList;
     List<Snack> mProductSnackList;
 
-    private Menu menu;
+    private Menu mMenu;
 
     SearchView mSearch;
 
@@ -109,7 +109,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
         navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                navigationOnCategories(position);
+                Navigation.navigationOnCategoriesAllProducts(position, AllProducts.this);
             }
 
             @Override
@@ -122,31 +122,6 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
             mMachineItems.getLayoutManager().onRestoreInstanceState(mListState);
         } else {
             mPresenter.getLocalProductList();
-        }
-    }
-
-    public void navigationOnCategories(int position) {
-        switch (position) {
-            case 1:
-                Navigation.goToSeeAllActivity(this, LAST_ADDED);
-                finish();
-                break;
-            case 2:
-                Navigation.goToSeeAllActivity(this, LAST_PURCHASES);
-                finish();
-                break;
-            case 3:
-                Navigation.goToSeeAllActivity(this, BEST_SELLERS);
-                finish();
-                break;
-            case 4:
-                Navigation.goToSeeAllActivity(this, SNACKS);
-                finish();
-                break;
-            case 5:
-                Navigation.goToSeeAllActivity(this, DRINKS);
-                finish();
-                break;
         }
     }
 
@@ -173,7 +148,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_search).setVisible(true);
-        this.menu = menu;
+        this.mMenu = menu;
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         mSearch = (SearchView) menu.findItem(R.id.action_search).getActionView();

@@ -1,6 +1,5 @@
 package com.softjourn.sj_coin.callbacks;
 
-
 public class OnBalanceReceivedEvent {
 
     private String mBalance;

@@ -30,14 +30,4 @@ public interface ProfileContract {
         boolean checkExpirationDate();
 
     }
-
-    interface Model {
-
-        void makeAccountCall();
-
-        void makeBalanceCall();
-
-        List<History> loadHistory();
-
-    }
 }

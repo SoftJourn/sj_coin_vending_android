@@ -7,8 +7,6 @@ import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.model.products.Snack;
 
 import java.util.List;
@@ -73,36 +71,5 @@ public interface VendingContract {
         void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);
 
         void getBalance();
-    }
-
-    interface Model{
-
-        void buyProductByID(String id);
-
-        void callMachinesList();
-
-        void callConcreteMachine(String machineID);
-
-        void callFeaturedProductsList(String machineID);
-
-        void callProductsList(String machineID);
-
-        List<Product> loadLocalProductList();
-
-        Products loadLocalFeaturedProductList();
-
-        List<BestSeller> loadBestSellers();
-
-        List<LastAdded> loadLastAdded();
-
-        List<MyLastPurchase> loadMyLastPurchase();
-
-        List<Drink> loadDrink();
-
-        List<Snack> loadSnack();
-
-        List<CustomizedProduct> sortByName(List<CustomizedProduct> product, boolean isSortingForward);
-
-        List<CustomizedProduct> sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);
     }
 }

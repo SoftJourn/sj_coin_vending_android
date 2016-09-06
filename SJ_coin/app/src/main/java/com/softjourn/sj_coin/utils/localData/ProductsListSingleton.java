@@ -7,22 +7,22 @@ import java.util.List;
 
 public class ProductsListSingleton {
 
-    private static ProductsListSingleton ourInstance = new ProductsListSingleton();
+    private static ProductsListSingleton sOurInstance = new ProductsListSingleton();
 
-    private List<Product> sProductsList;
+    private List<Product> mProductsList;
 
     private ProductsListSingleton() {
     }
 
     public static ProductsListSingleton getInstance() {
-        return ourInstance;
+        return sOurInstance;
     }
 
     public void setData(List<Product> products){
-        this.sProductsList = products;
+        this.mProductsList = products;
     }
 
     public List<Product> getData(){
-        return sProductsList;
+        return mProductsList;
     }
 }

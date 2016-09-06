@@ -5,22 +5,22 @@ import com.softjourn.sj_coin.model.products.Products;
 
 public class FeaturedProductsSingleton {
 
-    private static FeaturedProductsSingleton ourInstance = new FeaturedProductsSingleton();
+    private static FeaturedProductsSingleton sOurInstance = new FeaturedProductsSingleton();
 
-    private Products sProductsList;
+    private Products mProductsList;
 
     private FeaturedProductsSingleton() {
     }
 
     public static FeaturedProductsSingleton getInstance() {
-        return ourInstance;
+        return sOurInstance;
     }
 
     public void setData(Products products){
-        this.sProductsList = products;
+        this.mProductsList = products;
     }
 
     public Products getData(){
-        return sProductsList;
+        return mProductsList;
     }
 }

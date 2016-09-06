@@ -42,8 +42,6 @@ public class FeaturedProductItemsAdapter extends
 
     private List<CustomizedProduct> mOriginal;
 
-    private List<CustomizedProduct> mSearchedList;
-
     private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
@@ -64,7 +62,6 @@ public class FeaturedProductItemsAdapter extends
             mListProducts.add(new CustomizedProduct(snacks.get(j)));
         }
     }
-
 
     public void setLastAddedData(List<LastAdded> data) {
         mListProducts = new ArrayList<CustomizedProduct>();
@@ -131,7 +128,6 @@ public class FeaturedProductItemsAdapter extends
 
         final CustomizedProduct product = mListProducts.get(position);
 
-        //holder.mProductName.setTag(product.getId());
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
 

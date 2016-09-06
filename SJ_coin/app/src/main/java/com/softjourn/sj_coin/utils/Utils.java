@@ -32,4 +32,9 @@ public class Utils {
         Preferences.storeObject(Constants.SELECTED_MACHINE_ID, machine.getId());
         Preferences.storeObject(Constants.SELECTED_MACHINE_NAME, machine.getName());
     }
+
+    public static void clearUsersData(){
+        Preferences.clearStringObject(Constants.ACCESS_TOKEN);
+        Preferences.clearStringObject(Constants.REFRESH_TOKEN);
+    }
 }

@@ -17,7 +17,7 @@ import java.util.Date;
 public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Constants {
 
     private ProfileContract.View mView;
-    private ProfileContract.Model mModel;
+    private ProfileModel mModel;
     private LoginPresenter mLoginPresenter;
 
     public ProfilePresenter(ProfileContract.View profileView){

@@ -158,6 +158,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mPresenter.getBalance();
     }
 
+
     @Override
     public void showToastMessage(String message) {
 

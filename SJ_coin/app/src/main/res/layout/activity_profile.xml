@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/profile_user_name"
+        android:textStyle="bold"
         android:layout_gravity="center_horizontal" />
 
     <Space
@@ -30,6 +31,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/profile_amount_available"
+        android:textStyle="bold"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -51,7 +53,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/profile_purchase_history"
-        android:text="Purchase History"
+        android:text="@string/purchase_history"
         android:layout_marginBottom="@dimen/category_header_bottom_margin"
         android:layout_gravity="center_horizontal" />
 
