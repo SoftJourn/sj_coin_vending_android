@@ -1,3 +1,88 @@
 <resources>
     <string name="app_name">SJ_coin</string>
+
+    <!--Login-->
+    <string name="screen_login_username_hint">Login</string>
+    <string name="screen_login_password_hint">Password</string>
+    <string name="screen_login_login_button">Login</string>
+    <string name="activity_login_login_failed">Login failed</string>
+    <string name="activity_login_invalid_email">Email should not be empty</string>
+    <string name="activity_login_invalid_password">Password should not be empty</string>
+
+    <!--Vending Activity-->
+    <string name="layout_vending_best_sellers">Best Sellers</string>
+    <string name="layout_vending_new_products">Last Added</string>
+    <string name="layout_vending_snacks">Snacks</string>
+    <string name="layout_vending_drinks">Drinks</string>
+    <string name="layout_vending_last_purchases">Last Purchases</string>
+    <string name="layout_vending_see_all">SEE ALL</string>
+
+    <!-- Item Labels-->
+    <string name="dummy_text_view_text">Dummy text</string>
+    <string name="product_image">Product Image</string>
+    <string name="company_logo">Company Logo</string>
+    <string name="item_coins">Coins</string>
+    <string name="item_product_buy">Buy</string>
+    <string name="activity_product_description">Lorem ipsum dolor sit amet, ut ceteros consulatu nec, usu ex impetus percipit tractatos. Qui omnes dissentiet ea, ei mei paulo voluptua, duis eirmod honestatis te vix. Vel mundi pertinax cu, iudicabit definitiones eu has. Ad eius inermis epicuri nec, erant aperiri sapientem ne quo, mundi conclusionemque sed ut.\n\n Officiis concludaturque pro in. Clita utinam reprimique ne has. Partem fierent inimicus his te, ex pri illum consequuntur. Cu eos voluptatum comprehensam. Cu mel vero nusquam consetetur, duo apeirian corrumpit ea. Et sed soleat viderer pertinacia, justo maiestatis ad ius. Eius soluta consulatu vis ut, nominati sapientem an pri.</string>
+
+    <!--Menu Main-->
+    <string name="main_menu_log_out">Log Out</string>
+    <string name="main_menu_profile">Profile</string>
+    <string name="menu_item_all_products">All Products</string>
+    <string name="menu_item_favorites">Favorites</string>
+    <string name="menu_item_search">Search</string>
+    <string name="menu_item_balance">balance</string>
+
+    <!--Profile Screen-->
+    <string name="profile_name_surname">Name Surname</string>
+    <string name="profile_amount_available">9999</string>
+    <string name="coins">" coins"</string>
+    <string name="activity_profile_username_key">user_name</string>
+
+    <!--Progress Messages-->
+    <string name="progress_loading">Loading</string>
+    <string name="progress_authenticating">Authenticating…</string>
+
+    <!--Server Errors-->
+    <string name="server_error_400">The request was malformed.</string>
+    <string name="server_error_401">Probably something wrong with your credentials.</string>
+    <string name="server_error_404">The requested resource did not exist.</string>
+    <string name="server_error_409">Can\'t process request due to error like such item already presented or not enough money to buy item.</string>
+    <string name="server_error_other">Server error. Please try again later or reinstall the app</string>
+
+    <!--Sorting Button Bar-->
+    <string name="button_sort_name">Name</string>
+    <string name="button_sort_price">Price</string>
+
+    <!--Toast Messages-->
+    <string name="internet_turned_off">Internet should be turned on</string>
+    <string name="error_unexpected">Oops… Something weird. Try Again</string>
+     <string name="activity_product_take_your_order_message">Please take your order</string>
+    <string name="toast_we_can_not_proceed_your_request">Unfortunately we can not proceed with your request. Please try again later</string>
+    <string name="there_are_no_items">Currently there are no products in this category</string>
+
+    <!-- Confirmation Dialog-->
+    <string name="confirm_purchase">Confirm Purchase</string>
+    <string name="confirm_dialog_ok">Ok</string>
+    <string name="confirm_dialog_cancel">Cancel</string>
+    <string name="purchase_history_price">20 Coins</string>
+    <string name="namepurchase_history_name">Name</string>
+    <string name="purchase_history_date">11/11/2011</string>
+    <string name="main_menu_home">Home</string>
+    <string name="your_balance_is">"Your balance is "</string>
+
+    <!-- Purchase History Item Labels-->
+
+
+    <!-- Toolbar Spinner Items-->
+    <string-array name="activityCategory">
+        <item>All Products</item>
+        <item>Last Added</item>
+        <item>Last Purchase</item>
+        <item>Best Sellers</item>
+        <item>See all Snacks</item>
+        <item>See all Drinks</item>
+    </string-array>
+
+
 </resources>

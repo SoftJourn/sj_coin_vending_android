@@ -3,14 +3,169 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.softjourn.sj_coin.MainActivity">
+    android:background="@color/colorScreenBackground">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fitsSystemWindows="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:context=".activities.VendingActivity">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:text="@string/profile_amount_available"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:id="@+id/balance"
+                    android:visibility="invisible"
+                    android:layout_gravity="center_horizontal" />
+
+                <View style="@style/VendingActivitySplitter"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
+                <LinearLayout
+                    android:id="@+id/newProductsHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
+
+                    <TextView
+                        android:id="@+id/textViewLastAdded"
+                        style="@style/VendingActivityCategoryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/layout_vending_new_products" />
+
+                    <TextView
+                        android:id="@+id/textViewLastAddedSeeAll"
+                        style="@style/SeeAllTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_fragment_products_list_new_products"
+                    style="@style/VendingActivityCategoryContainer"/>
+
+
+                <LinearLayout
+                    android:id="@+id/lastPurchaseHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
+
+                    <TextView
+                        android:id="@+id/textViewLastPurchase"
+                        style="@style/VendingActivityCategoryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/layout_vending_last_purchases" />
+
+                    <TextView
+                        android:id="@+id/textViewLastPurchaseSeeAll"
+                        style="@style/SeeAllTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_fragment_products_list_last_purchase"
+                    style="@style/VendingActivityCategoryContainer" />
+
+
+
+                <LinearLayout
+                    android:id="@+id/bestSellersHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
+
+                    <TextView
+                        android:id="@+id/textViewBestSellers"
+                        style="@style/VendingActivityCategoryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/layout_vending_best_sellers" />
+
+                    <TextView
+                        android:id="@+id/textViewBestSellersSeeAll"
+                        style="@style/SeeAllTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_fragment_products_list_best_sellers"
+                    style="@style/VendingActivityCategoryContainer" />
+
+
+
+                <LinearLayout
+                    android:id="@+id/snacksHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
+
+                    <TextView
+                        android:id="@+id/textViewSnacks"
+                        style="@style/VendingActivityCategoryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/layout_vending_snacks" />
+
+                    <TextView
+                        android:id="@+id/textViewSnacksSeeAll"
+                        style="@style/SeeAllTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_fragment_products_list_snacks"
+                    style="@style/VendingActivityCategoryContainer" />
+
+
+
+                <LinearLayout
+                    android:id="@+id/drinksHeader"
+                    style="@style/VendingActivityLayoutCategoryHeaders">
+
+                    <TextView
+                        android:id="@+id/textViewDrinks"
+                        style="@style/VendingActivityCategoryText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/layout_vending_drinks" />
+
+                    <TextView
+                        android:id="@+id/textViewDrinksSeeAll"
+                        style="@style/SeeAllTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/container_fragment_products_list_drinks"
+                    style="@style/VendingActivityCategoryContainer" />
+
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>
