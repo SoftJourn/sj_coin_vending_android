@@ -20,6 +20,8 @@ import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
+import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
 
 import java.util.List;
 
@@ -89,6 +91,8 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
+        FavoritesListSingleton.getInstance().onDestroy();
+        FeaturedProductsSingleton.getInstance().onDestroy();
         loadProductList();
         mSwipeRefreshLayout.setRefreshing(false);
     }

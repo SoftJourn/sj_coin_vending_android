@@ -39,5 +39,9 @@ public class FavoritesListSingleton {
             }
         }
     }
+
+    public void onDestroy(){
+        mFavoritesList.clear();
+    }
 }
 
