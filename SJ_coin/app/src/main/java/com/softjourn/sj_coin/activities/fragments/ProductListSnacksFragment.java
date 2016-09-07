@@ -221,6 +221,11 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
     }
 
     @Override
+    public void changeFavoriteIcon() {
+        mProductAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void showToastMessage(String message) {
 
     }

@@ -178,6 +178,10 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
                 ((VendingActivity) getActivity()).hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
             } catch (ClassCastException e) {
                 ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+
+                assert mButtonSortByName != null && mButtonSortByPrice!=null;
+                mButtonSortByName.setEnabled(false);
+                mButtonSortByPrice.setEnabled(false);
             }
         }
     }
@@ -226,6 +230,11 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
     @Override
     public void updateBalanceAmount(String amount) {
 
+    }
+
+    @Override
+    public void changeFavoriteIcon() {
+        mProductAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -6,7 +6,7 @@
     <string name="screen_login_password_hint">Password</string>
     <string name="screen_login_login_button">Login</string>
     <string name="activity_login_login_failed">Login failed</string>
-    <string name="activity_login_invalid_email">Email should not be empty</string>
+    <string name="activity_login_invalid_email">Login should not be empty</string>
     <string name="activity_login_invalid_password">Password should not be empty</string>
 
     <!--Vending Activity-->
@@ -29,7 +29,7 @@
     <!--Menu Main-->
     <string name="main_menu_log_out">Log Out</string>
     <string name="main_menu_profile">Profile</string>
-    <string name="menu_item_all_products">All Products</string>
+    <string name="menu_item_all_products">All Items</string>
     <string name="menu_item_favorites">Favorites</string>
     <string name="menu_item_search">Search</string>
     <string name="main_menu_home">Home</string>
@@ -76,9 +76,8 @@
 
     <!-- Toolbar Spinner Items-->
     <string-array name="activityCategory">
-        <item>All Products</item>
+        <item>All Items</item>
         <item>Last Added</item>
-        <item>Last Purchase</item>
         <item>Best Sellers</item>
         <item>Snacks</item>
         <item>Drinks</item>

@@ -1,9 +1,10 @@
 package com.softjourn.sj_coin.callbacks;
 
-public class OnAddedToFavorites {
+public class OnRemovedFromFavorites {
+
     private String mId;
 
-    public OnAddedToFavorites(String id){
+    public OnRemovedFromFavorites(String id){
         this.mId = id;
     }
 

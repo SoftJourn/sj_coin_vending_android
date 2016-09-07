@@ -36,7 +36,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         } else {
             if (checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Constants.REFRESH_TOKEN);
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.makeAccountCall();
@@ -50,7 +50,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
             mView.showNoInternetError();
         } else {
             if (checkExpirationDate()) {
-                refreshToken(Constants.REFRESH_TOKEN);
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mModel.makeBalanceCall();
             }

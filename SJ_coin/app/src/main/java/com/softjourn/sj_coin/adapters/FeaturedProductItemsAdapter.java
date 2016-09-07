@@ -17,14 +17,17 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
+import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
+import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,6 +46,8 @@ public class FeaturedProductItemsAdapter extends
     private List<CustomizedProduct> mOriginal;
 
     private String mCoins = " " + App.getContext().getString(R.string.item_coins);
+
+    private final static List<Favorites> sFavoritesList = FavoritesListSingleton.getInstance().getData();
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
 
@@ -124,7 +129,7 @@ public class FeaturedProductItemsAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(FeaturedViewHolder holder, final int position) {
+    public void onBindViewHolder(final FeaturedViewHolder holder, final int position) {
 
         final CustomizedProduct product = mListProducts.get(position);
 
@@ -153,11 +158,39 @@ public class FeaturedProductItemsAdapter extends
             });
         }
 
+
+        /**
+         * Here We compare ID of product from general products list
+         * and ID of favorites list
+         * When IDs are the same we change image of Favorites accordingly.
+         * Also we differentiate callbacks on Click on Image depends on
+         * if this product is already in Favorites to remove or add product
+         * to favorites list
+         */
         if (holder.mAddFavorite != null) {
+            holder.mAddFavorite.setTag(false);
+            if (sFavoritesList.size()>0) {
+                for (int i = 0; i < sFavoritesList.size(); i++) {
+                    if (sFavoritesList.get(i).getId() == product.getId()) {
+                        Picasso.with(App.getContext()).load(R.drawable.ic_favorite_black_36dp).into(holder.mAddFavorite);
+                        holder.mAddFavorite.setTag(true);
+                        break;
+                    } else {
+                        Picasso.with(App.getContext()).load(R.drawable.ic_favorite_border).into(holder.mAddFavorite);
+                        holder.mAddFavorite.setTag(false);
+                    }
+                }
+            } else {
+                Picasso.with(App.getContext()).load(R.drawable.ic_favorite_border).into(holder.mAddFavorite);
+            }
             holder.mAddFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(position)));
+                    if (!(Boolean) holder.mAddFavorite.getTag()) {
+                        EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(position)));
+                    } else {
+                        EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(position)));
+                    }
                 }
             });
         }

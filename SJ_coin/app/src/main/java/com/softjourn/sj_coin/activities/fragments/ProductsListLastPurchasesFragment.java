@@ -184,7 +184,12 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
             try {
                 ((VendingActivity) getActivity()).hideContainer(R.id.lastPurchaseHeader, R.id.container_fragment_products_list_last_purchase);
             } catch (ClassCastException e) {
-                ((SeeAllActivity)getActivity()).showToast("There is currently no Products in chosen category");}
+                ((SeeAllActivity)getActivity()).showToast("There is currently no Products in chosen category");
+
+                assert mButtonSortByName != null && mButtonSortByPrice!=null;
+                mButtonSortByName.setEnabled(false);
+                mButtonSortByPrice.setEnabled(false);
+            }
 
         }
     }
@@ -222,6 +227,11 @@ public class ProductsListLastPurchasesFragment extends BaseFragment implements V
     @Override
     public void updateBalanceAmount(String amount) {
 
+    }
+
+    @Override
+    public void changeFavoriteIcon() {
+        mProductAdapter.notifyDataSetChanged();
     }
 
     @Override

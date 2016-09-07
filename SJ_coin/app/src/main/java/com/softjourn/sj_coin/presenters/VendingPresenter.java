@@ -1,7 +1,5 @@
 package com.softjourn.sj_coin.presenters;
 
-import android.util.Log;
-
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
@@ -9,15 +7,18 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
+import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
+import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Connections;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
 import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
 
@@ -160,6 +161,21 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
+    public void removeFromFavorite(String id) {
+        if (!makeNetworkChecking()) {
+            mView.showNoInternetError();
+        } else {
+            if (checkExpirationDate()) {
+                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            } else {
+                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                mModel.removeProductFromFavorites(id);
+            }
+        }
+    }
+
+    @Override
     public void sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
         mView.setSortedData(mModel.sortByName(product, isSortingForward));
     }
@@ -181,6 +197,8 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             }
         }
     }
+
+
 
     @Override
     public void refreshToken(String refreshToken) {
@@ -212,8 +230,14 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
-        mView.hideProgress();
         FeaturedProductsSingleton.getInstance().setData(event.getProductsList());
+        mModel.getListFavorites();
+    }
+
+    @Subscribe
+    public void OnEvent(OnFavoritesListReceived event){
+        mView.hideProgress();
+        FavoritesListSingleton.getInstance().setData(event.getFavorites());
         mView.navigateToFragments();
     }
 
@@ -238,7 +262,16 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnAddedToFavorites event){
-        Log.d("Tag","True");
+        mView.hideProgress();
+        FavoritesListSingleton.getInstance().LocalAddToFavorites(event.getId());
+        mView.changeFavoriteIcon();
+    }
+
+    @Subscribe
+    public void OnEvent(OnRemovedFromFavorites event){
+        mView.hideProgress();
+        FavoritesListSingleton.getInstance().LocalRemoveFromFavorites(event.getId());
+        mView.changeFavoriteIcon();
     }
 
 

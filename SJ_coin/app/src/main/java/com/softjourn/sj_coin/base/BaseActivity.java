@@ -79,6 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
         switch (item.getItemId()) {
             case R.id.home:
                 Navigation.goToVendingActivity(this);
+                finish();
                 return true;
             case R.id.allProducts:
                 Navigation.goToAllProductsActivity(this);

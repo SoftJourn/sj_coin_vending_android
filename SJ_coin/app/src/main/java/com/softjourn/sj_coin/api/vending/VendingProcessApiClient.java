@@ -3,8 +3,8 @@ package com.softjourn.sj_coin.api.vending;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.base.BaseApiClient;
-import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -71,13 +71,22 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
     }
 
     @Override
-    public void buyProductByID(String id, Callback<TransactionResponse> callback) {
+    public void getListFavorites(Callback<List<Favorites>> callback) {
+        mApiService.getListFavorites().enqueue(callback);
+    }
+
+    @Override
+    public void buyProductByID(String id, Callback<Void> callback) {
         mApiService.buyProductByID(id).enqueue(callback);
     }
 
     @Override
-    public void addProductToFavorites(String id, Callback<TransactionResponse> callback) {
+    public void addProductToFavorites(String id, Callback<Void> callback) {
         mApiService.addProductToFavorites(id).enqueue(callback);
     }
 
+    @Override
+    public void removeFromFavorites(String id, Callback<Void> callback) {
+        mApiService.removeFromFavorites(id).enqueue(callback);
+    }
 }
