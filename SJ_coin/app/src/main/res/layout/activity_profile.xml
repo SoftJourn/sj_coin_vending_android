@@ -40,6 +40,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/coins"
         android:id="@+id/profile_coins_label"
+        android:visibility="invisible"
         android:layout_gravity="center_horizontal" />
 
     <Space
