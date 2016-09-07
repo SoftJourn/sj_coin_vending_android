@@ -40,6 +40,8 @@ public interface VendingContract {
         void loadUserBalance();
 
         void updateBalanceAmount(String amount);
+
+        void changeFavoriteIcon();
     }
 
     interface Presenter extends BasePresenter{
@@ -66,10 +68,14 @@ public interface VendingContract {
 
         void buyProduct(String id);
 
+        void addToFavorite(String id);
+
         void sortByName(List<CustomizedProduct> product, boolean isSortingForward);
 
         void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);
 
         void getBalance();
+
+        void removeFromFavorite(String id);
     }
 }

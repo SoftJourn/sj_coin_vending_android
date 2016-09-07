@@ -1,7 +1,7 @@
 package com.softjourn.sj_coin.api.vending;
 
-import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Products;
 
@@ -19,5 +19,11 @@ public interface VendingApiProvider {
 
     void getProductsList(String selectedMachine, Callback<List<Product>> callback);
 
-    void buyProductByID(String id, Callback<TransactionResponse> callback);
+    void buyProductByID(String id, Callback<Void> callback);
+
+    void addProductToFavorites(String id, Callback<Void> callback);
+
+    void getListFavorites(Callback<List<Favorites>> callback);
+
+    void removeFromFavorites(String id, Callback<Void> callback);
 }

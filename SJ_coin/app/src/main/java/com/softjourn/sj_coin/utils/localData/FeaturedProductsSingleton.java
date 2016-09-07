@@ -23,4 +23,8 @@ public class FeaturedProductsSingleton {
     public Products getData(){
         return mProductsList;
     }
+
+    public void onDestroy(){
+        mProductsList = null;
+    }
 }

@@ -3,6 +3,7 @@ package com.softjourn.sj_coin.activities;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
@@ -20,6 +21,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProfileActivity extends BaseActivity implements ProfileContract.View, Constants {
+
+    @Bind(R.id.profile_coins_label)
+    TextView mCoinsLabel;
 
     @Bind(R.id.profile_user_name)
     TextView mUserName;
@@ -68,6 +72,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
     @Override
     public void showBalance(Account account) {
+        mCoinsLabel.setVisibility(View.VISIBLE);
         mUserBalance.setText(account.getAmount());
     }
 

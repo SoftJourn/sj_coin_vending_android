@@ -4,16 +4,19 @@ package com.softjourn.sj_coin.MVPmodels;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
+import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
+import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
+import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.TransactionResponse;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Product;
@@ -133,10 +136,10 @@ public class VendingModel extends BaseModel implements Constants {
     public void buyProductByID(String id) {
         createApiManager();
 
-        Callback<TransactionResponse> callback = new Callback<TransactionResponse>() {
+        Callback<Void> callback = new Callback<Void>() {
 
             @Override
-            public void onResponse(Call<TransactionResponse> call, Response<TransactionResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
                     mEventBus.post(new OnServerErrorEvent(response.code()));
                 } else {
@@ -145,11 +148,77 @@ public class VendingModel extends BaseModel implements Constants {
             }
 
             @Override
-            public void onFailure(Call<TransactionResponse> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 mEventBus.post(new OnBoughtEvent(CALL_FAILED));
             }
         };
         mApiProvider.buyProductByID(id, callback);
+    }
+
+    public void getListFavorites() {
+
+        createApiManager();
+
+        Callback<List<Favorites>> callback = new Callback<List<Favorites>>() {
+            @Override
+            public void onResponse(Call<List<Favorites>> call, Response<List<Favorites>> response) {
+                if (!response.isSuccessful()) {
+                    mEventBus.post(new OnServerErrorEvent(response.code()));
+                } else {
+                    List<Favorites> favorites = response.body();
+                    mEventBus.post(new OnFavoritesListReceived(favorites));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Favorites>> call, Throwable t) {
+            }
+        };
+        mApiProvider.getListFavorites(callback);
+    }
+
+    public void addProductToFavorite(final String id) {
+        createApiManager();
+
+        Callback<Void> callback = new Callback<Void>() {
+
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    mEventBus.post(new OnServerErrorEvent(response.code()));
+                } else {
+                    mEventBus.post(new OnAddedToFavorites(id));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                mEventBus.post(new OnBoughtEvent(CALL_FAILED));
+            }
+        };
+        mApiProvider.addProductToFavorites(id, callback);
+    }
+
+    public void removeProductFromFavorites(final String id) {
+        createApiManager();
+
+        Callback<Void> callback = new Callback<Void>() {
+
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    mEventBus.post(new OnServerErrorEvent(response.code()));
+                } else {
+                    mEventBus.post(new OnRemovedFromFavorites(id));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                mEventBus.post(new OnBoughtEvent(CALL_FAILED));
+            }
+        };
+        mApiProvider.removeFromFavorites(id, callback);
     }
 
     public void createApiManager() {

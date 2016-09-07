@@ -63,18 +63,14 @@ public class Navigation implements Constants,Extras {
                 context.finish();
                 break;
             case 2:
-                Navigation.goToSeeAllActivity(context, LAST_PURCHASES);
-                context.finish();
-                break;
-            case 3:
                 Navigation.goToSeeAllActivity(context, BEST_SELLERS);
                 context.finish();
                 break;
-            case 4:
+            case 3:
                 Navigation.goToSeeAllActivity(context, SNACKS);
                 context.finish();
                 break;
-            case 5:
+            case 4:
                 Navigation.goToSeeAllActivity(context, DRINKS);
                 context.finish();
                 break;
@@ -94,20 +90,15 @@ public class Navigation implements Constants,Extras {
                 break;
             case 2:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
             case 3:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
-                        .commit();
-                break;
-            case 4:
-                context.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
                         .commit();
                 break;
-            case 5:
+            case 4:
                 context.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
                         .commit();

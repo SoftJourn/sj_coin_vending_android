@@ -183,6 +183,10 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
                 ((VendingActivity) getActivity()).hideContainer(R.id.bestSellersHeader, R.id.container_fragment_products_list_best_sellers);
             } catch (ClassCastException e) {
                 ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+
+                assert mButtonSortByName != null && mButtonSortByPrice!=null;
+                mButtonSortByName.setEnabled(false);
+                mButtonSortByPrice.setEnabled(false);
             }
         }
     }
@@ -225,6 +229,11 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
     @Override
     public void updateBalanceAmount(String amount) {
 
+    }
+
+    @Override
+    public void changeFavoriteIcon() {
+        mProductAdapter.notifyDataSetChanged();
     }
 
     @Override
