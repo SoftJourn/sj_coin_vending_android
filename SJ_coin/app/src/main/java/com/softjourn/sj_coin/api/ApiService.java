@@ -52,7 +52,7 @@ public interface ApiService {
     @GET("v1/machines/{machineID}/products")
     Call<List<Product>> getProductsList(@Path("machineID") String machineID);
 
-    @POST ("v1/machines/0/products/{id}")
+    @POST ("v1/machines/3/products/{id}")
     Call<Void> buyProductByID(@Path("id") String id);
 
     @GET ("v1/favorites")

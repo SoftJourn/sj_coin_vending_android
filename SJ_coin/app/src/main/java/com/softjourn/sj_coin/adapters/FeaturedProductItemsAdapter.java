@@ -23,7 +23,6 @@ import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
@@ -82,13 +81,6 @@ public class FeaturedProductItemsAdapter extends
         }
     }
 
-    public void setMyLastPurchaseData(List<MyLastPurchase> data) {
-        mListProducts = new ArrayList<CustomizedProduct>();
-        for (int i = 0; i < data.size(); i++) {
-            mListProducts.add(new CustomizedProduct(data.get(i)));
-        }
-    }
-
     public void setSnackData(List<Snack> data) {
         mListProducts = new ArrayList<CustomizedProduct>();
         for (int i = 0; i < data.size(); i++) {
@@ -114,6 +106,9 @@ public class FeaturedProductItemsAdapter extends
 
     @Override
     public FeaturedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        Picasso picassoTrustAdapter = PicassoTrustAdapter.getInstance(App.getContext());
+
         View v;
         switch (mRecyclerViewType) {
             case "DEFAULT":
@@ -169,10 +164,10 @@ public class FeaturedProductItemsAdapter extends
          */
         if (holder.mAddFavorite != null) {
             holder.mAddFavorite.setTag(false);
-            if (sFavoritesList.size()>0) {
-                for (int i = 0; i < sFavoritesList.size(); i++) {
-                    if (sFavoritesList.get(i).getId() == product.getId()) {
-                        Picasso.with(App.getContext()).load(R.drawable.ic_favorite_black_36dp).into(holder.mAddFavorite);
+            if (FavoritesListSingleton.getInstance().getData().size()>0) {
+                for (int i = 0; i < FavoritesListSingleton.getInstance().getData().size(); i++) {
+                    if (FavoritesListSingleton.getInstance().getData().get(i).getId() == product.getId()) {
+                        Picasso.with(App.getContext()).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
                         holder.mAddFavorite.setTag(true);
                         break;
                     } else {

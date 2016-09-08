@@ -43,19 +43,20 @@ public class CustomHttpClient implements Constants{
                         }
 
                         public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                            try {
+                            /*try {
                                 origTrustManager.checkClientTrusted(certs, authType);
                             } catch (CertificateException e) {
-                                Log.d("Tag", e.toString());
-                            }
+                                Log.d("Tag", Log.getStackTraceString(e));
+                                e.printStackTrace();
+                            }*/
                         }
 
                         public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                            try {
+                            /*try {
                                 origTrustManager.checkServerTrusted(certs, authType);
                             } catch (CertificateException e) {
-                                Log.d("Tag", e.toString());
-                            }
+                                Log.d("Tag", Log.getStackTraceString(e));
+                            }*/
                         }
                     }
             };

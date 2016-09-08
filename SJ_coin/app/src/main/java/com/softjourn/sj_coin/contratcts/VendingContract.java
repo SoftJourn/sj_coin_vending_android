@@ -6,7 +6,6 @@ import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 
 import java.util.List;
@@ -24,8 +23,6 @@ public interface VendingContract {
         void loadLastAddedData(List<LastAdded> data);
 
         void loadBestSellerData(List<BestSeller> data);
-
-        void loadMyLastPurchaseData(List<MyLastPurchase> data);
 
         void loadSnackData(List<Snack> data);
 
@@ -53,8 +50,6 @@ public interface VendingContract {
         void getLocalLastAddedProducts();
 
         void getLocalBestSellers();
-
-        void getLocalMyLastPurchase();
 
         void getLocalSnacks();
 

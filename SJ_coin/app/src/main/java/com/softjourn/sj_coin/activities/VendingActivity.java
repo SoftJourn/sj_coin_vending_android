@@ -15,13 +15,10 @@ import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
-import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
-import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
 
 import java.util.List;
 
@@ -40,15 +37,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewLastPurchaseSeeAll,
-            R.id.textViewBestSellersSeeAll, R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
+    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll,
+            R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
     public void seeAll(View v) {
         switch (v.getId()) {
             case R.id.textViewLastAddedSeeAll:
                 Navigation.goToSeeAllActivity(this, LAST_ADDED);
-                break;
-            case R.id.textViewLastPurchaseSeeAll:
-                Navigation.goToSeeAllActivity(this, LAST_PURCHASES);
                 break;
             case R.id.textViewBestSellersSeeAll:
                 Navigation.goToSeeAllActivity(this, BEST_SELLERS);
@@ -91,8 +85,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        FavoritesListSingleton.getInstance().onDestroy();
-        FeaturedProductsSingleton.getInstance().onDestroy();
         loadProductList();
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -124,11 +116,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void loadBestSellerData(List<BestSeller> data) {
-
-    }
-
-    @Override
-    public void loadMyLastPurchaseData(List<MyLastPurchase> data) {
 
     }
 
@@ -165,11 +152,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void showToastMessage(String message) {
-
+        super.showToast(message);
     }
 
     private void loadProductList() {
         mPresenter.getFeaturedProductsList(MACHINE_ID);
+
         loadUserBalance();
     }
 

@@ -86,6 +86,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.callFeaturedProductsList(mMachineID);
+                mModel.getListFavorites();
             }
         }
     }
@@ -94,7 +95,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void getLocalFeaturedProductsList() {
         getLocalLastAddedProducts();
         getLocalBestSellers();
-        getLocalMyLastPurchase();
         getLocalSnacks();
         getLocalDrinks();
     }
@@ -107,11 +107,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getLocalBestSellers() {
         mView.loadBestSellerData(mModel.loadBestSellers());
-    }
-
-    @Override
-    public void getLocalMyLastPurchase() {
-        mView.loadMyLastPurchaseData(mModel.loadMyLastPurchase());
     }
 
     @Override
@@ -199,7 +194,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
 
-
     @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
@@ -231,23 +225,20 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
         FeaturedProductsSingleton.getInstance().setData(event.getProductsList());
-        mModel.getListFavorites();
-    }
-
-    @Subscribe
-    public void OnEvent(OnFavoritesListReceived event){
-        mView.hideProgress();
-        FavoritesListSingleton.getInstance().setData(event.getFavorites());
         mView.navigateToFragments();
     }
 
     @Subscribe
+    public void OnEvent(OnFavoritesListReceived event) {
+        FavoritesListSingleton.getInstance().setData(event.getFavorites());
+        mView.hideProgress();
+    }
+
+    @Subscribe
     public void OnEvent(OnBoughtEvent event) {
-        if (event.isSuccess()) {
-            mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
-        } else {
-            mView.showToastMessage(App.getContext().getString(R.string.toast_we_can_not_proceed_your_request));
-        }
+        mView.hideProgress();
+        mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
+        mProfileModel.makeBalanceCall();
     }
 
     @Subscribe
@@ -261,14 +252,14 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Subscribe
-    public void OnEvent(OnAddedToFavorites event){
+    public void OnEvent(OnAddedToFavorites event) {
         mView.hideProgress();
         FavoritesListSingleton.getInstance().LocalAddToFavorites(event.getId());
         mView.changeFavoriteIcon();
     }
 
     @Subscribe
-    public void OnEvent(OnRemovedFromFavorites event){
+    public void OnEvent(OnRemovedFromFavorites event) {
         mView.hideProgress();
         FavoritesListSingleton.getInstance().LocalRemoveFromFavorites(event.getId());
         mView.changeFavoriteIcon();
