@@ -15,13 +15,11 @@ import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
 
-import java.io.File;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,15 +37,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewLastPurchaseSeeAll,
-            R.id.textViewBestSellersSeeAll, R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
+    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll,
+            R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
     public void seeAll(View v) {
         switch (v.getId()) {
             case R.id.textViewLastAddedSeeAll:
                 Navigation.goToSeeAllActivity(this, LAST_ADDED);
-                break;
-            case R.id.textViewLastPurchaseSeeAll:
-                Navigation.goToSeeAllActivity(this, LAST_PURCHASES);
                 break;
             case R.id.textViewBestSellersSeeAll:
                 Navigation.goToSeeAllActivity(this, BEST_SELLERS);
@@ -125,11 +120,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadMyLastPurchaseData(List<MyLastPurchase> data) {
-
-    }
-
-    @Override
     public void loadSnackData(List<Snack> data) {
 
     }
@@ -162,7 +152,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void showToastMessage(String message) {
-
+        super.showToast(message);
     }
 
     private void loadProductList() {
@@ -199,25 +189,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void changeFavoriteIcon() {
 
-    }
-
-
-
-    public boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-            return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
-            return dir.delete();
-        } else {
-            return false;
-        }
     }
 }
 

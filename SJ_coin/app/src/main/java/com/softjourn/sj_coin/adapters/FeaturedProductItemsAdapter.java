@@ -23,7 +23,6 @@ import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
@@ -76,13 +75,6 @@ public class FeaturedProductItemsAdapter extends
     }
 
     public void setBestSellerData(List<BestSeller> data) {
-        mListProducts = new ArrayList<CustomizedProduct>();
-        for (int i = 0; i < data.size(); i++) {
-            mListProducts.add(new CustomizedProduct(data.get(i)));
-        }
-    }
-
-    public void setMyLastPurchaseData(List<MyLastPurchase> data) {
         mListProducts = new ArrayList<CustomizedProduct>();
         for (int i = 0; i < data.size(); i++) {
             mListProducts.add(new CustomizedProduct(data.get(i)));

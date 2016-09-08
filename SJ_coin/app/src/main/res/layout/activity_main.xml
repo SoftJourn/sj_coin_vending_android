@@ -61,32 +61,6 @@
                     android:id="@+id/container_fragment_products_list_new_products"
                     style="@style/VendingActivityCategoryContainer"/>
 
-
-                <LinearLayout
-                    android:id="@+id/lastPurchaseHeader"
-                    style="@style/VendingActivityLayoutCategoryHeaders">
-
-                    <TextView
-                        android:id="@+id/textViewLastPurchase"
-                        style="@style/VendingActivityCategoryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/layout_vending_last_purchases" />
-
-                    <TextView
-                        android:id="@+id/textViewLastPurchaseSeeAll"
-                        style="@style/SeeAllTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/container_fragment_products_list_last_purchase"
-                    style="@style/VendingActivityCategoryContainer" />
-
-
-
                 <LinearLayout
                     android:id="@+id/bestSellersHeader"
                     style="@style/VendingActivityLayoutCategoryHeaders">

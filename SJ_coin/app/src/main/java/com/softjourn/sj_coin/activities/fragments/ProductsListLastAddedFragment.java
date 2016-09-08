@@ -20,7 +20,6 @@ import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -192,11 +191,6 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
     }
 
     @Override
-    public void loadMyLastPurchaseData(List<MyLastPurchase> data) {
-
-    }
-
-    @Override
     public void loadSnackData(List<Snack> data) {
 
     }
@@ -239,6 +233,6 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
 
     @Override
     public void showToastMessage(String message) {
-
+        super.showToast(message);
     }
 }

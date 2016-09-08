@@ -147,6 +147,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
             @Override
             public void onClick(View v) {
                 presenter.buyProduct(String.valueOf(product.getId()));
+                dialog.dismiss();
             }
         });
 

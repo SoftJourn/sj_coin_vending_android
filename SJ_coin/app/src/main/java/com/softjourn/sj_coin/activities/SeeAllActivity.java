@@ -20,7 +20,6 @@ import com.softjourn.sj_coin.activities.fragments.ProductListDrinksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListLastAddedFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductsListLastPurchasesFragment;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
@@ -31,7 +30,6 @@ import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
@@ -42,7 +40,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-public class SeeAllActivity extends BaseActivity implements VendingContract.View,Constants, Extras{
+public class SeeAllActivity extends BaseActivity implements VendingContract.View, Constants, Extras {
 
     private VendingContract.Presenter mPresenter;
 
@@ -72,14 +70,14 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.activityCategory, R.layout.spinner_dropdown_item);
         mNavigationSpinner = new Spinner(getApplicationContext());
         mNavigationSpinner.setAdapter(spinnerAdapter);
-        toolbar.addView(mNavigationSpinner,0);
+        toolbar.addView(mNavigationSpinner, 0);
         toolbar.canShowOverflowMenu();
         toolbar.showOverflowMenu();
 
         mNavigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Navigation.navigationOnCategoriesSeeAll(position,SeeAllActivity.this);
+                Navigation.navigationOnCategoriesSeeAll(position, SeeAllActivity.this);
             }
 
             @Override
@@ -109,7 +107,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(SeeAllActivity.this.getCurrentFocus().getWindowToken(), 0);
                 mSearch.clearFocus();
                 return true;
@@ -143,22 +141,22 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     private void attachFragment(String stringExtra) {
-        switch (stringExtra){
+        switch (stringExtra) {
 
             case SNACKS:
-                mNavigationSpinner.setSelection(4);
+                mNavigationSpinner.setSelection(3);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
                         .commit();
                 break;
             case DRINKS:
-                mNavigationSpinner.setSelection(5);
+                mNavigationSpinner.setSelection(4);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
                         .commit();
                 break;
             case BEST_SELLERS:
-                mNavigationSpinner.setSelection(3);
+                mNavigationSpinner.setSelection(2);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
@@ -169,16 +167,10 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
                         .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
                 break;
-            case LAST_PURCHASES:
-                mNavigationSpinner.setSelection(2);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListLastPurchasesFragment.newInstance(), TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT)
-                        .commit();
-                break;
         }
     }
 
-    public void setButtons(Button button, Button button2){
+    public void setButtons(Button button, Button button2) {
         this.mFragmentsSortNameButton = button;
         this.mFragmentsSortPriceButton = button2;
     }
@@ -188,7 +180,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
-    public void loadData(List<Drink> drinks,List<Snack> snacks) {
+    public void loadData(List<Drink> drinks, List<Snack> snacks) {
 
     }
 
@@ -199,11 +191,6 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void loadBestSellerData(List<BestSeller> data) {
-
-    }
-
-    @Override
-    public void loadMyLastPurchaseData(List<MyLastPurchase> data) {
 
     }
 
@@ -219,7 +206,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void navigateToBuyProduct(CustomizedProduct product) {
-        onCreateDialog(product,mPresenter);
+        onCreateDialog(product, mPresenter);
     }
 
     @Override
@@ -249,7 +236,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void showToastMessage(String message) {
-
+        super.showToast(message);
     }
 
     @Override
@@ -258,17 +245,17 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Subscribe
-    public void OnEvent(OnProductBuyClickEvent event){
+    public void OnEvent(OnProductBuyClickEvent event) {
         navigateToBuyProduct(event.buyProduct());
     }
 
     @Subscribe
-    public void OnEvent(OnAddFavoriteEvent event){
+    public void OnEvent(OnAddFavoriteEvent event) {
         mPresenter.addToFavorite(String.valueOf(event.addFavorite().getId()));
     }
 
     @Subscribe
-    public void OnEvent(OnRemoveFavoriteEvent event){
+    public void OnEvent(OnRemoveFavoriteEvent event) {
         mPresenter.removeFromFavorite(String.valueOf(event.removeFavorite().getId()));
     }
 }
