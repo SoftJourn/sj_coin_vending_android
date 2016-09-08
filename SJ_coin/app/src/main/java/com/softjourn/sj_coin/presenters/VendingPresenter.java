@@ -86,6 +86,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.callFeaturedProductsList(mMachineID);
+                mModel.getListFavorites();
             }
         }
     }
@@ -230,15 +231,14 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
+        mView.hideProgress();
         FeaturedProductsSingleton.getInstance().setData(event.getProductsList());
-        mModel.getListFavorites();
+        mView.navigateToFragments();
     }
 
     @Subscribe
     public void OnEvent(OnFavoritesListReceived event){
-        mView.hideProgress();
         FavoritesListSingleton.getInstance().setData(event.getFavorites());
-        mView.navigateToFragments();
     }
 
     @Subscribe

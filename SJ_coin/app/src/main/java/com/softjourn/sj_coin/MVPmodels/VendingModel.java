@@ -215,7 +215,7 @@ public class VendingModel extends BaseModel implements Constants {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                mEventBus.post(new OnBoughtEvent(CALL_FAILED));
+
             }
         };
         mApiProvider.removeFromFavorites(id, callback);

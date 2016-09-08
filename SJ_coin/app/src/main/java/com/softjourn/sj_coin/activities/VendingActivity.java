@@ -20,9 +20,8 @@ import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Navigation;
-import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
-import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.Bind;
@@ -91,8 +90,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        FavoritesListSingleton.getInstance().onDestroy();
-        FeaturedProductsSingleton.getInstance().onDestroy();
         loadProductList();
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -170,6 +167,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     private void loadProductList() {
         mPresenter.getFeaturedProductsList(MACHINE_ID);
+
         loadUserBalance();
     }
 
@@ -201,6 +199,25 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void changeFavoriteIcon() {
 
+    }
+
+
+
+    public boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
     }
 }
 
