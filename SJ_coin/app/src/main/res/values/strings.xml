@@ -70,7 +70,7 @@
 
     <!-- Confirmation Dialog-->
     <string name="confirm_purchase">Confirm Purchase</string>
-    <string name="confirm_dialog_ok">Ok</string>
+    <string name="confirm_dialog_ok">Confirm</string>
     <string name="confirm_dialog_cancel">Cancel</string>
     <string name="search_hint">Product Name</string>
 

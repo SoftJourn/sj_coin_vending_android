@@ -12,7 +12,7 @@ import java.util.Date;
 public class Utils {
 
     public static void showErrorToast(Context context, String text, int gravity) {
-        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         toast.setGravity(gravity, 0, 0);
         toast.show();
     }
