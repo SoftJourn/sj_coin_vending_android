@@ -232,6 +232,6 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
 
     @Override
     public void showToastMessage(String message) {
-        super.showToast(message);
+
     }
 }

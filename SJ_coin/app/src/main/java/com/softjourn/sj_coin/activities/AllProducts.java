@@ -257,7 +257,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
 
     @Override
     public void showToastMessage(String message) {
-        super.showToast(message);
+        showToast(message);
     }
 
     @Override

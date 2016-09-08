@@ -233,6 +233,6 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
 
     @Override
     public void showToastMessage(String message) {
-        super.showToast(message);
+
     }
 }

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -127,7 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     }
 
     public void showToast(String text) {
-        Utils.showErrorToast(this, text, Gravity.CENTER);
+        Utils.showErrorToast(this, text);
     }
 
     protected void onCreateDialog(final CustomizedProduct product, final VendingContract.Presenter presenter){

@@ -221,6 +221,6 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
 
     @Override
     public void showToastMessage(String message) {
-        super.showToast(message);
+
     }
 }
