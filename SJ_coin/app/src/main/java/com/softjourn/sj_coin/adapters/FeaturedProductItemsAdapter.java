@@ -95,6 +95,11 @@ public class FeaturedProductItemsAdapter extends
         }
     }
 
+    public void setFavorites(List<CustomizedProduct> data){
+        mListProducts = data;
+        //notifyDataSetChanged();
+    }
+
     public void setSortedData(List<CustomizedProduct> data){
         mListProducts = data;
         notifyDataSetChanged();

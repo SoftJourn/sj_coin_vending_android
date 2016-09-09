@@ -39,6 +39,8 @@ public interface VendingContract {
         void updateBalanceAmount(String amount);
 
         void changeFavoriteIcon();
+
+        void loadFavorites(List<CustomizedProduct> data);
     }
 
     interface Presenter extends BasePresenter{
@@ -72,5 +74,7 @@ public interface VendingContract {
         void getBalance();
 
         void removeFromFavorite(String id);
+
+        void getLocalFavorites();
     }
 }

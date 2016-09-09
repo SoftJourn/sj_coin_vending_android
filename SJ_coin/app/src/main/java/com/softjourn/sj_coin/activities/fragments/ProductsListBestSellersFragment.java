@@ -231,6 +231,11 @@ public class ProductsListBestSellersFragment extends BaseFragment implements Ven
     }
 
     @Override
+    public void loadFavorites(List<CustomizedProduct> data) {
+
+    }
+
+    @Override
     public void showToastMessage(String message) {
 
     }

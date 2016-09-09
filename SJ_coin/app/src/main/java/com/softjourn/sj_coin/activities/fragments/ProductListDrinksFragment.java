@@ -222,6 +222,11 @@ public class ProductListDrinksFragment extends BaseFragment implements VendingCo
     }
 
     @Override
+    public void loadFavorites(List<CustomizedProduct> data) {
+
+    }
+
+    @Override
     public void showToastMessage(String message) {
 
     }

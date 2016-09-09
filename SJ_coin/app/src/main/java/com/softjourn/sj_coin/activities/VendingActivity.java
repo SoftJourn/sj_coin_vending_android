@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,10 +38,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll,
+    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll,
             R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
     public void seeAll(View v) {
         switch (v.getId()) {
+            case R.id.textViewFavoritesSeeAll:
+                Navigation.goToSeeAllActivity(this, FAVORITES);
+                break;
             case R.id.textViewLastAddedSeeAll:
                 Navigation.goToSeeAllActivity(this, LAST_ADDED);
                 break;
@@ -155,6 +159,22 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         super.showToast(message);
     }
 
+    @Override
+    public void updateBalanceAmount(String balance) {
+        mBalance.setVisibility(View.VISIBLE);
+        mBalance.setText(getString(R.string.your_balance_is) + balance + getString(R.string.coins));
+    }
+
+    @Override
+    public void changeFavoriteIcon() {
+
+    }
+
+    @Override
+    public void loadFavorites(List<CustomizedProduct> data) {
+
+    }
+
     private void loadProductList() {
         mPresenter.getFeaturedProductsList(MACHINE_ID);
 
@@ -180,15 +200,23 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         fragmentContainer.setLayoutParams(frParams);
     }
 
-    @Override
-    public void updateBalanceAmount(String balance) {
-        mBalance.setVisibility(View.VISIBLE);
-        mBalance.setText(getString(R.string.your_balance_is) + balance + getString(R.string.coins));
-    }
+    public void showContainer(int headers, int fragmentContainerId) {
+        View view = (View) findViewById(headers);
+        View fragmentContainer = (View) findViewById(fragmentContainerId);
 
-    @Override
-    public void changeFavoriteIcon() {
+        view.setVisibility(View.VISIBLE);
+        fragmentContainer.setVisibility(View.VISIBLE);
 
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.setMargins(0, 2, 2, 6);
+
+        LinearLayout.LayoutParams frParams = (LinearLayout.LayoutParams) fragmentContainer.getLayoutParams();
+        frParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        frParams.setMargins(30, 30, 0, 90);
+
+        view.setLayoutParams(params);
+        fragmentContainer.setLayoutParams(frParams);
     }
 }
 

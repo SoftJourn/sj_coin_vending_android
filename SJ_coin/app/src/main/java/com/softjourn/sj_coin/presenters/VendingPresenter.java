@@ -93,6 +93,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getLocalFeaturedProductsList() {
+
         getLocalLastAddedProducts();
         getLocalBestSellers();
         getLocalSnacks();
@@ -171,6 +172,11 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
+    public void getLocalFavorites() {
+        mView.loadFavorites(mModel.loadFavorites());
+    }
+
+    @Override
     public void sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
         mView.setSortedData(mModel.sortByName(product, isSortingForward));
     }
@@ -225,12 +231,12 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
         FeaturedProductsSingleton.getInstance().setData(event.getProductsList());
-        mView.navigateToFragments();
     }
 
     @Subscribe
     public void OnEvent(OnFavoritesListReceived event) {
         FavoritesListSingleton.getInstance().setData(event.getFavorites());
+        mView.navigateToFragments();
         mView.hideProgress();
     }
 

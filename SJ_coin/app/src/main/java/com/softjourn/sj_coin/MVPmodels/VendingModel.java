@@ -23,9 +23,11 @@ import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.utils.Constants;
 import com.softjourn.sj_coin.utils.Utils;
+import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
 import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -246,6 +248,26 @@ public class VendingModel extends BaseModel implements Constants {
 
     public List<Snack> loadSnack() {
         return FeaturedProductsSingleton.getInstance().getData().getSnack();
+    }
+
+    public List<CustomizedProduct> loadFavorites() {
+        List<Integer> favorites = new ArrayList<>();
+        for (int k=0; k < FavoritesListSingleton.getInstance().getData().size(); k++) {
+            favorites.add(FavoritesListSingleton.getInstance().getData().get(k).getId());
+        }
+        List<CustomizedProduct> favoritesProducts = new ArrayList<CustomizedProduct>();
+        List<Drink> drinks = FeaturedProductsSingleton.getInstance().getData().getDrink();
+        List<Snack> snacks = FeaturedProductsSingleton.getInstance().getData().getSnack();
+
+        for (int i = 0; i < drinks.size(); i++) {
+            if (favorites.contains(drinks.get(i).getId().intValue())){
+            favoritesProducts.add(new CustomizedProduct(drinks.get(i)));}
+        }
+        for (int j = 0; j < snacks.size(); j++) {
+            if (favorites.contains(snacks.get(j).getId().intValue())){
+                favoritesProducts.add(new CustomizedProduct(snacks.get(j)));}
+        }
+        return favoritesProducts;
     }
 
     public List<CustomizedProduct> sortByName(List<CustomizedProduct> product, boolean isSortingForward) {

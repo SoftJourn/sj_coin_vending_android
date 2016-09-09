@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.fragments.FavoritesFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductListDrinksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
 import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
@@ -51,7 +52,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     Button mFragmentsSortNameButton;
     Button mFragmentsSortPriceButton;
 
-    Spinner mNavigationSpinner;
+    public Spinner mNavigationSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -143,26 +144,32 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     private void attachFragment(String stringExtra) {
         switch (stringExtra) {
 
+            case FAVORITES:
+                mNavigationSpinner.setSelection(1);
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, FavoritesFragment.newInstance(), TAG_FAVORITES_FRAGMENT)
+                        .commit();
+                break;
             case SNACKS:
-                mNavigationSpinner.setSelection(3);
+                mNavigationSpinner.setSelection(4);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
                         .commit();
                 break;
             case DRINKS:
-                mNavigationSpinner.setSelection(4);
+                mNavigationSpinner.setSelection(5);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
                         .commit();
                 break;
             case BEST_SELLERS:
-                mNavigationSpinner.setSelection(2);
+                mNavigationSpinner.setSelection(3);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
             case LAST_ADDED:
-                mNavigationSpinner.setSelection(1);
+                mNavigationSpinner.setSelection(2);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
@@ -231,6 +238,11 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void changeFavoriteIcon() {
+
+    }
+
+    @Override
+    public void loadFavorites(List<CustomizedProduct> data) {
 
     }
 

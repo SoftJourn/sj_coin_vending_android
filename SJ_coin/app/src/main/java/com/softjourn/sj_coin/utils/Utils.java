@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.utils;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.softjourn.sj_coin.model.Session;
@@ -14,7 +15,9 @@ public class Utils {
     public static void showErrorToast(Context context, String text, int gravity) {
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         toast.setGravity(gravity, 0, 0);
-        toast.show();
+        if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
+            toast.show();
+        }
     }
 
     public static void showErrorToast(Context context, String text) {

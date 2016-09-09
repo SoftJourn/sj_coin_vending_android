@@ -1,5 +1,6 @@
 package com.softjourn.sj_coin.activities.fragments;
 
+
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -31,17 +32,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductListSnacksFragment extends BaseFragment implements VendingContract.View, Constants, Extras{
+public class FavoritesFragment extends BaseFragment implements VendingContract.View, Constants, Extras {
 
-    public static ProductListSnacksFragment newInstance() {
-        return new ProductListSnacksFragment();
+    public static FavoritesFragment newInstance() {
+        return new FavoritesFragment();
     }
 
     private VendingContract.Presenter mPresenter;
     private FeaturedProductItemsAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    List<Snack> mProductList;
+    List<CustomizedProduct> mProductList;
 
     List<CustomizedProduct> mCustomizedList;
 
@@ -81,21 +82,22 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
                 view = inflater.inflate(R.layout.fragment_products_list, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(SNACKS, null);
+                mProductAdapter = new FeaturedProductItemsAdapter(FAVORITES, null);
                 break;
 
             case "activities.SeeAllActivity":
                 view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(SNACKS, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
+                mProductAdapter = new FeaturedProductItemsAdapter(FAVORITES, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
+                ((SeeAllActivity)getActivity()).mNavigationSpinner.setSelection(1);
                 break;
 
             default:
                 view = inflater.inflate(R.layout.fragment_products_list, container, false);
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(SNACKS, null);
+                mProductAdapter = new FeaturedProductItemsAdapter(FAVORITES, null);
                 break;
         }
 
@@ -103,10 +105,9 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
 
         mMachineItems.setAdapter(mProductAdapter);
 
-        if (getActivity().getLocalClassName().equals("activities.SeeAllActivity"))
-        {
+        if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
-            ((SeeAllActivity)getActivity()).setButtons(mButtonSortByName,mButtonSortByPrice);
+            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName, mButtonSortByPrice);
         }
 
         return view;
@@ -118,7 +119,7 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
         mPresenter = new VendingPresenter(this);
 
         if (savedInstanceState == null) {
-            mPresenter.getLocalSnacks();
+            mPresenter.getLocalFavorites();
         } else {
             mMachineItems.getLayoutManager().onRestoreInstanceState(mListState);
         }
@@ -129,36 +130,22 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
         super.onSaveInstanceState(outState);
         if (outState != null) {
             mListState = mLayoutManager.onSaveInstanceState();
-            outState.putParcelable(EXTRAS_PRODUCTS_SNACKS_LIST, mListState);
+            outState.putParcelable(EXTRAS_FAVORITES_LIST, mListState);
         } else {
-            mPresenter.getLocalSnacks();
+            mPresenter.getLocalFavorites();
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mListState!=null){
+        if (mListState != null) {
             mLayoutManager.onRestoreInstanceState(mListState);
         }
     }
-    @Override
-    public void showProgress(String message) {
-        super.showProgress(message);
-    }
 
     @Override
-    public void hideProgress() {
-        super.hideProgress();
-    }
-
-    @Override
-    public void showNoInternetError() {
-        onNoInternetAvailable();
-    }
-
-    @Override
-    public void loadData(List<Drink> drinks,List<Snack> snacks) {
+    public void loadData(List<Drink> drinks, List<Snack> snacks) {
 
     }
 
@@ -174,14 +161,7 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
 
     @Override
     public void loadSnackData(List<Snack> data) {
-        if (data.size() > 0) {
-            mProductList = data;
-            mProductAdapter.setSnackData(data);
 
-            mCustomizedList = mProductAdapter.getCustomizedProductList();
-        } else {
-            ((VendingActivity) getActivity()).hideContainer(R.id.snacksHeader, R.id.container_fragment_products_list_snacks);
-        }
     }
 
     @Override
@@ -221,11 +201,36 @@ public class ProductListSnacksFragment extends BaseFragment implements VendingCo
 
     @Override
     public void loadFavorites(List<CustomizedProduct> data) {
+        if (data.size() > 0) {
+            mProductList = data;
+            mProductAdapter.setFavorites(data);
 
+            mCustomizedList = mProductList;
+
+            try {
+                ((VendingActivity) getActivity()).showContainer(R.id.favoritesHeader, R.id.container_fragment_products_list_favorites);
+            } catch (ClassCastException e) {}
+
+        } else {
+            try {
+                ((VendingActivity) getActivity()).hideContainer(R.id.favoritesHeader, R.id.container_fragment_products_list_favorites);
+            } catch (ClassCastException e) {
+                ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+
+                assert mButtonSortByName != null && mButtonSortByPrice != null;
+                mButtonSortByName.setEnabled(false);
+                mButtonSortByPrice.setEnabled(false);
+            }
+        }
     }
 
-    @Override
-    public void showToastMessage(String message) {
+        @Override
+        public void showToastMessage (String message){
 
+        }
+
+        @Override
+        public void showNoInternetError () {
+
+        }
     }
-}

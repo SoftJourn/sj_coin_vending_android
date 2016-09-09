@@ -14,11 +14,11 @@ public interface Constants {
     String SELECTED_MACHINE_COLUMNS = "SELECTED_MACHINE_COLUMNS";
 
     //Fragments tags
-    String TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT = "TAG_PRODUCTS_LAST_PURCHASES_FRAGMENT";
     String TAG_PRODUCTS_LAST_ADDED_FRAGMENT = "TAG_PRODUCTS_LAST_ADDED_FRAGMENT";
     String TAG_PRODUCTS_BEST_SELLERS_FRAGMENT = "TAG_PRODUCTS_BEST_SELLERS_FRAGMENT";
     String TAG_PRODUCTS_SNACKS_FRAGMENT = "TAG_PRODUCTS_SNACKS_FRAGMENT";
     String TAG_PRODUCTS_DRINKS_FRAGMENT = "TAG_PRODUCTS_DRINKS_FRAGMENT";
+    String TAG_FAVORITES_FRAGMENT = "TAG_FAVORITES_FRAGMENT";
 
     //URLs
     String BASE_URL = "https://sjcoins.testing.softjourn.if.ua";
@@ -43,7 +43,7 @@ public interface Constants {
     //See All button Tags
     //are using for correct appearance of SeeAllActivity Label
     String LAST_ADDED = "Last Added";
-    String LAST_PURCHASES = "Last Purchases";
+    String FAVORITES = "Favorites";
     String BEST_SELLERS = "Best Sellers";
     String SNACKS = "Snacks";
     String DRINKS = "Drinks";
