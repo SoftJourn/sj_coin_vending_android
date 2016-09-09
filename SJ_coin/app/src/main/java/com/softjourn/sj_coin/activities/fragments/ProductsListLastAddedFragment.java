@@ -232,6 +232,11 @@ public class ProductsListLastAddedFragment extends BaseFragment implements Vendi
     }
 
     @Override
+    public void loadFavorites(List<CustomizedProduct> data) {
+
+    }
+
+    @Override
     public void showToastMessage(String message) {
 
     }

@@ -70,13 +70,15 @@
 
     <!-- Confirmation Dialog-->
     <string name="confirm_purchase">Confirm Purchase</string>
-    <string name="confirm_dialog_ok">Ok</string>
+    <string name="confirm_dialog_ok">Confirm</string>
     <string name="confirm_dialog_cancel">Cancel</string>
     <string name="search_hint">Product Name</string>
+    <string name="layout_vending_favorites">Favorites</string>
 
     <!-- Toolbar Spinner Items-->
     <string-array name="activityCategory">
         <item>All Items</item>
+        <item>Favorites</item>
         <item>Last Added</item>
         <item>Best Sellers</item>
         <item>Snacks</item>

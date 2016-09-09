@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.fragments.FavoritesFragment;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
@@ -34,6 +35,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     public EventBus mEventBus = EventBus.getDefault();
 
     protected boolean mProfileIsVisible = false;
+    protected boolean mAllItemsVisible = false;
+    protected boolean mFavoritesVisible = false;
 
     ProgressDialog mProgressDialog;
 
@@ -81,10 +84,21 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
                 finish();
                 return true;
             case R.id.allProducts:
-                Navigation.goToAllProductsActivity(this);
-                return true;
+                if (!mAllItemsVisible) {
+                    Navigation.goToAllProductsActivity(this);
+                    return true;
+                } else {
+                    return false;
+                }
             case R.id.favorites:
-                return false;
+                if(this.getLocalClassName().equals("activities.SeeAllActivity")) {
+                    this.getFragmentManager().beginTransaction()
+                            .replace(R.id.container_for_see_all_products, FavoritesFragment.newInstance(), TAG_FAVORITES_FRAGMENT)
+                            .commit();
+                } else {
+                    Navigation.goToSeeAllActivity(this, FAVORITES);
+                }
+                return true;
             case R.id.profile:
                 if (!mProfileIsVisible) {
                     Navigation.goToProfileActivity(this);
@@ -129,7 +143,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
         Utils.showErrorToast(this, text);
     }
 
-    protected void onCreateDialog(final CustomizedProduct product, final VendingContract.Presenter presenter){
+    protected void onCreateDialog(final CustomizedProduct product, final VendingContract.Presenter presenter) {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -137,7 +151,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
         // set the custom dialog components
         TextView text = (TextView) dialog.findViewById(R.id.text);
-        text.setText("Buy "+product.getName() + " for " + product.getPrice() + " coins?");
+        text.setText("Buy " + product.getName() + " for " + product.getPrice() + " coins?");
         ImageView image = (ImageView) dialog.findViewById(R.id.image);
         PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(image);
 
@@ -150,7 +164,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
             }
         });
 
-        Button cancelButton = (Button)dialog.findViewById(R.id.dialogButtonCancel);
+        Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

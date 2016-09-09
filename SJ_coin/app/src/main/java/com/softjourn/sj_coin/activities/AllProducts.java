@@ -149,6 +149,9 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_search).setVisible(true);
+
+        super.mAllItemsVisible = true;
+
         this.mMenu = menu;
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
@@ -253,6 +256,11 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     @Override
     public void changeFavoriteIcon() {
         mProductAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void loadFavorites(List<CustomizedProduct> data) {
+
     }
 
     @Override
