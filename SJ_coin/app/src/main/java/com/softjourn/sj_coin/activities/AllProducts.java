@@ -151,7 +151,6 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
         menu.findItem(R.id.action_search).setVisible(true);
 
         super.mAllItemsVisible = true;
-
         this.mMenu = menu;
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 

@@ -41,22 +41,24 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll,
             R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
     public void seeAll(View v) {
-        switch (v.getId()) {
-            case R.id.textViewFavoritesSeeAll:
-                Navigation.goToSeeAllActivity(this, FAVORITES);
-                break;
-            case R.id.textViewLastAddedSeeAll:
-                Navigation.goToSeeAllActivity(this, LAST_ADDED);
-                break;
-            case R.id.textViewBestSellersSeeAll:
-                Navigation.goToSeeAllActivity(this, BEST_SELLERS);
-                break;
-            case R.id.textViewSnacksSeeAll:
-                Navigation.goToSeeAllActivity(this, SNACKS);
-                break;
-            case R.id.textViewDrinksSeeAll:
-                Navigation.goToSeeAllActivity(this, DRINKS);
-                break;
+        if (mPresenter.makeNetworkChecking()) {
+            switch (v.getId()) {
+                case R.id.textViewFavoritesSeeAll:
+                    Navigation.goToSeeAllActivity(this, FAVORITES);
+                    break;
+                case R.id.textViewLastAddedSeeAll:
+                    Navigation.goToSeeAllActivity(this, LAST_ADDED);
+                    break;
+                case R.id.textViewBestSellersSeeAll:
+                    Navigation.goToSeeAllActivity(this, BEST_SELLERS);
+                    break;
+                case R.id.textViewSnacksSeeAll:
+                    Navigation.goToSeeAllActivity(this, SNACKS);
+                    break;
+                case R.id.textViewDrinksSeeAll:
+                    Navigation.goToSeeAllActivity(this, DRINKS);
+                    break;
+            }
         }
     }
 
@@ -83,8 +85,10 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        return true;
+        if (mPresenter.makeNetworkChecking()) {
+            super.onCreateOptionsMenu(menu);
+            return true;
+        }else {return false;}
     }
 
     @Override
@@ -109,7 +113,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadData(List<Drink> drinks,List<Snack> snacks) {
+    public void loadData(List<Drink> drinks, List<Snack> snacks) {
 
     }
 
@@ -135,7 +139,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void navigateToBuyProduct(CustomizedProduct product) {
-        onCreateDialog(product,mPresenter);
+        onCreateDialog(product, mPresenter);
     }
 
     @Override
@@ -145,7 +149,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void setSortedData(List<CustomizedProduct> product) {
-        
+
     }
 
     @Override
@@ -177,7 +181,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     private void loadProductList() {
         mPresenter.getFeaturedProductsList(MACHINE_ID);
-
         loadUserBalance();
     }
 

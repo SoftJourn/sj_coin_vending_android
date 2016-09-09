@@ -93,11 +93,14 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getLocalFeaturedProductsList() {
-
-        getLocalLastAddedProducts();
-        getLocalBestSellers();
-        getLocalSnacks();
-        getLocalDrinks();
+        if(FeaturedProductsSingleton.getInstance().getData()!=null) {
+            getLocalLastAddedProducts();
+            getLocalBestSellers();
+            getLocalSnacks();
+            getLocalDrinks();
+        } else {
+            mView.showNoInternetError();
+        }
     }
 
     @Override
