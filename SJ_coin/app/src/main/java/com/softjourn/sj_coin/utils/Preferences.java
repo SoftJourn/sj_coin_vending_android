@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.softjourn.sj_coin.App;
 
-public class Preferences implements Constants {
+public class Preferences implements Const {
 
     private static SharedPreferences sharedPreferences = App.getContext().getSharedPreferences(SJ_COINS_PREFERENCES, Context.MODE_PRIVATE);
     private static SharedPreferences.Editor editor = sharedPreferences.edit();

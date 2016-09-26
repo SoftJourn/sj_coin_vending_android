@@ -40,8 +40,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void onNoInternetAvailable() {
-        showToast(getString(R.string.internet_turned_off));
-        hideProgress();
+//        showToast(getString(R.string.internet_turned_off));
+//        hideProgress();
     }
 
     public void showToast(String text) {
@@ -49,25 +49,25 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showProgress(String message) {
-        mProgressDialog = new ProgressDialog(getActivity(), R.style.Base_V7_Theme_AppCompat_Dialog);
-        mProgressDialog.setMessage(message);
-        mProgressDialog.show();
+//        mProgressDialog = new ProgressDialog(getActivity(), R.style.Base_V7_Theme_AppCompat_Dialog);
+//        mProgressDialog.setMessage(message);
+//        mProgressDialog.show();
     }
 
     public void hideProgress() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
+//        if (mProgressDialog != null) {
+//            mProgressDialog.dismiss();
+//        }
     }
 
-    public void sortByName(boolean isSortingForward, List<CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+    public void sortByName(boolean isSortingForward, List<? extends CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
         buttonName.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
         buttonPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
         presenter.sortByName(product, isSortingForward);
         mSortingByNameForward = !mSortingByNameForward;
     }
 
-    public void sortByPrice(boolean isSortingForward, List<CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+    public void sortByPrice(boolean isSortingForward, List<? extends CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
         buttonPrice.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
         buttonName.setBackgroundColor(getResources().getColor(R.color.transparent));
         presenter.sortByPrice(product, isSortingForward);

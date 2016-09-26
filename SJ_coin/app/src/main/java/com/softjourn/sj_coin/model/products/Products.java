@@ -11,7 +11,6 @@ import java.util.List;
 
 import lombok.Data;
 
-@Data
 public class Products implements Parcelable{
 
     @SerializedName("My lastPurchases")
@@ -24,6 +23,30 @@ public class Products implements Parcelable{
     public List<LastAdded> newProducts = new ArrayList<LastAdded>();
     @SerializedName("Best sellers")
     public List<BestSeller> bestSellers = new ArrayList<BestSeller>();
+
+    public List<MyLastPurchase> getMyLastPurchases() {
+        return myLastPurchases;
+    }
+
+    public List<Drink> getDrink() {
+        return drink;
+    }
+
+    public List<Snack> getSnack() {
+        return snack;
+    }
+
+    public List<LastAdded> getNewProducts() {
+        return newProducts;
+    }
+
+    public List<BestSeller> getBestSellers() {
+        return bestSellers;
+    }
+
+    public Products(){
+
+    }
 
     protected Products(Parcel in) {
         myLastPurchases = in.createTypedArrayList(MyLastPurchase.CREATOR);

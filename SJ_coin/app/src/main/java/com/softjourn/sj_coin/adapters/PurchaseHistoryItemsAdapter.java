@@ -10,12 +10,12 @@ import android.widget.TextView;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 
 import java.util.List;
 
 public class PurchaseHistoryItemsAdapter extends
-        android.support.v7.widget.RecyclerView.Adapter<PurchaseHistoryItemsAdapter.HistoryViewHolder> implements Constants {
+        android.support.v7.widget.RecyclerView.Adapter<PurchaseHistoryItemsAdapter.HistoryViewHolder> implements Const {
 
     private List<History> mList;
 

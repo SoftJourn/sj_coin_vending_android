@@ -4,41 +4,25 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.softjourn.sj_coin.model.CustomizedProduct;
 
 import lombok.Data;
 
 @Data
-public class Drink implements Parcelable{
-
-    @SerializedName("id")
-    public Integer id;
-
-    @SerializedName("price")
-    public Integer price;
-
-    @SerializedName("name")
-    public String name;
-
-    @SerializedName("imageUrl")
-    public String imageUrl;
-
-    @SerializedName("description")
-    public String description;
-
-    @SerializedName("category")
-    public String category;
+public class Drink extends CustomizedProduct implements Parcelable{
 
     @SerializedName("position")
      public Position position;
 
     protected Drink(Parcel in) {
-        id = in.readInt();
-        price = in.readInt();
-        name = in.readString();
-        imageUrl = in.readString();
-        description = in.readString();
-        category = in.readString();
+        super(in);
         position = in.readParcelable(Position.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeParcelable(position, flags);
     }
 
     @Override
@@ -46,18 +30,7 @@ public class Drink implements Parcelable{
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeInt(price);
-        parcel.writeString(name);
-        parcel.writeString(imageUrl);
-        parcel.writeString(description);
-        parcel.writeString(category);
-        parcel.writeParcelable(this.position,i);
-    }
-
-    public static final Parcelable.Creator<Drink> CREATOR = new Parcelable.Creator<Drink>() {
+    public static final Creator<Drink> CREATOR = new Creator<Drink>() {
         @Override
         public Drink createFromParcel(Parcel in) {
             return new Drink(in);

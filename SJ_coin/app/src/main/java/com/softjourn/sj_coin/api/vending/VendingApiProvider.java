@@ -1,13 +1,13 @@
 package com.softjourn.sj_coin.api.vending;
 
+import com.softjourn.sj_coin.api.callbacks.Callback;
+import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Products;
 
 import java.util.List;
-
-import retrofit2.Callback;
 
 public interface VendingApiProvider {
 
@@ -19,9 +19,9 @@ public interface VendingApiProvider {
 
     void getProductsList(String selectedMachine, Callback<List<Product>> callback);
 
-    void buyProductByID(String id, Callback<Void> callback);
+    void buyProductByID(String id, Callback<Amount> callback);
 
-    void addProductToFavorites(String id, Callback<Void> callback);
+    void addProductToFavorites(int id, Callback<Void> callback);
 
     void getListFavorites(Callback<List<Favorites>> callback);
 

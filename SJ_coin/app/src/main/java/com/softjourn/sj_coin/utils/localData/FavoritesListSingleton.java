@@ -1,19 +1,22 @@
 package com.softjourn.sj_coin.utils.localData;
 
 import com.softjourn.sj_coin.model.products.Favorites;
+import com.softjourn.sj_coin.utils.Const;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class FavoritesListSingleton {
+public class FavoritesListSingleton implements Const {
 
-    private static FavoritesListSingleton sOurInstance = new FavoritesListSingleton();
+    private static FavoritesListSingleton sOurInstance;
 
     private List<Favorites> mFavoritesList;
 
-    private FavoritesListSingleton() {
-    }
-
     public static FavoritesListSingleton getInstance() {
+        if (sOurInstance == null) {
+            sOurInstance = new FavoritesListSingleton();
+        }
         return sOurInstance;
     }
 
@@ -22,12 +25,26 @@ public class FavoritesListSingleton {
     }
 
     public List<Favorites> getData() {
-        return mFavoritesList;
+        return mFavoritesList == null ? Collections.<Favorites>emptyList() : mFavoritesList;
     }
 
-    public void LocalAddToFavorites(String id) {
+    public void LocalAddToFavorites(int id) {
+        if (id == INVALID_ID) {
+            return;
+        }
+
+        if (mFavoritesList != null) {
+            for (Favorites favorites : mFavoritesList) {
+                if (favorites.getId() == id) {
+                    return;
+                }
+            }
+        } else {
+            mFavoritesList = new ArrayList<>();
+        }
+
         Favorites favorites = new Favorites();
-        favorites.setId(Integer.parseInt(id));
+        favorites.setId(id);
         mFavoritesList.add(favorites);
     }
 
@@ -40,7 +57,7 @@ public class FavoritesListSingleton {
         }
     }
 
-    public void onDestroy(){
+    public void onDestroy() {
         mFavoritesList.clear();
     }
 }

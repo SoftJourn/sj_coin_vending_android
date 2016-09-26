@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 
 import com.softjourn.sj_coin.App;
 
-public class Connections {
+public class NetworkManager {
 
     public static boolean isNetworkEnabled() {
         ConnectivityManager connectivityManager = (ConnectivityManager) App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);

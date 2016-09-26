@@ -6,9 +6,8 @@ import android.content.Context;
 import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
 
 public class App extends Application {
-    private static Context sInstance;
 
-    ProductsListSingleton productsListSingleton;
+    private static Context sInstance;
 
     public static Context getContext() {
         return sInstance;
@@ -17,7 +16,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        productsListSingleton = ProductsListSingleton.getInstance();
         sInstance = this.getApplicationContext();
     }
 }

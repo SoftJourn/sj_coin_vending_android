@@ -5,19 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.AllProducts;
 import com.softjourn.sj_coin.activities.LoginActivity;
 import com.softjourn.sj_coin.activities.ProfileActivity;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
-import com.softjourn.sj_coin.activities.fragments.FavoritesFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductListDrinksFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductListSnacksFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductsListBestSellersFragment;
-import com.softjourn.sj_coin.activities.fragments.ProductsListLastAddedFragment;
+import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 
-
-public class Navigation implements Constants,Extras {
+public class Navigation implements Const,Extras {
 
     public static void goToVendingActivity(Context context) {
         Intent intent = new Intent(context, VendingActivity.class);
@@ -41,75 +35,36 @@ public class Navigation implements Constants,Extras {
         context.startActivity(intent);
     }
 
-    public static void goToAllProductsActivity(Context context){
-        Intent intent = new Intent(context, AllProducts.class);
-        context.startActivity(intent);
-    }
-
-    public static void goToProductListFragments(Activity activity) {
-        activity.getFragmentManager().beginTransaction()
-                .replace(R.id.container_fragment_products_list_favorites, FavoritesFragment.newInstance(),TAG_FAVORITES_FRAGMENT)
-                .replace(R.id.container_fragment_products_list_new_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
-                .replace(R.id.container_fragment_products_list_best_sellers, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
-                .replace(R.id.container_fragment_products_list_snacks, ProductListSnacksFragment.newInstance(),TAG_PRODUCTS_SNACKS_FRAGMENT)
-                .replace(R.id.container_fragment_products_list_drinks, ProductListDrinksFragment.newInstance(),TAG_PRODUCTS_DRINKS_FRAGMENT)
-                .commit();
-    }
-
-    public static void navigationOnCategoriesAllProducts(int position, Activity context) {
-        switch (position) {
-            case 1:
-                Navigation.goToSeeAllActivity(context, FAVORITES);
-                context.finish();
-                break;
-            case 2:
-                Navigation.goToSeeAllActivity(context, LAST_ADDED);
-                context.finish();
-                break;
-            case 3:
-                Navigation.goToSeeAllActivity(context, BEST_SELLERS);
-                context.finish();
-                break;
-            case 4:
-                Navigation.goToSeeAllActivity(context, SNACKS);
-                context.finish();
-                break;
-            case 5:
-                Navigation.goToSeeAllActivity(context, DRINKS);
-                context.finish();
-                break;
-        }
-    }
-
     public static void navigationOnCategoriesSeeAll(int position, Activity context){
         switch (position){
             case 0:
-                Navigation.goToAllProductsActivity(context);
-                context.finish();
+                context.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_PRODUCTS), TAG_ALL_PRODUCTS_FRAGMENT)
+                        .commit();
                 break;
             case 1:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, FavoritesFragment.newInstance(), TAG_FAVORITES_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES), TAG_FAVORITES_FRAGMENT)
                         .commit();
                 break;
             case 2:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListLastAddedFragment.newInstance(), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(LAST_ADDED), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
                 break;
             case 3:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListBestSellersFragment.newInstance(), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(BEST_SELLERS), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
             case 4:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductListSnacksFragment.newInstance(), TAG_PRODUCTS_SNACKS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(SNACKS), TAG_PRODUCTS_SNACKS_FRAGMENT)
                         .commit();
                 break;
             case 5:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductListDrinksFragment.newInstance(), TAG_PRODUCTS_DRINKS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(DRINKS), TAG_PRODUCTS_DRINKS_FRAGMENT)
                         .commit();
                 break;
         }

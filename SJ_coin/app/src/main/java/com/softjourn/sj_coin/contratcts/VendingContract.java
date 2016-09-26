@@ -18,21 +18,13 @@ public interface VendingContract {
 
         void hideProgress();
 
-        void loadData(List<Drink> drinks,List<Snack> snacks);
-
-        void loadLastAddedData(List<LastAdded> data);
-
-        void loadBestSellerData(List<BestSeller> data);
-
-        void loadSnackData(List<Snack> data);
-
-        void loadDrinkData(List<Drink> data);
+        void loadData(List<? extends CustomizedProduct> drinks,List<? extends CustomizedProduct> snacks);
 
         void navigateToBuyProduct(CustomizedProduct product);
 
         void navigateToFragments();
 
-        void setSortedData(List<CustomizedProduct> product);
+        void setSortedData(List<? extends CustomizedProduct> product);
 
         void loadUserBalance();
 
@@ -40,7 +32,7 @@ public interface VendingContract {
 
         void changeFavoriteIcon();
 
-        void loadFavorites(List<CustomizedProduct> data);
+        void loadData(List<? extends CustomizedProduct> data);
     }
 
     interface Presenter extends BasePresenter{
@@ -65,11 +57,11 @@ public interface VendingContract {
 
         void buyProduct(String id);
 
-        void addToFavorite(String id);
+        void addToFavorite(int id);
 
-        void sortByName(List<CustomizedProduct> product, boolean isSortingForward);
+        void sortByName(List<? extends CustomizedProduct> product, boolean isSortingForward);
 
-        void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward);
+        void sortByPrice(List<? extends CustomizedProduct> product, boolean isSortingForward);
 
         void getBalance();
 
