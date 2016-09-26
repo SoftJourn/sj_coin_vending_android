@@ -8,11 +8,14 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-@Data
 public class Balance implements Parcelable{
 
     @SerializedName("amount")
     private String amount;
+
+    public String getAmount() {
+        return amount;
+    }
 
     protected Balance(Parcel in) {
         amount = in.readString();

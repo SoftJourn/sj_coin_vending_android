@@ -15,19 +15,16 @@ import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.utils.Connections;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
-import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
-import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 import java.util.List;
 
-public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Constants {
+public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Const {
 
     private VendingContract.View mView;
     private VendingModel mModel;
@@ -86,41 +83,36 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.callFeaturedProductsList(mMachineID);
-                mModel.getListFavorites();
             }
         }
     }
 
     @Override
     public void getLocalFeaturedProductsList() {
-        if(FeaturedProductsSingleton.getInstance().getData()!=null) {
-            getLocalLastAddedProducts();
-            getLocalBestSellers();
-            getLocalSnacks();
-            getLocalDrinks();
-        } else {
-            mView.showNoInternetError();
-        }
+        getLocalLastAddedProducts();
+        getLocalBestSellers();
+        getLocalSnacks();
+        getLocalDrinks();
     }
 
     @Override
     public void getLocalLastAddedProducts() {
-        mView.loadLastAddedData(mModel.loadLastAdded());
+        mView.loadData(mModel.loadLastAdded());
     }
 
     @Override
     public void getLocalBestSellers() {
-        mView.loadBestSellerData(mModel.loadBestSellers());
+        mView.loadData(mModel.loadBestSellers());
     }
 
     @Override
     public void getLocalSnacks() {
-        mView.loadSnackData(mModel.loadSnack());
+        mView.loadData(mModel.loadSnack());
     }
 
     @Override
     public void getLocalDrinks() {
-        mView.loadDrinkData(mModel.loadDrink());
+        mView.loadData(mModel.loadDrink());
     }
 
     @Override
@@ -145,7 +137,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
-    public void addToFavorite(String id) {
+    public void addToFavorite(int id) {
         if (!makeNetworkChecking()) {
             mView.showNoInternetError();
         } else {
@@ -176,32 +168,31 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getLocalFavorites() {
-        mView.loadFavorites(mModel.loadFavorites());
+        mView.loadData(mModel.loadFavorites());
     }
 
     @Override
-    public void sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
+    public void sortByName(List<? extends CustomizedProduct> product, boolean isSortingForward) {
         mView.setSortedData(mModel.sortByName(product, isSortingForward));
     }
 
     @Override
-    public void sortByPrice(List<CustomizedProduct> product, boolean isSortingForward) {
+    public void sortByPrice(List<? extends CustomizedProduct> product, boolean isSortingForward) {
         mView.setSortedData(mModel.sortByPrice(product, isSortingForward));
     }
 
     @Override
     public void getBalance() {
         if (!makeNetworkChecking()) {
-            mView.showNoInternetError();
+//            mView.showNoInternetError();
         } else {
             if (checkExpirationDate()) {
-                refreshToken(Constants.REFRESH_TOKEN);
+                refreshToken(Const.REFRESH_TOKEN);
             } else {
                 mProfileModel.makeBalanceCall();
             }
         }
     }
-
 
     @Override
     public void refreshToken(String refreshToken) {
@@ -210,7 +201,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public boolean makeNetworkChecking() {
-        return Connections.isNetworkEnabled();
+        return NetworkManager.isNetworkEnabled();
     }
 
     @Subscribe
@@ -225,29 +216,10 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Subscribe
-    public void OnEvent(OnProductsListReceived event) {
-        mView.hideProgress();
-        ProductsListSingleton.getInstance().setData(event.getProductsList());
-        getLocalProductList();
-    }
-
-    @Subscribe
-    public void OnEvent(OnFeaturedProductsListReceived event) {
-        FeaturedProductsSingleton.getInstance().setData(event.getProductsList());
-    }
-
-    @Subscribe
-    public void OnEvent(OnFavoritesListReceived event) {
-        FavoritesListSingleton.getInstance().setData(event.getFavorites());
-        mView.navigateToFragments();
-        mView.hideProgress();
-    }
-
-    @Subscribe
     public void OnEvent(OnBoughtEvent event) {
         mView.hideProgress();
         mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
-        mProfileModel.makeBalanceCall();
+        mView.updateBalanceAmount(String.valueOf(event.getAmount().getAmount()));
     }
 
     @Subscribe
@@ -263,16 +235,29 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnAddedToFavorites event) {
         mView.hideProgress();
-        FavoritesListSingleton.getInstance().LocalAddToFavorites(event.getId());
         mView.changeFavoriteIcon();
     }
 
     @Subscribe
     public void OnEvent(OnRemovedFromFavorites event) {
         mView.hideProgress();
-        FavoritesListSingleton.getInstance().LocalRemoveFromFavorites(event.getId());
         mView.changeFavoriteIcon();
     }
 
+    @Subscribe
+    public void OnEvent(OnFavoritesListReceived event) {
+        mView.navigateToFragments();
+        mView.hideProgress();
+    }
 
+    @Subscribe
+    public void OnEvent(OnProductsListReceived event) {
+        mView.hideProgress();
+        mView.loadData(mModel.loadDrink(), mModel.loadSnack());
+    }
+
+    @Subscribe
+    public void OnEvent(OnFeaturedProductsListReceived event) {
+        mModel.getListFavorites();
+    }
 }

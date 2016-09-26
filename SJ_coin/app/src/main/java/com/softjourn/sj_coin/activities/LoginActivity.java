@@ -9,7 +9,7 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.LoginContract;
 import com.softjourn.sj_coin.presenters.LoginPresenter;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 
 import butterknife.Bind;
@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class LoginActivity extends BaseActivity implements LoginContract.View, Constants {
+public class LoginActivity extends BaseActivity implements LoginContract.View, Const {
 
     @Bind(R.id.input_email)
     EditText mUserName;

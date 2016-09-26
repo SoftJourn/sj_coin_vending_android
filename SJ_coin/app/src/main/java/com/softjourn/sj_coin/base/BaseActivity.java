@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.fragments.FavoritesFragment;
+import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.softjourn.sj_coin.utils.ServerErrors;
@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.NoSubscriberEvent;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public abstract class BaseActivity extends AppCompatActivity implements Constants {
+public abstract class BaseActivity extends AppCompatActivity implements Const {
 
     public EventBus mEventBus = EventBus.getDefault();
 
@@ -38,12 +38,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     protected boolean mAllItemsVisible = false;
     protected boolean mFavoritesVisible = false;
 
-    ProgressDialog mProgressDialog;
+    protected ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEventBus.register(this);
+        mProgressDialog = new ProgressDialog(this, R.style.Base_V7_Theme_AppCompat_Dialog);
     }
 
 
@@ -85,15 +86,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
                 return true;
             case R.id.allProducts:
                 if (!mAllItemsVisible) {
-                    Navigation.goToAllProductsActivity(this);
+//                    Navigation.goToAllProductsActivity(this);
+                    Navigation.goToSeeAllActivity(this, ALL_PRODUCTS);
                     return true;
                 } else {
                     return false;
                 }
             case R.id.favorites:
-                if(this.getLocalClassName().equals("activities.SeeAllActivity")) {
+                if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
-                            .replace(R.id.container_for_see_all_products, FavoritesFragment.newInstance(), TAG_FAVORITES_FRAGMENT)
+                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES), TAG_FAVORITES_FRAGMENT)
                             .commit();
                 } else {
                     Navigation.goToSeeAllActivity(this, FAVORITES);
@@ -118,18 +120,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
     @Override
     public void onBackPressed() {
-        finish();
+        super.onBackPressed();
     }
 
 
     public void hideProgress() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
+        mProgressDialog.dismiss();
     }
 
     public void showProgress(String message) {
-        mProgressDialog = new ProgressDialog(this, R.style.Base_V7_Theme_AppCompat_Dialog);
         mProgressDialog.setMessage(message);
         mProgressDialog.show();
     }
@@ -151,7 +150,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
         // set the custom dialog components
         TextView text = (TextView) dialog.findViewById(R.id.text);
-        text.setText("Buy " + product.getName() + " for " + product.getPrice() + " coins?");
+        text.setText(String.format(getString(R.string.dialog_msg_confirm_buy_product), product.getName(), product.getPrice()));
         ImageView image = (ImageView) dialog.findViewById(R.id.image);
         PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(image);
 
@@ -187,4 +186,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
     public void OnEvent(NoSubscriberEvent event) {
         hideProgress();
     }
+
+
 }

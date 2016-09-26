@@ -5,7 +5,7 @@ import com.softjourn.sj_coin.MVPmodels.LoginModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.contratcts.LoginContract;
-import com.softjourn.sj_coin.utils.Connections;
+import com.softjourn.sj_coin.utils.NetworkManager;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -65,7 +65,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
     @Override
     public boolean makeNetworkChecking() {
-        return Connections.isNetworkEnabled();
+        return NetworkManager.isNetworkEnabled();
     }
 
     @Subscribe

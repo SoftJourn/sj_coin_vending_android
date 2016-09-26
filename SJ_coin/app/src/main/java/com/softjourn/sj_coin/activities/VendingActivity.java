@@ -10,15 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.products.BestSeller;
 import com.softjourn.sj_coin.model.products.Drink;
-import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 
 import java.util.List;
@@ -28,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
-        VendingContract.View, Constants {
+        VendingContract.View, Const {
 
     private VendingContract.Presenter mPresenter;
 
@@ -37,30 +36,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
-
-    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll,
-            R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
-    public void seeAll(View v) {
-        if (mPresenter.makeNetworkChecking()) {
-            switch (v.getId()) {
-                case R.id.textViewFavoritesSeeAll:
-                    Navigation.goToSeeAllActivity(this, FAVORITES);
-                    break;
-                case R.id.textViewLastAddedSeeAll:
-                    Navigation.goToSeeAllActivity(this, LAST_ADDED);
-                    break;
-                case R.id.textViewBestSellersSeeAll:
-                    Navigation.goToSeeAllActivity(this, BEST_SELLERS);
-                    break;
-                case R.id.textViewSnacksSeeAll:
-                    Navigation.goToSeeAllActivity(this, SNACKS);
-                    break;
-                case R.id.textViewDrinksSeeAll:
-                    Navigation.goToSeeAllActivity(this, DRINKS);
-                    break;
-            }
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +53,28 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         loadProductList();
     }
 
+    @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll,
+            R.id.textViewSnacksSeeAll, R.id.textViewDrinksSeeAll})
+    public void seeAll(View v) {
+        switch (v.getId()) {
+            case R.id.textViewFavoritesSeeAll:
+                Navigation.goToSeeAllActivity(this, FAVORITES);
+                break;
+            case R.id.textViewLastAddedSeeAll:
+                Navigation.goToSeeAllActivity(this, LAST_ADDED);
+                break;
+            case R.id.textViewBestSellersSeeAll:
+                Navigation.goToSeeAllActivity(this, BEST_SELLERS);
+                break;
+            case R.id.textViewSnacksSeeAll:
+                Navigation.goToSeeAllActivity(this, SNACKS);
+                break;
+            case R.id.textViewDrinksSeeAll:
+                Navigation.goToSeeAllActivity(this, DRINKS);
+                break;
+        }
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -85,10 +82,8 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mPresenter.makeNetworkChecking()) {
-            super.onCreateOptionsMenu(menu);
-            return true;
-        }else {return false;}
+        super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
@@ -113,42 +108,32 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadData(List<Drink> drinks, List<Snack> snacks) {
-
-    }
-
-    @Override
-    public void loadLastAddedData(List<LastAdded> data) {
-
-    }
-
-    @Override
-    public void loadBestSellerData(List<BestSeller> data) {
-
-    }
-
-    @Override
-    public void loadSnackData(List<Snack> data) {
-
-    }
-
-    @Override
-    public void loadDrinkData(List<Drink> data) {
+    public void loadData(List<? extends CustomizedProduct> drinks,List<? extends CustomizedProduct> snacks) {
 
     }
 
     @Override
     public void navigateToBuyProduct(CustomizedProduct product) {
-        onCreateDialog(product, mPresenter);
+        onCreateDialog(product,mPresenter);
     }
 
     @Override
     public void navigateToFragments() {
-        Navigation.goToProductListFragments(this);
+//        FavoritesFragment fragment = (FavoritesFragment) getFragmentManager().findFragmentByTag(TAG_FAVORITES_FRAGMENT);
+//        if (fragment == null){
+//        }
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container_fragment_products_list_favorites, ProductsListFragment.newInstance(FAVORITES),TAG_FAVORITES_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_new_products, ProductsListFragment.newInstance(LAST_ADDED), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_best_sellers, ProductsListFragment.newInstance(BEST_SELLERS), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_snacks, ProductsListFragment.newInstance(SNACKS),TAG_PRODUCTS_SNACKS_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_drinks, ProductsListFragment.newInstance(DRINKS),TAG_PRODUCTS_DRINKS_FRAGMENT)
+                .commit();
     }
 
     @Override
-    public void setSortedData(List<CustomizedProduct> product) {
+    public void setSortedData(List<? extends CustomizedProduct> product) {
 
     }
 
@@ -175,32 +160,21 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadFavorites(List<CustomizedProduct> data) {
+    public void loadData(List<? extends CustomizedProduct> data) {
 
     }
 
     private void loadProductList() {
         mPresenter.getFeaturedProductsList(MACHINE_ID);
+
         loadUserBalance();
     }
 
     public void hideContainer(int headers, int fragmentContainerId) {
         View view = (View) findViewById(headers);
         View fragmentContainer = (View) findViewById(fragmentContainerId);
-
-        view.setVisibility(View.INVISIBLE);
-        fragmentContainer.setVisibility(View.INVISIBLE);
-
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
-        params.height = 0;
-        params.setMargins(0, 0, 0, 0);
-
-        LinearLayout.LayoutParams frParams = (LinearLayout.LayoutParams) fragmentContainer.getLayoutParams();
-        frParams.height = 0;
-        frParams.setMargins(0, 0, 0, 0);
-
-        view.setLayoutParams(params);
-        fragmentContainer.setLayoutParams(frParams);
+        fragmentContainer.setVisibility(View.GONE);
+        view.setVisibility(View.GONE);
     }
 
     public void showContainer(int headers, int fragmentContainerId) {
@@ -209,17 +183,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         view.setVisibility(View.VISIBLE);
         fragmentContainer.setVisibility(View.VISIBLE);
+    }
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.setMargins(0, 2, 2, 6);
 
-        LinearLayout.LayoutParams frParams = (LinearLayout.LayoutParams) fragmentContainer.getLayoutParams();
-        frParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        frParams.setMargins(30, 30, 0, 90);
-
-        view.setLayoutParams(params);
-        fragmentContainer.setLayoutParams(frParams);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
     }
 }
 

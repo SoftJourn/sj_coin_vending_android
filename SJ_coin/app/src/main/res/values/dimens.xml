@@ -16,5 +16,5 @@
     <dimen name="recycler_view_machine_layout_right_margin">2dp</dimen>
 
     <!-- Main Screen dimensions-->
-    <dimen name ="category_header_bottom_margin">6dp</dimen>
+    <dimen name="category_header_bottom_margin">6dp</dimen>
 </resources>

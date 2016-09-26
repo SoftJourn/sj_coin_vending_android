@@ -11,7 +11,7 @@ public interface ProfileContract {
 
     interface View extends BaseView {
 
-        void showBalance(Account account);
+        void showBalance(String amount);
 
         void setUserName(String userName);
 
@@ -25,7 +25,7 @@ public interface ProfileContract {
 
         void getBalance();
 
-        void getHistory();
+        void showHistory();
 
         boolean checkExpirationDate();
 

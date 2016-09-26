@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 
-public class CustomHttpClient implements Constants{
+public class CustomHttpClient implements Const {
 
     public static SSLSocketFactory trustCert(Context context) {
         try {

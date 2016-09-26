@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-@Data
 public class Account implements Parcelable{
 
     @SerializedName("amount")
@@ -21,6 +20,22 @@ public class Account implements Parcelable{
 
     @SerializedName("surname")
     private String surname;
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
 
     protected Account(Parcel in) {
         amount = in.readString();

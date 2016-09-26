@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.utils;
 
-public interface Constants {
+public interface Const {
 
     //Preferences Storage Keys
     String SJ_COINS_PREFERENCES = "SJ_COINS_PREFERENCES";
@@ -19,6 +19,7 @@ public interface Constants {
     String TAG_PRODUCTS_SNACKS_FRAGMENT = "TAG_PRODUCTS_SNACKS_FRAGMENT";
     String TAG_PRODUCTS_DRINKS_FRAGMENT = "TAG_PRODUCTS_DRINKS_FRAGMENT";
     String TAG_FAVORITES_FRAGMENT = "TAG_FAVORITES_FRAGMENT";
+    String TAG_ALL_PRODUCTS_FRAGMENT = "TAG_ALL_PRODUCTS_FRAGMENT";
 
     //URLs
     String BASE_URL = "https://sjcoins.testing.softjourn.if.ua";
@@ -47,7 +48,11 @@ public interface Constants {
     String BEST_SELLERS = "Best Sellers";
     String SNACKS = "Snacks";
     String DRINKS = "Drinks";
+    String ALL_PRODUCTS = "All products";
 
     String MACHINE_ID = "3";
+
+    //invalid product, item id
+    int INVALID_ID = -1;
 }
 

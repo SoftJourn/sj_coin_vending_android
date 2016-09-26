@@ -6,92 +6,62 @@ import com.softjourn.sj_coin.api.coins.CoinsApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.model.History;
+import com.softjourn.sj_coin.model.ModelsManager;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
+import com.softjourn.sj_coin.model.products.Products;
+import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+public class ProfileModel extends BaseModel {
 
-public class ProfileModel extends BaseModel{
+    private CoinsApiProvider mCoinsApiProvider;
 
-    private CoinsApiProvider mApiProvider;
+    public ProfileModel() {
+        mCoinsApiProvider = ApiManager.getInstance().getCoinsApiProvider();
+    }
 
     public void makeAccountCall() {
-        createApiManager();
 
-        Callback<Account> callback = new Callback<Account>() {
+        mCoinsApiProvider.getBalance(new com.softjourn.sj_coin.api.callbacks.Callback<Account>() {
             @Override
-            public void onResponse(Call<Account> call, Response<Account> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    Account account = response.body();
-                    mEventBus.post(new OnAccountReceivedEvent(account));
-                }
+            public void onSuccess(Account response) {
+                mEventBus.post(new OnAccountReceivedEvent(response));
             }
 
             @Override
-            public void onFailure(Call<Account> call, Throwable t) {
+            public void onError(String errorMsg) {
+
             }
-        };
-        mApiProvider.getBalance(callback);
+        });
     }
 
     public void makeBalanceCall() {
-        createApiManager();
-
-        Callback<Balance> callback = new Callback<Balance>() {
+        mCoinsApiProvider.getAmount(new com.softjourn.sj_coin.api.callbacks.Callback<Balance>() {
             @Override
-            public void onResponse(Call<Balance> call, Response<Balance> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    mEventBus.post(new OnBalanceReceivedEvent(response.body().getAmount()));
-                }
+            public void onSuccess(Balance response) {
+                mEventBus.post(new OnBalanceReceivedEvent(response.getAmount()));
             }
 
             @Override
-            public void onFailure(Call<Balance> call, Throwable t) {
-                t.printStackTrace();
+            public void onError(String errorMsg) {
+
             }
-        };
-        mApiProvider.getAmount(callback);
+        });
     }
-
-    //This method is based on dummy data to show work on UI
 
     public List<History> loadHistory() {
-
-        History history = new History();
-        history.setDate("01/02/2016");
-        history.setPrice("7");
-        history.setName("Fanta");
-
-        History history1 = new History();
-        history1.setDate("02/02/2016");
-        history1.setPrice("3");
-        history1.setName("Lays");
-
-        History history2 = new History();
-        history2.setDate("03/02/2016");
-        history2.setPrice("5");
-        history2.setName("Cola");
-
-        List<History> tempList = new ArrayList<>();
-        tempList.add(history);
-        tempList.add(history1);
-        tempList.add(history2);
-
-        return tempList;
+        Products products = FeaturedProductsSingleton.getInstance().getData();
+        if (products == null
+                || products.myLastPurchases == null) {
+            return Collections.emptyList();
+        } else {
+            return ModelsManager.getHistoryList(products.myLastPurchases);
+        }
     }
 
-    public void createApiManager() {
-        mApiProvider = ApiManager.getInstance().getCoinsApiProvider();
-    }
 }

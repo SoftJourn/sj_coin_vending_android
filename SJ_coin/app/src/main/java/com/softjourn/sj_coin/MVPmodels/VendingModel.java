@@ -4,7 +4,9 @@ package com.softjourn.sj_coin.MVPmodels;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
+import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
+import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
@@ -12,6 +14,7 @@ import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.BestSeller;
@@ -21,7 +24,7 @@ import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.model.products.Snack;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Utils;
 import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
@@ -36,194 +39,135 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VendingModel extends BaseModel implements Constants {
+public class VendingModel extends BaseModel implements Const {
 
     private VendingApiProvider mApiProvider;
 
+    public VendingModel() {
+        mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
+    }
+
     public void callMachinesList() {
-
-        createApiManager();
-
-        Callback<List<Machines>> callback = new Callback<List<Machines>>() {
+        mApiProvider.getMachines(new com.softjourn.sj_coin.api.callbacks.Callback<List<Machines>>() {
             @Override
-            public void onResponse(Call<List<Machines>> call, Response<List<Machines>> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    List<Machines> machines = response.body();
-                    mEventBus.post(new OnMachinesListReceived(machines));
-                }
+            public void onSuccess(List<Machines> response) {
+                mEventBus.post(new OnMachinesListReceived(response));
             }
 
             @Override
-            public void onFailure(Call<List<Machines>> call, Throwable t) {
+            public void onError(String errorMsg) {
+
             }
-        };
-        mApiProvider.getMachines(callback);
+        });
     }
 
     public void callConcreteMachine(String machineID) {
 
-        createApiManager();
-
-        Callback<Machines> callback = new Callback<Machines>() {
+        mApiProvider.getConcreteMachine(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Machines>() {
             @Override
-            public void onResponse(Call<Machines> call, Response<Machines> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    Utils.storeConcreteMachineInfo(response.body());
-                }
+            public void onSuccess(Machines response) {
+                Utils.storeConcreteMachineInfo(response);
             }
 
             @Override
-            public void onFailure(Call<Machines> call, Throwable t) {
+            public void onError(String errorMsg) {
 
             }
-        };
-        mApiProvider.getConcreteMachine(machineID, callback);
+        });
     }
 
     public void callFeaturedProductsList(String machineID) {
 
-        createApiManager();
-
-        Callback<Products> callback = new Callback<Products>() {
-
+        mApiProvider.getFeaturedProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Products>() {
             @Override
-            public void onResponse(Call<Products> call, Response<Products> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    Products products = response.body();
-                    mEventBus.post(new OnFeaturedProductsListReceived(products));
-                }
+            public void onSuccess(Products response) {
+                FeaturedProductsSingleton.getInstance().setData(response);
+                mEventBus.post(new OnFeaturedProductsListReceived(response));
             }
 
             @Override
-            public void onFailure(Call<Products> call, Throwable t) {
+            public void onError(String errorMsg) {
 
             }
-
-        };
-        mApiProvider.getFeaturedProductsList(machineID, callback);
+        });
     }
 
     public void callProductsList(String machineID) {
 
-        createApiManager();
-
-        Callback<List<Product>> callback = new Callback<List<Product>>() {
-
+        mApiProvider.getProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    List<Product> products = response.body();
-                    mEventBus.post(new OnProductsListReceived(products));
-                }
+            public void onSuccess(List<Product> response) {
+                mEventBus.post(new OnProductsListReceived(response));
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onError(String errorMsg) {
 
             }
-
-        };
-        mApiProvider.getProductsList(machineID, callback);
+        });
     }
 
     public void buyProductByID(String id) {
-        createApiManager();
-
-        Callback<Void> callback = new Callback<Void>() {
-
+        mApiProvider.buyProductByID(id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    mEventBus.post(new OnBoughtEvent(CALL_SUCCEED));
-                }
+            public void onSuccess(Amount response) {
+                mEventBus.post(new OnAmountReceivedEvent(response));
+                mEventBus.post(new OnBoughtEvent(response));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                mEventBus.post(new OnBoughtEvent(CALL_FAILED));
+            public void onError(String errorMsg) {
+
             }
-        };
-        mApiProvider.buyProductByID(id, callback);
+        });
     }
 
     public void getListFavorites() {
 
-        createApiManager();
-
-        Callback<List<Favorites>> callback = new Callback<List<Favorites>>() {
+        mApiProvider.getListFavorites(new com.softjourn.sj_coin.api.callbacks.Callback<List<Favorites>>() {
             @Override
-            public void onResponse(Call<List<Favorites>> call, Response<List<Favorites>> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    List<Favorites> favorites = response.body();
-                    mEventBus.post(new OnFavoritesListReceived(favorites));
-                }
+            public void onSuccess(List<Favorites> response) {
+                FavoritesListSingleton.getInstance().setData(response);
+                mEventBus.post(new OnFavoritesListReceived(response));
             }
 
             @Override
-            public void onFailure(Call<List<Favorites>> call, Throwable t) {
+            public void onError(String errorMsg) {
+
             }
-        };
-        mApiProvider.getListFavorites(callback);
+        });
     }
 
-    public void addProductToFavorite(final String id) {
-        createApiManager();
+    public void addProductToFavorite(final int id) {
 
-        Callback<Void> callback = new Callback<Void>() {
-
+        mApiProvider.addProductToFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    mEventBus.post(new OnAddedToFavorites(id));
-                }
+            public void onSuccess(Void response) {
+                FavoritesListSingleton.getInstance().LocalAddToFavorites(id);
+                mEventBus.post(new OnAddedToFavorites(id));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                mEventBus.post(new OnBoughtEvent(CALL_FAILED));
+            public void onError(String errorMsg) {
+
             }
-        };
-        mApiProvider.addProductToFavorites(id, callback);
+        });
     }
 
     public void removeProductFromFavorites(final String id) {
-        createApiManager();
 
-        Callback<Void> callback = new Callback<Void>() {
-
+        mApiProvider.removeFromFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnServerErrorEvent(response.code()));
-                } else {
-                    mEventBus.post(new OnRemovedFromFavorites(id));
-                }
+            public void onSuccess(Void response) {
+                FavoritesListSingleton.getInstance().LocalRemoveFromFavorites(id);
+                mEventBus.post(new OnRemovedFromFavorites(id));
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onError(String errorMsg) {
 
             }
-        };
-        mApiProvider.removeFromFavorites(id, callback);
-    }
-
-    public void createApiManager() {
-        mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
+        });
     }
 
     public List<Product> loadLocalProductList() {
@@ -251,26 +195,31 @@ public class VendingModel extends BaseModel implements Constants {
     }
 
     public List<CustomizedProduct> loadFavorites() {
-        List<Integer> favorites = new ArrayList<>();
-        for (int k=0; k < FavoritesListSingleton.getInstance().getData().size(); k++) {
-            favorites.add(FavoritesListSingleton.getInstance().getData().get(k).getId());
-        }
-        List<CustomizedProduct> favoritesProducts = new ArrayList<CustomizedProduct>();
-        List<Drink> drinks = FeaturedProductsSingleton.getInstance().getData().getDrink();
-        List<Snack> snacks = FeaturedProductsSingleton.getInstance().getData().getSnack();
 
-        for (int i = 0; i < drinks.size(); i++) {
-            if (favorites.contains(drinks.get(i).getId().intValue())){
-            favoritesProducts.add(new CustomizedProduct(drinks.get(i)));}
-        }
-        for (int j = 0; j < snacks.size(); j++) {
-            if (favorites.contains(snacks.get(j).getId().intValue())){
-                favoritesProducts.add(new CustomizedProduct(snacks.get(j)));}
-        }
+        List<CustomizedProduct> favoritesProducts = new ArrayList<>();
+        favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getDrink()));
+        favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getSnack()));
         return favoritesProducts;
     }
 
-    public List<CustomizedProduct> sortByName(List<CustomizedProduct> product, boolean isSortingForward) {
+    private List<CustomizedProduct> getFavoriteProducts(List<? extends CustomizedProduct> products) {
+
+        List<CustomizedProduct> favoritesProducts = new ArrayList<>();
+
+        for (Favorites favorites : FavoritesListSingleton.getInstance().getData()) {
+
+            for (CustomizedProduct product : products) {
+                if (favorites.getId() == product.getId()) {
+                    favoritesProducts.add(product);
+                    break;
+                }
+            }
+        }
+
+        return favoritesProducts;
+    }
+
+    public List<? extends CustomizedProduct> sortByName(List<? extends CustomizedProduct> product, boolean isSortingForward) {
         if (isSortingForward) {
             Collections.sort(product, new Comparator<CustomizedProduct>() {
                 @Override
@@ -290,7 +239,7 @@ public class VendingModel extends BaseModel implements Constants {
         }
     }
 
-    public List<CustomizedProduct> sortByPrice(List<CustomizedProduct> product, boolean isSortingForward) {
+    public List<? extends CustomizedProduct> sortByPrice(List<? extends CustomizedProduct> product, boolean isSortingForward) {
         if (isSortingForward) {
             Collections.sort(product, new Comparator<CustomizedProduct>() {
                 @Override

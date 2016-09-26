@@ -18,6 +18,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/profile_user_name"
         android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal" />
 
     <Space
@@ -32,6 +33,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/profile_amount_available"
         android:textStyle="bold"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -55,6 +57,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/profile_purchase_history"
         android:text="@string/purchase_history"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="@dimen/category_header_bottom_margin"
         android:layout_gravity="center_horizontal" />
 
@@ -63,7 +66,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:scrollbars="horizontal"/>
+        android:scrollbars="vertical"
+        android:layout_marginBottom="10dp"/>
 
 
 </LinearLayout>

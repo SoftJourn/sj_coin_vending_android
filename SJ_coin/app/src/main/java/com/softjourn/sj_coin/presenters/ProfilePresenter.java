@@ -2,31 +2,38 @@ package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
+import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
+import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
-import com.softjourn.sj_coin.utils.Connections;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 
-public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Constants {
+public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Const {
 
     private ProfileContract.View mView;
-    private ProfileModel mModel;
+    private ProfileModel mProfileModel;
+    private VendingModel mVendingModel;
     private LoginPresenter mLoginPresenter;
 
-    public ProfilePresenter(ProfileContract.View profileView){
+    public ProfilePresenter(ProfileContract.View profileView) {
 
         onCreate();
 
-        this.mView = profileView;
-        this.mModel = new ProfileModel();
-        this.mLoginPresenter = new LoginPresenter();
+        mView = profileView;
+        mProfileModel = new ProfileModel();
+        mVendingModel = new VendingModel();
+        mLoginPresenter = new LoginPresenter();
+        mView.showProgress(App.getContext().getString(R.string.progress_loading));
+        mVendingModel.callFeaturedProductsList(MACHINE_ID);
     }
 
     @Override
@@ -39,7 +46,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.makeAccountCall();
+                mProfileModel.makeAccountCall();
             }
         }
     }
@@ -52,14 +59,14 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
             if (checkExpirationDate()) {
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
-                mModel.makeBalanceCall();
+                mProfileModel.makeBalanceCall();
             }
         }
     }
 
     @Override
-    public void getHistory() {
-        mView.setData(mModel.loadHistory());
+    public void showHistory() {
+        mView.setData(mProfileModel.loadHistory());
     }
 
     @Override
@@ -74,24 +81,35 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public boolean makeNetworkChecking() {
-        return Connections.isNetworkEnabled();
+        return NetworkManager.isNetworkEnabled();
     }
 
     @Subscribe
     public void OnEvent(OnAccountReceivedEvent event) {
         mView.hideProgress();
-        mView.showBalance(event.getAccount());
-        mView.setUserName(event.getAccount().getName()+" "+event.getAccount().getSurname());
+        mView.showBalance(event.getAccount().getAmount());
+        mView.setUserName(event.getAccount().getName() + " " + event.getAccount().getSurname());
+    }
+
+    @Subscribe
+    public void OnEvent(OnAmountReceivedEvent event) {
+        mView.showBalance(String.format("%d", event.getAmount().getAmount()));
     }
 
     @Subscribe
     public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
             mView.hideProgress();
-            mModel.makeAccountCall();
+            mProfileModel.makeAccountCall();
         } else {
             mView.hideProgress();
         }
+    }
+
+    @Subscribe
+    public void OnEvent(OnFeaturedProductsListReceived event) {
+        mView.hideProgress();
+        showHistory();
     }
 }
 

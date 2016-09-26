@@ -64,7 +64,7 @@
     <!--Toast Messages-->
     <string name="internet_turned_off">Internet should be turned on</string>
     <string name="error_unexpected">Oops… Something weird. Try Again</string>
-     <string name="activity_product_take_your_order_message">Please take your order</string>
+    <string name="activity_product_take_your_order_message">Please take your order</string>
     <string name="toast_we_can_not_proceed_your_request">Unfortunately we can not proceed with your request. Please try again later</string>
     <string name="there_are_no_items">Currently there are no products in this category</string>
 
@@ -74,6 +74,8 @@
     <string name="confirm_dialog_cancel">Cancel</string>
     <string name="search_hint">Product Name</string>
     <string name="layout_vending_favorites">Favorites</string>
+    <string name="dialog_msg_confirm_buy_product">Buy %1$s for %2$d coins?</string>
+
 
     <!-- Toolbar Spinner Items-->
     <string-array name="activityCategory">

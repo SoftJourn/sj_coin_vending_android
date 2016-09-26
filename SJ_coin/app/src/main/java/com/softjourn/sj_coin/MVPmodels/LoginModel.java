@@ -8,7 +8,7 @@ import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.model.Session;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Utils;
 
 import retrofit2.Call;
@@ -26,19 +26,19 @@ public class LoginModel extends BaseModel{
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (!response.isSuccessful()) {
-                    mEventBus.post(new OnTokenRefreshed(Constants.TOKEN_NOT_REFRESHED));
+                    mEventBus.post(new OnTokenRefreshed(Const.TOKEN_NOT_REFRESHED));
                 } else {
                     Utils.storeSessionInfo(response.body());
-                    mEventBus.post(new OnTokenRefreshed(Constants.TOKEN_REFRESHED));
+                    mEventBus.post(new OnTokenRefreshed(Const.TOKEN_REFRESHED));
                 }
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                mEventBus.post(new OnTokenRefreshed(Constants.TOKEN_NOT_REFRESHED));
+                mEventBus.post(new OnTokenRefreshed(Const.TOKEN_NOT_REFRESHED));
             }
         };
-        mApiProvider.makeRefreshToken(refreshToken, Constants.GRANT_TYPE_REFRESH_TOKEN, callback);
+        mApiProvider.makeRefreshToken(refreshToken, Const.GRANT_TYPE_REFRESH_TOKEN, callback);
     }
 
 
@@ -51,19 +51,19 @@ public class LoginModel extends BaseModel{
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (!response.isSuccessful()) {
-                    mEventBus.post(new OnLoginCallEvent(Constants.CALL_FAILED));
+                    mEventBus.post(new OnLoginCallEvent(Const.CALL_FAILED));
                 } else {
                     Utils.storeSessionInfo(response.body());
-                    mEventBus.post(new OnLoginCallEvent(Constants.CALL_SUCCEED));
+                    mEventBus.post(new OnLoginCallEvent(Const.CALL_SUCCEED));
                 }
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                mEventBus.post(new OnCallEvent(Constants.CALL_FAILED));
+                mEventBus.post(new OnCallEvent(Const.CALL_FAILED));
             }
         };
-        mApiProvider.makeLoginRequest(userName, password, Constants.GRANT_TYPE_PASSWORD, callback);
+        mApiProvider.makeLoginRequest(userName, password, Const.GRANT_TYPE_PASSWORD, callback);
     }
 
     public void createApiManager() {

@@ -1,5 +1,6 @@
 package com.softjourn.sj_coin.api;
 
+import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
@@ -11,6 +12,7 @@ import com.softjourn.sj_coin.model.products.Products;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -53,13 +55,13 @@ public interface ApiService {
     Call<List<Product>> getProductsList(@Path("machineID") String machineID);
 
     @POST ("v1/machines/3/products/{id}")
-    Call<Void> buyProductByID(@Path("id") String id);
+    Call<Amount> buyProductByID(@Path("id") String id);
 
     @GET ("v1/favorites")
     Call<List<Favorites>> getListFavorites();
 
     @POST ("v1/favorites/{id}")
-    Call<Void> addProductToFavorites(@Path("id") String id);
+    Call<Void> addProductToFavorites(@Path("id") int id);
 
     @DELETE ("v1/favorites/{id}")
     Call<Void> removeFromFavorites(@Path("id") String id);

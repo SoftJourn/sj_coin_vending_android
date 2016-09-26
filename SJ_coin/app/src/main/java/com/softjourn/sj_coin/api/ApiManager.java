@@ -8,22 +8,30 @@ import com.softjourn.sj_coin.api.vending.VendingProcessApiClient;
 
 public class ApiManager {
 
-    public ApiManager() {
-    }
+    private static ApiManager mApiManager;
+    private static OAuthApiClient mAuthApiClient;
+    private static CoinsApiClient mCoinsApiClient;
+    private static VendingApiProvider mVendingApiProvider;
 
     public static ApiManager getInstance() {
-        return new ApiManager();
+        if (mApiManager == null){
+            mApiManager = new ApiManager();
+            mAuthApiClient = new OAuthApiClient();
+            mCoinsApiClient = new CoinsApiClient();
+            mVendingApiProvider = new VendingProcessApiClient();
+        }
+        return mApiManager;
     }
 
     public OAuthApiProvider getOauthApiProvider() {
-        return new OAuthApiClient();
+        return mAuthApiClient;
     }
 
     public VendingApiProvider getVendingProcessApiProvider() {
-        return new VendingProcessApiClient();
+        return mVendingApiProvider;
     }
 
     public CoinsApiClient getCoinsApiProvider() {
-        return new CoinsApiClient();
+        return mCoinsApiClient;
     }
 }

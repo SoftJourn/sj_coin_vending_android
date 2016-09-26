@@ -19,12 +19,8 @@ import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.products.BestSeller;
-import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.Snack;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 import com.squareup.picasso.Picasso;
@@ -35,14 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeaturedProductItemsAdapter extends
-        android.support.v7.widget.RecyclerView.Adapter<FeaturedProductItemsAdapter.FeaturedViewHolder> implements Constants,
+        android.support.v7.widget.RecyclerView.Adapter<FeaturedProductItemsAdapter.FeaturedViewHolder> implements Const,
         Filterable{
 
     private String mRecyclerViewType;
 
-    private List<CustomizedProduct> mListProducts;
+    private List<CustomizedProduct> mListProducts = new ArrayList<>();
 
-    private List<CustomizedProduct> mOriginal;
+    private List<? extends CustomizedProduct> mOriginal = new ArrayList<>();
 
     private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
@@ -57,51 +53,20 @@ public class FeaturedProductItemsAdapter extends
         }
     }
 
-    public void setAllProducts(List<Drink> drinks, List<Snack> snacks) {
-        mListProducts = new ArrayList<CustomizedProduct>();
-        for (int i = 0; i < drinks.size(); i++) {
-            mListProducts.add(new CustomizedProduct(drinks.get(i)));
-        }
-        for (int j = 0; j < snacks.size(); j++) {
-            mListProducts.add(new CustomizedProduct(snacks.get(j)));
-        }
+    public void clearList(){
+        mListProducts.clear();
+        notifyDataSetChanged();
     }
 
-    public void setLastAddedData(List<LastAdded> data) {
-        mListProducts = new ArrayList<CustomizedProduct>();
-        for (int i = 0; i < data.size(); i++) {
-            mListProducts.add(new CustomizedProduct(data.get(i)));
-        }
+    public void addToList(List<? extends CustomizedProduct> products) {
+        mListProducts.addAll(products);
     }
 
-    public void setBestSellerData(List<BestSeller> data) {
-        mListProducts = new ArrayList<CustomizedProduct>();
-        for (int i = 0; i < data.size(); i++) {
-            mListProducts.add(new CustomizedProduct(data.get(i)));
-        }
-    }
-
-    public void setSnackData(List<Snack> data) {
-        mListProducts = new ArrayList<CustomizedProduct>();
-        for (int i = 0; i < data.size(); i++) {
-            mListProducts.add(new CustomizedProduct(data.get(i)));
-        }
-    }
-
-    public void setDrinkData(List<Drink> data) {
-        mListProducts = new ArrayList<CustomizedProduct>();
-        for (int i = 0; i < data.size(); i++) {
-            mListProducts.add(new CustomizedProduct(data.get(i)));
-        }
-    }
-
-    public void setFavorites(List<CustomizedProduct> data){
-        mListProducts = data;
-        //notifyDataSetChanged();
-    }
-
-    public void setSortedData(List<CustomizedProduct> data){
-        mListProducts = data;
+    public void setData(List<? extends CustomizedProduct> data){
+        ArrayList<CustomizedProduct> newList = new ArrayList<>(data);
+        mListProducts.clear();
+        mListProducts.addAll(newList);
+        mListProducts = newList;
         notifyDataSetChanged();
     }
 
@@ -215,7 +180,7 @@ public class FeaturedProductItemsAdapter extends
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
                 final List<CustomizedProduct> results = new ArrayList<CustomizedProduct>();
-                if (mOriginal == null)
+                if (mOriginal == null || mOriginal.size() <= 0)
                     mOriginal = mListProducts;
                 if (constraint != null) {
                     if (mOriginal != null & mOriginal.size() > 0) {

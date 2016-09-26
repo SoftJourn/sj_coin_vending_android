@@ -31,7 +31,7 @@ import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.LastAdded;
 import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.Navigation;
 
@@ -43,13 +43,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AllProducts extends BaseActivity implements VendingContract.View, Constants, Extras {
+public class AllProducts extends BaseActivity implements VendingContract.View, Const, Extras {
 
     private boolean mSortingByNameForward = true;
     private boolean mSortingByPriceForward = true;
 
-    List<Drink> mProductDrinkList;
-    List<Snack> mProductSnackList;
+    List<? extends CustomizedProduct> mProductDrinkList;
+    List<? extends CustomizedProduct> mProductSnackList;
 
     private Menu mMenu;
 
@@ -89,6 +89,8 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
 
         ButterKnife.bind(this);
 
+        String productCategory = getIntent().getStringExtra(EXTRAS_CATEGORY);
+
         mLayoutManager = new LinearLayoutManager(this);
         mMachineItems.setLayoutManager(mLayoutManager);
         mProductAdapter = new FeaturedProductItemsAdapter(null, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
@@ -110,7 +112,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
         navigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Navigation.navigationOnCategoriesAllProducts(position, AllProducts.this);
+//                Navigation.navigationOnCategoriesAllProducts(position, AllProducts.this);
             }
 
             @Override
@@ -151,6 +153,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
         menu.findItem(R.id.action_search).setVisible(true);
 
         super.mAllItemsVisible = true;
+
         this.mMenu = menu;
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
@@ -199,32 +202,13 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     }
 
     @Override
-    public void loadData(List<Drink> drinks, List<Snack> snacks) {
+    public void loadData(List<? extends CustomizedProduct> drinks, List<? extends CustomizedProduct> snacks) {
         mProductDrinkList = drinks;
         mProductSnackList = snacks;
-        mProductAdapter.setAllProducts(drinks, snacks);
-
+        mProductAdapter.clearList();
+        mProductAdapter.addToList(drinks);
+        mProductAdapter.addToList(snacks);
         mProductList = mProductAdapter.getCustomizedProductList();
-    }
-
-    @Override
-    public void loadLastAddedData(List<LastAdded> data) {
-
-    }
-
-    @Override
-    public void loadBestSellerData(List<BestSeller> data) {
-
-    }
-
-    @Override
-    public void loadSnackData(List<Snack> data) {
-
-    }
-
-    @Override
-    public void loadDrinkData(List<Drink> data) {
-
     }
 
     @Override
@@ -238,8 +222,8 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     }
 
     @Override
-    public void setSortedData(List<CustomizedProduct> product) {
-        mProductAdapter.setSortedData(mProductList);
+    public void setSortedData(List<? extends CustomizedProduct> product) {
+        mProductAdapter.setData(mProductList);
     }
 
     @Override
@@ -258,7 +242,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
     }
 
     @Override
-    public void loadFavorites(List<CustomizedProduct> data) {
+    public void loadData(List<? extends CustomizedProduct> data) {
 
     }
 
@@ -294,7 +278,7 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
 
     @Subscribe
     public void OnEvent(OnAddFavoriteEvent event){
-        mPresenter.addToFavorite(String.valueOf(event.addFavorite().getId()));
+        mPresenter.addToFavorite(event.addFavorite().getId());
     }
 
     @Subscribe
@@ -302,4 +286,9 @@ public class AllProducts extends BaseActivity implements VendingContract.View, C
         mPresenter.removeFromFavorite(String.valueOf(event.removeFavorite().getId()));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+    }
 }

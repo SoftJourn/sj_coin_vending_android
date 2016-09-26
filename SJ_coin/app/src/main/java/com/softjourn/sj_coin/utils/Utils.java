@@ -25,20 +25,20 @@ public class Utils {
     }
 
     public static void storeSessionInfo(Session session) {
-        Preferences.storeObject(Constants.ACCESS_TOKEN, session.getAccessToken());
-        Preferences.storeObject(Constants.REFRESH_TOKEN, session.getRefreshToken());
-        Preferences.storeObject(Constants.EXPIRATION_DATE, String.valueOf((new Date().getTime() / 1000) + Long.parseLong(session.getExpireIn())));
+        Preferences.storeObject(Const.ACCESS_TOKEN, session.getAccessToken());
+        Preferences.storeObject(Const.REFRESH_TOKEN, session.getRefreshToken());
+        Preferences.storeObject(Const.EXPIRATION_DATE, String.valueOf((new Date().getTime() / 1000) + Long.parseLong(session.getExpireIn())));
     }
 
     public static void storeConcreteMachineInfo(Machines machine) {
-        Preferences.storeObject(Constants.SELECTED_MACHINE_ROWS, machine.getSize().getRows());
-        Preferences.storeObject(Constants.SELECTED_MACHINE_COLUMNS, machine.getSize().getColumns());
-        Preferences.storeObject(Constants.SELECTED_MACHINE_ID, machine.getId());
-        Preferences.storeObject(Constants.SELECTED_MACHINE_NAME, machine.getName());
+        Preferences.storeObject(Const.SELECTED_MACHINE_ROWS, machine.getSize().getRows());
+        Preferences.storeObject(Const.SELECTED_MACHINE_COLUMNS, machine.getSize().getColumns());
+        Preferences.storeObject(Const.SELECTED_MACHINE_ID, machine.getId());
+        Preferences.storeObject(Const.SELECTED_MACHINE_NAME, machine.getName());
     }
 
     public static void clearUsersData(){
-        Preferences.clearStringObject(Constants.ACCESS_TOKEN);
-        Preferences.clearStringObject(Constants.REFRESH_TOKEN);
+        Preferences.clearStringObject(Const.ACCESS_TOKEN);
+        Preferences.clearStringObject(Const.REFRESH_TOKEN);
     }
 }

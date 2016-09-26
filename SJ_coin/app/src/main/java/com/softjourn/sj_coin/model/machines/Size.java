@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-@Data
 public class Size implements Parcelable {
 
     public static final Creator<Size> CREATOR = new Creator<Size>() {
@@ -26,6 +25,13 @@ public class Size implements Parcelable {
     @SerializedName("columns")
     public Integer columns;
 
+    public Integer getRows() {
+        return rows;
+    }
+
+    public Integer getColumns() {
+        return columns;
+    }
 
     protected Size(Parcel in) {
         rows = in.readInt();

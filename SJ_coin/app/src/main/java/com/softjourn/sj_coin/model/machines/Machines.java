@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-@Data
 public class Machines implements Parcelable {
 
     public static final Creator<Machines> CREATOR = new Creator<Machines>() {
@@ -21,12 +20,25 @@ public class Machines implements Parcelable {
             return new Machines[size];
         }
     };
+
     @SerializedName("id")
     public Integer id;
     @SerializedName("name")
     public String name;
     @SerializedName("size")
     public Size size;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Size getSize() {
+        return size;
+    }
 
     protected Machines(Parcel in) {
         name = in.readString();

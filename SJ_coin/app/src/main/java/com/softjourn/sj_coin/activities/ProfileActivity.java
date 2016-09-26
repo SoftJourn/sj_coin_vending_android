@@ -13,14 +13,14 @@ import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
-import com.softjourn.sj_coin.utils.Constants;
+import com.softjourn.sj_coin.utils.Const;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfileActivity extends BaseActivity implements ProfileContract.View, Constants {
+public class ProfileActivity extends BaseActivity implements ProfileContract.View, Const {
 
     @Bind(R.id.profile_coins_label)
     TextView mCoinsLabel;
@@ -54,7 +54,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         mHistoryList.setLayoutManager(mLayoutManager);
         mHistoryList.setAdapter(mHistoryAdapter);
 
-        mPresenter.getHistory();
+        mPresenter.showHistory();
         mPresenter.getAccount();
     }
 
@@ -68,12 +68,13 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     protected void onDestroy() {
         super.mProfileIsVisible = false;
         super.onDestroy();
+        mPresenter.onDestroy();
     }
 
     @Override
-    public void showBalance(Account account) {
+    public void showBalance(String amount) {
         mCoinsLabel.setVisibility(View.VISIBLE);
-        mUserBalance.setText(account.getAmount());
+        mUserBalance.setText(amount);
     }
 
     @Override
@@ -105,4 +106,5 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     public void showNoInternetError() {
         onNoInternetAvailable();
     }
+
 }
