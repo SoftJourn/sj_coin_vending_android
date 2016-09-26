@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.AllProducts;
 import com.softjourn.sj_coin.activities.LoginActivity;
 import com.softjourn.sj_coin.activities.ProfileActivity;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
@@ -34,40 +33,6 @@ public class Navigation implements Const,Extras {
         Intent intent = new Intent(context, SeeAllActivity.class);
         intent.putExtra(EXTRAS_CATEGORY,category);
         context.startActivity(intent);
-    }
-
-    public static void goToAllProductsActivity(Context context){
-        Intent intent = new Intent(context, AllProducts.class);
-        context.startActivity(intent);
-    }
-
-    public static void navigationOnCategoriesAllProducts(int position, Activity context) {
-        switch (position) {
-            case 0:
-                Navigation.goToSeeAllActivity(context, ALL_PRODUCTS);
-                context.finish();
-                break;
-            case 1:
-                Navigation.goToSeeAllActivity(context, FAVORITES);
-                context.finish();
-                break;
-            case 2:
-                Navigation.goToSeeAllActivity(context, LAST_ADDED);
-                context.finish();
-                break;
-            case 3:
-                Navigation.goToSeeAllActivity(context, BEST_SELLERS);
-                context.finish();
-                break;
-            case 4:
-                Navigation.goToSeeAllActivity(context, SNACKS);
-                context.finish();
-                break;
-            case 5:
-                Navigation.goToSeeAllActivity(context, DRINKS);
-                context.finish();
-                break;
-        }
     }
 
     public static void navigationOnCategoriesSeeAll(int position, Activity context){

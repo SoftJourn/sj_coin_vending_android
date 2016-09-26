@@ -234,7 +234,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void showNoInternetError() {
-
+        onNoInternetAvailable();
     }
 
     @Subscribe
