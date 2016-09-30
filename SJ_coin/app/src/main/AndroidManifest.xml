@@ -15,7 +15,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.VendingActivity"
-            android:label="Vending Machine"></activity>
+            android:label="Vending Machine">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -44,19 +49,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity
-            android:name=".activities.AllProducts"
-            android:label="All Products"
-            android:theme="@style/AppThemeForCustomToolbar">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
 
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity android:name=".activities.new_activities.MainActivityNew"></activity>
     </application>
 
 </manifest>

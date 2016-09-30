@@ -49,18 +49,23 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
     @Override
     public boolean validateCredentials(String userName, String password) {
-        boolean valid = true;
+
+        if (password.isEmpty() && userName.isEmpty()) {
+            mLoginView.setUsernameError();
+            return false;
+        }
 
         if (userName.isEmpty()) {
             mLoginView.setUsernameError();
-            valid = false;
+            return false;
         }
 
         if (password.isEmpty()) {
             mLoginView.setPasswordError();
-            valid = false;
+            return false;
         }
-        return valid;
+
+        return true;
     }
 
     @Override

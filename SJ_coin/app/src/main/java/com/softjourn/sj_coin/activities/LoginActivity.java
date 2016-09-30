@@ -74,11 +74,13 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
 
     @Override
     public void setUsernameError() {
+        mUserName.requestFocus();
         mUserName.setError(getString(R.string.activity_login_invalid_email));
     }
 
     @Override
     public void setPasswordError() {
+        mPasswordText.requestFocus();
         mPasswordText.setError(getString(R.string.activity_login_invalid_password));
     }
 

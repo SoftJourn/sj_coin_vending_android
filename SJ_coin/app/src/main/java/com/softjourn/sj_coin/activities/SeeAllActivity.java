@@ -2,7 +2,10 @@ package com.softjourn.sj_coin.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -12,6 +15,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -24,8 +30,6 @@ import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.products.Drink;
-import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
@@ -63,12 +67,41 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.activityCategory, R.layout.spinner_dropdown_item);
+        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.activityCategory, R.layout.spinner_dropdown_item);
+        mNavigationSpinner = new Spinner(this);
+        mNavigationSpinner.setAdapter(spinnerAdapter);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            mNavigationSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+            toolbar.addView(mNavigationSpinner, 0);
+            toolbar.canShowOverflowMenu();
+            toolbar.showOverflowMenu();
+
+            ImageView imageArrow = new ImageView(this);
+            imageArrow.setImageDrawable(getResources().getDrawable(R.drawable.spinner_arrow));
+            toolbar.addView(imageArrow, 1);
+            imageArrow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mNavigationSpinner.performClick();
+                }
+            });
+
+        } else {
+
+            toolbar.addView(mNavigationSpinner);
+            toolbar.canShowOverflowMenu();
+            toolbar.showOverflowMenu();
+        }
+
+        /*SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.activityCategory, R.layout.spinner_dropdown_item);
         mNavigationSpinner = new Spinner(getApplicationContext());
         mNavigationSpinner.setAdapter(spinnerAdapter);
         toolbar.addView(mNavigationSpinner, 0);
         toolbar.canShowOverflowMenu();
-        toolbar.showOverflowMenu();
+        toolbar.showOverflowMenu();*/
+
 
         mNavigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -98,6 +131,9 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         mSearch.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
 
         mSearch.setQueryHint(getString(R.string.search_hint));
+
+        ((EditText)mSearch.findViewById(R.id.search_src_text)).setTextColor(Color.WHITE);
+        ((EditText)mSearch.findViewById(R.id.search_src_text)).setHintTextColor(Color.WHITE);
 
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
