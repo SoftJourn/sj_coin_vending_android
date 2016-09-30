@@ -15,6 +15,7 @@ public class Navigation implements Const,Extras {
 
     public static void goToVendingActivity(Context context) {
         Intent intent = new Intent(context, VendingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
 

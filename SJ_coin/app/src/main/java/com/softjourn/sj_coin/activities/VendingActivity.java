@@ -138,6 +138,11 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
     public void loadUserBalance() {
         mPresenter.getBalance();
     }

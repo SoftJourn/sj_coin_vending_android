@@ -15,7 +15,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.VendingActivity"
-            android:label="Vending Machine"></activity>
+            android:label="Vending Machine">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@style/SplashTheme">
