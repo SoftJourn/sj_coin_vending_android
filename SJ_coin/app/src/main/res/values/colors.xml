@@ -6,4 +6,5 @@
     <color name="colorScreenBackground">#50AAAAAA</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="menuBackground">#414141</color>
 </resources>

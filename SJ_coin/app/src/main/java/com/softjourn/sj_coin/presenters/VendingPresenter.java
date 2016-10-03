@@ -15,8 +15,8 @@ import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -184,7 +184,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getBalance() {
         if (!makeNetworkChecking()) {
-//            mView.showNoInternetError();
+
         } else {
             if (checkExpirationDate()) {
                 refreshToken(Const.REFRESH_TOKEN);

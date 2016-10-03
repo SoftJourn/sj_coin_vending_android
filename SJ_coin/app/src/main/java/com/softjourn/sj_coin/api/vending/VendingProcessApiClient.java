@@ -13,6 +13,7 @@ import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -49,6 +50,9 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
                         return true;
                     }
                 })
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
                 .build();
     }
 
@@ -88,7 +92,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<Machines> call, Throwable t) {
-
+                callback.onError(t.getMessage());
             }
         });
     }
@@ -104,7 +108,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<Products> call, Throwable t) {
-
+                callback.onError(t.getMessage());
             }
         });
     }
@@ -119,7 +123,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
-
+                callback.onError(t.getMessage());
             }
         });
     }
@@ -134,7 +138,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<List<Favorites>> call, Throwable t) {
-
+                callback.onError(t.getMessage());
             }
         });
     }
@@ -149,7 +153,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<Amount> call, Throwable t) {
-
+                callback.onError(t.getMessage());
             }
         });
     }
@@ -164,7 +168,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                callback.onError(t.getMessage());
             }
         });
     }
@@ -179,7 +183,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                callback.onError(t.getMessage());
             }
         });
     }

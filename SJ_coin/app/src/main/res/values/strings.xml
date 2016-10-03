@@ -77,15 +77,16 @@
     <string name="dialog_msg_confirm_buy_product">Buy %1$s for %2$d coins?</string>
 
 
-    <!-- Toolbar Spinner Items-->
-    <string-array name="activityCategory">
-        <item>All Items</item>
-        <item>Favorites</item>
-        <item>Last Added</item>
-        <item>Best Sellers</item>
-        <item>Snacks</item>
-        <item>Drinks</item>
-    </string-array>
+    <!-- Navigation Drawer Items-->
+    <string name="allItems">All Items</string>
+    <string name="favorites">Favorites</string>
+    <string name="lastAdded">Last Added</string>
+    <string name="bestSellers">Best Sellers</string>
+    <string name="snacks">Snacks</string>
+    <string name="drinks">Drinks</string>
 
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

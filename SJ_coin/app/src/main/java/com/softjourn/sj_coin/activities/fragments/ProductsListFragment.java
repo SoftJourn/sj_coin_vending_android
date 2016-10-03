@@ -3,7 +3,6 @@ package com.softjourn.sj_coin.activities.fragments;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,8 +17,6 @@ import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.products.Drink;
-import com.softjourn.sj_coin.model.products.Snack;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
@@ -111,7 +108,6 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
-                ((SeeAllActivity) getActivity()).mNavigationSpinner.setSelection(getSelectedSpinnerPositionByCategory(mProductsCategory));
                 break;
 
             default:
@@ -134,25 +130,6 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
         return view;
     }
 
-    private int getSelectedSpinnerPositionByCategory(String category) {
-        switch (category) {
-            case ALL_PRODUCTS:
-                return 0;
-            case FAVORITES:
-                return 1;
-            case LAST_ADDED:
-                return 2;
-            case BEST_SELLERS:
-                return 3;
-            case SNACKS:
-                return 4;
-            case DRINKS:
-                return 5;
-            default:
-                return 0;
-        }
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -167,7 +144,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
 
     private void getLocalProductsList() {
         switch (mProductsCategory) {
-            case ALL_PRODUCTS:
+            case ALL_ITEMS:
                 mPresenter.getLocalProductList();
                 break;
             case FAVORITES:

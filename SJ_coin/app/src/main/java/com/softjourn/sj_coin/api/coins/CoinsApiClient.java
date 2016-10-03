@@ -9,6 +9,7 @@ import com.softjourn.sj_coin.model.accountInfo.Balance;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -46,6 +47,9 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
                         return true;
                     }
                 })
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
                 .build();
     }
 

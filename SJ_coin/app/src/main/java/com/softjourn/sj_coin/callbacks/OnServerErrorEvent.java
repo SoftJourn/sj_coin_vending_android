@@ -1,13 +1,14 @@
 package com.softjourn.sj_coin.callbacks;
 
 public class OnServerErrorEvent {
-    private int message;
+    private String message;
 
-    public OnServerErrorEvent(int message) {
+    public OnServerErrorEvent(String message) {
         this.message = message;
     }
 
-    public int getMessage() {
+    public String getMessage() {
         return message;
     }
+
 }

@@ -6,6 +6,7 @@ import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.model.Session;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -43,6 +44,9 @@ public class OAuthApiClient extends BaseApiClient implements OAuthApiProvider {
                         return true;
                     }
                 })
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
                 .build();
     }
 

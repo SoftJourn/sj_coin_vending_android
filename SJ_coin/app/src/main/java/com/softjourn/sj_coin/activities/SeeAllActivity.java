@@ -3,23 +3,19 @@ package com.softjourn.sj_coin.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSpinner;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
@@ -39,7 +35,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-public class SeeAllActivity extends BaseActivity implements VendingContract.View, Const, Extras {
+public class SeeAllActivity extends BaseActivity implements VendingContract.View, Const, Extras, NavigationView.OnNavigationItemSelectedListener {
 
     private VendingContract.Presenter mPresenter;
 
@@ -50,7 +46,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     Button mFragmentsSortNameButton;
     Button mFragmentsSortPriceButton;
 
-    public Spinner mNavigationSpinner;
+    NavigationView mNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,58 +61,59 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-        SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.activityCategory, R.layout.spinner_dropdown_item);
-        mNavigationSpinner = new Spinner(this);
-        mNavigationSpinner.setAdapter(spinnerAdapter);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        assert drawer != null;
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            mNavigationSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-            toolbar.addView(mNavigationSpinner, 0);
-            toolbar.canShowOverflowMenu();
-            toolbar.showOverflowMenu();
-
-            ImageView imageArrow = new ImageView(this);
-            imageArrow.setImageDrawable(getResources().getDrawable(R.drawable.spinner_arrow));
-            toolbar.addView(imageArrow, 1);
-            imageArrow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mNavigationSpinner.performClick();
-                }
-            });
-
-        } else {
-
-            toolbar.addView(mNavigationSpinner);
-            toolbar.canShowOverflowMenu();
-            toolbar.showOverflowMenu();
-        }
-
-        /*SpinnerAdapter spinnerAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.activityCategory, R.layout.spinner_dropdown_item);
-        mNavigationSpinner = new Spinner(getApplicationContext());
-        mNavigationSpinner.setAdapter(spinnerAdapter);
-        toolbar.addView(mNavigationSpinner, 0);
-        toolbar.canShowOverflowMenu();
-        toolbar.showOverflowMenu();*/
-
-
-        mNavigationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Navigation.navigationOnCategoriesSeeAll(position, SeeAllActivity.this);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        assert mNavigationView != null;
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         attachFragment(getIntent().getStringExtra(EXTRAS_CATEGORY));
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.allProducts:
+                Navigation.navigationOnCategoriesSeeAll(0, SeeAllActivity.this);
+                setTitle(R.string.allItems);
+                break;
+            case R.id.favorites:
+                Navigation.navigationOnCategoriesSeeAll(1, SeeAllActivity.this);
+                setTitle(R.string.favorites);
+                break;
+            case R.id.lastAdded:
+                Navigation.navigationOnCategoriesSeeAll(2, SeeAllActivity.this);
+                setTitle(R.string.lastAdded);
+                break;
+            case R.id.bestSellers:
+                Navigation.navigationOnCategoriesSeeAll(3, SeeAllActivity.this);
+                setTitle(R.string.bestSellers);
+                break;
+            case R.id.snacks:
+                Navigation.navigationOnCategoriesSeeAll(4, SeeAllActivity.this);
+                setTitle(R.string.snacks);
+                break;
+            case R.id.drinks:
+                Navigation.navigationOnCategoriesSeeAll(5, SeeAllActivity.this);
+                setTitle(R.string.drinks);
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawer != null;
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -175,38 +172,38 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     private void attachFragment(String stringExtra) {
         switch (stringExtra) {
 
-            case ALL_PRODUCTS:
-                mNavigationSpinner.setSelection(0);
+            case ALL_ITEMS:
+                mNavigationView.getMenu().getItem(0).setChecked(true);
                 this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_PRODUCTS), TAG_ALL_PRODUCTS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS), TAG_ALL_PRODUCTS_FRAGMENT)
                         .commit();
                 break;
             case FAVORITES:
-                mNavigationSpinner.setSelection(1);
+                mNavigationView.getMenu().getItem(1).setChecked(true);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES), TAG_FAVORITES_FRAGMENT)
                         .commit();
                 break;
             case SNACKS:
-                mNavigationSpinner.setSelection(4);
+                mNavigationView.getMenu().getItem(4).setChecked(true);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(SNACKS), TAG_PRODUCTS_SNACKS_FRAGMENT)
                         .commit();
                 break;
             case DRINKS:
-                mNavigationSpinner.setSelection(5);
+                mNavigationView.getMenu().getItem(5).setChecked(true);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(DRINKS), TAG_PRODUCTS_DRINKS_FRAGMENT)
                         .commit();
                 break;
             case BEST_SELLERS:
-                mNavigationSpinner.setSelection(3);
+                mNavigationView.getMenu().getItem(3).setChecked(true);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(BEST_SELLERS), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
             case LAST_ADDED:
-                mNavigationSpinner.setSelection(2);
+                mNavigationView.getMenu().getItem(2).setChecked(true);
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(LAST_ADDED), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
@@ -292,5 +289,16 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawer != null;
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
