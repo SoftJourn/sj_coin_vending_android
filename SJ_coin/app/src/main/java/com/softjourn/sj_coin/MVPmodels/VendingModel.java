@@ -4,7 +4,6 @@ package com.softjourn.sj_coin.MVPmodels;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
-import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
@@ -34,10 +33,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class VendingModel extends BaseModel implements Const {
 
@@ -117,7 +112,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }

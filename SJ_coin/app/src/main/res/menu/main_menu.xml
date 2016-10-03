@@ -16,12 +16,10 @@
 
     <item
         android:id="@+id/profile"
-        android:icon="@android:drawable/ic_menu_myplaces"
         android:title="@string/main_menu_profile" />
 
     <item
         android:id="@+id/logout"
-        android:icon="@android:drawable/ic_menu_set_as"
         android:title="@string/main_menu_log_out" />
 
     <item

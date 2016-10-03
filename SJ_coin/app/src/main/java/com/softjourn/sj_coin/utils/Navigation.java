@@ -40,7 +40,7 @@ public class Navigation implements Const,Extras {
         switch (position){
             case 0:
                 context.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_PRODUCTS), TAG_ALL_PRODUCTS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS), TAG_ALL_PRODUCTS_FRAGMENT)
                         .commit();
                 break;
             case 1:

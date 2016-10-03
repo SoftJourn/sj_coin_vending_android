@@ -48,7 +48,7 @@ public interface Const {
     String BEST_SELLERS = "Best Sellers";
     String SNACKS = "Snacks";
     String DRINKS = "Drinks";
-    String ALL_PRODUCTS = "All products";
+    String ALL_ITEMS = "All Items";
 
     String MACHINE_ID = "3";
 

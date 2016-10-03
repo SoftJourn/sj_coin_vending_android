@@ -85,13 +85,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
                 finish();
                 return true;
             case R.id.allProducts:
-                if (!mAllItemsVisible) {
-//                    Navigation.goToAllProductsActivity(this);
-                    Navigation.goToSeeAllActivity(this, ALL_PRODUCTS);
-                    return true;
+                if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
+                    this.getFragmentManager().beginTransaction()
+                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS), TAG_ALL_PRODUCTS_FRAGMENT)
+                            .commit();
                 } else {
-                    return false;
+                    Navigation.goToSeeAllActivity(this, ALL_ITEMS);
                 }
+                return true;
             case R.id.favorites:
                 if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
