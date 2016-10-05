@@ -10,10 +10,7 @@ import android.widget.Button;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Utils;
-
-import java.util.List;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -60,17 +57,17 @@ public abstract class BaseFragment extends Fragment {
 //        }
     }
 
-    public void sortByName(boolean isSortingForward, List<? extends CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+    public void sortByName(boolean isSortingForward, String productsCategory, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
         buttonName.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
         buttonPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
-        presenter.sortByName(product, isSortingForward);
+        presenter.sortByName(productsCategory, isSortingForward);
         mSortingByNameForward = !mSortingByNameForward;
     }
 
-    public void sortByPrice(boolean isSortingForward, List<? extends CustomizedProduct> product, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+    public void sortByPrice(boolean isSortingForward, String productsCategory, VendingContract.Presenter presenter, Button buttonName, Button buttonPrice) {
         buttonPrice.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
         buttonName.setBackgroundColor(getResources().getColor(R.color.transparent));
-        presenter.sortByPrice(product, isSortingForward);
+        presenter.sortByPrice(productsCategory, isSortingForward);
         mSortingByPriceForward = !mSortingByPriceForward;
     }
 }

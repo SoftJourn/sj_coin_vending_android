@@ -18,8 +18,8 @@ import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
-import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.products.Favorites;
+import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
@@ -36,9 +36,9 @@ public class FeaturedProductItemsAdapter extends
 
     private String mRecyclerViewType;
 
-    private List<CustomizedProduct> mListProducts = new ArrayList<>();
+    private List<Product> mListProducts = new ArrayList<>();
 
-    private List<? extends CustomizedProduct> mOriginal = new ArrayList<>();
+    private List<Product> mOriginal = new ArrayList<>();
 
     private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
@@ -58,19 +58,19 @@ public class FeaturedProductItemsAdapter extends
         notifyDataSetChanged();
     }
 
-    public void addToList(List<? extends CustomizedProduct> products) {
+    public void addToList(List<Product> products) {
         mListProducts.addAll(products);
     }
 
-    public void setData(List<? extends CustomizedProduct> data){
-        ArrayList<CustomizedProduct> newList = new ArrayList<>(data);
+    public void setData(List<Product> data){
+        ArrayList<Product> newList = new ArrayList<>(data);
         mListProducts.clear();
         mListProducts.addAll(newList);
         mListProducts = newList;
         notifyDataSetChanged();
     }
 
-    public List<CustomizedProduct> getCustomizedProductList(){
+    public List<Product> getCustomizedProductList(){
         return mListProducts;
     }
 
@@ -96,7 +96,7 @@ public class FeaturedProductItemsAdapter extends
     @Override
     public void onBindViewHolder(final FeaturedViewHolder holder, final int position) {
 
-        final CustomizedProduct product = mListProducts.get(position);
+        final Product product = mListProducts.get(position);
 
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
@@ -179,12 +179,12 @@ public class FeaturedProductItemsAdapter extends
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<CustomizedProduct> results = new ArrayList<CustomizedProduct>();
+                final List<Product> results = new ArrayList<Product>();
                 if (mOriginal == null || mOriginal.size() <= 0)
                     mOriginal = mListProducts;
                 if (constraint != null) {
                     if (mOriginal != null & mOriginal.size() > 0) {
-                        for (final CustomizedProduct g : mOriginal) {
+                        for (final Product g : mOriginal) {
                             if (g.getName().toLowerCase().contains(constraint.toString()))
                                 results.add(g);
                         }
@@ -196,7 +196,7 @@ public class FeaturedProductItemsAdapter extends
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                mListProducts = (ArrayList<CustomizedProduct>)results.values;
+                mListProducts = (ArrayList<Product>)results.values;
                 notifyDataSetChanged();
             }
         };

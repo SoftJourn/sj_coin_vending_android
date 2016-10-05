@@ -24,8 +24,10 @@ public interface Const {
     //URLs
     String BASE_URL = "https://sjcoins.testing.softjourn.if.ua";
 
+    String VENDING_API_VERSION = "v1/";
+
     String URL_AUTH_SERVICE = BASE_URL + "/auth/";
-    String URL_VENDING_SERVICE = BASE_URL + "/vending/";
+    String URL_VENDING_SERVICE = "https://vending.softjourn.if.ua/"+VENDING_API_VERSION;
     String URL_COIN_SERVICE = BASE_URL + "/coins/";
 
     String GRANT_TYPE_PASSWORD = "password";
@@ -54,5 +56,12 @@ public interface Const {
 
     //invalid product, item id
     int INVALID_ID = -1;
+
+    String DB_NAME = "VENDING_DB";
+
+    //Temporary Categories Names while I've not decide what to do with them.
+    String DRINK_CATEGORY = "Drink";
+    String SNACK_CATEGORY = "Snack";
+
 }
 

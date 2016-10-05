@@ -1,5 +1,7 @@
 package com.softjourn.sj_coin.presenters;
 
+import android.app.Activity;
+
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
@@ -14,7 +16,6 @@ import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -22,7 +23,8 @@ import com.softjourn.sj_coin.utils.Preferences;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
-import java.util.List;
+
+import io.realm.Realm;
 
 public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Const {
 
@@ -30,6 +32,9 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private VendingModel mModel;
     private LoginPresenter mLoginPresenter;
     private ProfileModel mProfileModel;
+    private Activity mActivity;
+
+    private Realm mRealm = Realm.getDefaultInstance();
 
     private String mMachineID;
 
@@ -37,6 +42,17 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
         onCreate();
 
+        this.mView = vendingView;
+        this.mModel = new VendingModel();
+        this.mLoginPresenter = new LoginPresenter();
+        this.mProfileModel = new ProfileModel();
+    }
+
+    public VendingPresenter(VendingContract.View vendingView, Activity activity) {
+
+        onCreate();
+
+        this.mActivity = activity;
         this.mView = vendingView;
         this.mModel = new VendingModel();
         this.mLoginPresenter = new LoginPresenter();
@@ -58,20 +74,20 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.callProductsList(mMachineID);
+                mModel.callFeaturedProductsList(mMachineID);
             }
         }
     }
 
     @Override
     public void getLocalProductList() {
-        mView.loadData(mModel.loadDrink(), mModel.loadSnack());
+        mView.loadData(mModel.loadLocalProductList(mActivity));
     }
 
     @Override
     public void getFeaturedProductsList(String machineID) {
 
-        mMachineID = machineID;
+        mMachineID = "13";
 
         if (!makeNetworkChecking()) {
             mView.showNoInternetError();
@@ -97,22 +113,22 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getLocalLastAddedProducts() {
-        mView.loadData(mModel.loadLastAdded());
+        mView.loadData(mModel.loadLastAdded(mActivity));
     }
 
     @Override
     public void getLocalBestSellers() {
-        mView.loadData(mModel.loadBestSellers());
+        mView.loadData(mModel.loadBestSellers(mActivity));
     }
 
     @Override
     public void getLocalSnacks() {
-        mView.loadData(mModel.loadSnack());
+        mView.loadData(mModel.loadProductsFromDB(mActivity,SNACK_CATEGORY));
     }
 
     @Override
     public void getLocalDrinks() {
-        mView.loadData(mModel.loadDrink());
+        mView.loadData(mModel.loadProductsFromDB(mActivity,DRINK_CATEGORY));
     }
 
     @Override
@@ -172,13 +188,13 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
-    public void sortByName(List<? extends CustomizedProduct> product, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByName(product, isSortingForward));
+    public void sortByName(String productsCategory, boolean isSortingForward) {
+        mView.setSortedData(mModel.sortByName(mActivity,productsCategory, isSortingForward));
     }
 
     @Override
-    public void sortByPrice(List<? extends CustomizedProduct> product, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByPrice(product, isSortingForward));
+    public void sortByPrice(String productsCategory, boolean isSortingForward) {
+        mView.setSortedData(mModel.sortByPrice(mActivity,productsCategory, isSortingForward));
     }
 
     @Override
@@ -253,7 +269,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnProductsListReceived event) {
         mView.hideProgress();
-        mView.loadData(mModel.loadDrink(), mModel.loadSnack());
+        mView.loadData(mModel.loadLocalProductList(mActivity));
     }
 
     @Subscribe

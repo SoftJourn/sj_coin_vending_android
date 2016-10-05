@@ -25,7 +25,7 @@ import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.CustomizedProduct;
+import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
@@ -221,12 +221,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
-    public void loadData(List<? extends CustomizedProduct> drinks, List<? extends CustomizedProduct> snacks) {
-
-    }
-
-    @Override
-    public void navigateToBuyProduct(CustomizedProduct product) {
+    public void navigateToBuyProduct(Product product) {
         onCreateDialog(product, mPresenter);
     }
 
@@ -236,7 +231,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
-    public void setSortedData(List<? extends CustomizedProduct> product) {
+    public void setSortedData(List<Product> product) {
 
     }
 
@@ -256,7 +251,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
-    public void loadData(List<? extends CustomizedProduct> data) {
+    public void loadData(List<Product> data) {
 
     }
 

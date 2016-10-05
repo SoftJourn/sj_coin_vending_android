@@ -6,16 +6,8 @@ import com.softjourn.sj_coin.api.coins.CoinsApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
-import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.ModelsManager;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
-import com.softjourn.sj_coin.model.products.Products;
-import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ProfileModel extends BaseModel {
 
@@ -54,7 +46,7 @@ public class ProfileModel extends BaseModel {
         });
     }
 
-    public List<History> loadHistory() {
+    /*public List<History> loadHistory() {
         Products products = FeaturedProductsSingleton.getInstance().getData();
         if (products == null
                 || products.myLastPurchases == null) {
@@ -62,6 +54,6 @@ public class ProfileModel extends BaseModel {
         } else {
             return ModelsManager.getHistoryList(products.myLastPurchases);
         }
-    }
+    }*/
 
 }

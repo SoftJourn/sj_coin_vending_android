@@ -1,6 +1,8 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
+import android.app.Activity;
+
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
@@ -14,32 +16,31 @@ import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Amount;
-import com.softjourn.sj_coin.model.CustomizedProduct;
 import com.softjourn.sj_coin.model.machines.Machines;
-import com.softjourn.sj_coin.model.products.BestSeller;
-import com.softjourn.sj_coin.model.products.Drink;
 import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.LastAdded;
+import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.Products;
-import com.softjourn.sj_coin.model.products.Snack;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.RealmUtils;
 import com.softjourn.sj_coin.utils.Utils;
 import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
-import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
-import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.Sort;
+
 public class VendingModel extends BaseModel implements Const {
+
+    private Realm mRealm = Realm.getDefaultInstance();
 
     private VendingApiProvider mApiProvider;
 
     public VendingModel() {
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
+
     }
 
     public void callMachinesList() {
@@ -73,10 +74,12 @@ public class VendingModel extends BaseModel implements Const {
 
     public void callFeaturedProductsList(String machineID) {
 
-        mApiProvider.getFeaturedProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Products>() {
+        mApiProvider.getFeaturedProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
             @Override
-            public void onSuccess(Products response) {
-                FeaturedProductsSingleton.getInstance().setData(response);
+            public void onSuccess(Featured response) {
+
+                RealmUtils.setRealmData(mRealm,response);
+                //FeaturedProductsSingleton.getInstance().setData(response);
                 mEventBus.post(new OnFeaturedProductsListReceived(response));
             }
 
@@ -92,6 +95,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<List<Product>>() {
             @Override
             public void onSuccess(List<Product> response) {
+
                 mEventBus.post(new OnProductsListReceived(response));
             }
 
@@ -165,45 +169,49 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public List<Product> loadLocalProductList() {
-        return ProductsListSingleton.getInstance().getData();
+    public List<Product> loadLocalProductList(Activity activity) {
+        return RealmController.with(activity).getProducts();
     }
 
-    public Products loadLocalFeaturedProductList() {
+    /*public Products loadLocalFeaturedProductList() {
         return FeaturedProductsSingleton.getInstance().getData();
+    }*/
+
+    public List<Product> loadBestSellers(Activity activity) {
+        return RealmController.with(activity).getBestSellersProducts();
     }
 
-    public List<BestSeller> loadBestSellers() {
-        return FeaturedProductsSingleton.getInstance().getData().getBestSellers();
+    public List<Product> loadLastAdded(Activity activity) {
+        return RealmController.with(activity).getLastAddedProducts();
     }
 
-    public List<LastAdded> loadLastAdded() {
-        return FeaturedProductsSingleton.getInstance().getData().getNewProducts();
-    }
-
-    public List<Drink> loadDrink() {
+    /*public List<Drink> loadDrink() {
         return FeaturedProductsSingleton.getInstance().getData().getDrink();
+    }*/
+
+    public List<Product> loadProductsFromDB(Activity activity, String category) {
+        return RealmController.with(activity).getProductsFromCategory(category);
     }
 
-    public List<Snack> loadSnack() {
+    /*public List<Snack> loadSnack() {
         return FeaturedProductsSingleton.getInstance().getData().getSnack();
-    }
+    }*/
 
-    public List<CustomizedProduct> loadFavorites() {
+    public List<Product> loadFavorites() {
 
-        List<CustomizedProduct> favoritesProducts = new ArrayList<>();
-        favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getDrink()));
-        favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getSnack()));
+        List<Product> favoritesProducts = new ArrayList<>();
+        //favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getDrink()));
+        //favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getSnack()));
         return favoritesProducts;
     }
 
-    private List<CustomizedProduct> getFavoriteProducts(List<? extends CustomizedProduct> products) {
+    private List<Product> getFavoriteProducts(List<Product> products) {
 
-        List<CustomizedProduct> favoritesProducts = new ArrayList<>();
+        List<Product> favoritesProducts = new ArrayList<>();
 
         for (Favorites favorites : FavoritesListSingleton.getInstance().getData()) {
 
-            for (CustomizedProduct product : products) {
+            for (Product product : products) {
                 if (favorites.getId() == product.getId()) {
                     favoritesProducts.add(product);
                     break;
@@ -214,43 +222,21 @@ public class VendingModel extends BaseModel implements Const {
         return favoritesProducts;
     }
 
-    public List<? extends CustomizedProduct> sortByName(List<? extends CustomizedProduct> product, boolean isSortingForward) {
+    public List<Product> sortByName(Activity activity, String productsCategory, boolean isSortingForward) {
         if (isSortingForward) {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return lhs.getName().compareTo(rhs.getName());
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "name", Sort.ASCENDING);
         } else {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return rhs.getName().compareTo(lhs.getName());
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "name", Sort.DESCENDING);
         }
     }
 
-    public List<? extends CustomizedProduct> sortByPrice(List<? extends CustomizedProduct> product, boolean isSortingForward) {
+    public List<Product> sortByPrice(Activity activity, String productsCategory, boolean isSortingForward) {
         if (isSortingForward) {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return lhs.getPrice() - rhs.getPrice();
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "price", Sort.ASCENDING);
         } else {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return rhs.getPrice() - lhs.getPrice();
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "price", Sort.DESCENDING);
         }
     }
+
+
 }

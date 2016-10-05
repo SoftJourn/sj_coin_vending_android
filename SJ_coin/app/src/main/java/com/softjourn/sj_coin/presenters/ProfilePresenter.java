@@ -66,7 +66,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void showHistory() {
-        mView.setData(mProfileModel.loadHistory());
+        //mView.setData(mProfileModel.loadHistory());
     }
 
     @Override

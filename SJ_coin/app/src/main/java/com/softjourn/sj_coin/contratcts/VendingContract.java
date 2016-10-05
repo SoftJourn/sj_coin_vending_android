@@ -2,11 +2,7 @@ package com.softjourn.sj_coin.contratcts;
 
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
-import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.products.BestSeller;
-import com.softjourn.sj_coin.model.products.Drink;
-import com.softjourn.sj_coin.model.products.LastAdded;
-import com.softjourn.sj_coin.model.products.Snack;
+import com.softjourn.sj_coin.model.products.Product;
 
 import java.util.List;
 
@@ -18,13 +14,11 @@ public interface VendingContract {
 
         void hideProgress();
 
-        void loadData(List<? extends CustomizedProduct> drinks,List<? extends CustomizedProduct> snacks);
-
-        void navigateToBuyProduct(CustomizedProduct product);
+        void navigateToBuyProduct(Product product);
 
         void navigateToFragments();
 
-        void setSortedData(List<? extends CustomizedProduct> product);
+        void setSortedData(List<Product> product);
 
         void loadUserBalance();
 
@@ -32,7 +26,7 @@ public interface VendingContract {
 
         void changeFavoriteIcon();
 
-        void loadData(List<? extends CustomizedProduct> data);
+        void loadData(List<Product> data);
     }
 
     interface Presenter extends BasePresenter{
@@ -59,9 +53,9 @@ public interface VendingContract {
 
         void addToFavorite(int id);
 
-        void sortByName(List<? extends CustomizedProduct> product, boolean isSortingForward);
+        void sortByName(String productsCategory, boolean isSortingForward);
 
-        void sortByPrice(List<? extends CustomizedProduct> product, boolean isSortingForward);
+        void sortByPrice(String productsCategory, boolean isSortingForward);
 
         void getBalance();
 

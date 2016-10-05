@@ -4,8 +4,8 @@ import com.softjourn.sj_coin.api.callbacks.Callback;
 import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Favorites;
+import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.Products;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface VendingApiProvider {
 
     void getConcreteMachine(String machineID, Callback<Machines> callback);
 
-    void getFeaturedProductsList(String selectedMachine, Callback<Products> callback);
+    void getFeaturedProductsList(String selectedMachine, Callback<Featured> callback);
 
     void getProductsList(String selectedMachine, Callback<List<Product>> callback);
 

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,10 +13,9 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.products.Drink;
-import com.softjourn.sj_coin.model.products.Snack;
+import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 
@@ -30,6 +29,15 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         VendingContract.View, Const {
 
     private VendingContract.Presenter mPresenter;
+
+    @Bind(R.id.testAddContainer)
+    Button bla;
+
+    @Bind(R.id.button)
+    Button bla1;
+
+    @Bind(R.id.button2)
+    Button bla2;
 
     @Bind(R.id.balance)
     TextView mBalance;
@@ -51,6 +59,25 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
         loadProductList();
+
+        bla.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createContainer("TestTestTest");
+            }
+        });
+        bla1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createContainer("2 Test 2");
+            }
+        });
+        bla2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createContainer("3 Test 3");
+            }
+        });
     }
 
     @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll,
@@ -108,12 +135,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadData(List<? extends CustomizedProduct> drinks,List<? extends CustomizedProduct> snacks) {
-
-    }
-
-    @Override
-    public void navigateToBuyProduct(CustomizedProduct product) {
+    public void navigateToBuyProduct(Product product) {
         onCreateDialog(product,mPresenter);
     }
 
@@ -133,7 +155,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void setSortedData(List<? extends CustomizedProduct> product) {
+    public void setSortedData(List<Product> product) {
 
     }
 
@@ -165,11 +187,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void loadData(List<? extends CustomizedProduct> data) {
+    public void loadData(List<Product> data) {
 
     }
 
     private void loadProductList() {
+        RealmController.with(this).clearAll();
         mPresenter.getFeaturedProductsList(MACHINE_ID);
 
         loadUserBalance();
@@ -188,6 +211,27 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         view.setVisibility(View.VISIBLE);
         fragmentContainer.setVisibility(View.VISIBLE);
+    }
+
+    public void createContainer(String categoryName){
+
+        LinearLayout mainLayout = (LinearLayout)findViewById(R.id.mainLayout);
+
+        LinearLayout ll = new LinearLayout(this);
+        ll.setId(View.generateViewId());
+
+        ll = (LinearLayout)getLayoutInflater().inflate(R.layout.category_header_layout,null);
+        mainLayout.addView(ll);
+
+        TextView tvCategoryName = (TextView)findViewById(R.id.categoryName);
+        tvCategoryName.setId(View.generateViewId());
+        tvCategoryName.setText(categoryName);
+
+        TextView tvSeeAll = (TextView)findViewById(R.id.dummyID);
+        tvSeeAll.setId(View.generateViewId());
+
+        LinearLayout llContainer = (LinearLayout)findViewById(R.id.container_dummyID);
+        llContainer.setId(View.generateViewId());
     }
 
 

@@ -18,6 +18,7 @@
 
 
             <LinearLayout
+                android:id="@+id/mainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -157,7 +158,25 @@
                     android:id="@+id/container_fragment_products_list_drinks"
                     style="@style/VendingActivityCategoryContainer" />
 
+                <Button
+                    android:id="@+id/testAddContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="bla"/>
 
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="bla"
+                    android:layout_gravity="center_horizontal" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="bla"
+                    android:layout_gravity="right" />
 
             </LinearLayout>
 

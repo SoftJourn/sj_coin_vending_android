@@ -5,42 +5,38 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
 import lombok.Data;
 
 @Data
-public class Product implements Parcelable {
+public class Product extends RealmObject implements Parcelable{
 
     @SerializedName("id")
-    public Integer id;
+    private Integer id;
+
     @SerializedName("price")
-    public Integer price;
+    private Integer price;
+
     @SerializedName("name")
-    public String name;
+    private String name;
+
     @SerializedName("imageUrl")
-    public String imageUrl;
-    @SerializedName("position")
-    public Position position;
+    private String imageUrl;
+
+    @SerializedName("description")
+    private String description;
+
+    @SerializedName("category")
+    private Category category;
+
+
+    public Product(){}
 
     protected Product(Parcel in) {
         name = in.readString();
         imageUrl = in.readString();
-        price = in.readInt();
-        id = in.readInt();
-        position = in.readParcelable(Position.class.getClassLoader());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeInt(price);
-        parcel.writeString(name);
-        parcel.writeString(imageUrl);
-        parcel.writeParcelable(this.position,i);
+        description = in.readString();
+        category = in.readParcelable(Category.class.getClassLoader());
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -54,4 +50,17 @@ public class Product implements Parcelable {
             return new Product[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(imageUrl);
+        dest.writeString(description);
+        dest.writeParcelable(this.category,flags);
+    }
 }

@@ -7,8 +7,8 @@ import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Favorites;
+import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.Products;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;
@@ -98,16 +98,16 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
     }
 
     @Override
-    public void getFeaturedProductsList(String selectedMachine, final Callback<Products> callback) {
+    public void getFeaturedProductsList(String selectedMachine, final Callback<Featured> callback) {
 
-        mApiService.getFeaturedProductsList(selectedMachine).enqueue(new retrofit2.Callback<Products>() {
+        mApiService.getFeaturedProductsList(selectedMachine).enqueue(new retrofit2.Callback<Featured>() {
             @Override
-            public void onResponse(Call<Products> call, retrofit2.Response<Products> response) {
+            public void onResponse(Call<Featured> call, retrofit2.Response<Featured> response) {
                 sendCallBack(callback, response);
             }
 
             @Override
-            public void onFailure(Call<Products> call, Throwable t) {
+            public void onFailure(Call<Featured> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });

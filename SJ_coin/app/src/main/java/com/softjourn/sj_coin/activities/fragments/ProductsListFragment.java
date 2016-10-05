@@ -16,12 +16,11 @@ import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.CustomizedProduct;
+import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -51,9 +50,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     private int mHeaders;
     private int mContainer;
 
-    List<? extends CustomizedProduct> mProductList;
-
-    List<? extends CustomizedProduct> mCustomizedList;
+    List<Product> mProductList;
 
     Parcelable mListState;
 
@@ -71,16 +68,16 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     @Nullable
     @OnClick(R.id.button_sort_name)
     public void onClickSortByName() {
-        if (mCustomizedList != null && !mCustomizedList.isEmpty()) {
-            sortByName(mSortingByNameForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
+        if (mProductList != null && !mProductList.isEmpty()) {
+            sortByName(mSortingByNameForward, mProductsCategory, mPresenter, mButtonSortByName, mButtonSortByPrice);
         }
     }
 
     @Nullable
     @OnClick(R.id.button_sort_price)
     public void onClickSortByPrice() {
-        if (mCustomizedList != null && !mCustomizedList.isEmpty()) {
-            sortByPrice(mSortingByPriceForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
+        if (mProductList != null && !mProductList.isEmpty()) {
+            sortByPrice(mSortingByPriceForward, mProductsCategory, mPresenter, mButtonSortByName, mButtonSortByPrice);
         }
     }
 
@@ -133,7 +130,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new VendingPresenter(this);
+        mPresenter = new VendingPresenter(this,this.getActivity());
 
         if (savedInstanceState == null) {
             getLocalProductsList();
@@ -195,22 +192,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     }
 
     @Override
-    public void loadData(List<? extends CustomizedProduct> drinks, List<? extends CustomizedProduct> snacks) {
-        mProductList = new ArrayList<>();
-        mProductAdapter.clearList();
-
-        if(drinks != null && !drinks.isEmpty()){
-            mProductAdapter.addToList(drinks);
-        }
-        if(snacks != null && !snacks.isEmpty()){
-            mProductAdapter.addToList(snacks);
-        }
-        mProductList = mProductAdapter.getCustomizedProductList();
-        mCustomizedList = mProductList;
-    }
-
-    @Override
-    public void navigateToBuyProduct(CustomizedProduct product) {
+    public void navigateToBuyProduct(Product product) {
 
     }
 
@@ -220,8 +202,8 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     }
 
     @Override
-    public void setSortedData(List<? extends CustomizedProduct> product) {
-        mProductAdapter.setData(mCustomizedList);
+    public void setSortedData(List<Product> product) {
+        mProductAdapter.setData(product);
     }
 
     @Override
@@ -240,11 +222,10 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     }
 
     @Override
-    public void loadData(List<? extends CustomizedProduct> productsList) {
+    public void loadData(List<Product> productsList) {
         if (!productsList.isEmpty()) {
             mProductList = productsList;
             mProductAdapter.setData(productsList);
-            mCustomizedList = mProductList;
 
             try {
                 ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup)getView().getParent()).getId());
