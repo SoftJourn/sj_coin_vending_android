@@ -130,7 +130,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new VendingPresenter(this,this.getActivity());
+        mPresenter = new VendingPresenter(this, this.getActivity());
 
         if (savedInstanceState == null) {
             getLocalProductsList();
@@ -223,25 +223,37 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
 
     @Override
     public void loadData(List<Product> productsList) {
-        if (!productsList.isEmpty()) {
-            mProductList = productsList;
-            mProductAdapter.setData(productsList);
+        if (productsList != null) {
+                if (!productsList.isEmpty()) {
+                    mProductList = productsList;
+                    mProductAdapter.setData(productsList);
 
-            try {
-                ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup)getView().getParent()).getId());
-            } catch (ClassCastException e) {}
-
-        } else {
-            try {
-                ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup)getView().getParent()).getId());
-            } catch (ClassCastException e) {
-                ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
-                if (mButtonSortByName != null && mButtonSortByPrice != null) {
-                    mButtonSortByName.setEnabled(false);
-                    mButtonSortByPrice.setEnabled(false);
+                    try {
+                        ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+                    } catch (ClassCastException e) {
+                    }
+                }
+            } else {
+                try {
+                    ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+                } catch (ClassCastException e) {
+                    ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+                    if (mButtonSortByName != null && mButtonSortByPrice != null) {
+                        mButtonSortByName.setEnabled(false);
+                        mButtonSortByPrice.setEnabled(false);
+                    }
                 }
             }
+
         }
+
+    @Override
+    public void createContainer(String categoryName) {
+        /*try {
+            ((VendingActivity) getActivity()).createContainer(categoryName);
+        } catch (ClassCastException e) {
+            Log.d("Tag", "is not my activity");
+        }*/
     }
 
 

@@ -256,6 +256,11 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
+    public void createContainer(String categoryName) {
+
+    }
+
+    @Override
     public void showToastMessage(String message) {
         super.showToast(message);
     }

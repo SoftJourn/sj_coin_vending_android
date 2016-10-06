@@ -3,7 +3,10 @@ package com.softjourn.sj_coin.realm;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
+import android.util.Log;
 
+import com.softjourn.sj_coin.model.products.Categories;
+import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -105,13 +109,14 @@ public class RealmController {
         return ids;
     }
 
-    public List<Product> getLastAddedProducts() {
+    public RealmResults<Product> getLastAddedProducts() {
+        RealmQuery<Product> query = realm.where(Product.class);
         List<Integer> ids = getLastAddedIDs();
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < ids.size(); i++) {
-            products.add(realm.where(Product.class).equalTo("id", ids.get(i)).findFirst());
+
+        for (int id : ids) {
+            query.equalTo("id",id);
         }
-        return products;
+        return query.findAll();
     }
 
     public List<Integer> getBestSellersIDs() {
@@ -123,26 +128,56 @@ public class RealmController {
         return ids;
     }
 
-    public List<Product> getBestSellersProducts() {
+    public RealmResults<Product> getBestSellersProducts() {
+        RealmQuery<Product> query = realm.where(Product.class);
+
         List<Integer> ids = getBestSellersIDs();
-        List<Product> products = new ArrayList<>();
-        for (int i = 0; i < ids.size(); i++) {
-            products.add(realm.where(Product.class).equalTo("id", ids.get(i)).findFirst());
+
+        for (int id : ids) {
+            query.equalTo("id",id);
         }
-        return products;
+        return query.findAll();
     }
+
+    public List<Integer> getFavoritesIDs() {
+        List<Favorites> favorites = realm.where(Favorites.class).findAll();
+        List<Integer> ids = new ArrayList<>();
+        for (int i = 0; i < favorites.size(); i++) {
+            ids.add(favorites.get(i).getId());
+        }
+        return ids;
+    }
+
+    public RealmResults<Product> getFavoriteProducts() {
+        List<Integer> ids = getFavoritesIDs();
+        if(ids.size()<=0){
+            return null;
+        }
+        RealmQuery<Product> query = realm.where(Product.class);
+
+        for (int id : ids) {
+            query.equalTo("id",id);
+        }
+        return query.findAll();
+    }
+
+    public RealmResults<Categories> getCategories() {
+        Log.d("Tag",realm.where(Categories.class).findAll().toString());
+        return realm.where(Categories.class).findAll();
+    }
+
+
 
     public List<Product> getSortedProducts(String productsCategory, String sortingType, Sort sortOrder){
         switch (productsCategory){
             case Const.ALL_ITEMS:
-                return realm.where(Product.class).findAllSorted(sortingType, sortOrder);
-
+                return getProducts().sort(sortingType, sortOrder);
             case Const.BEST_SELLERS:
-                break;
-
+                return getBestSellersProducts().sort(sortingType,sortOrder);
             case Const.LAST_ADDED:
-                break;
+                return getLastAddedProducts().sort(sortingType,sortOrder);
+            default:
+                return getProductsFromCategory(productsCategory).sort(sortingType, sortOrder);
         }
-        return null;
     }
 }

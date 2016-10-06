@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,15 +29,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     private VendingContract.Presenter mPresenter;
 
-    @Bind(R.id.testAddContainer)
-    Button bla;
-
-    @Bind(R.id.button)
-    Button bla1;
-
-    @Bind(R.id.button2)
-    Button bla2;
-
     @Bind(R.id.balance)
     TextView mBalance;
 
@@ -59,25 +49,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
         loadProductList();
-
-        bla.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createContainer("TestTestTest");
-            }
-        });
-        bla1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createContainer("2 Test 2");
-            }
-        });
-        bla2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createContainer("3 Test 3");
-            }
-        });
     }
 
     @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll,
@@ -141,9 +112,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void navigateToFragments() {
-//        FavoritesFragment fragment = (FavoritesFragment) getFragmentManager().findFragmentByTag(TAG_FAVORITES_FRAGMENT);
-//        if (fragment == null){
-//        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.container_fragment_products_list_favorites, ProductsListFragment.newInstance(FAVORITES),TAG_FAVORITES_FRAGMENT)
@@ -213,6 +181,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         fragmentContainer.setVisibility(View.VISIBLE);
     }
 
+    @Override
     public void createContainer(String categoryName){
 
         LinearLayout mainLayout = (LinearLayout)findViewById(R.id.mainLayout);

@@ -27,6 +27,8 @@ public interface VendingContract {
         void changeFavoriteIcon();
 
         void loadData(List<Product> data);
+
+        void createContainer(String categoryName);
     }
 
     interface Presenter extends BasePresenter{

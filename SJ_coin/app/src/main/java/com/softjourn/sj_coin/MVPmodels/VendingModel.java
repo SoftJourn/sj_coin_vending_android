@@ -17,6 +17,7 @@ import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
@@ -26,7 +27,6 @@ import com.softjourn.sj_coin.utils.RealmUtils;
 import com.softjourn.sj_coin.utils.Utils;
 import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -77,9 +77,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getFeaturedProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
             @Override
             public void onSuccess(Featured response) {
-
                 RealmUtils.setRealmData(mRealm,response);
-                //FeaturedProductsSingleton.getInstance().setData(response);
                 mEventBus.post(new OnFeaturedProductsListReceived(response));
             }
 
@@ -126,7 +124,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getListFavorites(new com.softjourn.sj_coin.api.callbacks.Callback<List<Favorites>>() {
             @Override
             public void onSuccess(List<Favorites> response) {
-                FavoritesListSingleton.getInstance().setData(response);
+                RealmUtils.setRealmData(mRealm,response);
                 mEventBus.post(new OnFavoritesListReceived(response));
             }
 
@@ -173,10 +171,6 @@ public class VendingModel extends BaseModel implements Const {
         return RealmController.with(activity).getProducts();
     }
 
-    /*public Products loadLocalFeaturedProductList() {
-        return FeaturedProductsSingleton.getInstance().getData();
-    }*/
-
     public List<Product> loadBestSellers(Activity activity) {
         return RealmController.with(activity).getBestSellersProducts();
     }
@@ -185,41 +179,16 @@ public class VendingModel extends BaseModel implements Const {
         return RealmController.with(activity).getLastAddedProducts();
     }
 
-    /*public List<Drink> loadDrink() {
-        return FeaturedProductsSingleton.getInstance().getData().getDrink();
-    }*/
-
     public List<Product> loadProductsFromDB(Activity activity, String category) {
         return RealmController.with(activity).getProductsFromCategory(category);
     }
 
-    /*public List<Snack> loadSnack() {
-        return FeaturedProductsSingleton.getInstance().getData().getSnack();
-    }*/
-
-    public List<Product> loadFavorites() {
-
-        List<Product> favoritesProducts = new ArrayList<>();
-        //favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getDrink()));
-        //favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getSnack()));
-        return favoritesProducts;
+    public List<Product> loadFavorites(Activity activity) {
+        return RealmController.with(activity).getFavoriteProducts();
     }
 
-    private List<Product> getFavoriteProducts(List<Product> products) {
-
-        List<Product> favoritesProducts = new ArrayList<>();
-
-        for (Favorites favorites : FavoritesListSingleton.getInstance().getData()) {
-
-            for (Product product : products) {
-                if (favorites.getId() == product.getId()) {
-                    favoritesProducts.add(product);
-                    break;
-                }
-            }
-        }
-
-        return favoritesProducts;
+    public List<Categories> loadCategories(Activity activity) {
+        return RealmController.with(activity).getCategories();
     }
 
     public List<Product> sortByName(Activity activity, String productsCategory, boolean isSortingForward) {

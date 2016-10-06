@@ -16,15 +16,16 @@ import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.Date;
-
-import io.realm.Realm;
+import java.util.List;
 
 public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Const {
 
@@ -33,8 +34,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private LoginPresenter mLoginPresenter;
     private ProfileModel mProfileModel;
     private Activity mActivity;
-
-    private Realm mRealm = Realm.getDefaultInstance();
 
     private String mMachineID;
 
@@ -119,6 +118,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getLocalBestSellers() {
         mView.loadData(mModel.loadBestSellers(mActivity));
+
     }
 
     @Override
@@ -184,7 +184,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getLocalFavorites() {
-        mView.loadData(mModel.loadFavorites());
+        mView.loadData(mModel.loadFavorites(mActivity));
     }
 
     @Override
@@ -218,6 +218,17 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public boolean makeNetworkChecking() {
         return NetworkManager.isNetworkEnabled();
+    }
+
+    public void getCategoriesFromDB() {
+        List<String> categoriesNames = new ArrayList<>();
+        List<Categories> categories = mModel.loadCategories(mActivity);
+        for (Categories category : categories) {
+            categoriesNames.add(category.getName());
+        }
+        for (String name : categoriesNames) {
+            mView.createContainer(name);
+        }
     }
 
     @Subscribe
@@ -262,6 +273,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnFavoritesListReceived event) {
+        getCategoriesFromDB();
         mView.navigateToFragments();
         mView.hideProgress();
     }

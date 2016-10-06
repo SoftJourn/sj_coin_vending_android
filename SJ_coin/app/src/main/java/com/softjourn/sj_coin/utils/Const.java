@@ -48,8 +48,8 @@ public interface Const {
     String LAST_ADDED = "Last Added";
     String FAVORITES = "Favorites";
     String BEST_SELLERS = "Best Sellers";
-    String SNACKS = "Snacks";
-    String DRINKS = "Drinks";
+    String SNACKS = "Snack";
+    String DRINKS = "Drink";
     String ALL_ITEMS = "All Items";
 
     String MACHINE_ID = "3";
