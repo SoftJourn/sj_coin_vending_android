@@ -73,6 +73,22 @@ public class RealmController {
         realm.commitTransaction();
     }
 
+    public void addToFavoriteLocal(Integer id) {
+        Favorites favorites = new Favorites();
+        favorites.setId(id);
+
+        realm.beginTransaction();
+        realm.copyToRealm(favorites);
+        realm.commitTransaction();
+    }
+
+    public void removeFromFavoritesLocal(Integer id) {
+        RealmResults<Favorites> result = realm.where(Favorites.class).equalTo("id",id).findAll();
+        realm.beginTransaction();
+        result.deleteAllFromRealm();
+        realm.commitTransaction();
+    }
+
     //find all objects in the Product class
     public RealmResults<Product> getProducts() {
 
@@ -140,12 +156,12 @@ public class RealmController {
 
         String mCategory;
 
-        private CategorizedProductsIds(String category){
+        private CategorizedProductsIds(String category) {
             this.mCategory = category;
         }
 
-        private List<Integer> getIds(){
-            switch (mCategory){
+        private List<Integer> getIds() {
+            switch (mCategory) {
                 case Const.LAST_ADDED:
                     return getLastAddedIDs();
                 case Const.BEST_SELLERS:

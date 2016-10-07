@@ -23,7 +23,6 @@ import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.RealmUtils;
-import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 
 import java.util.List;
 
@@ -107,8 +106,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.addProductToFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                FavoritesListSingleton.getInstance().LocalAddToFavorites(id);
-                mEventBus.post(new OnAddedToFavorites(id));
+                    mEventBus.post(new OnAddedToFavorites(id));
             }
 
             @Override
@@ -123,8 +121,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.removeFromFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                FavoritesListSingleton.getInstance().LocalRemoveFromFavorites(id);
-                mEventBus.post(new OnRemovedFromFavorites(id));
+                    mEventBus.post(new OnRemovedFromFavorites(id));
             }
 
             @Override

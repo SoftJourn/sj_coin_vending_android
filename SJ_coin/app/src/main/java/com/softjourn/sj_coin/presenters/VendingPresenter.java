@@ -14,6 +14,7 @@ import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Categories;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -259,12 +260,14 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnAddedToFavorites event) {
+        RealmController.with(mActivity).addToFavoriteLocal(event.getId());
         mView.hideProgress();
         mView.changeFavoriteIcon();
     }
 
     @Subscribe
     public void OnEvent(OnRemovedFromFavorites event) {
+        RealmController.with(mActivity).removeFromFavoritesLocal(Integer.parseInt(event.getId()));
         mView.hideProgress();
         mView.changeFavoriteIcon();
     }

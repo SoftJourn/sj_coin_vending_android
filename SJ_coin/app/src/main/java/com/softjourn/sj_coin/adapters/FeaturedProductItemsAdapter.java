@@ -18,12 +18,11 @@ import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
-import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.RealmProductWrapper;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
-import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,7 +48,7 @@ public class FeaturedProductItemsAdapter extends
 
     private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
-    private final static List<Favorites> sFavoritesList = FavoritesListSingleton.getInstance().getData();
+    private List<Product> sFavoritesList;
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
 
@@ -59,6 +58,7 @@ public class FeaturedProductItemsAdapter extends
             mRecyclerViewType = DEFAULT_RECYCLER_VIEW;
         }
         mProductCategory = featureCategory;
+
     }
 
     public void clearList() {
@@ -72,8 +72,6 @@ public class FeaturedProductItemsAdapter extends
 
     public void setData(List<Product> data) {
         List<Product> newList = new ArrayList<>(data);
-        //mListProducts.clear();
-        //mListProducts.addAll(newList);
         mListProducts = newList;
         fromProductToRealmProductList();
         notifyDataSetChanged();
@@ -113,6 +111,8 @@ public class FeaturedProductItemsAdapter extends
     @Override
     public void onBindViewHolder(final FeaturedViewHolder holder, final int position) {
 
+        sFavoritesList = RealmController.getInstance().getProductsFromStaticCategory(FAVORITES);
+
         final Product product = mListProducts.get(position);
 
         holder.mProductName.setText(product.getName());
@@ -151,9 +151,9 @@ public class FeaturedProductItemsAdapter extends
          */
         if (holder.mAddFavorite != null) {
             holder.mAddFavorite.setTag(false);
-            if (FavoritesListSingleton.getInstance().getData().size() > 0) {
-                for (int i = 0; i < FavoritesListSingleton.getInstance().getData().size(); i++) {
-                    if (FavoritesListSingleton.getInstance().getData().get(i).getId() == product.getId()) {
+            if (sFavoritesList!=null && sFavoritesList.size() > 0) {
+                for (int i = 0; i < sFavoritesList.size(); i++) {
+                    if (sFavoritesList.get(i).getId() == product.getId()) {
                         Picasso.with(App.getContext()).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
                         holder.mAddFavorite.setTag(true);
                         break;
