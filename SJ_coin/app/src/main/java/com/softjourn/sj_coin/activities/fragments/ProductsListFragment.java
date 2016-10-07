@@ -36,19 +36,23 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
 
     private static final String TAG_PRODUCTS_CATEGORY = "PRODUCTS CATEGORY";
 
-    public static ProductsListFragment newInstance(String category) {
+    private VendingContract.Presenter mPresenter;
+    private FeaturedProductItemsAdapter mProductAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private static int mHeaders;
+    private static int mContainer;
+
+    public static ProductsListFragment newInstance(String category, @Nullable int headers, @Nullable int container) {
+        if (headers>0 && container>0) {
+            mHeaders = headers;
+            mContainer = container;
+        }
         Bundle bundle = new Bundle();
         bundle.putString(TAG_PRODUCTS_CATEGORY, category);
         ProductsListFragment fragment = new ProductsListFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    private VendingContract.Presenter mPresenter;
-    private FeaturedProductItemsAdapter mProductAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private int mHeaders;
-    private int mContainer;
 
     List<Product> mProductList;
 
@@ -159,16 +163,9 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 mContainer = R.id.container_fragment_products_list_best_sellers;
                 mPresenter.getLocalBestSellers();
                 break;
-            case SNACKS:
-                mHeaders = R.id.snacksHeader;
-                mContainer = R.id.container_fragment_products_list_snacks;
-                mPresenter.getLocalSnacks();
-                break;
-            case DRINKS:
-                mHeaders = R.id.drinksHeader;
-                mContainer = R.id.container_fragment_products_list_drinks;
-                mPresenter.getLocalDrinks();
-                break;
+            default:
+                mPresenter.getLocalCategoryProducts(mProductsCategory);
+
         }
     }
 
@@ -224,36 +221,32 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     @Override
     public void loadData(List<Product> productsList) {
         if (productsList != null) {
-                if (!productsList.isEmpty()) {
-                    mProductList = productsList;
-                    mProductAdapter.setData(productsList);
+            if (!productsList.isEmpty()) {
+                mProductList = productsList;
+                mProductAdapter.setData(productsList);
 
-                    try {
-                        ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
-                    } catch (ClassCastException e) {
-                    }
-                }
-            } else {
                 try {
-                    ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+                    ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
                 } catch (ClassCastException e) {
-                    ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
-                    if (mButtonSortByName != null && mButtonSortByPrice != null) {
-                        mButtonSortByName.setEnabled(false);
-                        mButtonSortByPrice.setEnabled(false);
-                    }
                 }
             }
-
+        } else {
+            try {
+                ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+            } catch (ClassCastException e) {
+                ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+                if (mButtonSortByName != null && mButtonSortByPrice != null) {
+                    mButtonSortByName.setEnabled(false);
+                    mButtonSortByPrice.setEnabled(false);
+                }
+            }
         }
+
+    }
 
     @Override
     public void createContainer(String categoryName) {
-        /*try {
-            ((VendingActivity) getActivity()).createContainer(categoryName);
-        } catch (ClassCastException e) {
-            Log.d("Tag", "is not my activity");
-        }*/
+
     }
 
 

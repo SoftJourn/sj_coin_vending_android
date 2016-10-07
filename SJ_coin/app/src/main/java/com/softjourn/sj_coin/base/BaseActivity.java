@@ -87,7 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
             case R.id.allProducts:
                 if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
-                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS), TAG_ALL_PRODUCTS_FRAGMENT)
+                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS,0,0), TAG_ALL_PRODUCTS_FRAGMENT)
                             .commit();
                 } else {
                     Navigation.goToSeeAllActivity(this, ALL_ITEMS);
@@ -96,7 +96,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
             case R.id.favorites:
                 if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
-                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES), TAG_FAVORITES_FRAGMENT)
+                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES,0,0), TAG_FAVORITES_FRAGMENT)
                             .commit();
                 } else {
                     Navigation.goToSeeAllActivity(this, FAVORITES);

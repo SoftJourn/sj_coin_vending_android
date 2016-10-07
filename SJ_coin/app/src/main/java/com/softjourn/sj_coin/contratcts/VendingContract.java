@@ -35,15 +35,19 @@ public interface VendingContract {
 
         void getFeaturedProductsList(String machineID);
 
+        void getFavoritesList();
+
         void getLocalFeaturedProductsList();
 
         void getLocalLastAddedProducts();
 
         void getLocalBestSellers();
 
-        void getLocalSnacks();
+        void getLocalCategoryProducts(String category);
 
-        void getLocalDrinks();
+        /*void getLocalSnacks();
+
+        void getLocalDrinks();*/
 
         void getProductList(String machineID);
 
@@ -64,5 +68,7 @@ public interface VendingContract {
         void removeFromFavorite(String id);
 
         void getLocalFavorites();
+
+        void getCategoriesFromDB();
     }
 }

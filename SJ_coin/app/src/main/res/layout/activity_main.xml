@@ -108,56 +108,6 @@
                     android:id="@+id/container_fragment_products_list_best_sellers"
                     style="@style/VendingActivityCategoryContainer" />
 
-
-
-                <LinearLayout
-                    android:id="@+id/snacksHeader"
-                    style="@style/VendingActivityLayoutCategoryHeaders">
-
-                    <TextView
-                        android:id="@+id/textViewSnacks"
-                        style="@style/VendingActivityCategoryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/layout_vending_snacks" />
-
-                    <TextView
-                        android:id="@+id/textViewSnacksSeeAll"
-                        style="@style/SeeAllTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/container_fragment_products_list_snacks"
-                    style="@style/VendingActivityCategoryContainer" />
-
-
-
-                <LinearLayout
-                    android:id="@+id/drinksHeader"
-                    style="@style/VendingActivityLayoutCategoryHeaders">
-
-                    <TextView
-                        android:id="@+id/textViewDrinks"
-                        style="@style/VendingActivityCategoryText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/layout_vending_drinks" />
-
-                    <TextView
-                        android:id="@+id/textViewDrinksSeeAll"
-                        style="@style/SeeAllTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/container_fragment_products_list_drinks"
-                    style="@style/VendingActivityCategoryContainer" />
-
             </LinearLayout>
 
         </ScrollView>

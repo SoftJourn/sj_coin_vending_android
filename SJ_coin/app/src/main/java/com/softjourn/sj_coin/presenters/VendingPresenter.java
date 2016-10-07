@@ -9,8 +9,6 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
-import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
@@ -103,11 +101,16 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
+    public void getFavoritesList() {
+        mModel.getListFavorites();
+    }
+
+    @Override
     public void getLocalFeaturedProductsList() {
         getLocalLastAddedProducts();
         getLocalBestSellers();
-        getLocalSnacks();
-        getLocalDrinks();
+        //getLocalSnacks();
+        //getLocalDrinks();
     }
 
     @Override
@@ -118,10 +121,14 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getLocalBestSellers() {
         mView.loadData(mModel.loadBestSellers(mActivity));
-
     }
 
     @Override
+    public void getLocalCategoryProducts(String category){
+        mView.loadData(mModel.loadProductsFromDB(mActivity,category));
+    }
+
+    /*@Override
     public void getLocalSnacks() {
         mView.loadData(mModel.loadProductsFromDB(mActivity,SNACK_CATEGORY));
     }
@@ -129,7 +136,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getLocalDrinks() {
         mView.loadData(mModel.loadProductsFromDB(mActivity,DRINK_CATEGORY));
-    }
+    }*/
 
     @Override
     public boolean checkExpirationDate() {
@@ -220,11 +227,13 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         return NetworkManager.isNetworkEnabled();
     }
 
+    @Override
     public void getCategoriesFromDB() {
         List<String> categoriesNames = new ArrayList<>();
         List<Categories> categories = mModel.loadCategories(mActivity);
         for (Categories category : categories) {
             categoriesNames.add(category.getName());
+            Preferences.storeObject(category.getName().toUpperCase(),category.getName());
         }
         for (String name : categoriesNames) {
             mView.createContainer(name);
@@ -272,20 +281,8 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Subscribe
-    public void OnEvent(OnFavoritesListReceived event) {
-        getCategoriesFromDB();
-        mView.navigateToFragments();
-        mView.hideProgress();
-    }
-
-    @Subscribe
     public void OnEvent(OnProductsListReceived event) {
         mView.hideProgress();
         mView.loadData(mModel.loadLocalProductList(mActivity));
-    }
-
-    @Subscribe
-    public void OnEvent(OnFeaturedProductsListReceived event) {
-        mModel.getListFavorites();
     }
 }

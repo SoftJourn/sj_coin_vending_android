@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,11 +26,14 @@ import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -42,6 +46,8 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     FeaturedProductItemsAdapter mAdapter;
 
     SearchView mSearch;
+
+    String mCategory;
 
     Button mFragmentsSortNameButton;
     Button mFragmentsSortPriceButton;
@@ -56,8 +62,8 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
         mPresenter = new VendingPresenter(this);
 
-        String category = getIntent().getStringExtra(EXTRAS_CATEGORY);
-        setTitle(category);
+        mCategory = getIntent().getStringExtra(EXTRAS_CATEGORY);
+        setTitle(mCategory);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,40 +79,42 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         assert mNavigationView != null;
+        addCategoriesToMenu(mNavigationView.getMenu());
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        attachFragment(getIntent().getStringExtra(EXTRAS_CATEGORY));
-
+        attachFragment(mCategory);
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        uncheckAllMenuItems(mNavigationView);
 
-        switch (id){
+        switch (id) {
             case R.id.allProducts:
-                Navigation.navigationOnCategoriesSeeAll(0, SeeAllActivity.this);
+                item.setChecked(true);
+                Navigation.navigationOnCategoriesSeeAll(0, SeeAllActivity.this, null);
                 setTitle(R.string.allItems);
                 break;
             case R.id.favorites:
-                Navigation.navigationOnCategoriesSeeAll(1, SeeAllActivity.this);
+                item.setChecked(true);
+                Navigation.navigationOnCategoriesSeeAll(1, SeeAllActivity.this, null);
                 setTitle(R.string.favorites);
                 break;
             case R.id.lastAdded:
-                Navigation.navigationOnCategoriesSeeAll(2, SeeAllActivity.this);
+                item.setChecked(true);
+                Navigation.navigationOnCategoriesSeeAll(2, SeeAllActivity.this, null);
                 setTitle(R.string.lastAdded);
                 break;
             case R.id.bestSellers:
-                Navigation.navigationOnCategoriesSeeAll(3, SeeAllActivity.this);
+                item.setChecked(true);
+                Navigation.navigationOnCategoriesSeeAll(3, SeeAllActivity.this, null);
                 setTitle(R.string.bestSellers);
                 break;
-            case R.id.snacks:
-                Navigation.navigationOnCategoriesSeeAll(4, SeeAllActivity.this);
-                setTitle(R.string.snacks);
-                break;
-            case R.id.drinks:
-                Navigation.navigationOnCategoriesSeeAll(5, SeeAllActivity.this);
-                setTitle(R.string.drinks);
+            default:
+                item.setChecked(true);
+                Navigation.navigationOnCategoriesSeeAll(getItemPosition(), SeeAllActivity.this, item.getTitle().toString());
+                setTitle(item.getTitle().toString());
                 break;
         }
 
@@ -129,8 +137,8 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
         mSearch.setQueryHint(getString(R.string.search_hint));
 
-        ((EditText)mSearch.findViewById(R.id.search_src_text)).setTextColor(Color.WHITE);
-        ((EditText)mSearch.findViewById(R.id.search_src_text)).setHintTextColor(Color.WHITE);
+        ((EditText) mSearch.findViewById(R.id.search_src_text)).setTextColor(Color.WHITE);
+        ((EditText) mSearch.findViewById(R.id.search_src_text)).setHintTextColor(Color.WHITE);
 
         mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -175,40 +183,71 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
             case ALL_ITEMS:
                 mNavigationView.getMenu().getItem(0).setChecked(true);
                 this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS), TAG_ALL_PRODUCTS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS, 0, 0), TAG_ALL_PRODUCTS_FRAGMENT)
                         .commit();
                 break;
             case FAVORITES:
                 mNavigationView.getMenu().getItem(1).setChecked(true);
                 this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES), TAG_FAVORITES_FRAGMENT)
-                        .commit();
-                break;
-            case SNACKS:
-                mNavigationView.getMenu().getItem(4).setChecked(true);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(SNACKS), TAG_PRODUCTS_SNACKS_FRAGMENT)
-                        .commit();
-                break;
-            case DRINKS:
-                mNavigationView.getMenu().getItem(5).setChecked(true);
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(DRINKS), TAG_PRODUCTS_DRINKS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES, 0, 0), TAG_FAVORITES_FRAGMENT)
                         .commit();
                 break;
             case BEST_SELLERS:
                 mNavigationView.getMenu().getItem(3).setChecked(true);
                 this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(BEST_SELLERS), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(BEST_SELLERS, 0, 0), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
             case LAST_ADDED:
                 mNavigationView.getMenu().getItem(2).setChecked(true);
                 this.getFragmentManager().beginTransaction()
-                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(LAST_ADDED), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(LAST_ADDED, 0, 0), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
                 break;
+            default:
+                mNavigationView.getMenu().getItem(getItemPosition()).setChecked(true);
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(mCategory, 0, 0), mCategory)
+                        .commit();
         }
+    }
+
+    private void addCategoriesToMenu(Menu menu) {
+        List<Categories> categoriesList = RealmController.with(this).getCategories();
+        for (Categories currentCategory : categoriesList) {
+            menu.add(Preferences.retrieveStringObject(currentCategory.getName().toUpperCase()));
+        }
+
+        for (int i = 4; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            item.setCheckable(true);
+        }
+    }
+
+    private void uncheckAllMenuItems(NavigationView navigationView) {
+        final Menu menu = navigationView.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            if (item.hasSubMenu()) {
+                SubMenu subMenu = item.getSubMenu();
+                for (int j = 0; j < subMenu.size(); j++) {
+                    MenuItem subMenuItem = subMenu.getItem(j);
+                    subMenuItem.setChecked(false);
+                }
+            } else {
+                item.setChecked(false);
+            }
+        }
+    }
+
+    private int getItemPosition() {
+        int position = 0;
+        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
+            if (mNavigationView.getMenu().getItem(i).getTitle().equals(mCategory)) {
+                position = i;
+            }
+        }
+        return position;
     }
 
     public void setButtons(Button button, Button button2) {
