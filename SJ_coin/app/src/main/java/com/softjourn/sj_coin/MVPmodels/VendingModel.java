@@ -12,7 +12,6 @@ import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
-import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Amount;
@@ -24,7 +23,6 @@ import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.RealmUtils;
-import com.softjourn.sj_coin.utils.Utils;
 import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 
 import java.util.List;
@@ -57,21 +55,6 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public void callConcreteMachine(String machineID) {
-
-        mApiProvider.getConcreteMachine(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Machines>() {
-            @Override
-            public void onSuccess(Machines response) {
-                Utils.storeConcreteMachineInfo(response);
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-
-            }
-        });
-    }
-
     public void callFeaturedProductsList(String machineID) {
 
         mApiProvider.getFeaturedProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
@@ -79,22 +62,6 @@ public class VendingModel extends BaseModel implements Const {
             public void onSuccess(Featured response) {
                 RealmUtils.setRealmData(mRealm,response);
                 mEventBus.post(new OnFeaturedProductsListReceived(response));
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-
-            }
-        });
-    }
-
-    public void callProductsList(String machineID) {
-
-        mApiProvider.getProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<List<Product>>() {
-            @Override
-            public void onSuccess(List<Product> response) {
-
-                mEventBus.post(new OnProductsListReceived(response));
             }
 
             @Override

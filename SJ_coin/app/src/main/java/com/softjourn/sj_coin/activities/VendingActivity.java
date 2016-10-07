@@ -34,6 +34,8 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     private VendingContract.Presenter mPresenter;
 
+    private int viewCounter = 0;
+
     @Bind(R.id.balance)
     TextView mBalance;
 
@@ -84,6 +86,10 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.mainLayout);
+        for (int i = 0; i < viewCounter; i++) {
+            layout.removeView(findViewById(R.id.categoryLayout));
+        }
         loadProductList();
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -105,18 +111,16 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void navigateToBuyProduct(Product product) {
-        onCreateDialog(product,mPresenter);
+        onCreateDialog(product, mPresenter);
     }
 
     @Override
     public void navigateToFragments() {
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.container_fragment_products_list_favorites, ProductsListFragment.newInstance(FAVORITES,0,0),TAG_FAVORITES_FRAGMENT)
-                .replace(R.id.container_fragment_products_list_new_products, ProductsListFragment.newInstance(LAST_ADDED,0,0), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
-                .replace(R.id.container_fragment_products_list_best_sellers, ProductsListFragment.newInstance(BEST_SELLERS,0,0), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
-                //.replace(R.id.container_fragment_products_list_snacks, ProductsListFragment.newInstance(SNACKS),TAG_PRODUCTS_SNACKS_FRAGMENT)
-                //.replace(R.id.container_fragment_products_list_drinks, ProductsListFragment.newInstance(DRINKS),TAG_PRODUCTS_DRINKS_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_favorites, ProductsListFragment.newInstance(FAVORITES, 0, 0), TAG_FAVORITES_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_new_products, ProductsListFragment.newInstance(LAST_ADDED, 0, 0), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
+                .replace(R.id.container_fragment_products_list_best_sellers, ProductsListFragment.newInstance(BEST_SELLERS, 0, 0), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                 .commit();
     }
 
@@ -157,6 +161,46 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     }
 
+    @Override
+    public void createContainer(final String categoryName) {
+
+        viewCounter++;
+
+        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
+
+        LinearLayout ll;
+
+        ll = (LinearLayout) getLayoutInflater().inflate(R.layout.category_header_layout, null);
+        mainLayout.addView(ll);
+
+        LinearLayout llHeader = (LinearLayout) findViewById(R.id.dummyHeaderID);
+        llHeader.setId(View.generateViewId());
+
+        TextView tvCategoryName = (TextView) findViewById(R.id.categoryName);
+        tvCategoryName.setId(View.generateViewId());
+        tvCategoryName.setText(categoryName);
+
+        TextView tvSeeAll = (TextView) findViewById(R.id.dummySeeAllID);
+        tvSeeAll.setId(View.generateViewId());
+
+        LinearLayout llContainer = (LinearLayout) findViewById(R.id.container_dummyID);
+        llContainer.setId(View.generateViewId());
+
+        tvSeeAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.goToSeeAllActivity(VendingActivity.this, categoryName);
+            }
+        });
+
+        attachFragment(categoryName, llHeader.getId(), llContainer.getId(), tvSeeAll.getId());
+    }
+
+    private void attachFragment(String categoryName, int headerID, int containerID, int seeAllID) {
+        getFragmentManager().beginTransaction().replace(containerID, ProductsListFragment.newInstance(categoryName, headerID, containerID),
+                Preferences.retrieveStringObject(categoryName.toUpperCase())).commit();
+    }
+
     private void loadProductList() {
         RealmController.with(this).clearAll();
         mPresenter.getFeaturedProductsList(MACHINE_ID);
@@ -179,46 +223,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void createContainer(final String categoryName){
-
-        LinearLayout mainLayout = (LinearLayout)findViewById(R.id.mainLayout);
-
-        LinearLayout ll = new LinearLayout(this);
-        //ll.setId(View.generateViewId());
-
-        ll = (LinearLayout)getLayoutInflater().inflate(R.layout.category_header_layout,null);
-        mainLayout.addView(ll);
-
-        LinearLayout llHeader = (LinearLayout)findViewById(R.id.dummyHeaderID);
-        llHeader.setId(View.generateViewId());
-
-        TextView tvCategoryName = (TextView)findViewById(R.id.categoryName);
-        tvCategoryName.setId(View.generateViewId());
-        tvCategoryName.setText(categoryName);
-
-        TextView tvSeeAll = (TextView)findViewById(R.id.dummySeeAllID);
-        tvSeeAll.setId(View.generateViewId());
-
-        LinearLayout llContainer = (LinearLayout)findViewById(R.id.container_dummyID);
-        llContainer.setId(View.generateViewId());
-
-        tvSeeAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.goToSeeAllActivity(VendingActivity.this, categoryName);
-            }
-        });
-
-        attachFragment(categoryName,llHeader.getId(),llContainer.getId(),tvSeeAll.getId());
-    }
-
-    private void attachFragment(String categoryName, int headerID, int containerID, int seeAllID){
-        getFragmentManager().beginTransaction().replace(containerID, ProductsListFragment.newInstance(categoryName,headerID,containerID),
-                Preferences.retrieveStringObject(categoryName.toUpperCase())).commit();
-    }
-
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
@@ -231,9 +235,9 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Subscribe
     public void OnEvent(OnFavoritesListReceived event) {
-       mPresenter.getCategoriesFromDB();
-       navigateToFragments();
-       hideProgress();
+        mPresenter.getCategoriesFromDB();
+        navigateToFragments();
+        hideProgress();
     }
 }
 

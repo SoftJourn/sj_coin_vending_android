@@ -165,7 +165,6 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 break;
             default:
                 mPresenter.getLocalCategoryProducts(mProductsCategory);
-
         }
     }
 
@@ -220,8 +219,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
 
     @Override
     public void loadData(List<Product> productsList) {
-        if (productsList != null) {
-            if (!productsList.isEmpty()) {
+        if (productsList != null && !productsList.isEmpty()) {
                 mProductList = productsList;
                 mProductAdapter.setData(productsList);
 
@@ -229,7 +227,6 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                     ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
                 } catch (ClassCastException e) {
                 }
-            }
         } else {
             try {
                 ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
@@ -241,7 +238,6 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 }
             }
         }
-
     }
 
     @Override

@@ -88,6 +88,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        mCategory = item.getTitle().toString();
         uncheckAllMenuItems(mNavigationView);
 
         switch (id) {
@@ -177,6 +178,73 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         return true;
     }
 
+    @Override
+    public void navigateToBuyProduct(Product product) {
+        onCreateDialog(product, mPresenter);
+    }
+
+    @Override
+    public void navigateToFragments() {
+
+    }
+
+    @Override
+    public void setSortedData(List<Product> product) {
+
+    }
+
+    @Override
+    public void loadUserBalance() {
+
+    }
+
+    @Override
+    public void updateBalanceAmount(String amount) {
+
+    }
+
+    @Override
+    public void changeFavoriteIcon() {
+
+    }
+
+    @Override
+    public void loadData(List<Product> data) {
+
+    }
+
+    @Override
+    public void createContainer(String categoryName) {
+
+    }
+
+    @Override
+    public void showToastMessage(String message) {
+        super.showToast(message);
+    }
+
+    @Override
+    public void showNoInternetError() {
+        onNoInternetAvailable();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawer != null;
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void attachFragment(String stringExtra) {
         switch (stringExtra) {
 
@@ -259,56 +327,6 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         mAdapter = adapter;
     }
 
-    @Override
-    public void navigateToBuyProduct(Product product) {
-        onCreateDialog(product, mPresenter);
-    }
-
-    @Override
-    public void navigateToFragments() {
-
-    }
-
-    @Override
-    public void setSortedData(List<Product> product) {
-
-    }
-
-    @Override
-    public void loadUserBalance() {
-
-    }
-
-    @Override
-    public void updateBalanceAmount(String amount) {
-
-    }
-
-    @Override
-    public void changeFavoriteIcon() {
-
-    }
-
-    @Override
-    public void loadData(List<Product> data) {
-
-    }
-
-    @Override
-    public void createContainer(String categoryName) {
-
-    }
-
-    @Override
-    public void showToastMessage(String message) {
-        super.showToast(message);
-    }
-
-    @Override
-    public void showNoInternetError() {
-        onNoInternetAvailable();
-    }
-
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event) {
         navigateToBuyProduct(event.buyProduct());
@@ -322,22 +340,5 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     @Subscribe
     public void OnEvent(OnRemoveFavoriteEvent event) {
         mPresenter.removeFromFavorite(String.valueOf(event.removeFavorite().getId()));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        assert drawer != null;
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 }

@@ -10,7 +10,6 @@ import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
-import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
@@ -109,8 +108,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void getLocalFeaturedProductsList() {
         getLocalLastAddedProducts();
         getLocalBestSellers();
-        //getLocalSnacks();
-        //getLocalDrinks();
     }
 
     @Override
@@ -127,16 +124,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void getLocalCategoryProducts(String category){
         mView.loadData(mModel.loadProductsFromDB(mActivity,category));
     }
-
-    /*@Override
-    public void getLocalSnacks() {
-        mView.loadData(mModel.loadProductsFromDB(mActivity,SNACK_CATEGORY));
-    }
-
-    @Override
-    public void getLocalDrinks() {
-        mView.loadData(mModel.loadProductsFromDB(mActivity,DRINK_CATEGORY));
-    }*/
 
     @Override
     public boolean checkExpirationDate() {
@@ -232,8 +219,10 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         List<String> categoriesNames = new ArrayList<>();
         List<Categories> categories = mModel.loadCategories(mActivity);
         for (Categories category : categories) {
-            categoriesNames.add(category.getName());
-            Preferences.storeObject(category.getName().toUpperCase(),category.getName());
+            if (!categoriesNames.contains(category.getName())) {
+                categoriesNames.add(category.getName());
+                Preferences.storeObject(category.getName().toUpperCase(), category.getName());
+            }
         }
         for (String name : categoriesNames) {
             mView.createContainer(name);
@@ -278,11 +267,5 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void OnEvent(OnRemovedFromFavorites event) {
         mView.hideProgress();
         mView.changeFavoriteIcon();
-    }
-
-    @Subscribe
-    public void OnEvent(OnProductsListReceived event) {
-        mView.hideProgress();
-        mView.loadData(mModel.loadLocalProductList(mActivity));
     }
 }

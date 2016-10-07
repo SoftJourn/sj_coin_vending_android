@@ -85,12 +85,6 @@ public class RealmController {
         return realm.where(Product.class).equalTo("id", id).findFirst();
     }
 
-    //check if CustomizedProduct.class is empty
-    public boolean hasProducts() {
-
-        return !realm.where(Product.class).findAll().isEmpty();
-    }
-
     //query all products from given category
     public RealmResults<Product> getProductsFromCategory(String category) {
 
