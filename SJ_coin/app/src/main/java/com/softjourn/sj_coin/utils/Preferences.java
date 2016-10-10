@@ -23,11 +23,6 @@ public class Preferences implements Const {
         editor.apply();
     }
 
-    public static void storeObject(String key, int value){
-        editor.putInt(key,value);
-        editor.apply();
-    }
-
     public static void clearIntObject(String key){
         editor.remove(key);
     }

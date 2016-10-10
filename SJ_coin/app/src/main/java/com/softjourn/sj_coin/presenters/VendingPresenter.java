@@ -1,6 +1,7 @@
 package com.softjourn.sj_coin.presenters;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
@@ -9,6 +10,7 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
+import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
@@ -18,6 +20,7 @@ import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -32,8 +35,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private LoginPresenter mLoginPresenter;
     private ProfileModel mProfileModel;
     private Activity mActivity;
-
-    private String mMachineID;
 
     public VendingPresenter(VendingContract.View vendingView) {
 
@@ -58,20 +59,16 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
 
     @Override
-    public void getProductList(String machineID) {
-
-        mMachineID = machineID;
+    public void getMachinesList() {
 
         if (!makeNetworkChecking()) {
             mView.showNoInternetError();
-            getLocalProductList();
         } else {
             if (checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.callFeaturedProductsList(mMachineID);
+                mModel.callMachinesList();
             }
         }
     }
@@ -82,9 +79,16 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
-    public void getFeaturedProductsList(String machineID) {
+    public void isMachineSet() {
+        if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))){
+            mModel.callMachinesList();
+        } else {
+            mView.loadProductList();
+        }
+    }
 
-        mMachineID = "13";
+    @Override
+    public void getFeaturedProductsList(String machineID) {
 
         if (!makeNetworkChecking()) {
             mView.showNoInternetError();
@@ -95,7 +99,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.callFeaturedProductsList(mMachineID);
+                mModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
             }
         }
     }
@@ -142,7 +146,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.buyProductByID(id);
+                mModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID),id);
             }
         }
     }
@@ -234,7 +238,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
             mView.hideProgress();
-            mModel.callFeaturedProductsList(mMachineID);
+            mModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
             mView.loadUserBalance();
         } else {
             mView.hideProgress();
@@ -270,5 +274,19 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         RealmController.with(mActivity).removeFromFavoritesLocal(Integer.parseInt(event.getId()));
         mView.hideProgress();
         mView.changeFavoriteIcon();
+    }
+
+    @Subscribe
+    public void OnEvent(OnMachinesListReceived event) {
+        if (event.getMachinesList().size()==1){
+            if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))){
+                Utils.storeConcreteMachineInfo(event.getMachinesList().get(0));
+                mView.loadProductList();
+            } else {
+                mView.showMachinesSelector(event.getMachinesList());
+            }
+        } else if (event.getMachinesList().size()>1){
+            mView.showMachinesSelector(event.getMachinesList());
+        }
     }
 }

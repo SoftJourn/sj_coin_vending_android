@@ -33,7 +33,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         mVendingModel = new VendingModel();
         mLoginPresenter = new LoginPresenter();
         mView.showProgress(App.getContext().getString(R.string.progress_loading));
-        mVendingModel.callFeaturedProductsList(MACHINE_ID);
+        mVendingModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
     }
 
     @Override

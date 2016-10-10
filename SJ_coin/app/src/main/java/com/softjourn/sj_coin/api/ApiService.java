@@ -53,8 +53,8 @@ public interface ApiService {
     @GET("machines/{machineID}/products")
     Call<List<Product>> getProductsList(@Path("machineID") String machineID);
 
-    @POST ("machines/13/products/{id}")
-    Call<Amount> buyProductByID(@Path("id") String id);
+    @POST ("machines/{machineID}/products/{id}")
+    Call<Amount> buyProductByID(@Path("machineID") String machineID, @Path("id") String id);
 
     @GET ("favorites")
     Call<List<Favorites>> getListFavorites();

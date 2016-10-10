@@ -35,8 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     public EventBus mEventBus = EventBus.getDefault();
 
     protected boolean mProfileIsVisible = false;
-    protected boolean mAllItemsVisible = false;
-    protected boolean mFavoritesVisible = false;
 
     protected ProgressDialog mProgressDialog;
 
@@ -80,6 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.home:
                 Navigation.goToVendingActivity(this);
                 finish();

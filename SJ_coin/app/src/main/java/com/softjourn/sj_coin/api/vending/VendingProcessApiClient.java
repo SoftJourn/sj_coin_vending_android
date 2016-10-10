@@ -144,8 +144,8 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
     }
 
     @Override
-    public void buyProductByID(String id, final Callback<Amount> callback) {
-        mApiService.buyProductByID(id).enqueue(new retrofit2.Callback<Amount>() {
+    public void buyProductByID(String machineID,String id, final Callback<Amount> callback) {
+        mApiService.buyProductByID(machineID, id).enqueue(new retrofit2.Callback<Amount>() {
             @Override
             public void onResponse(Call<Amount> call, retrofit2.Response<Amount> response) {
                 sendCallBack(callback, response);

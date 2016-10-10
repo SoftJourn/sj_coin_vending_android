@@ -54,9 +54,9 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public void callFeaturedProductsList(String machineID) {
+    public void callFeaturedProductsList(String selectedMachine) {
 
-        mApiProvider.getFeaturedProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
+        mApiProvider.getFeaturedProductsList(selectedMachine, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
             @Override
             public void onSuccess(Featured response) {
                 RealmUtils.setRealmData(mRealm,response);
@@ -70,8 +70,8 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public void buyProductByID(String id) {
-        mApiProvider.buyProductByID(id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
+    public void buyProductByID(String machineID, String id) {
+        mApiProvider.buyProductByID(machineID, id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
             @Override
             public void onSuccess(Amount response) {
                 mEventBus.post(new OnAmountReceivedEvent(response));

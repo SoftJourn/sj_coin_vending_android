@@ -19,7 +19,7 @@ public interface VendingApiProvider {
 
     void getProductsList(String selectedMachine, Callback<List<Product>> callback);
 
-    void buyProductByID(String id, Callback<Amount> callback);
+    void buyProductByID(String machinesID, String id, Callback<Amount> callback);
 
     void addProductToFavorites(int id, Callback<Void> callback);
 

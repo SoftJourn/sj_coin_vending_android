@@ -26,6 +26,7 @@ import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
@@ -65,7 +66,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         mCategory = getIntent().getStringExtra(EXTRAS_CATEGORY);
         setTitle(mCategory);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -129,6 +130,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.select_machine).setVisible(false);
 
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
@@ -215,6 +217,16 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void createContainer(String categoryName) {
+
+    }
+
+    @Override
+    public void showMachinesSelector(List<Machines> machines) {
+
+    }
+
+    @Override
+    public void loadProductList() {
 
     }
 

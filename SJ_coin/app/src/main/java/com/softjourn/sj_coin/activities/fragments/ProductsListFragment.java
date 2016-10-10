@@ -16,6 +16,7 @@ import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Const;
@@ -242,6 +243,16 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
 
     @Override
     public void createContainer(String categoryName) {
+
+    }
+
+    @Override
+    public void showMachinesSelector(List<Machines> machines) {
+
+    }
+
+    @Override
+    public void loadProductList() {
 
     }
 

@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.contratcts;
 
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
+import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
 
 import java.util.List;
@@ -29,9 +30,15 @@ public interface VendingContract {
         void loadData(List<Product> data);
 
         void createContainer(String categoryName);
+
+        void showMachinesSelector(List<Machines> machines);
+
+        void loadProductList();
     }
 
     interface Presenter extends BasePresenter{
+
+        void isMachineSet();
 
         void getFeaturedProductsList(String machineID);
 
@@ -45,11 +52,7 @@ public interface VendingContract {
 
         void getLocalCategoryProducts(String category);
 
-        /*void getLocalSnacks();
-
-        void getLocalDrinks();*/
-
-        void getProductList(String machineID);
+        void getMachinesList();
 
         void getLocalProductList();
 

@@ -1,11 +1,17 @@
 package com.softjourn.sj_coin.activities;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
@@ -14,6 +20,7 @@ import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.realm.RealmController;
@@ -23,6 +30,7 @@ import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -55,7 +63,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
-        loadProductList();
+        mPresenter.isMachineSet();
     }
 
     @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll})
@@ -82,6 +90,17 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.select_machine:
+                mPresenter.getMachinesList();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -196,14 +215,59 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         attachFragment(categoryName, llHeader.getId(), llContainer.getId(), tvSeeAll.getId());
     }
 
+    @Override
+    public void showMachinesSelector(final List<Machines> machines) {
+        List<String> names = new ArrayList<>();
+        for (Machines machine : machines)
+        {
+            names.add(machine.getName());
+        }
+
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_select_machine);
+        ListView lv = (ListView) dialog.findViewById(R.id.lv);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
+        lv.setAdapter(adapter);
+        dialog.show();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                for (Machines machine : machines)
+                {
+                    if (adapter.getItem(position).toString().equals(machine.getName())){
+                        Preferences.storeObject(SELECTED_MACHINE_ID,String.valueOf(machine.getId()));
+                        Preferences.storeObject(SELECTED_MACHINE_NAME,machine.getName());
+                        break;
+                    }
+                }
+                showProgress(getString(R.string.progress_loading));
+                loadProductList();
+                dialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+    }
+
     private void attachFragment(String categoryName, int headerID, int containerID, int seeAllID) {
         getFragmentManager().beginTransaction().replace(containerID, ProductsListFragment.newInstance(categoryName, headerID, containerID),
                 Preferences.retrieveStringObject(categoryName.toUpperCase())).commit();
     }
 
-    private void loadProductList() {
+    @Override
+    public void loadProductList() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.mainLayout);
+        for (int i = 0; i < viewCounter; i++) {
+            layout.removeView(findViewById(R.id.categoryLayout));
+        }
         RealmController.with(this).clearAll();
-        mPresenter.getFeaturedProductsList(MACHINE_ID);
+        mPresenter.getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
         loadUserBalance();
     }
 
@@ -220,12 +284,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         view.setVisibility(View.VISIBLE);
         fragmentContainer.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mPresenter.onDestroy();
     }
 
     @Subscribe

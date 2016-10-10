@@ -10,14 +10,10 @@ public interface Const {
 
     String SELECTED_MACHINE_NAME = "SELECTED_MACHINE_NAME";
     String SELECTED_MACHINE_ID = "SELECTED_MACHINE_ID";
-    String SELECTED_MACHINE_ROWS = "SELECTED_MACHINE_ROWS";
-    String SELECTED_MACHINE_COLUMNS = "SELECTED_MACHINE_COLUMNS";
 
     //Fragments tags
     String TAG_PRODUCTS_LAST_ADDED_FRAGMENT = "TAG_PRODUCTS_LAST_ADDED_FRAGMENT";
     String TAG_PRODUCTS_BEST_SELLERS_FRAGMENT = "TAG_PRODUCTS_BEST_SELLERS_FRAGMENT";
-    String TAG_PRODUCTS_SNACKS_FRAGMENT = "TAG_PRODUCTS_SNACKS_FRAGMENT";
-    String TAG_PRODUCTS_DRINKS_FRAGMENT = "TAG_PRODUCTS_DRINKS_FRAGMENT";
     String TAG_FAVORITES_FRAGMENT = "TAG_FAVORITES_FRAGMENT";
     String TAG_ALL_PRODUCTS_FRAGMENT = "TAG_ALL_PRODUCTS_FRAGMENT";
 
@@ -48,20 +44,11 @@ public interface Const {
     String LAST_ADDED = "Last Added";
     String FAVORITES = "Favorites";
     String BEST_SELLERS = "Best Sellers";
-    String SNACKS = "Snack";
-    String DRINKS = "Drink";
     String ALL_ITEMS = "All Items";
-
-    String MACHINE_ID = "3";
 
     //invalid product, item id
     int INVALID_ID = -1;
 
     String DB_NAME = "VENDING_DB";
-
-    //Temporary Categories Names while I've not decide what to do with them.
-    String DRINK_CATEGORY = "Drink";
-    String SNACK_CATEGORY = "Snack";
-
 }
 

@@ -31,14 +31,14 @@ public class Utils {
     }
 
     public static void storeConcreteMachineInfo(Machines machine) {
-        Preferences.storeObject(Const.SELECTED_MACHINE_ROWS, machine.getSize().getRows());
-        Preferences.storeObject(Const.SELECTED_MACHINE_COLUMNS, machine.getSize().getColumns());
-        Preferences.storeObject(Const.SELECTED_MACHINE_ID, machine.getId());
+        Preferences.storeObject(Const.SELECTED_MACHINE_ID, String.valueOf(machine.getId()));
         Preferences.storeObject(Const.SELECTED_MACHINE_NAME, machine.getName());
     }
 
     public static void clearUsersData(){
         Preferences.clearStringObject(Const.ACCESS_TOKEN);
         Preferences.clearStringObject(Const.REFRESH_TOKEN);
+        Preferences.clearStringObject(Const.SELECTED_MACHINE_NAME);
+        Preferences.clearStringObject(Const.SELECTED_MACHINE_ID);
     }
 }
