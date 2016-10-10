@@ -114,6 +114,7 @@ public class RealmController {
     //First needed to get Ids for chosen category to make query from all products
     //with given list of IDs
     public RealmResults<Product> getProductsFromStaticCategory(String category) {
+
         CategorizedProductsIds catIds = new CategorizedProductsIds(category);
         List<Integer> ids = catIds.getIds();
         if (ids.size() <= 0) {
@@ -121,10 +122,7 @@ public class RealmController {
         }
         RealmQuery<Product> query = realm.where(Product.class);
 
-        for (int id : ids) {
-            query.equalTo("id", id);
-        }
-        return query.findAll();
+        return query.in("id",ids.toArray(new Integer[ids.size()])).findAll();
     }
 
     //query all Categories (Drink, Snack etc.) from JSON
@@ -143,6 +141,8 @@ public class RealmController {
                 return getProductsFromStaticCategory(Const.BEST_SELLERS).sort(sortingType, sortOrder);
             case Const.LAST_ADDED:
                 return getProductsFromStaticCategory(Const.LAST_ADDED).sort(sortingType, sortOrder);
+            case Const.FAVORITES:
+                return getProductsFromStaticCategory(Const.FAVORITES).sort(sortingType, sortOrder);
             default:
                 return getProductsFromCategory(productsCategory).sort(sortingType, sortOrder);
         }
