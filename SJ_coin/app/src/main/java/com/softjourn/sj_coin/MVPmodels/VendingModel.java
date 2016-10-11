@@ -31,9 +31,9 @@ import io.realm.Sort;
 
 public class VendingModel extends BaseModel implements Const {
 
-    private Realm mRealm = Realm.getDefaultInstance();
+    private final Realm mRealm = Realm.getDefaultInstance();
 
-    private VendingApiProvider mApiProvider;
+    private final VendingApiProvider mApiProvider;
 
     public VendingModel() {
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();

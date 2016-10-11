@@ -4,7 +4,6 @@ package com.softjourn.sj_coin.MVPmodels;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.auth.OAuthApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
-import com.softjourn.sj_coin.callbacks.OnCallEvent;
 import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.model.Session;
@@ -60,13 +59,13 @@ public class LoginModel extends BaseModel{
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                mEventBus.post(new OnCallEvent(Const.CALL_FAILED));
+                mEventBus.post(new OnLoginCallEvent(Const.CALL_FAILED));
             }
         };
         mApiProvider.makeLoginRequest(userName, password, Const.GRANT_TYPE_PASSWORD, callback);
     }
 
-    public void createApiManager() {
+    private void createApiManager() {
         mApiProvider = ApiManager.getInstance().getOauthApiProvider();
     }
 }

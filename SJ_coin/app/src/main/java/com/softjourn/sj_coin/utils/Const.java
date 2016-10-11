@@ -46,9 +46,13 @@ public interface Const {
     String BEST_SELLERS = "Best Sellers";
     String ALL_ITEMS = "All Items";
 
-    //invalid product, item id
-    int INVALID_ID = -1;
-
     String DB_NAME = "VENDING_DB";
+
+    //Headers for HTTP
+    String HEADER_AUTHORIZATION_KEY = "Authorization";
+    String HEADER_AUTHORIZATION_VALUE = "Basic dXNlcl9jcmVkOnN1cGVyc2VjcmV0";
+
+    String HEADER_CONTENT_TYPE_KEY = "Content-Type";
+    String HEADER_CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded";
 }
 

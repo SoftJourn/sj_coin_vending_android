@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
-/**
- * Created by omartynets on 06.10.2016.
- */
 @Data
 public class RealmProductWrapper {
     @SerializedName("id")

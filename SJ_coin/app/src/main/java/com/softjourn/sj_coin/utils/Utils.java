@@ -12,16 +12,12 @@ import java.util.Date;
 
 public class Utils {
 
-    public static void showErrorToast(Context context, String text, int gravity) {
+    public static void showErrorToast(Context context, String text) {
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        toast.setGravity(gravity, 0, 0);
-        if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        if (toast.getView().getWindowVisibility() != View.VISIBLE) {
             toast.show();
         }
-    }
-
-    public static void showErrorToast(Context context, String text) {
-        showErrorToast(context, text, Gravity.CENTER);
     }
 
     public static void storeSessionInfo(Session session) {

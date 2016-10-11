@@ -19,10 +19,9 @@ import java.util.Date;
 
 public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Const {
 
-    private ProfileContract.View mView;
-    private ProfileModel mProfileModel;
-    private VendingModel mVendingModel;
-    private LoginPresenter mLoginPresenter;
+    private final ProfileContract.View mView;
+    private final ProfileModel mProfileModel;
+    private final LoginPresenter mLoginPresenter;
 
     public ProfilePresenter(ProfileContract.View profileView) {
 
@@ -30,10 +29,10 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
         mView = profileView;
         mProfileModel = new ProfileModel();
-        mVendingModel = new VendingModel();
+        VendingModel vendingModel = new VendingModel();
         mLoginPresenter = new LoginPresenter();
         mView.showProgress(App.getContext().getString(R.string.progress_loading));
-        mVendingModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
+        vendingModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
     }
 
     @Override
@@ -47,19 +46,6 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mProfileModel.makeAccountCall();
-            }
-        }
-    }
-
-    @Override
-    public void getBalance() {
-        if (!makeNetworkChecking()) {
-            mView.showNoInternetError();
-        } else {
-            if (checkExpirationDate()) {
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            } else {
-                mProfileModel.makeBalanceCall();
             }
         }
     }
@@ -93,7 +79,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event) {
-        mView.showBalance(String.format("%d", event.getAmount().getAmount()));
+        mView.showBalance(String.valueOf(event.getAmount().getAmount()));
     }
 
     @Subscribe

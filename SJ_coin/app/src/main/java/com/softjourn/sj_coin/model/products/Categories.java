@@ -6,9 +6,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import lombok.Data;
 
-/**
- * Created by omartynets on 05.10.2016.
- */
 
 @Data
 public class Categories extends RealmObject {

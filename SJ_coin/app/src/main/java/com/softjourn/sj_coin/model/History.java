@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
+@Data
 public class History implements Parcelable{
 
     @SerializedName("date")
@@ -22,7 +23,7 @@ public class History implements Parcelable{
     public History(){
     }
 
-    protected History(Parcel in) {
+    private History(Parcel in) {
         date = in.readString();
         name = in.readString();
         price = in.readString();
@@ -50,29 +51,5 @@ public class History implements Parcelable{
         dest.writeString(date);
         dest.writeString(name);
         dest.writeString(price);
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPrice() {
-        return price;
     }
 }

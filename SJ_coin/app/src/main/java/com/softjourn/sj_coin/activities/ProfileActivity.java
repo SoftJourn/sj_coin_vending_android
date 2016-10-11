@@ -11,7 +11,6 @@ import com.softjourn.sj_coin.adapters.PurchaseHistoryItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Const;
 
@@ -36,7 +35,6 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
     private ProfileContract.Presenter mPresenter;
     private PurchaseHistoryItemsAdapter mHistoryAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +47,9 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
         mPresenter = new ProfilePresenter(this);
 
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mHistoryAdapter = new PurchaseHistoryItemsAdapter();
-        mHistoryList.setLayoutManager(mLayoutManager);
+        mHistoryList.setLayoutManager(layoutManager);
         mHistoryList.setAdapter(mHistoryAdapter);
 
         mPresenter.showHistory();

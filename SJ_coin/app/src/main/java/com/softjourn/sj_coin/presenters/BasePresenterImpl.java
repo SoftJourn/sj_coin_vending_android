@@ -6,7 +6,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class BasePresenterImpl implements BasePresenter{
 
-    public EventBus mEventBus = EventBus.getDefault();
+    private final EventBus mEventBus = EventBus.getDefault();
 
     @Override
     public void onCreate() {
@@ -29,7 +29,6 @@ public class BasePresenterImpl implements BasePresenter{
     /**
      * Needs to be overriden in child Classes
      */
-    @Override
     public boolean makeNetworkChecking() {
         return false;
     }

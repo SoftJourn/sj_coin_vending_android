@@ -18,7 +18,7 @@ public class Machines implements Parcelable {
     @SerializedName("size")
     public Size size;
 
-    protected Machines(Parcel in) {
+    private Machines(Parcel in) {
         name = in.readString();
         size = in.readParcelable(Size.class.getClassLoader());
     }

@@ -19,9 +19,6 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
-/**
- * Created by omartynets on 04.10.2016.
- */
 public class RealmController {
 
     private static RealmController instance;
@@ -43,14 +40,6 @@ public class RealmController {
 
         if (instance == null) {
             instance = new RealmController(activity.getApplication());
-        }
-        return instance;
-    }
-
-    public static RealmController with(Application application) {
-
-        if (instance == null) {
-            instance = new RealmController(application);
         }
         return instance;
     }
@@ -95,12 +84,6 @@ public class RealmController {
         return realm.where(Product.class).findAll();
     }
 
-    //query a single item with the given id
-    public Product getProduct(int id) {
-
-        return realm.where(Product.class).equalTo("id", id).findFirst();
-    }
-
     //query all products from given category
     public RealmResults<Product> getProductsFromCategory(String category) {
 
@@ -117,6 +100,7 @@ public class RealmController {
 
         CategorizedProductsIds catIds = new CategorizedProductsIds(category);
         List<Integer> ids = catIds.getIds();
+        assert ids != null;
         if (ids.size() <= 0) {
             return null;
         }
@@ -154,7 +138,7 @@ public class RealmController {
      */
     private class CategorizedProductsIds {
 
-        String mCategory;
+        final String mCategory;
 
         private CategorizedProductsIds(String category) {
             this.mCategory = category;

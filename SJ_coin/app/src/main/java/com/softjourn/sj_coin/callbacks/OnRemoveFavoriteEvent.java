@@ -1,10 +1,10 @@
 package com.softjourn.sj_coin.callbacks;
 
-
 import com.softjourn.sj_coin.model.products.Product;
 
 public class OnRemoveFavoriteEvent {
-    private Product mProduct;
+
+    private final Product mProduct;
 
     public OnRemoveFavoriteEvent(Product product) {
         this.mProduct = product;

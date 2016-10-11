@@ -44,7 +44,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
 
     }
 
-    public void login() {
+    private void login() {
 
         String userName = mUserName.getText().toString();
         String password = mPasswordText.getText().toString();

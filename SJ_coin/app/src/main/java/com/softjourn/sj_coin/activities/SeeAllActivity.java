@@ -44,16 +44,16 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     private VendingContract.Presenter mPresenter;
 
-    FeaturedProductItemsAdapter mAdapter;
+    private FeaturedProductItemsAdapter mAdapter;
 
-    SearchView mSearch;
+    private SearchView mSearch;
 
-    String mCategory;
+    private String mCategory;
 
-    Button mFragmentsSortNameButton;
-    Button mFragmentsSortPriceButton;
+    private Button mFragmentsSortNameButton;
+    private Button mFragmentsSortPriceButton;
 
-    NavigationView mNavigationView;
+    private NavigationView mNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         assert drawer != null;
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -90,7 +90,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         mCategory = item.getTitle().toString();
-        uncheckAllMenuItems(mNavigationView);
+        unCheckAllMenuItems(mNavigationView);
 
         switch (id) {
             case R.id.allProducts:
@@ -158,7 +158,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
                 if (TextUtils.isEmpty(query)) {
                     mAdapter.getFilter().filter("");
                 } else {
-                    mAdapter.getFilter().filter(query.toString());
+                    mAdapter.getFilter().filter(query);
                 }
                 mFragmentsSortNameButton.setEnabled(false);
                 mFragmentsSortPriceButton.setEnabled(false);
@@ -304,7 +304,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         }
     }
 
-    private void uncheckAllMenuItems(NavigationView navigationView) {
+    private void unCheckAllMenuItems(NavigationView navigationView) {
         final Menu menu = navigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);

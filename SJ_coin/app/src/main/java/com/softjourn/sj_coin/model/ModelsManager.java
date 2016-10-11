@@ -8,9 +8,6 @@ import com.softjourn.sj_coin.utils.TimeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Andriy Ksenych on 13.09.2016.
- */
 public class ModelsManager {
 
     public static History getHistoryModel(@Nullable MyLastPurchase myLastPurchaseModel) {
@@ -18,7 +15,7 @@ public class ModelsManager {
             History history = new History();
             history.setDate(TimeUtils.getPrettyTime(myLastPurchaseModel.getTime()));
             history.setName(myLastPurchaseModel.getName());
-            history.setPrice(String.format("%d", myLastPurchaseModel.getPrice()));
+            history.setPrice(String.valueOf(myLastPurchaseModel.getPrice()));
             return history;
         } else {
             return null;

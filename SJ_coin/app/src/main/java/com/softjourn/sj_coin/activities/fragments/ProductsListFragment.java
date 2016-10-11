@@ -28,9 +28,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Andriy Ksenych on 15.09.2016.
- */
 public class ProductsListFragment extends BaseFragment implements VendingContract.View, Const, Extras {
 
     private String mProductsCategory;
@@ -41,12 +38,10 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     private FeaturedProductItemsAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static int mHeaders;
-    private static int mContainer;
 
     public static ProductsListFragment newInstance(String category, @Nullable int headers, @Nullable int container) {
         if (headers>0 && container>0) {
             mHeaders = headers;
-            mContainer = container;
         }
         Bundle bundle = new Bundle();
         bundle.putString(TAG_PRODUCTS_CATEGORY, category);
@@ -55,9 +50,9 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
         return fragment;
     }
 
-    List<Product> mProductList;
+    private List<Product> mProductList;
 
-    Parcelable mListState;
+    private Parcelable mListState;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
@@ -151,17 +146,14 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 break;
             case FAVORITES:
                 mHeaders = R.id.favoritesHeader;
-                mContainer = R.id.container_fragment_products_list_favorites;
                 mPresenter.getLocalFavorites();
                 break;
             case LAST_ADDED:
                 mHeaders = R.id.newProductsHeader;
-                mContainer = R.id.container_fragment_products_list_new_products;
                 mPresenter.getLocalLastAddedProducts();
                 break;
             case BEST_SELLERS:
                 mHeaders = R.id.bestSellersHeader;
-                mContainer = R.id.container_fragment_products_list_best_sellers;
                 mPresenter.getLocalBestSellers();
                 break;
             default:
@@ -186,6 +178,16 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
         if (mListState != null) {
             mLayoutManager.onRestoreInstanceState(mListState);
         }
+    }
+
+    @Override
+    public void showProgress(String message) {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
     }
 
     @Override
@@ -227,6 +229,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 try {
                     ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
                 } catch (ClassCastException e) {
+                    e.printStackTrace();
                 }
         } else {
             try {

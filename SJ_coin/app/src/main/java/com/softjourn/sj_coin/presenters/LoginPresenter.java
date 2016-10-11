@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class LoginPresenter extends BasePresenterImpl implements LoginContract.Presenter {
 
     private LoginContract.View mLoginView;
-    private LoginModel mModel;
+    private final LoginModel mModel;
 
     public LoginPresenter(LoginContract.View loginView) {
 
@@ -47,7 +47,6 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
         mModel.makeRefreshToken(refreshToken);
     }
 
-    @Override
     public boolean validateCredentials(String userName, String password) {
 
         if (password.isEmpty() && userName.isEmpty()) {

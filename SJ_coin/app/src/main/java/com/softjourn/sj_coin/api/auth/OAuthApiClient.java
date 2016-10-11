@@ -31,8 +31,8 @@ public class OAuthApiClient extends BaseApiClient implements OAuthApiProvider {
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         Request orRequest = request.newBuilder()
-                                .addHeader("Authorization", "Basic dXNlcl9jcmVkOnN1cGVyc2VjcmV0")
-                                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                                .addHeader(HEADER_AUTHORIZATION_KEY, HEADER_AUTHORIZATION_VALUE)
+                                .addHeader(HEADER_CONTENT_TYPE_KEY, HEADER_CONTENT_TYPE_VALUE)
                                 .build();
                         return chain.proceed(orRequest);
                     }

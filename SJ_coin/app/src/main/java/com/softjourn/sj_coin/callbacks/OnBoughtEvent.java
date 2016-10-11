@@ -4,7 +4,7 @@ import com.softjourn.sj_coin.model.Amount;
 
 public class OnBoughtEvent {
 
-    private Amount mIsSuccess;
+    private final Amount mIsSuccess;
 
     public OnBoughtEvent(Amount isSuccess){
         this.mIsSuccess = isSuccess;

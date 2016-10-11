@@ -1,7 +1,8 @@
 package com.softjourn.sj_coin.callbacks;
 
 public class OnTokenRefreshed {
-    private boolean mIsSuccess;
+
+    private final boolean mIsSuccess;
 
     public OnTokenRefreshed(boolean isSuccess) {
         this.mIsSuccess = isSuccess;

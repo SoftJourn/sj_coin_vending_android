@@ -10,9 +10,6 @@ import java.io.IOException;
 
 import io.realm.RealmList;
 
-/**
- * Created by omartynets on 05.10.2016.
- */
 public class RealmIntegerListTypeAdapter extends TypeAdapter<RealmList<RealmInteger>> {
     public static final TypeAdapter<RealmList<RealmInteger>> INSTANCE =
             new RealmIntegerListTypeAdapter().nullSafe();

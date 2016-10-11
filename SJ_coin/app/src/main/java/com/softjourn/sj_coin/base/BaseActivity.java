@@ -32,11 +32,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public abstract class BaseActivity extends AppCompatActivity implements Const {
 
-    public EventBus mEventBus = EventBus.getDefault();
+    private final EventBus mEventBus = EventBus.getDefault();
 
     protected boolean mProfileIsVisible = false;
 
-    protected ProgressDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

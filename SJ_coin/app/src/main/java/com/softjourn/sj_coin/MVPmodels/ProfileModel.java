@@ -11,7 +11,7 @@ import com.softjourn.sj_coin.model.accountInfo.Balance;
 
 public class ProfileModel extends BaseModel {
 
-    private CoinsApiProvider mCoinsApiProvider;
+    private final CoinsApiProvider mCoinsApiProvider;
 
     public ProfileModel() {
         mCoinsApiProvider = ApiManager.getInstance().getCoinsApiProvider();

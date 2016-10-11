@@ -30,10 +30,10 @@ import java.util.List;
 
 public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Const {
 
-    private VendingContract.View mView;
-    private VendingModel mModel;
-    private LoginPresenter mLoginPresenter;
-    private ProfileModel mProfileModel;
+    private final VendingContract.View mView;
+    private final VendingModel mModel;
+    private final LoginPresenter mLoginPresenter;
+    private final ProfileModel mProfileModel;
     private Activity mActivity;
 
     public VendingPresenter(VendingContract.View vendingView) {
@@ -198,9 +198,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getBalance() {
-        if (!makeNetworkChecking()) {
-
-        } else {
+        if (makeNetworkChecking()) {
             if (checkExpirationDate()) {
                 refreshToken(Const.REFRESH_TOKEN);
             } else {
@@ -232,6 +230,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         for (String name : categoriesNames) {
             mView.createContainer(name);
         }
+        mView.hideProgress();
     }
 
     @Subscribe

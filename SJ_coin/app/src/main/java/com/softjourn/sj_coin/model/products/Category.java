@@ -8,9 +8,6 @@ import com.google.gson.annotations.SerializedName;
 import io.realm.RealmObject;
 import lombok.Data;
 
-/**
- * Created by omartynets on 05.10.2016.
- */
 @Data
 public class Category extends RealmObject implements Parcelable {
 
@@ -20,7 +17,7 @@ public class Category extends RealmObject implements Parcelable {
     @SerializedName("name")
     private String name;
 
-    protected Category(Parcel in) {
+    Category(Parcel in) {
         name = in.readString();
         id = in.readInt();
     }

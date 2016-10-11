@@ -7,6 +7,4 @@ public interface BasePresenter{
     void onDestroy();
 
     void refreshToken(String refreshToken);
-
-    boolean makeNetworkChecking();
 }

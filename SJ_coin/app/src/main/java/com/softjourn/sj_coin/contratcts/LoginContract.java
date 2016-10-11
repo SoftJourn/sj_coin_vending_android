@@ -19,7 +19,5 @@ public interface LoginContract {
 
         void login(String userName, String password);
 
-        boolean validateCredentials(String userName, String password);
-
     }
 }

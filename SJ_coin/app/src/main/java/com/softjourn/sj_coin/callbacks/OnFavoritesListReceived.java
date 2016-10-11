@@ -6,7 +6,7 @@ import java.util.List;
 
 public class OnFavoritesListReceived {
 
-    private List<Favorites> mList;
+    private final List<Favorites> mList;
 
     public OnFavoritesListReceived(List<Favorites> favorites) {
         this.mList = favorites;

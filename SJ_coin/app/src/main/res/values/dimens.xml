@@ -5,9 +5,6 @@
 
     <!--Fragment List View margins. -->
     <dimen name="recycler_view_layout_left_margin">10dp</dimen>
-    <dimen name="recycler_view_layout_text_view_container_top_margin">5dp</dimen>
-    <dimen name="recycler_view_layout_text_view_container_bottom_margin">5dp</dimen>
-    <dimen name="recycler_view_layout_text_view_container_left_margin">16dp</dimen>
 
     <!-- Fragment Machine View margins. -->
     <dimen name="recycler_view_machine_layout_left_margin">2dp</dimen>
@@ -18,7 +15,4 @@
     <!-- Main Screen dimensions-->
     <dimen name="category_header_bottom_margin">6dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 </resources>

@@ -4,7 +4,7 @@ import com.softjourn.sj_coin.model.products.Product;
 
 public class OnProductBuyClickEvent {
 
-        private Product mProduct;
+        private final Product mProduct;
 
         public OnProductBuyClickEvent(Product product) {
             this.mProduct = product;

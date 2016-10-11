@@ -19,7 +19,7 @@ public class PurchaseHistoryItemsAdapter extends
 
     private List<History> mList;
 
-    private String mCoins = " " + App.getContext().getString(R.string.item_coins);
+    //private String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
 
     public void setData(List<History> data){
@@ -42,7 +42,7 @@ public class PurchaseHistoryItemsAdapter extends
         final History product = mList.get(position);
 
         holder.mProductName.setText(product.getName());
-        holder.mProductPrice.setText(product.getPrice() + mCoins);
+        holder.mProductPrice.setText(String.format(App.getContext().getResources().getString(R.string.item_coins), product.getPrice()));
         holder.mPurchaseDate.setText(product.getDate());
 
     }
@@ -54,14 +54,14 @@ public class PurchaseHistoryItemsAdapter extends
 
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
 
-        public View mParentView;
-        public TextView mProductPrice;
-        public TextView mProductName;
-        public TextView mPurchaseDate;
+        public final View mParentView;
+        public final TextView mProductPrice;
+        public final TextView mProductName;
+        public final TextView mPurchaseDate;
 
         public HistoryViewHolder(View v) {
             super(v);
-            mParentView = (View) v.findViewById(R.id.layout_item_parent_view);
+            mParentView = v.findViewById(R.id.layout_item_parent_view);
             mProductPrice = (TextView) v.findViewById(R.id.layout_item_product_price);
             mProductName = (TextView) v.findViewById(R.id.layout_item_product_name);
             mPurchaseDate = (TextView) v.findViewById(R.id.layout_item_purchase_date);

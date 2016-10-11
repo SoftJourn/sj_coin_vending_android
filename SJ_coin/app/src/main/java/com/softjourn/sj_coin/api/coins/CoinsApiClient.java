@@ -35,7 +35,7 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         Request orRequest = request.newBuilder()
-                                .addHeader("Authorization", "Bearer " + Preferences.retrieveStringObject(ACCESS_TOKEN))
+                                .addHeader(HEADER_AUTHORIZATION_KEY, "Bearer " + Preferences.retrieveStringObject(ACCESS_TOKEN))
                                 .build();
                         return chain.proceed(orRequest);
                     }
@@ -53,13 +53,11 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
                 .build();
     }
 
-    private boolean sendCallBack(com.softjourn.sj_coin.api.callbacks.Callback callback, retrofit2.Response response) {
+    private void sendCallBack(com.softjourn.sj_coin.api.callbacks.Callback callback, retrofit2.Response response) {
         if (response.isSuccessful()) {
             callback.onSuccess(response.body());
-            return true;
         } else {
             callback.onError(response.message());
-            return false;
         }
     }
 

@@ -10,9 +10,6 @@ import java.io.IOException;
 
 import io.realm.RealmList;
 
-/**
- * Created by omartynets on 05.10.2016.
- */
 public class RealmStringListTypeAdapter extends TypeAdapter<RealmList<RealmString>> {
 
     public static final TypeAdapter<RealmList<RealmString>> INSTANCE =

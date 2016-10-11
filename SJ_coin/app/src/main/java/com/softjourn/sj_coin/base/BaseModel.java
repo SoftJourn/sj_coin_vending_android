@@ -4,6 +4,6 @@ import org.greenrobot.eventbus.EventBus;
 
 public abstract class BaseModel {
 
-    protected EventBus mEventBus = EventBus.getDefault();
+    protected final EventBus mEventBus = EventBus.getDefault();
 
 }

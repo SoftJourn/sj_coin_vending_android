@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class BaseApiClient implements Const {
 
-    private static Gson gson = new GsonBuilder()
+    private static final Gson gson = new GsonBuilder()
             .setLenient()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             .registerTypeAdapter(new TypeToken<RealmList<RealmString>>(){}.getType(),
@@ -27,9 +27,9 @@ public abstract class BaseApiClient implements Const {
                     RealmIntegerListTypeAdapter.INSTANCE)
             .create();
 
-    protected ApiService mApiService;
+    protected final ApiService mApiService;
 
-    public BaseApiClient(String URL) {
+    protected BaseApiClient(String URL) {
         OkHttpClient okHttpClient = createOkHttpClient();
 
         this.mApiService = new Retrofit.Builder()
@@ -40,7 +40,7 @@ public abstract class BaseApiClient implements Const {
                 .create(ApiService.class);
     }
 
-    public OkHttpClient createOkHttpClient() {
+    protected OkHttpClient createOkHttpClient() {
         return new OkHttpClient();
     }
 }
