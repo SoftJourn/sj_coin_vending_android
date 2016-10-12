@@ -94,27 +94,37 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
         switch (id) {
             case R.id.allProducts:
+                mSearch.clearFocus();
+                mSearch.onActionViewCollapsed();
                 item.setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(0, SeeAllActivity.this, null);
                 setTitle(R.string.allItems);
                 break;
             case R.id.favorites:
+                mSearch.clearFocus();
+                mSearch.onActionViewCollapsed();
                 item.setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(1, SeeAllActivity.this, null);
                 setTitle(R.string.favorites);
                 break;
             case R.id.lastAdded:
+                mSearch.clearFocus();
+                mSearch.onActionViewCollapsed();
                 item.setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(2, SeeAllActivity.this, null);
                 setTitle(R.string.lastAdded);
                 break;
             case R.id.bestSellers:
+                mSearch.clearFocus();
+                mSearch.onActionViewCollapsed();
                 item.setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(3, SeeAllActivity.this, null);
                 setTitle(R.string.bestSellers);
                 break;
             default:
                 item.setChecked(true);
+                mSearch.clearFocus();
+                mSearch.onActionViewCollapsed();
                 Navigation.navigationOnCategoriesSeeAll(getItemPosition(), SeeAllActivity.this, item.getTitle().toString());
                 setTitle(item.getTitle().toString());
                 break;
@@ -290,6 +300,20 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(mCategory, 0, 0), mCategory)
                         .commit();
         }
+    }
+
+    public void setNavigationItemChecked(String category){
+        switch (category){
+            case ALL_ITEMS:
+                mNavigationView.getMenu().getItem(0).setChecked(true);
+                break;
+            case FAVORITES:
+                mNavigationView.getMenu().getItem(1).setChecked(true);
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void addCategoriesToMenu(Menu menu) {

@@ -3,6 +3,7 @@ package com.softjourn.sj_coin.activities;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -67,6 +68,13 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         super.mProfileIsVisible = false;
         super.onDestroy();
         mPresenter.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.findItem(R.id.select_machine).setVisible(false);
+        return true;
     }
 
     @Override

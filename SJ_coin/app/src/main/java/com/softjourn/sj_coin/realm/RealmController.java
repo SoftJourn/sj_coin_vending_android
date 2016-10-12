@@ -160,7 +160,11 @@ public class RealmController {
             List<Featured> lastAdded = realm.where(Featured.class).isNotEmpty("lastAdded").findAll();
             List<Integer> ids = new ArrayList<>();
             for (int i = 0; i < lastAdded.size(); i++) {
-                ids.add(lastAdded.get(i).getLastAdded().get(i).value);
+                try {
+                    ids.add(lastAdded.get(i).getLastAdded().get(i).value);
+                } catch (IndexOutOfBoundsException e) {
+                    return new ArrayList<>();
+                }
             }
             Log.d("Tag LasAdded", ids.toString());
             return ids;
@@ -170,7 +174,11 @@ public class RealmController {
             List<Featured> bestSellers = realm.where(Featured.class).isNotEmpty("bestSellers").findAll();
             List<Integer> ids = new ArrayList<>();
             for (int i = 0; i < bestSellers.size(); i++) {
-                ids.add(bestSellers.get(i).getBestSellers().get(i).value);
+                try {
+                    ids.add(bestSellers.get(i).getLastAdded().get(i).value);
+                } catch (IndexOutOfBoundsException e) {
+                    return new ArrayList<>();
+                }
             }
             Log.d("Tag BestSeller", ids.toString());
             return ids;
@@ -180,7 +188,11 @@ public class RealmController {
             List<Favorites> favorites = realm.where(Favorites.class).findAll();
             List<Integer> ids = new ArrayList<>();
             for (int i = 0; i < favorites.size(); i++) {
-                ids.add(favorites.get(i).getId());
+                try {
+                    ids.add(favorites.get(i).getId());
+                } catch (IndexOutOfBoundsException e) {
+                    return new ArrayList<>();
+                }
             }
             return ids;
         }

@@ -2,11 +2,9 @@ package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
-import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.utils.Const;
@@ -29,10 +27,8 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
         mView = profileView;
         mProfileModel = new ProfileModel();
-        VendingModel vendingModel = new VendingModel();
         mLoginPresenter = new LoginPresenter();
         mView.showProgress(App.getContext().getString(R.string.progress_loading));
-        vendingModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
     }
 
     @Override
@@ -52,7 +48,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void showHistory() {
-        //mView.setData(mProfileModel.loadHistory());
+
     }
 
     @Override
@@ -90,12 +86,6 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         } else {
             mView.hideProgress();
         }
-    }
-
-    @Subscribe
-    public void OnEvent(OnFeaturedProductsListReceived event) {
-        mView.hideProgress();
-        showHistory();
     }
 }
 

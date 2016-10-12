@@ -290,6 +290,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Subscribe
     public void OnEvent(OnFavoritesListReceived event) {
         mPresenter.getCategoriesFromDB();
+        setTitle(Preferences.retrieveStringObject(SELECTED_MACHINE_NAME));
         navigateToFragments();
     }
 }

@@ -37,14 +37,12 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     private VendingContract.Presenter mPresenter;
     private FeaturedProductItemsAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private static int mHeaders;
+    private int mHeaders;
 
     public static ProductsListFragment newInstance(String category, @Nullable int headers, @Nullable int container) {
-        if (headers>0 && container>0) {
-            mHeaders = headers;
-        }
         Bundle bundle = new Bundle();
         bundle.putString(TAG_PRODUCTS_CATEGORY, category);
+        bundle.putString("HEADER",String.valueOf(headers));
         ProductsListFragment fragment = new ProductsListFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -85,6 +83,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProductsCategory = getArguments().getString(TAG_PRODUCTS_CATEGORY);
+        mHeaders = Integer.parseInt(getArguments().getString("HEADER"));
     }
 
     @Override
@@ -103,6 +102,8 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
             case "activities.SeeAllActivity":
                 view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
                 ButterKnife.bind(this, view);
+                (getActivity()).setTitle(mProductsCategory);
+                ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
                 break;
@@ -229,7 +230,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 try {
                     ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
                 } catch (ClassCastException e) {
-                    e.printStackTrace();
+                    return;
                 }
         } else {
             try {

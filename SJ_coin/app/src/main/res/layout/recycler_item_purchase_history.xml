@@ -38,6 +38,8 @@
                     android:id="@+id/layout_item_product_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_gravity="center_vertical"
                     android:text="@string/name_purchase_history_name"
                     android:textSize="14sp"
