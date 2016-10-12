@@ -23,7 +23,7 @@ public interface Const {
     String VENDING_API_VERSION = "v1/";
 
     String URL_AUTH_SERVICE = BASE_URL + "/auth/";
-    String URL_VENDING_SERVICE = "https://vending.softjourn.if.ua/"+VENDING_API_VERSION;
+    String URL_VENDING_SERVICE = BASE_URL + "/vending/" + VENDING_API_VERSION;
     String URL_COIN_SERVICE = BASE_URL + "/coins/";
 
     String GRANT_TYPE_PASSWORD = "password";
@@ -45,6 +45,7 @@ public interface Const {
     String FAVORITES = "Favorites";
     String BEST_SELLERS = "Best Sellers";
     String ALL_ITEMS = "All Items";
+    String PURCHASE = "Purchase";
 
     String DB_NAME = "VENDING_DB";
 

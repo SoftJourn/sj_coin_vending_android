@@ -1,6 +1,7 @@
 package com.softjourn.sj_coin.api;
 
 import com.softjourn.sj_coin.model.Amount;
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
@@ -64,6 +65,9 @@ public interface ApiService {
 
     @DELETE ("favorites/{id}")
     Call<Void> removeFromFavorites(@Path("id") String id);
+
+    @GET ("machines/last")
+    Call<List<History>> getPurchaseHistory();
 
 
     /**

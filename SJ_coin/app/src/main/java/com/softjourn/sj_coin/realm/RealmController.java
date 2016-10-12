@@ -3,8 +3,8 @@ package com.softjourn.sj_coin.realm;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
-import android.util.Log;
 
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
@@ -152,8 +152,23 @@ public class RealmController {
                     return getBestSellersIDs();
                 case Const.FAVORITES:
                     return getFavoritesIDs();
+                case Const.PURCHASE:
+                    return getPurchaseIDs();
             }
             return null;
+        }
+
+        private List<Integer> getPurchaseIDs() {
+            List<History> purchase = realm.where(History.class).findAll();
+            List<Integer> ids = new ArrayList<>();
+            for (int i = 0; i < purchase.size(); i++) {
+                try {
+                    ids.add(purchase.get(i).getId());
+                } catch (IndexOutOfBoundsException e) {
+                    return new ArrayList<>();
+                }
+            }
+            return ids;
         }
 
         private List<Integer> getLastAddedIDs() {
@@ -166,7 +181,6 @@ public class RealmController {
                     return new ArrayList<>();
                 }
             }
-            Log.d("Tag LasAdded", ids.toString());
             return ids;
         }
 
@@ -180,7 +194,6 @@ public class RealmController {
                     return new ArrayList<>();
                 }
             }
-            Log.d("Tag BestSeller", ids.toString());
             return ids;
         }
 

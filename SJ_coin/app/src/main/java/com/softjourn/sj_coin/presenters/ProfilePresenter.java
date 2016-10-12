@@ -2,11 +2,15 @@ package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
+import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
+import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -14,12 +18,14 @@ import com.softjourn.sj_coin.utils.Preferences;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
+import java.util.List;
 
 public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Const {
 
     private final ProfileContract.View mView;
     private final ProfileModel mProfileModel;
     private final LoginPresenter mLoginPresenter;
+    private final VendingModel mVendingModel;
 
     public ProfilePresenter(ProfileContract.View profileView) {
 
@@ -27,6 +33,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
         mView = profileView;
         mProfileModel = new ProfileModel();
+        mVendingModel = new VendingModel();
         mLoginPresenter = new LoginPresenter();
         mView.showProgress(App.getContext().getString(R.string.progress_loading));
     }
@@ -48,7 +55,8 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void showHistory() {
-
+        mView.showProgress(App.getContext().getString(R.string.progress_loading));
+        mVendingModel.getPurchaseHistory();
     }
 
     @Override
@@ -71,6 +79,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         mView.hideProgress();
         mView.showBalance(event.getAccount().getAmount());
         mView.setUserName(event.getAccount().getName() + " " + event.getAccount().getSurname());
+        showHistory();
     }
 
     @Subscribe
@@ -86,6 +95,12 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         } else {
             mView.hideProgress();
         }
+    }
+
+    @Subscribe
+    public void OnEvent(OnHistoryReceived event) {
+        List<Product> productList = RealmController.getInstance().getProductsFromStaticCategory(PURCHASE);
+        mView.setData(event.getHistoryList(),productList);
     }
 }
 

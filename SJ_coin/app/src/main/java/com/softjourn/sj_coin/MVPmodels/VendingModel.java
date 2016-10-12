@@ -11,10 +11,12 @@ import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Amount;
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Favorites;
@@ -122,6 +124,21 @@ public class VendingModel extends BaseModel implements Const {
             @Override
             public void onSuccess(Void response) {
                     mEventBus.post(new OnRemovedFromFavorites(id));
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+
+            }
+        });
+    }
+
+    public void getPurchaseHistory() {
+        mApiProvider.getPurchaseHistory(new com.softjourn.sj_coin.api.callbacks.Callback<List<History>>() {
+            @Override
+            public void onSuccess(List<History> response) {
+                RealmUtils.setRealmHistoryData(mRealm,response);
+                mEventBus.post(new OnHistoryReceived(response));
             }
 
             @Override

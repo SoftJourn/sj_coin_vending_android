@@ -12,6 +12,7 @@ import com.softjourn.sj_coin.adapters.PurchaseHistoryItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.History;
+import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Const;
 
@@ -53,7 +54,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         mHistoryList.setLayoutManager(layoutManager);
         mHistoryList.setAdapter(mHistoryAdapter);
 
-        mPresenter.showHistory();
+        //mPresenter.showHistory();
         mPresenter.getAccount();
     }
 
@@ -89,8 +90,8 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     }
 
     @Override
-    public void setData(List<History> data) {
-        mHistoryAdapter.setData(data);
+    public void setData(List<History> history, List<Product> products) {
+        mHistoryAdapter.setData(history,products);
     }
 
     @Override

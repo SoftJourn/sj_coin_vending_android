@@ -5,6 +5,7 @@ import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.api.callbacks.Callback;
 import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.model.Amount;
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
@@ -150,6 +151,21 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void getPurchaseHistory(final Callback<List<History>> callback) {
+        mApiService.getPurchaseHistory().enqueue(new retrofit2.Callback<List<History>>() {
+            @Override
+            public void onResponse(Call<List<History>> call, retrofit2.Response<List<History>> response) {
+                sendCallBack(callback, response);
+            }
+
+            @Override
+            public void onFailure(Call<List<History>> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });

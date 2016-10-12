@@ -1,5 +1,6 @@
 package com.softjourn.sj_coin.utils;
 
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
 
@@ -18,6 +19,12 @@ public class RealmUtils {
     public static void setRealmData(Realm realm, List<Favorites> favorites) {
         realm.beginTransaction();
         realm.copyToRealm(favorites);
+        realm.commitTransaction();
+    }
+
+    public static void setRealmHistoryData(Realm realm, List<History> history){
+        realm.beginTransaction();
+        realm.copyToRealm(history);
         realm.commitTransaction();
     }
 

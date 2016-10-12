@@ -59,7 +59,7 @@
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:text="@string/purchase_history_price"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@color/colorBlue"
             android:textSize="14sp" />
 
     </LinearLayout>

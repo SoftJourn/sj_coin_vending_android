@@ -45,15 +45,4 @@ public class ProfileModel extends BaseModel {
             }
         });
     }
-
-    /*public List<History> loadHistory() {
-        Products products = FeaturedProductsSingleton.getInstance().getData();
-        if (products == null
-                || products.myLastPurchases == null) {
-            return Collections.emptyList();
-        } else {
-            return ModelsManager.getHistoryList(products.myLastPurchases);
-        }
-    }*/
-
 }

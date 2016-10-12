@@ -15,13 +15,13 @@
         android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:textColor="@android:color/holo_blue_dark" />
+        android:textColor="@color/colorBlue" />
 
 
     <ListView
         android:id="@+id/lv"
         android:dividerHeight="1dp"
-        android:divider="@android:color/holo_blue_dark"
+        android:divider="@color/colorBlue"
         android:choiceMode="singleChoice"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

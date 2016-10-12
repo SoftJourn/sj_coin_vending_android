@@ -7,15 +7,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
+import com.softjourn.sj_coin.adapters.SelectMachineListAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
@@ -30,6 +31,7 @@ import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +64,8 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
+
+        makeActionOverflowMenuShown();
 
         mPresenter.isMachineSet();
     }
@@ -149,7 +153,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void updateBalanceAmount(String balance) {
         mBalance.setVisibility(View.VISIBLE);
-        mBalance.setText(getString(R.string.your_balance_is) + balance + getString(R.string.coins));
+        mBalance.setText(getString(R.string.your_balance_is) + balance + getString(R.string.item_coins));
     }
 
     @Override
@@ -213,12 +217,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_select_machine);
-        ListView lv = (ListView) dialog.findViewById(R.id.lv);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,names);
-        lv.setAdapter(adapter);
+        ListView machinesList = (ListView) dialog.findViewById(R.id.lv);
+        final SelectMachineListAdapter adapter = new SelectMachineListAdapter(this,android.R.layout.simple_list_item_1,names);
+        machinesList.setAdapter(adapter);
         dialog.show();
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        machinesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 for (Machines machine : machines)
@@ -237,6 +241,14 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
+    public void loadProductList() {
+        removeContainers();
+        RealmController.with(this).clearAll();
+        mPresenter.getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
+        loadUserBalance();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
@@ -245,14 +257,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     private void attachFragment(String categoryName, int headerID, int containerID, int seeAllID) {
         getFragmentManager().beginTransaction().replace(containerID, ProductsListFragment.newInstance(categoryName, headerID, containerID),
                 Preferences.retrieveStringObject(categoryName.toUpperCase())).commit();
-    }
-
-    @Override
-    public void loadProductList() {
-        removeContainers();
-        RealmController.with(this).clearAll();
-        mPresenter.getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
-        loadUserBalance();
     }
 
     public void hideContainer(int headers, int fragmentContainerId) {
@@ -279,6 +283,23 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         for (int i = 0; i < viewCounter; i++) {
             assert layout != null;
             layout.removeView(findViewById(R.id.categoryLayout));
+        }
+    }
+
+
+    //Method for showing overflow menu in actionbar
+    //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu by default
+
+    private void makeActionOverflowMenuShown() {
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

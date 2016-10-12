@@ -19,7 +19,7 @@
     <string name="dummy_text_view_text">Dummy text</string>
     <string name="product_image">Product Image</string>
     <string name="company_logo">Company Logo</string>
-    <string name="item_coins">Coins</string>
+    <string name="item_coins">" coins"</string>
     <string name="item_product_buy">Buy</string>
 
     <!--Menu Main-->
@@ -32,7 +32,7 @@
 
     <!--Profile Screen-->
     <string name="profile_amount_available">9999</string>
-    <string name="coins">" coins"</string>
+    <string name="coins">%1$d coins</string>
 
     <!--Purchase History-->
     <string name="purchase_history_price">20 Coins</string>
