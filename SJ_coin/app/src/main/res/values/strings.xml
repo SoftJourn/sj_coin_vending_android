@@ -13,14 +13,16 @@
     <string name="layout_vending_best_sellers">Best Sellers</string>
     <string name="layout_vending_new_products">Last Added</string>
     <string name="layout_vending_see_all">SEE ALL</string>
-    <string name="your_balance_is">"Your balance is "</string>
+    <string name="your_balance_is">"Your balance is %1$d coins"</string>
 
     <!-- Item Labels-->
     <string name="dummy_text_view_text">Dummy text</string>
     <string name="product_image">Product Image</string>
     <string name="company_logo">Company Logo</string>
-    <string name="item_coins">" coins"</string>
+    <string name="item_coins">Coins</string>
     <string name="item_product_buy">Buy</string>
+    <string name="confirm_dialog_image_content_description">ProductImage</string>
+    <string name="favorite_icon_content_description">Favorite Icon</string>
 
     <!--Menu Main-->
     <string name="main_menu_log_out">Log Out</string>
@@ -32,7 +34,7 @@
 
     <!--Profile Screen-->
     <string name="profile_amount_available">9999</string>
-    <string name="coins">%1$d coins</string>
+    <string name="coins">"%1$d coins"</string>
 
     <!--Purchase History-->
     <string name="purchase_history_price">20 Coins</string>
@@ -59,6 +61,7 @@
     <string name="internet_turned_off">Internet should be turned on</string>
     <string name="activity_product_take_your_order_message">Please take your order</string>
     <string name="there_are_no_items">Currently there are no products in this category</string>
+    <string name="machine_not_selected_toast">Please choose machine for correct work of application</string>
 
     <!-- Confirmation Dialog-->
     <string name="confirm_purchase">Confirm Purchase</string>
@@ -74,13 +77,13 @@
     <string name="favorites">Favorites</string>
     <string name="lastAdded">Last Added</string>
     <string name="bestSellers">Best Sellers</string>
-
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <!-- Select Machine functionality-->
     <string name="machine_name">Machine Name</string>
-    <string name="confirm_dialog_image_content_description">ProductImage</string>
-    <string name="favorite_icon_content_description">Favorite Icon</string>
     <string name="dialog_select_machine_title">Select Machine</string>
+
 
 </resources>

@@ -19,12 +19,14 @@ public interface Const {
 
     //URLs
     String BASE_URL = "https://sjcoins.testing.softjourn.if.ua";
+    //String BASE_URL = "http://192.168.102.251:8111";
 
     String VENDING_API_VERSION = "v1/";
+    String COINS_API_VERSION = "api/v1/";
 
     String URL_AUTH_SERVICE = BASE_URL + "/auth/";
     String URL_VENDING_SERVICE = BASE_URL + "/vending/" + VENDING_API_VERSION;
-    String URL_COIN_SERVICE = BASE_URL + "/coins/";
+    String URL_COIN_SERVICE = BASE_URL + "/coins/" + COINS_API_VERSION;
 
     String GRANT_TYPE_PASSWORD = "password";
     String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
@@ -55,5 +57,10 @@ public interface Const {
 
     String HEADER_CONTENT_TYPE_KEY = "Content-Type";
     String HEADER_CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded";
+
+    //Actions after refreshToken
+    String MACHINES_LIST = "MACHINES_LIST";
+    String PRODUCTS_LIST = "PRODUCTS_LIST";
+    String BUY_PRODUCT = "BUY_PRODUCT";
 }
 

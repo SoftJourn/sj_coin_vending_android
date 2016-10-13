@@ -73,9 +73,9 @@ public interface ApiService {
     /**
      * Coin server endpoints.
      */
-    @GET("api/v1/account")
+    @GET("account")
     Call<Account> getBalance();
 
-    @GET("api/v1/amount")
+    @GET("amount")
     Call<Balance> getAmount();
 }

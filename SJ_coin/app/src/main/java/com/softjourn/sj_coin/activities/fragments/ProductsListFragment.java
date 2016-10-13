@@ -260,6 +260,11 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
 
     }
 
+    @Override
+    public void getMachinesList() {
+
+    }
+
 
     @Override
     public void showToastMessage(String message) {

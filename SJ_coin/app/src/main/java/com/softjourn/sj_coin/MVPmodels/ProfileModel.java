@@ -1,6 +1,8 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
+import android.util.Log;
+
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.coins.CoinsApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
@@ -27,7 +29,7 @@ public class ProfileModel extends BaseModel {
 
             @Override
             public void onError(String errorMsg) {
-
+                Log.d("Tag",errorMsg);
             }
         });
     }
@@ -41,7 +43,7 @@ public class ProfileModel extends BaseModel {
 
             @Override
             public void onError(String errorMsg) {
-
+                Log.d("Tag",errorMsg);
             }
         });
     }

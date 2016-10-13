@@ -10,7 +10,6 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
-import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
@@ -20,7 +19,6 @@ import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -35,6 +33,9 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private final LoginPresenter mLoginPresenter;
     private final ProfileModel mProfileModel;
     private Activity mActivity;
+
+    private static String actionAfterRefresh;
+    private static String productId;
 
     public VendingPresenter(VendingContract.View vendingView) {
 
@@ -67,6 +68,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             if (checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+                actionAfterRefresh = MACHINES_LIST;
             } else {
                 mModel.callMachinesList();
             }
@@ -80,7 +82,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void isMachineSet() {
-        if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))){
+        if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
             mModel.callMachinesList();
         } else {
             mView.loadProductList();
@@ -97,6 +99,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             if (checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+                actionAfterRefresh = PRODUCTS_LIST;
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
@@ -126,8 +129,8 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
-    public void getLocalCategoryProducts(String category){
-        mView.loadData(mModel.loadProductsFromDB(mActivity,category));
+    public void getLocalCategoryProducts(String category) {
+        mView.loadData(mModel.loadProductsFromDB(mActivity, category));
     }
 
     @Override
@@ -144,9 +147,11 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             if (checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+                actionAfterRefresh = BUY_PRODUCT;
+                productId = id;
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID),id);
+                mModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id);
             }
         }
     }
@@ -188,12 +193,12 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void sortByName(String productsCategory, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByName(mActivity,productsCategory, isSortingForward));
+        mView.setSortedData(mModel.sortByName(mActivity, productsCategory, isSortingForward));
     }
 
     @Override
     public void sortByPrice(String productsCategory, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByPrice(mActivity,productsCategory, isSortingForward));
+        mView.setSortedData(mModel.sortByPrice(mActivity, productsCategory, isSortingForward));
     }
 
     @Override
@@ -233,12 +238,25 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.hideProgress();
     }
 
+    private void getActionAfterRefresh(){
+        switch (actionAfterRefresh){
+            case MACHINES_LIST:
+                mView.getMachinesList();
+                break;
+            case PRODUCTS_LIST:
+                mView.loadProductList();
+                //getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
+                break;
+            case BUY_PRODUCT:
+                buyProduct(productId);
+                break;
+        }
+    }
+
     @Subscribe
     public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
-            mView.hideProgress();
-            mModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
-            mView.loadUserBalance();
+            getActionAfterRefresh();
         } else {
             mView.hideProgress();
         }
@@ -275,17 +293,5 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.changeFavoriteIcon();
     }
 
-    @Subscribe
-    public void OnEvent(OnMachinesListReceived event) {
-        if (event.getMachinesList().size()==1){
-            if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))){
-                Utils.storeConcreteMachineInfo(event.getMachinesList().get(0));
-                mView.loadProductList();
-            } else {
-                mView.showMachinesSelector(event.getMachinesList());
-            }
-        } else if (event.getMachinesList().size()>1){
-            mView.showMachinesSelector(event.getMachinesList());
-        }
-    }
+
 }

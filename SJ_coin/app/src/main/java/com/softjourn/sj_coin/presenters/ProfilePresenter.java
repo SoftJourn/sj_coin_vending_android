@@ -101,6 +101,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     public void OnEvent(OnHistoryReceived event) {
         List<Product> productList = RealmController.getInstance().getProductsFromStaticCategory(PURCHASE);
         mView.setData(event.getHistoryList(),productList);
+        mView.hideProgress();
     }
 }
 

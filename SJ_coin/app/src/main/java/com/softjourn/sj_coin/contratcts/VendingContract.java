@@ -34,6 +34,8 @@ public interface VendingContract {
         void showMachinesSelector(List<Machines> machines);
 
         void loadProductList();
+
+        void getMachinesList();
     }
 
     interface Presenter extends BasePresenter{

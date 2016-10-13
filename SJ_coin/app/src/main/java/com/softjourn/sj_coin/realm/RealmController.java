@@ -9,12 +9,14 @@ import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.realm.realmTypes.RealmInteger;
 import com.softjourn.sj_coin.utils.Const;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -172,11 +174,15 @@ public class RealmController {
         }
 
         private List<Integer> getLastAddedIDs() {
-            List<Featured> lastAdded = realm.where(Featured.class).isNotEmpty("lastAdded").findAll();
+            List<Featured> featured = realm.where(Featured.class).isNotEmpty("lastAdded").findAll();
+            if (featured.size()<=0){
+                return new ArrayList<>();
+            }
+            RealmList<RealmInteger> lastAdded = featured.get(0).getLastAdded();
             List<Integer> ids = new ArrayList<>();
             for (int i = 0; i < lastAdded.size(); i++) {
                 try {
-                    ids.add(lastAdded.get(i).getLastAdded().get(i).value);
+                    ids.add(lastAdded.get(i).value);
                 } catch (IndexOutOfBoundsException e) {
                     return new ArrayList<>();
                 }
@@ -185,11 +191,15 @@ public class RealmController {
         }
 
         private List<Integer> getBestSellersIDs() {
-            List<Featured> bestSellers = realm.where(Featured.class).isNotEmpty("bestSellers").findAll();
+            List<Featured> featured = realm.where(Featured.class).isNotEmpty("bestSellers").findAll();
+            if (featured.size()<=0){
+                return new ArrayList<>();
+            }
+            RealmList<RealmInteger> bestSellers = featured.get(0).getBestSellers();
             List<Integer> ids = new ArrayList<>();
             for (int i = 0; i < bestSellers.size(); i++) {
                 try {
-                    ids.add(bestSellers.get(i).getLastAdded().get(i).value);
+                    ids.add(bestSellers.get(i).value);
                 } catch (IndexOutOfBoundsException e) {
                     return new ArrayList<>();
                 }

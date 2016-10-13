@@ -1,9 +1,11 @@
 package com.softjourn.sj_coin.activities;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.softjourn.sj_coin.adapters.SelectMachineListAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
@@ -28,6 +31,7 @@ import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -104,9 +108,14 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        removeContainers();
-        loadProductList();
-        mSwipeRefreshLayout.setRefreshing(false);
+        if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))){
+            showToastMessage(getString(R.string.machine_not_selected_toast));
+            mSwipeRefreshLayout.setRefreshing(false);
+        } else {
+            removeContainers();
+            loadProductList();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -153,7 +162,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void updateBalanceAmount(String balance) {
         mBalance.setVisibility(View.VISIBLE);
-        mBalance.setText(getString(R.string.your_balance_is) + balance + getString(R.string.item_coins));
+        mBalance.setText(String.format(getString(R.string.your_balance_is),Integer.parseInt(balance)));
     }
 
     @Override
@@ -207,6 +216,11 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
+    public void getMachinesList() {
+        mPresenter.getMachinesList();
+    }
+
+    @Override
     public void showMachinesSelector(final List<Machines> machines) {
         List<String> names = new ArrayList<>();
         for (Machines machine : machines)
@@ -215,29 +229,38 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         }
 
         final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_select_machine);
-        ListView machinesList = (ListView) dialog.findViewById(R.id.lv);
-        final SelectMachineListAdapter adapter = new SelectMachineListAdapter(this,android.R.layout.simple_list_item_1,names);
-        machinesList.setAdapter(adapter);
-        dialog.show();
+        if (!dialog.isShowing()) {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_select_machine);
+            ListView machinesList = (ListView) dialog.findViewById(R.id.lv);
+            final SelectMachineListAdapter adapter = new SelectMachineListAdapter(this, android.R.layout.simple_list_item_1, names);
+            machinesList.setAdapter(adapter);
+            dialog.show();
 
-        machinesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                for (Machines machine : machines)
-                {
-                    if (adapter.getItem(position).equals(machine.getName())){
-                        Preferences.storeObject(SELECTED_MACHINE_ID,String.valueOf(machine.getId()));
-                        Preferences.storeObject(SELECTED_MACHINE_NAME,machine.getName());
-                        break;
+            machinesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    for (Machines machine : machines) {
+                        if (adapter.getItem(position).equals(machine.getName())) {
+                            Preferences.storeObject(SELECTED_MACHINE_ID, String.valueOf(machine.getId()));
+                            Preferences.storeObject(SELECTED_MACHINE_NAME, machine.getName());
+                            break;
+                        }
+                    }
+                    showProgress(getString(R.string.progress_loading));
+                    loadProductList();
+                    dialog.dismiss();
+                }
+            });
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
+                        showToastMessage(getString(R.string.machine_not_selected_toast));
                     }
                 }
-                showProgress(getString(R.string.progress_loading));
-                loadProductList();
-                dialog.dismiss();
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -313,6 +336,20 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         mPresenter.getCategoriesFromDB();
         setTitle(Preferences.retrieveStringObject(SELECTED_MACHINE_NAME));
         navigateToFragments();
+    }
+
+    @Subscribe
+    public void OnEvent(OnMachinesListReceived event) {
+        if (event.getMachinesList().size() == 1) {
+            if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
+                Utils.storeConcreteMachineInfo(event.getMachinesList().get(0));
+                loadProductList();
+            } else {
+               showMachinesSelector(event.getMachinesList());
+            }
+        } else if (event.getMachinesList().size() > 1) {
+            showMachinesSelector(event.getMachinesList());
+        }
     }
 }
 

@@ -241,6 +241,11 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     }
 
     @Override
+    public void getMachinesList() {
+
+    }
+
+    @Override
     public void showToastMessage(String message) {
         super.showToast(message);
     }
