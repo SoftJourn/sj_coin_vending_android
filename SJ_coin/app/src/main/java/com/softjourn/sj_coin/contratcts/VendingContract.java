@@ -19,15 +19,9 @@ public interface VendingContract {
 
         void navigateToFragments();
 
-        void setSortedData(List<Product> product);
-
         void loadUserBalance();
 
         void updateBalanceAmount(String amount);
-
-        void changeFavoriteIcon();
-
-        void loadData(List<Product> data);
 
         void createContainer(String categoryName);
 
@@ -46,33 +40,9 @@ public interface VendingContract {
 
         void getFavoritesList();
 
-        void getLocalFeaturedProductsList();
-
-        void getLocalLastAddedProducts();
-
-        void getLocalBestSellers();
-
-        void getLocalCategoryProducts(String category);
-
         void getMachinesList();
 
-        void getLocalProductList();
-
-        boolean checkExpirationDate();
-
-        void buyProduct(String id);
-
-        void addToFavorite(int id);
-
-        void sortByName(String productsCategory, boolean isSortingForward);
-
-        void sortByPrice(String productsCategory, boolean isSortingForward);
-
         void getBalance();
-
-        void removeFromFavorite(String id);
-
-        void getLocalFavorites();
 
         void getCategoriesFromDB();
     }

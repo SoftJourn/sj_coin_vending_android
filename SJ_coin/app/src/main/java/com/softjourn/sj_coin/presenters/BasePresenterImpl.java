@@ -21,16 +21,7 @@ public class BasePresenterImpl implements BasePresenter{
     /**
      * Needs to be overriden in child Classes
      */
-
     @Override
     public void refreshToken(String refreshToken) {
     }
-
-    /**
-     * Needs to be overriden in child Classes
-     */
-    public boolean makeNetworkChecking() {
-        return false;
-    }
-
 }

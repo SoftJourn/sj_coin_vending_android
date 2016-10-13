@@ -15,10 +15,9 @@ import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
-import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.presenters.VendingPresenter;
+import com.softjourn.sj_coin.presenters.VendingFragmentPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 
@@ -28,13 +27,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductsListFragment extends BaseFragment implements VendingContract.View, Const, Extras {
+public class ProductsListFragment extends BaseFragment implements VendingFragmentContract.View, Const, Extras {
 
     private String mProductsCategory;
 
     private static final String TAG_PRODUCTS_CATEGORY = "PRODUCTS CATEGORY";
 
-    private VendingContract.Presenter mPresenter;
+    private VendingFragmentContract.Presenter mPresenter;
     private FeaturedProductItemsAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private int mHeaders;
@@ -131,7 +130,7 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new VendingPresenter(this, this.getActivity());
+        mPresenter = new VendingFragmentPresenter(this, this.getActivity());
 
         if (savedInstanceState == null) {
             getLocalProductsList();
@@ -182,42 +181,15 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     }
 
     @Override
-    public void showProgress(String message) {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void navigateToBuyProduct(Product product) {
-
-    }
-
-    @Override
-    public void navigateToFragments() {
-
-    }
-
-    @Override
     public void setSortedData(List<Product> product) {
         mProductAdapter.setData(product);
     }
 
     @Override
-    public void loadUserBalance() {
-
-    }
-
-    @Override
-    public void updateBalanceAmount(String amount) {
-
-    }
-
-    @Override
     public void changeFavoriteIcon() {
+        if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
+            ((SeeAllActivity) getActivity()).hideProgress();
+        }
         mProductAdapter.notifyDataSetChanged();
     }
 
@@ -243,37 +215,6 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 }
             }
         }
-    }
-
-    @Override
-    public void createContainer(String categoryName) {
-
-    }
-
-    @Override
-    public void showMachinesSelector(List<Machines> machines) {
-
-    }
-
-    @Override
-    public void loadProductList() {
-
-    }
-
-    @Override
-    public void getMachinesList() {
-
-    }
-
-
-    @Override
-    public void showToastMessage(String message) {
-
-    }
-
-    @Override
-    public void showNoInternetError() {
-
     }
 
     @Override

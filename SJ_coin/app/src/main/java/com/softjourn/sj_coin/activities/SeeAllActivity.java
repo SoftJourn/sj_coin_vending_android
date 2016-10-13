@@ -22,14 +22,13 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
-import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
-import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
-import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.contratcts.PurchaseContract;
+import com.softjourn.sj_coin.contratcts.SeeAllContract;
 import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.presenters.VendingPresenter;
+import com.softjourn.sj_coin.presenters.PurchasePresenter;
+import com.softjourn.sj_coin.presenters.SeeAllPresenter;
 import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
@@ -40,9 +39,10 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-public class SeeAllActivity extends BaseActivity implements VendingContract.View, Const, Extras, NavigationView.OnNavigationItemSelectedListener {
+public class SeeAllActivity extends BaseActivity implements SeeAllContract.View, PurchaseContract.View, Const, Extras, NavigationView.OnNavigationItemSelectedListener {
 
-    private VendingContract.Presenter mPresenter;
+    private SeeAllContract.Presenter mVendingPresenter;
+    private PurchaseContract.Presenter mPurchasePresenter;
 
     private FeaturedProductItemsAdapter mAdapter;
 
@@ -61,7 +61,8 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_all);
 
-        mPresenter = new VendingPresenter(this);
+        mVendingPresenter = new SeeAllPresenter(this);
+        mPurchasePresenter = new PurchasePresenter(this);
 
         mCategory = getIntent().getStringExtra(EXTRAS_CATEGORY);
         setTitle(mCategory);
@@ -192,57 +193,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
 
     @Override
     public void navigateToBuyProduct(Product product) {
-        onCreateDialog(product, mPresenter);
-    }
-
-    @Override
-    public void navigateToFragments() {
-
-    }
-
-    @Override
-    public void setSortedData(List<Product> product) {
-
-    }
-
-    @Override
-    public void loadUserBalance() {
-
-    }
-
-    @Override
-    public void updateBalanceAmount(String amount) {
-
-    }
-
-    @Override
-    public void changeFavoriteIcon() {
-
-    }
-
-    @Override
-    public void loadData(List<Product> data) {
-
-    }
-
-    @Override
-    public void createContainer(String categoryName) {
-
-    }
-
-    @Override
-    public void showMachinesSelector(List<Machines> machines) {
-
-    }
-
-    @Override
-    public void loadProductList() {
-
-    }
-
-    @Override
-    public void getMachinesList() {
-
+        onCreateDialog(product, mPurchasePresenter);
     }
 
     @Override
@@ -258,7 +209,7 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        mVendingPresenter.onDestroy();
     }
 
     @Override
@@ -371,15 +322,5 @@ public class SeeAllActivity extends BaseActivity implements VendingContract.View
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event) {
         navigateToBuyProduct(event.buyProduct());
-    }
-
-    @Subscribe
-    public void OnEvent(OnAddFavoriteEvent event) {
-        mPresenter.addToFavorite(event.addFavorite().getId());
-    }
-
-    @Subscribe
-    public void OnEvent(OnRemoveFavoriteEvent event) {
-        mPresenter.removeFromFavorite(String.valueOf(event.removeFavorite().getId()));
     }
 }

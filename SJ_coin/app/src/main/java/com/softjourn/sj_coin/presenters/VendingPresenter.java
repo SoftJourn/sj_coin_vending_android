@@ -7,23 +7,20 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
-import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Categories;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class VendingPresenter extends BasePresenterImpl implements VendingContract.Presenter, Const {
@@ -35,7 +32,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private Activity mActivity;
 
     private static String actionAfterRefresh;
-    private static String productId;
 
     public VendingPresenter(VendingContract.View vendingView) {
 
@@ -44,40 +40,25 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         this.mView = vendingView;
         this.mModel = new VendingModel();
         this.mLoginPresenter = new LoginPresenter();
+
         this.mProfileModel = new ProfileModel();
     }
-
-    public VendingPresenter(VendingContract.View vendingView, Activity activity) {
-
-        onCreate();
-
-        this.mActivity = activity;
-        this.mView = vendingView;
-        this.mModel = new VendingModel();
-        this.mLoginPresenter = new LoginPresenter();
-        this.mProfileModel = new ProfileModel();
-    }
-
 
     @Override
     public void getMachinesList() {
 
-        if (!makeNetworkChecking()) {
+        if (!NetworkManager.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (checkExpirationDate()) {
+            if (Utils.checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
                 actionAfterRefresh = MACHINES_LIST;
             } else {
+                mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.callMachinesList();
             }
         }
-    }
-
-    @Override
-    public void getLocalProductList() {
-        mView.loadData(mModel.loadLocalProductList(mActivity));
     }
 
     @Override
@@ -92,11 +73,10 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getFeaturedProductsList(String machineID) {
 
-        if (!makeNetworkChecking()) {
+        if (!NetworkManager.isNetworkEnabled()) {
             mView.showNoInternetError();
-            getLocalFeaturedProductsList();
         } else {
-            if (checkExpirationDate()) {
+            if (Utils.checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
                 actionAfterRefresh = PRODUCTS_LIST;
@@ -113,98 +93,9 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
-    public void getLocalFeaturedProductsList() {
-        getLocalLastAddedProducts();
-        getLocalBestSellers();
-    }
-
-    @Override
-    public void getLocalLastAddedProducts() {
-        mView.loadData(mModel.loadLastAdded(mActivity));
-    }
-
-    @Override
-    public void getLocalBestSellers() {
-        mView.loadData(mModel.loadBestSellers(mActivity));
-    }
-
-    @Override
-    public void getLocalCategoryProducts(String category) {
-        mView.loadData(mModel.loadProductsFromDB(mActivity, category));
-    }
-
-    @Override
-    public boolean checkExpirationDate() {
-        return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(EXPIRATION_DATE)));
-    }
-
-    @Override
-    public void buyProduct(String id) {
-
-        if (!makeNetworkChecking()) {
-            mView.showNoInternetError();
-        } else {
-            if (checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-                actionAfterRefresh = BUY_PRODUCT;
-                productId = id;
-            } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id);
-            }
-        }
-    }
-
-    @Override
-    public void addToFavorite(int id) {
-        if (!makeNetworkChecking()) {
-            mView.showNoInternetError();
-        } else {
-            if (checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.addProductToFavorite(id);
-            }
-        }
-    }
-
-    @Override
-    public void removeFromFavorite(String id) {
-        if (!makeNetworkChecking()) {
-            mView.showNoInternetError();
-        } else {
-            if (checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.removeProductFromFavorites(id);
-            }
-        }
-    }
-
-    @Override
-    public void getLocalFavorites() {
-        mView.loadData(mModel.loadFavorites(mActivity));
-    }
-
-    @Override
-    public void sortByName(String productsCategory, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByName(mActivity, productsCategory, isSortingForward));
-    }
-
-    @Override
-    public void sortByPrice(String productsCategory, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByPrice(mActivity, productsCategory, isSortingForward));
-    }
-
-    @Override
     public void getBalance() {
-        if (makeNetworkChecking()) {
-            if (checkExpirationDate()) {
+        if (NetworkManager.isNetworkEnabled()) {
+            if (Utils.checkExpirationDate()) {
                 refreshToken(Const.REFRESH_TOKEN);
             } else {
                 mProfileModel.makeBalanceCall();
@@ -215,11 +106,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
-    }
-
-    @Override
-    public boolean makeNetworkChecking() {
-        return NetworkManager.isNetworkEnabled();
     }
 
     @Override
@@ -238,17 +124,15 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.hideProgress();
     }
 
-    private void getActionAfterRefresh(){
-        switch (actionAfterRefresh){
+    private void getActionAfterRefresh() {
+        switch (actionAfterRefresh) {
             case MACHINES_LIST:
                 mView.getMachinesList();
                 break;
             case PRODUCTS_LIST:
                 mView.loadProductList();
-                //getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
                 break;
-            case BUY_PRODUCT:
-                buyProduct(productId);
+            default:
                 break;
         }
     }
@@ -278,20 +162,4 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void OnEvent(OnBalanceReceivedEvent event) {
         mView.updateBalanceAmount(event.getBalance());
     }
-
-    @Subscribe
-    public void OnEvent(OnAddedToFavorites event) {
-        RealmController.with(mActivity).addToFavoriteLocal(event.getId());
-        mView.hideProgress();
-        mView.changeFavoriteIcon();
-    }
-
-    @Subscribe
-    public void OnEvent(OnRemovedFromFavorites event) {
-        RealmController.with(mActivity).removeFromFavoritesLocal(Integer.parseInt(event.getId()));
-        mView.hideProgress();
-        mView.changeFavoriteIcon();
-    }
-
-
 }

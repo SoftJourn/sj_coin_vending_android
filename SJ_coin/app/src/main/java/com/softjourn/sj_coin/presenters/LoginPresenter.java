@@ -34,7 +34,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
         if (validateCredentials(userName, password)) {
             mLoginView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-            if (makeNetworkChecking()) {
+            if (NetworkManager.isNetworkEnabled()) {
                 mModel.makeLoginCall(userName, password);
             } else {
                 mLoginView.showNoInternetError();
@@ -65,11 +65,6 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
         }
 
         return true;
-    }
-
-    @Override
-    public boolean makeNetworkChecking() {
-        return NetworkManager.isNetworkEnabled();
     }
 
     @Subscribe

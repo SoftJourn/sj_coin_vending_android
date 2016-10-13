@@ -23,9 +23,11 @@ import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
+import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
@@ -44,9 +46,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
-        VendingContract.View, Const {
+        VendingContract.View, PurchaseContract.View, Const {
 
-    private VendingContract.Presenter mPresenter;
+    private VendingContract.Presenter mVendingPresenter;
+    private PurchaseContract.Presenter mPurchasePresenter;
 
     private int viewCounter = 0;
 
@@ -62,7 +65,8 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPresenter = new VendingPresenter(this);
+        mVendingPresenter = new VendingPresenter(this);
+        mPurchasePresenter = new PurchasePresenter(this);
 
         ButterKnife.bind(this);
 
@@ -71,7 +75,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         makeActionOverflowMenuShown();
 
-        mPresenter.isMachineSet();
+        mVendingPresenter.isMachineSet();
     }
 
     @OnClick({R.id.textViewLastAddedSeeAll, R.id.textViewBestSellersSeeAll, R.id.textViewFavoritesSeeAll})
@@ -100,7 +104,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         switch (item.getItemId()) {
             case R.id.select_machine:
-                mPresenter.getMachinesList();
+                mVendingPresenter.getMachinesList();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -125,7 +129,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void navigateToBuyProduct(Product product) {
-        onCreateDialog(product, mPresenter);
+        onCreateDialog(product, mPurchasePresenter);
     }
 
     @Override
@@ -139,18 +143,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void setSortedData(List<Product> product) {
-
-    }
-
-    @Override
     public void onBackPressed() {
         finish();
     }
 
     @Override
     public void loadUserBalance() {
-        mPresenter.getBalance();
+        mVendingPresenter.getBalance();
     }
 
 
@@ -163,16 +162,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     public void updateBalanceAmount(String balance) {
         mBalance.setVisibility(View.VISIBLE);
         mBalance.setText(String.format(getString(R.string.your_balance_is),Integer.parseInt(balance)));
-    }
-
-    @Override
-    public void changeFavoriteIcon() {
-
-    }
-
-    @Override
-    public void loadData(List<Product> data) {
-
     }
 
     @Override
@@ -217,7 +206,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void getMachinesList() {
-        mPresenter.getMachinesList();
+        mVendingPresenter.getMachinesList();
     }
 
     @Override
@@ -267,14 +256,14 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     public void loadProductList() {
         removeContainers();
         RealmController.with(this).clearAll();
-        mPresenter.getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
+        mVendingPresenter.getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
         loadUserBalance();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.onDestroy();
+        mVendingPresenter.onDestroy();
     }
 
     private void attachFragment(String categoryName, int headerID, int containerID, int seeAllID) {
@@ -328,12 +317,12 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
-        mPresenter.getFavoritesList();
+        mVendingPresenter.getFavoritesList();
     }
 
     @Subscribe
     public void OnEvent(OnFavoritesListReceived event) {
-        mPresenter.getCategoriesFromDB();
+        mVendingPresenter.getCategoriesFromDB();
         setTitle(Preferences.retrieveStringObject(SELECTED_MACHINE_NAME));
         navigateToFragments();
     }

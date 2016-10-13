@@ -14,10 +14,10 @@ import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Date;
 import java.util.List;
 
 public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Const {
@@ -40,10 +40,10 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void getAccount() {
-        if (!makeNetworkChecking()) {
+        if (!NetworkManager.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (checkExpirationDate()) {
+            if (Utils.checkExpirationDate()) {
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
@@ -60,18 +60,8 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     }
 
     @Override
-    public boolean checkExpirationDate() {
-        return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(EXPIRATION_DATE)));
-    }
-
-    @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
-    }
-
-    @Override
-    public boolean makeNetworkChecking() {
-        return NetworkManager.isNetworkEnabled();
     }
 
     @Subscribe

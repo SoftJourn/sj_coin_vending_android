@@ -25,7 +25,5 @@ public interface ProfileContract {
 
         void showHistory();
 
-        boolean checkExpirationDate();
-
     }
 }

@@ -37,4 +37,8 @@ public class Utils {
         Preferences.clearStringObject(Const.SELECTED_MACHINE_NAME);
         Preferences.clearStringObject(Const.SELECTED_MACHINE_ID);
     }
+
+    public static boolean checkExpirationDate() {
+        return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(Const.EXPIRATION_DATE)));
+    }
 }

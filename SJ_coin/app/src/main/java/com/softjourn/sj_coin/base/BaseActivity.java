@@ -17,7 +17,7 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
-import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
@@ -142,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
         Utils.showErrorToast(this, text);
     }
 
-    protected void onCreateDialog(final Product product, final VendingContract.Presenter presenter) {
+    protected void onCreateDialog(final Product product, final PurchaseContract.Presenter presenter) {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
