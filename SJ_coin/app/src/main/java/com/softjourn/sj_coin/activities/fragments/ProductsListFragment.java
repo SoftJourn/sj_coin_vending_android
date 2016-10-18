@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
@@ -41,7 +42,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     public static ProductsListFragment newInstance(String category, @Nullable int headers, @Nullable int container) {
         Bundle bundle = new Bundle();
         bundle.putString(TAG_PRODUCTS_CATEGORY, category);
-        bundle.putString("HEADER",String.valueOf(headers));
+        bundle.putString("HEADER", String.valueOf(headers));
         ProductsListFragment fragment = new ProductsListFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -61,6 +62,10 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     @Nullable
     @Bind(R.id.button_sort_price)
     Button mButtonSortByPrice;
+
+    @Nullable
+    @Bind(R.id.textViewNoProductsInCategory)
+    TextView mNoProductsInCategory;
 
     @Nullable
     @OnClick(R.id.button_sort_name)
@@ -196,19 +201,22 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     @Override
     public void loadData(List<Product> productsList) {
         if (productsList != null && !productsList.isEmpty()) {
-                mProductList = productsList;
-                mProductAdapter.setData(productsList);
+            mProductList = productsList;
+            mProductAdapter.setData(productsList);
 
-                try {
-                    ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
-                } catch (ClassCastException e) {
-                    return;
-                }
+            try {
+                ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+            } catch (ClassCastException e) {
+                return;
+            }
         } else {
             try {
                 ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
             } catch (ClassCastException e) {
-                ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+                if (mNoProductsInCategory != null) {
+                    mNoProductsInCategory.setVisibility(View.VISIBLE);
+                }
+                //((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
                 if (mButtonSortByName != null && mButtonSortByPrice != null) {
                     mButtonSortByName.setEnabled(false);
                     mButtonSortByPrice.setEnabled(false);

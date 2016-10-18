@@ -68,6 +68,10 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">@color/colorBackgroundNoInternet</item>
+    </style>
+
     <style name="SortButtonBar" parent="@android:style/Widget.Holo.Button.Borderless.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

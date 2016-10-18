@@ -10,9 +10,15 @@ import com.softjourn.sj_coin.activities.LoginActivity;
 import com.softjourn.sj_coin.activities.ProfileActivity;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
+import com.softjourn.sj_coin.activities.fragments.NoInternetActivity;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 
 public class Navigation implements Const,Extras {
+
+    public static void goToNoInternetScreen(Context context){
+        Intent intent = new Intent(context, NoInternetActivity.class);
+        context.startActivity(intent);
+    }
 
     public static void goToVendingActivity(Context context) {
         Intent intent = new Intent(context, VendingActivity.class);

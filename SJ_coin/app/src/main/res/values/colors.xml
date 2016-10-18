@@ -9,4 +9,5 @@
     <color name="menuBackground">#414141</color>
     <color name="colorSplitter">#ffbdbdbd</color>
     <color name="colorBlue">#FF0099CC</color>
+    <color name="colorBackgroundNoInternet">#FFF5F5F5</color>
 </resources>

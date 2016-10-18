@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
 
 public class SplashActivity extends AppCompatActivity implements Const {
@@ -13,13 +14,17 @@ public class SplashActivity extends AppCompatActivity implements Const {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (TextUtils.isEmpty(Preferences.retrieveStringObject(ACCESS_TOKEN))
-                && TextUtils.isEmpty(Preferences.retrieveStringObject(REFRESH_TOKEN))) {
-            Navigation.goToLoginActivity(this);
-            finish();
+        if (!NetworkManager.isNetworkEnabled()) {
+            Navigation.goToNoInternetScreen(this);
         } else {
-            Navigation.goToVendingActivity(this);
-            finish();
+            if (TextUtils.isEmpty(Preferences.retrieveStringObject(ACCESS_TOKEN))
+                    && TextUtils.isEmpty(Preferences.retrieveStringObject(REFRESH_TOKEN))) {
+                Navigation.goToLoginActivity(this);
+                finish();
+            } else {
+                Navigation.goToVendingActivity(this);
+                finish();
+            }
         }
     }
 }
