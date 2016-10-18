@@ -247,6 +247,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
                     if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
                         showToastMessage(getString(R.string.machine_not_selected_toast));
                     }
+                    hideProgress();
                 }
             });
         }
@@ -317,6 +318,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
+        removeContainers();
         mVendingPresenter.getFavoritesList();
     }
 

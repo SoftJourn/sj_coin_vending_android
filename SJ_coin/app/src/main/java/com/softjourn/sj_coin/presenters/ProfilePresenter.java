@@ -9,16 +9,12 @@ import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
-import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.List;
 
 public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Const {
 
@@ -89,8 +85,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Subscribe
     public void OnEvent(OnHistoryReceived event) {
-        List<Product> productList = RealmController.getInstance().getProductsFromStaticCategory(PURCHASE);
-        mView.setData(event.getHistoryList(),productList);
+        mView.setData(event.getHistoryList());
         mView.hideProgress();
     }
 }

@@ -12,9 +12,6 @@ import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
-/**
- * Created by omartynets on 13.10.2016.
- */
 public class PurchasePresenter extends BasePresenterImpl implements PurchaseContract.Presenter, Const {
 
     private final PurchaseContract.View mView;

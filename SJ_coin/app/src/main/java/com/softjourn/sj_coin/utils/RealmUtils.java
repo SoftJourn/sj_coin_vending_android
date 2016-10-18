@@ -22,9 +22,15 @@ public class RealmUtils {
         realm.commitTransaction();
     }
 
-    public static void setRealmHistoryData(Realm realm, List<History> history){
+    public static void setRealmHistoryData(Realm realm, List<History> history) {
         realm.beginTransaction();
         realm.copyToRealm(history);
+        realm.commitTransaction();
+    }
+
+    public static void clearAllDB(Realm realm) {
+        realm.beginTransaction();
+        realm.deleteAll();
         realm.commitTransaction();
     }
 

@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.MVPmodels;
 
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
@@ -14,7 +15,6 @@ import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
-import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.machines.Machines;
@@ -61,6 +61,8 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getFeaturedProductsList(selectedMachine, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
             @Override
             public void onSuccess(Featured response) {
+                Log.d("TAG", response.toString());
+                RealmUtils.clearAllDB(mRealm);
                 RealmUtils.setRealmData(mRealm,response);
                 mEventBus.post(new OnFeaturedProductsListReceived(response));
             }
@@ -82,7 +84,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-                mEventBus.post(new OnServerErrorEvent(errorMsg));
+
             }
         });
     }

@@ -10,22 +10,18 @@ import android.widget.TextView;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.TimeUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 public class PurchaseHistoryItemsAdapter extends
         android.support.v7.widget.RecyclerView.Adapter<PurchaseHistoryItemsAdapter.HistoryViewHolder> implements Const {
 
     private List<History> mHistoryList;
-    private List<Product> mProductList;
 
-    public void setData(List<History> history, List<Product> products){
+    public void setData(List<History> history) {
         mHistoryList = history;
-        mProductList = products;
         notifyDataSetChanged();
     }
 
@@ -43,16 +39,9 @@ public class PurchaseHistoryItemsAdapter extends
 
         final History historyItem = mHistoryList.get(position);
 
-        for (Product product : mProductList){
-            if (Objects.equals(historyItem.getId(), product.getId())){
-                holder.mProductName.setText(product.getName());
-                holder.mProductPrice.setText(String.format(App.getContext().getResources().getString(R.string.coins), product.getPrice()));
-                holder.mPurchaseDate.setText(TimeUtils.getPrettyTime(historyItem.getTime()));
-            }
-        }
-
-
-
+        holder.mProductName.setText(historyItem.getName());
+        holder.mProductPrice.setText(String.format(App.getContext().getResources().getString(R.string.coins), historyItem.getPrice()));
+        holder.mPurchaseDate.setText(TimeUtils.getPrettyTime(historyItem.getTime()));
     }
 
     @Override

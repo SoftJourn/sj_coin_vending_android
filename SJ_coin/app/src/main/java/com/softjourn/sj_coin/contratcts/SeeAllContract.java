@@ -11,8 +11,6 @@ public interface SeeAllContract {
 
         void navigateToBuyProduct(Product product);
 
-
-
     }
 
     interface Presenter extends BasePresenter{

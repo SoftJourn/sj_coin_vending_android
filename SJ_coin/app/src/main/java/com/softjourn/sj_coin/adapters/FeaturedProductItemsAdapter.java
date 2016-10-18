@@ -29,7 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -134,7 +133,7 @@ public class FeaturedProductItemsAdapter extends
             holder.mAddFavorite.setTag(false);
             if (sFavoritesList !=null && sFavoritesList.size() > 0) {
                 for (int i = 0; i < sFavoritesList.size(); i++) {
-                    if (Objects.equals(sFavoritesList.get(i).getId(), product.getId())) {
+                    if (sFavoritesList.get(i).getId().equals(product.getId())) {
                         Picasso.with(App.getContext()).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
                         holder.mAddFavorite.setTag(true);
                         break;
