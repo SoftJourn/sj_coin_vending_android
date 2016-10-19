@@ -56,6 +56,9 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Bind(R.id.balance)
     TextView mBalance;
 
+    @Bind(R.id.textViewFavoritesSeeAll)
+    TextView seeAllFavorites;
+
     @Bind(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -82,13 +85,16 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     public void seeAll(View v) {
         switch (v.getId()) {
             case R.id.textViewFavoritesSeeAll:
-                Navigation.goToSeeAllActivity(this, FAVORITES);
+                int[] bla = new int[2];
+                seeAllFavorites.getLocationOnScreen(bla);
+                Navigation.goToSeeAllActivity(this, FAVORITES,  bla[0], bla[1]);
+                //overridePendingTransition(android.support.design.R.anim.design_fab_in, android.support.design.R.anim.abc_fade_out);
                 break;
             case R.id.textViewLastAddedSeeAll:
-                Navigation.goToSeeAllActivity(this, LAST_ADDED);
+                Navigation.goToSeeAllActivity(this, LAST_ADDED,Math.round(seeAllFavorites.getX()), Math.round(seeAllFavorites.getY()));
                 break;
             case R.id.textViewBestSellersSeeAll:
-                Navigation.goToSeeAllActivity(this, BEST_SELLERS);
+                Navigation.goToSeeAllActivity(this, BEST_SELLERS,Math.round(seeAllFavorites.getX()), Math.round(seeAllFavorites.getY()));
                 break;
         }
     }
@@ -197,7 +203,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         tvSeeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.goToSeeAllActivity(VendingActivity.this, categoryName);
+                Navigation.goToSeeAllActivity(VendingActivity.this, categoryName,Math.round(seeAllFavorites.getX()), Math.round(seeAllFavorites.getY()));
             }
         });
 

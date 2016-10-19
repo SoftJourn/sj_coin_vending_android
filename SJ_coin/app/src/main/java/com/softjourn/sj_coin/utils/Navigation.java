@@ -7,10 +7,10 @@ import android.support.annotation.Nullable;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.LoginActivity;
+import com.softjourn.sj_coin.activities.NoInternetActivity;
 import com.softjourn.sj_coin.activities.ProfileActivity;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
-import com.softjourn.sj_coin.activities.fragments.NoInternetActivity;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 
 public class Navigation implements Const,Extras {
@@ -37,9 +37,11 @@ public class Navigation implements Const,Extras {
         context.startActivity(intent);
     }
 
-    public static void goToSeeAllActivity(Context context, String category){
+    public static void goToSeeAllActivity(Context context, String category, int x, int y){
         Intent intent = new Intent(context, SeeAllActivity.class);
         intent.putExtra(EXTRAS_CATEGORY,category);
+        intent.putExtra(EXTRAS_COORD_X,x);
+        intent.putExtra(EXTRAS_COORD_Y,y);
         context.startActivity(intent);
     }
 

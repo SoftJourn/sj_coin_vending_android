@@ -85,6 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_favorite_border" />
 
 
@@ -95,6 +96,7 @@
             android:layout_gravity="bottom"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:text="@string/item_product_buy"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:textColor="@color/colorBlue"
             android:textSize="20sp" />
 

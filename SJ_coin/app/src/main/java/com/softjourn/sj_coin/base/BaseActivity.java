@@ -89,7 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
                             .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS,0,0), TAG_ALL_PRODUCTS_FRAGMENT)
                             .commit();
                 } else {
-                    Navigation.goToSeeAllActivity(this, ALL_ITEMS);
+                    Navigation.goToSeeAllActivity(this, ALL_ITEMS, 0,0);
                 }
                 return true;
             case R.id.favorites:
@@ -98,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
                             .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES,0,0), TAG_FAVORITES_FRAGMENT)
                             .commit();
                 } else {
-                    Navigation.goToSeeAllActivity(this, FAVORITES);
+                    Navigation.goToSeeAllActivity(this, FAVORITES,0,0);
                 }
                 return true;
             case R.id.profile:

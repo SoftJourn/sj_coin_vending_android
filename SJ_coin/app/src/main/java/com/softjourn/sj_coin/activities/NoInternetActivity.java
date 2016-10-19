@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.activities.fragments;
+package com.softjourn.sj_coin.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.SplashActivity;
 import com.softjourn.sj_coin.utils.Const;
 
 

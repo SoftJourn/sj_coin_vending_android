@@ -52,7 +52,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".activities.fragments.NoInternetActivity"
+            android:name=".activities.NoInternetActivity"
             android:theme="@style/NoActionBarTheme">
         </activity>
     </application>
