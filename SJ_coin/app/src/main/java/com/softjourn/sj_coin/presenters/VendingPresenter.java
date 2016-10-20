@@ -125,15 +125,17 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     private void getActionAfterRefresh() {
-        switch (actionAfterRefresh) {
-            case MACHINES_LIST:
-                mView.getMachinesList();
-                break;
-            case PRODUCTS_LIST:
-                mView.loadProductList();
-                break;
-            default:
-                break;
+        if (actionAfterRefresh!=null) {
+            switch (actionAfterRefresh) {
+                case MACHINES_LIST:
+                    mView.getMachinesList();
+                    break;
+                case PRODUCTS_LIST:
+                    mView.loadProductList();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -141,6 +143,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
             getActionAfterRefresh();
+            mView.hideProgress();
         } else {
             mView.hideProgress();
         }

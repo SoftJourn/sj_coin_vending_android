@@ -35,6 +35,7 @@ public class LoginModel extends BaseModel{
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
                 mEventBus.post(new OnTokenRefreshed(Const.TOKEN_NOT_REFRESHED));
+
             }
         };
         mApiProvider.makeRefreshToken(refreshToken, Const.GRANT_TYPE_REFRESH_TOKEN, callback);

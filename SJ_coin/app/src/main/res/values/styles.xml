@@ -100,4 +100,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MachinesDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_back_to_bottom</item>
+    </style>
+
+    <style name="ConfirmDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_right</item>
+    </style>
+
 </resources>

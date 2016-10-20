@@ -5,6 +5,7 @@ import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
+import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
@@ -18,6 +19,9 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     SeeAllContract.View mView;
     private final VendingModel mModel;
     private final LoginPresenter mLoginPresenter;
+
+    private static String actionAfterRefresh;
+    private static int itemId;
 
     public SeeAllPresenter(SeeAllContract.View vendingView) {
 
@@ -34,6 +38,9 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
+                actionAfterRefresh = "ADD";
+                itemId = id;
+
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
             } else {
@@ -49,6 +56,9 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
+                actionAfterRefresh = "REMOVE";
+                itemId = Integer.parseInt(id);
+
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
             } else {
@@ -71,5 +81,25 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     @Subscribe
     public void OnEvent(OnRemoveFavoriteEvent event) {
         removeFromFavorite(String.valueOf(event.removeFavorite().getId()));
+    }
+
+    @Subscribe
+    public void OnEvent(OnTokenRefreshed event) {
+        if (event.isSuccess()) {
+            if (actionAfterRefresh != null) {
+                switch (actionAfterRefresh) {
+                    case "ADD":
+                        addToFavorite(itemId);
+                        break;
+                    case "REMOVE":
+                        removeFromFavorite(String.valueOf(itemId));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }else {
+            mView.hideProgress();
+        }
     }
 }

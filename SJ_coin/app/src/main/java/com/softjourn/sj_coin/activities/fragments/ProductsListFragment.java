@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
@@ -93,7 +95,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view;
+        final View view;
 
         switch (getActivity().getLocalClassName()) {
             case "activities.VendingActivity":
@@ -101,6 +103,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, null);
+                view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
                 break;
 
             case "activities.SeeAllActivity":
@@ -128,7 +131,6 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
             ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName, mButtonSortByPrice);
         }
-
         return view;
     }
 
@@ -216,7 +218,6 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
                 if (mNoProductsInCategory != null) {
                     mNoProductsInCategory.setVisibility(View.VISIBLE);
                 }
-                //((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
                 if (mButtonSortByName != null && mButtonSortByPrice != null) {
                     mButtonSortByName.setEnabled(false);
                     mButtonSortByPrice.setEnabled(false);

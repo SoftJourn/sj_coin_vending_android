@@ -85,16 +85,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     public void seeAll(View v) {
         switch (v.getId()) {
             case R.id.textViewFavoritesSeeAll:
-                int[] bla = new int[2];
-                seeAllFavorites.getLocationOnScreen(bla);
-                Navigation.goToSeeAllActivity(this, FAVORITES,  bla[0], bla[1]);
-                //overridePendingTransition(android.support.design.R.anim.design_fab_in, android.support.design.R.anim.abc_fade_out);
+                Navigation.goToSeeAllActivity(this, FAVORITES);
                 break;
             case R.id.textViewLastAddedSeeAll:
-                Navigation.goToSeeAllActivity(this, LAST_ADDED,Math.round(seeAllFavorites.getX()), Math.round(seeAllFavorites.getY()));
+                Navigation.goToSeeAllActivity(this, LAST_ADDED);
                 break;
             case R.id.textViewBestSellersSeeAll:
-                Navigation.goToSeeAllActivity(this, BEST_SELLERS,Math.round(seeAllFavorites.getX()), Math.round(seeAllFavorites.getY()));
+                Navigation.goToSeeAllActivity(this, BEST_SELLERS);
                 break;
         }
     }
@@ -203,7 +200,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         tvSeeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.goToSeeAllActivity(VendingActivity.this, categoryName,Math.round(seeAllFavorites.getX()), Math.round(seeAllFavorites.getY()));
+                Navigation.goToSeeAllActivity(VendingActivity.this, categoryName);
             }
         });
 
@@ -230,6 +227,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
             ListView machinesList = (ListView) dialog.findViewById(R.id.lv);
             final SelectMachineListAdapter adapter = new SelectMachineListAdapter(this, android.R.layout.simple_list_item_1, names);
             machinesList.setAdapter(adapter);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.MachinesDialogAnimation;
             dialog.show();
 
             machinesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

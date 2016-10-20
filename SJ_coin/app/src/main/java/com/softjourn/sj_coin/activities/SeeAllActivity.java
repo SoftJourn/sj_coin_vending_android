@@ -1,10 +1,9 @@
 package com.softjourn.sj_coin.activities;
 
-import android.animation.Animator;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,13 +15,9 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
@@ -59,45 +54,17 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     private Button mFragmentsSortNameButton;
     private Button mFragmentsSortPriceButton;
 
-    private LinearLayout rootLayout;
-
-    int cx, cy;
-
     private NavigationView mNavigationView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.do_not_move,R.anim.do_not_move);
         setContentView(R.layout.activity_see_all);
 
-        cx = getIntent().getIntExtra(EXTRAS_COORD_X,0);
-        cy = getIntent().getIntExtra(EXTRAS_COORD_Y,0);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        rootLayout = (LinearLayout)findViewById(R.id.rootLayout);
-
-        if (savedInstanceState == null) {
-            rootLayout.setVisibility(View.INVISIBLE);
-
-            ViewTreeObserver viewTreeObserver = rootLayout.getViewTreeObserver();
-            if (viewTreeObserver.isAlive()) {
-                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        circularRevealActivity();
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                            rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        } else {
-                            rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        }
-                    }
-                });
-            }
-        }
-
-
-            mVendingPresenter = new SeeAllPresenter(this);
+        mVendingPresenter = new SeeAllPresenter(this);
         mPurchasePresenter = new PurchasePresenter(this);
 
         mCategory = getIntent().getStringExtra(EXTRAS_CATEGORY);
@@ -123,21 +90,6 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         attachFragment(mCategory);
     }
 
-    private void circularRevealActivity() {
-
-       /* int cx = rootLayout.getWidth()/2;
-        int cy = rootLayout.getHeight()/2;*/
-
-        float finalRadius = Math.max(rootLayout.getWidth(), rootLayout.getHeight());
-
-        // create the animator for this view (the start radius is zero)
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(rootLayout, cx, cy, 0, finalRadius);
-        circularReveal.setDuration(500);
-
-        // make the view visible and start the animation
-        rootLayout.setVisibility(View.VISIBLE);
-        circularReveal.start();
-    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -239,7 +191,6 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
                 return false;
             }
         });
-
         return true;
     }
 

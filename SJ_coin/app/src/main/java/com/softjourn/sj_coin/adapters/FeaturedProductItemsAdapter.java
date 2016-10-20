@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -81,6 +82,7 @@ public class FeaturedProductItemsAdapter extends
                 break;
             case "SEE_ALL_SNACKS_DRINKS":
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_see_all_item, parent, false);
+                v.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
                 break;
             default:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);

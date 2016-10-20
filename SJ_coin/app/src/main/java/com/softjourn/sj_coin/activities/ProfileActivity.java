@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
@@ -42,6 +44,8 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        LinearLayout layout = (LinearLayout)findViewById(R.id.root_layout_profile);
+
         super.mProfileIsVisible = true;
 
         ButterKnife.bind(this);
@@ -53,7 +57,6 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         mHistoryList.setLayoutManager(layoutManager);
         mHistoryList.setAdapter(mHistoryAdapter);
 
-        //mPresenter.showHistory();
         mPresenter.getAccount();
     }
 
@@ -81,11 +84,13 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     public void showBalance(String amount) {
         mCoinsLabel.setVisibility(View.VISIBLE);
         mUserBalance.setText(amount);
+        mUserBalance.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
     }
 
     @Override
     public void setUserName(String message) {
         mUserName.setText(message);
+        mUserName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
     }
 
     @Override

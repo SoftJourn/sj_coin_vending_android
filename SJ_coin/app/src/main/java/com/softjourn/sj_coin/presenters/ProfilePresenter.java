@@ -31,7 +31,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         mProfileModel = new ProfileModel();
         mVendingModel = new VendingModel();
         mLoginPresenter = new LoginPresenter();
-        mView.showProgress(App.getContext().getString(R.string.progress_loading));
+        //mView.showProgress(App.getContext().getString(R.string.progress_loading));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
@@ -51,7 +51,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void showHistory() {
-        mView.showProgress(App.getContext().getString(R.string.progress_loading));
+        //mView.showProgress(App.getContext().getString(R.string.progress_loading));
         mVendingModel.getPurchaseHistory();
     }
 

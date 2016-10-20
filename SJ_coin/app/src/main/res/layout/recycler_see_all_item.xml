@@ -18,6 +18,10 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:contentDescription="@string/product_image"
+            android:layout_marginLeft="@dimen/category_header_bottom_margin"
+            android:layout_marginTop="@dimen/category_header_bottom_margin"
+            android:layout_marginRight="@dimen/category_header_bottom_margin"
+            android:layout_marginBottom="@dimen/category_header_bottom_margin"
             android:src="@drawable/logo" />
 
         <LinearLayout

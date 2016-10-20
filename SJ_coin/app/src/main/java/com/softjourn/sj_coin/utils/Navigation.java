@@ -37,11 +37,9 @@ public class Navigation implements Const,Extras {
         context.startActivity(intent);
     }
 
-    public static void goToSeeAllActivity(Context context, String category, int x, int y){
+    public static void goToSeeAllActivity(Context context, String category){
         Intent intent = new Intent(context, SeeAllActivity.class);
         intent.putExtra(EXTRAS_CATEGORY,category);
-        intent.putExtra(EXTRAS_COORD_X,x);
-        intent.putExtra(EXTRAS_COORD_Y,y);
         context.startActivity(intent);
     }
 
