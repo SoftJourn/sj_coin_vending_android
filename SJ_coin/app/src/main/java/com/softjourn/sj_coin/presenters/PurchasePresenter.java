@@ -51,7 +51,9 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
     @Subscribe
     public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
-            buyProduct(productId);
+            if (productId != null) {
+                buyProduct(productId);
+            }
         } else {
             mView.hideProgress();
         }

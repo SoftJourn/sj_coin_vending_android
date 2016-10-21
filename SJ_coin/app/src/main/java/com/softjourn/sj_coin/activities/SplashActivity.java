@@ -16,6 +16,7 @@ public class SplashActivity extends AppCompatActivity implements Const {
 
         if (!NetworkManager.isNetworkEnabled()) {
             Navigation.goToNoInternetScreen(this);
+            finish();
         } else {
             if (TextUtils.isEmpty(Preferences.retrieveStringObject(ACCESS_TOKEN))
                     && TextUtils.isEmpty(Preferences.retrieveStringObject(REFRESH_TOKEN))) {

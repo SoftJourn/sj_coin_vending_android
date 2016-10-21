@@ -11,7 +11,7 @@ import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
 
 public abstract class BaseFragment extends Fragment {
 
-    protected boolean mSortingByNameForward = true;
+    protected boolean mSortingByNameForward = false;
     protected boolean mSortingByPriceForward = true;
 
 
@@ -32,6 +32,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void sortByName(boolean isSortingForward, String productsCategory, VendingFragmentContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+        mSortingByPriceForward = true;
         buttonName.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
         buttonPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
         presenter.sortByName(productsCategory, isSortingForward);
@@ -39,6 +40,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void sortByPrice(boolean isSortingForward, String productsCategory, VendingFragmentContract.Presenter presenter, Button buttonName, Button buttonPrice) {
+        mSortingByNameForward = true;
         buttonPrice.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
         buttonName.setBackgroundColor(getResources().getColor(R.color.transparent));
         presenter.sortByPrice(productsCategory, isSortingForward);

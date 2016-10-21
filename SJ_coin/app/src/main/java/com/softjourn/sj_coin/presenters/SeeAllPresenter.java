@@ -1,5 +1,7 @@
 package com.softjourn.sj_coin.presenters;
 
+import android.util.Log;
+
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
@@ -87,6 +89,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     public void OnEvent(OnTokenRefreshed event) {
         if (event.isSuccess()) {
             if (actionAfterRefresh != null) {
+                Log.d("ActAfterRefreshSeeAll", actionAfterRefresh);
                 switch (actionAfterRefresh) {
                     case "ADD":
                         addToFavorite(itemId);

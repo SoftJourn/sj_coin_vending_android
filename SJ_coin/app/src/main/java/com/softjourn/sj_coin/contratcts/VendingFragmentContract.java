@@ -15,7 +15,9 @@ public interface VendingFragmentContract {
 
         void loadData(List<Product> data);
 
-        void changeFavoriteIcon();
+        void changeFavoriteIcon(String action);
+
+        void showDataAfterRemovingFavorites(List<Product> productsList);
     }
 
     interface Presenter extends BasePresenter{

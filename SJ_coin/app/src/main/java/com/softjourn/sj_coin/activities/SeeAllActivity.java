@@ -316,6 +316,8 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     public void setButtons(Button button, Button button2) {
         this.mFragmentsSortNameButton = button;
         this.mFragmentsSortPriceButton = button2;
+        mFragmentsSortNameButton.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
+        mFragmentsSortPriceButton.setBackgroundColor(getResources().getColor(R.color.transparent));
     }
 
     public void productsList(FeaturedProductItemsAdapter adapter) {

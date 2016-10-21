@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.presenters;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
@@ -126,6 +127,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     private void getActionAfterRefresh() {
         if (actionAfterRefresh!=null) {
+            Log.d("ActAfterRefreshVending", actionAfterRefresh);
             switch (actionAfterRefresh) {
                 case MACHINES_LIST:
                     mView.getMachinesList();
@@ -136,6 +138,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
                 default:
                     break;
             }
+            mView.hideProgress();
         }
     }
 

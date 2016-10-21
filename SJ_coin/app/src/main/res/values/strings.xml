@@ -12,7 +12,7 @@
     <!--Vending Activity-->
     <string name="layout_vending_best_sellers">Best Sellers</string>
     <string name="layout_vending_new_products">Last Added</string>
-    <string name="layout_vending_see_all">SEE ALL</string>
+    <string name="layout_vending_see_all">SHOW ALL</string>
     <string name="your_balance_is">"Your balance is %1$d coins"</string>
 
     <!-- Item Labels-->

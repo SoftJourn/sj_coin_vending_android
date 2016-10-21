@@ -155,19 +155,19 @@ public class VendingModel extends BaseModel implements Const {
     }
 
     public List<Product> loadBestSellers(Activity activity) {
-        return RealmController.with(activity).getProductsFromStaticCategory(Const.BEST_SELLERS);
+        return RealmController.with(activity).getSortedProducts(Const.BEST_SELLERS,"name", Sort.ASCENDING);
     }
 
     public List<Product> loadLastAdded(Activity activity) {
-        return RealmController.with(activity).getProductsFromStaticCategory(Const.LAST_ADDED);
+        return RealmController.with(activity).getSortedProducts(Const.LAST_ADDED,"name", Sort.ASCENDING);
     }
 
     public List<Product> loadFavorites(Activity activity) {
-        return RealmController.with(activity).getProductsFromStaticCategory(Const.FAVORITES);
+        return RealmController.with(activity).getSortedProducts(Const.FAVORITES,"name", Sort.ASCENDING);
     }
 
     public List<Product> loadProductsFromDB(Activity activity, String category) {
-        return RealmController.with(activity).getProductsFromCategory(category);
+        return RealmController.with(activity).getSortedProducts(category,"name", Sort.ASCENDING);
     }
 
     public List<Categories> loadCategories(Activity activity) {

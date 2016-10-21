@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -19,6 +18,7 @@ import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
+import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.RealmProductWrapper;
 import com.softjourn.sj_coin.realm.RealmController;
@@ -40,6 +40,8 @@ public class FeaturedProductItemsAdapter extends
 
     private final String mRecyclerViewType;
 
+    private final String mCategory;
+
     private List<Product> mListProducts = new ArrayList<>();
 
     private List<RealmProductWrapper> mRealmProductWrapperList = new ArrayList<>();
@@ -48,6 +50,12 @@ public class FeaturedProductItemsAdapter extends
     private final String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
+
+        if(featureCategory!=null) {
+            mCategory = featureCategory;
+        } else {
+            mCategory="";
+        }
 
         if (recyclerViewType != null) {
             mRecyclerViewType = recyclerViewType;
@@ -82,7 +90,6 @@ public class FeaturedProductItemsAdapter extends
                 break;
             case "SEE_ALL_SNACKS_DRINKS":
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_see_all_item, parent, false);
-                v.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
                 break;
             default:
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);
@@ -154,6 +161,14 @@ public class FeaturedProductItemsAdapter extends
                         EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
                     } else {
                         EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
+                        if (mCategory.equals(FAVORITES)){
+                            mListProducts.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(),getItemCount());
+                            if (getItemCount()<1){
+                                EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
+                            }
+                        }
                     }
                 }
             });
@@ -165,7 +180,6 @@ public class FeaturedProductItemsAdapter extends
             PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(holder.mProductImage);
         }
     }
-
 
     @Override
     public int getItemCount() {

@@ -5,8 +5,10 @@ import android.app.Activity;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
+import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
 import com.softjourn.sj_coin.realm.RealmController;
+import com.softjourn.sj_coin.utils.Const;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -64,12 +66,18 @@ public class VendingFragmentPresenter extends BasePresenterImpl implements Vendi
     @Subscribe
     public void OnEvent(OnAddedToFavorites event) {
         RealmController.with(mActivity).addToFavoriteLocal(event.getId());
-        mView.changeFavoriteIcon();
+        mView.changeFavoriteIcon(Const.ACTION_ADD_FAVORITE);
     }
 
     @Subscribe
     public void OnEvent(OnRemovedFromFavorites event) {
         RealmController.with(mActivity).removeFromFavoritesLocal(Integer.parseInt(event.getId()));
-        mView.changeFavoriteIcon();
+        mView.changeFavoriteIcon(Const.ACTION_REMOVE_FAVORITE);
+        //mView.showDataAfterRemovingFavorites(RealmController.with(mActivity).getProductsFromStaticCategory(Const.FAVORITES));
+    }
+
+    @Subscribe
+    public void OnEvent(OnRemovedLastFavoriteEvent event) {
+        mView.showDataAfterRemovingFavorites(event.getList());
     }
 }

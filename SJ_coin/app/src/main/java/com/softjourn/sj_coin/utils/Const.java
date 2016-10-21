@@ -62,5 +62,8 @@ public interface Const {
     String MACHINES_LIST = "MACHINES_LIST";
     String PRODUCTS_LIST = "PRODUCTS_LIST";
     String BUY_PRODUCT = "BUY_PRODUCT";
+
+    String ACTION_ADD_FAVORITE = "ADD";
+    String ACTION_REMOVE_FAVORITE = "REMOVE";
 }
 

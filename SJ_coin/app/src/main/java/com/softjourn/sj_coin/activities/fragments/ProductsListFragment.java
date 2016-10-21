@@ -111,6 +111,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
                 ButterKnife.bind(this, view);
                 (getActivity()).setTitle(mProductsCategory);
                 ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
+                view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
                 break;
@@ -193,11 +194,51 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     }
 
     @Override
-    public void changeFavoriteIcon() {
-        if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
-            ((SeeAllActivity) getActivity()).hideProgress();
+    public void changeFavoriteIcon(String action) {
+        if (action.equals(ACTION_ADD_FAVORITE)) {
+            if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
+                ((SeeAllActivity) getActivity()).hideProgress();
+            }
+            mProductAdapter.notifyDataSetChanged();
+        } else {
+            if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
+                ((SeeAllActivity) getActivity()).hideProgress();
+                if (!mProductsCategory.equals(FAVORITES)) {
+                    mProductAdapter.notifyDataSetChanged();
+                }
+            }
         }
-        mProductAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showDataAfterRemovingFavorites(List<Product> productsList) {
+        if (mProductsCategory.equals(FAVORITES)) {
+
+            if (productsList != null && !productsList.isEmpty()) {
+                mProductList = productsList;
+                mProductAdapter.setData(productsList);
+
+                try {
+                    ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+                } catch (ClassCastException e) {
+                    return;
+                }
+            } else {
+                try {
+                    ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+                } catch (ClassCastException e) {
+                    if (mNoProductsInCategory != null) {
+                        mNoProductsInCategory.setVisibility(View.VISIBLE);
+                    }
+                    if (mButtonSortByName != null && mButtonSortByPrice != null) {
+                        mButtonSortByName.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        mButtonSortByPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        mButtonSortByName.setEnabled(false);
+                        mButtonSortByPrice.setEnabled(false);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -219,6 +260,8 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
                     mNoProductsInCategory.setVisibility(View.VISIBLE);
                 }
                 if (mButtonSortByName != null && mButtonSortByPrice != null) {
+                    mButtonSortByName.setBackgroundColor(getResources().getColor(R.color.transparent));
+                    mButtonSortByPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
                     mButtonSortByName.setEnabled(false);
                     mButtonSortByPrice.setEnabled(false);
                 }

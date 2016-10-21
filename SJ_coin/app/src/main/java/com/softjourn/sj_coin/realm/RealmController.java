@@ -119,17 +119,21 @@ public class RealmController {
 
     //Sorting products after query
     public List<Product> getSortedProducts(String productsCategory, String sortingType, Sort sortOrder) {
-        switch (productsCategory) {
-            case Const.ALL_ITEMS:
-                return getProducts().sort(sortingType, sortOrder);
-            case Const.BEST_SELLERS:
-                return getProductsFromStaticCategory(Const.BEST_SELLERS).sort(sortingType, sortOrder);
-            case Const.LAST_ADDED:
-                return getProductsFromStaticCategory(Const.LAST_ADDED).sort(sortingType, sortOrder);
-            case Const.FAVORITES:
-                return getProductsFromStaticCategory(Const.FAVORITES).sort(sortingType, sortOrder);
-            default:
-                return getProductsFromCategory(productsCategory).sort(sortingType, sortOrder);
+        try {
+            switch (productsCategory) {
+                case Const.ALL_ITEMS:
+                    return getProducts().sort(sortingType, sortOrder);
+                case Const.BEST_SELLERS:
+                    return getProductsFromStaticCategory(Const.BEST_SELLERS).sort(sortingType, sortOrder);
+                case Const.LAST_ADDED:
+                    return getProductsFromStaticCategory(Const.LAST_ADDED).sort(sortingType, sortOrder);
+                case Const.FAVORITES:
+                    return getProductsFromStaticCategory(Const.FAVORITES).sort(sortingType, sortOrder);
+                default:
+                    return getProductsFromCategory(productsCategory).sort(sortingType, sortOrder);
+            }
+        } catch (NullPointerException e){
+            return null;
         }
     }
 
