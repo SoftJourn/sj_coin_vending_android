@@ -58,7 +58,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
         if (response.isSuccessful()) {
             callback.onSuccess(response.body());
         } else {
-            callback.onError(response.message());
+            callback.onError(String.valueOf(response.code()));
         }
     }
 
