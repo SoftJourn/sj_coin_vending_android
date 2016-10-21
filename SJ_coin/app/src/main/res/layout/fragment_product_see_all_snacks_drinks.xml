@@ -32,7 +32,6 @@
         android:textAlignment="center"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/category_header_bottom_margin"
-        android:textStyle="bold"
         android:textSize="18sp"
         android:visibility="gone"/>
 
