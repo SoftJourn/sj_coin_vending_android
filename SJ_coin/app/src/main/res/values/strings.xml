@@ -59,7 +59,7 @@
 
     <!--Toast Messages-->
     <string name="internet_turned_off">No Internet connection</string>
-    <string name="activity_product_take_your_order_message">Please take your order</string>
+    <string name="activity_product_take_your_order_message">Wait for your order</string>
     <string name="there_are_no_items">Currently there are no products in this category</string>
     <string name="machine_not_selected_toast">Please choose machine for correct work of application</string>
 

@@ -15,6 +15,7 @@ import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
+import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.machines.Machines;
@@ -84,7 +85,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }
