@@ -73,10 +73,14 @@ public class RealmController {
     }
 
     public void removeFromFavoritesLocal(Integer id) {
-        RealmResults<Favorites> result = realm.where(Favorites.class).equalTo("id",id).findAll();
+        RealmResults<Favorites> result = realm.where(Favorites.class).equalTo("id", id).findAll();
         realm.beginTransaction();
         result.deleteAllFromRealm();
         realm.commitTransaction();
+    }
+
+    public boolean getSingleProduct(String id) {
+        return realm.where(Product.class).equalTo("id", Integer.parseInt(id)).findFirst() != null;
     }
 
     //find all objects in the Product class
@@ -91,7 +95,19 @@ public class RealmController {
         return realm.where(Product.class)
                 .contains("category.name", category)
                 .findAll();
+    }
 
+    public RealmResults<Favorites> getFavorites() {
+        return realm.where(Favorites.class).findAll();
+    }
+
+    public List<Product> getFavoriteProducts() {
+        List<Product> products = new ArrayList<>();
+        List<Favorites> favorites = getFavorites();
+        for (Favorites favorite : favorites) {
+            products.add(new Product(favorite));
+        }
+        return products;
     }
 
     //query to get products from Last Added or Best Sellers or Favorites.
@@ -107,7 +123,7 @@ public class RealmController {
         }
         RealmQuery<Product> query = realm.where(Product.class);
 
-        return query.in("id",ids.toArray(new Integer[ids.size()])).findAll();
+        return query.in("id", ids.toArray(new Integer[ids.size()])).findAll();
     }
 
     //query all Categories (Drink, Snack etc.) from JSON
@@ -115,7 +131,6 @@ public class RealmController {
     public RealmResults<Categories> getCategories() {
         return realm.where(Categories.class).findAll();
     }
-
 
     //Sorting products after query
     public List<Product> getSortedProducts(String productsCategory, String sortingType, Sort sortOrder) {
@@ -128,11 +143,16 @@ public class RealmController {
                 case Const.LAST_ADDED:
                     return getProductsFromStaticCategory(Const.LAST_ADDED).sort(sortingType, sortOrder);
                 case Const.FAVORITES:
-                    return getProductsFromStaticCategory(Const.FAVORITES).sort(sortingType, sortOrder);
+                    List<Product> products = new ArrayList<>();
+                    List<Favorites> favorites = getFavorites().sort(sortingType, sortOrder);
+                    for (Favorites favorite : favorites) {
+                        products.add(new Product(favorite));
+                    }
+                    return products;
                 default:
                     return getProductsFromCategory(productsCategory).sort(sortingType, sortOrder);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return null;
         }
     }
@@ -163,7 +183,7 @@ public class RealmController {
 
         private List<Integer> getLastAddedIDs() {
             List<Featured> featured = realm.where(Featured.class).isNotEmpty("lastAdded").findAll();
-            if (featured.size()<=0){
+            if (featured.size() <= 0) {
                 return new ArrayList<>();
             }
             RealmList<RealmInteger> lastAdded = featured.get(0).getLastAdded();
@@ -180,7 +200,7 @@ public class RealmController {
 
         private List<Integer> getBestSellersIDs() {
             List<Featured> featured = realm.where(Featured.class).isNotEmpty("bestSellers").findAll();
-            if (featured.size()<=0){
+            if (featured.size() <= 0) {
                 return new ArrayList<>();
             }
             RealmList<RealmInteger> bestSellers = featured.get(0).getBestSellers();

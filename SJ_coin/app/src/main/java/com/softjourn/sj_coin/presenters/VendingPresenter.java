@@ -8,6 +8,7 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
@@ -153,10 +154,15 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Subscribe
+    public void OnEvent(OnAmountReceivedEvent event) {
+        mView.updateBalanceAmount(String.valueOf(event.getAmount().getAmount()));
+        mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
+    }
+
+    @Subscribe
     public void OnEvent(OnBoughtEvent event) {
         mView.hideProgress();
-        mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
-        mView.updateBalanceAmount(String.valueOf(event.getAmount().getAmount()));
+        mView.showToastMessage(App.getContext().getString(R.string.activity_order_processing));
     }
 
     @Subscribe

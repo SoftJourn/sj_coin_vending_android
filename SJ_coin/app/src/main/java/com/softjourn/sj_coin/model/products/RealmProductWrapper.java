@@ -28,4 +28,12 @@ public class RealmProductWrapper {
         this.imageUrl = product.getImageUrl();
         this.description = product.getDescription();
     }
+
+    public RealmProductWrapper(Favorites favorites){
+        this.id = favorites.getId();
+        this.price = favorites.getPrice();
+        this.name = favorites.getName();
+        this.imageUrl = favorites.getImageUrl();
+        this.description = favorites.getDescription();
+    }
 }

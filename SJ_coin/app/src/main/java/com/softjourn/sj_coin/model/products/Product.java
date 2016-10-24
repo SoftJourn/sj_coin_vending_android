@@ -32,6 +32,14 @@ public class Product extends RealmObject implements Parcelable{
 
     public Product(){}
 
+    public Product(Favorites favorites){
+        this.id = favorites.getId();
+        this.price = favorites.getPrice();
+        this.name = favorites.getName();
+        this.imageUrl = favorites.getImageUrl();
+        this.description = favorites.getDescription();
+    }
+
     protected Product(Parcel in) {
         name = in.readString();
         imageUrl = in.readString();

@@ -11,4 +11,16 @@ public class Favorites extends RealmObject {
 
     @SerializedName("id")
     public Integer id;
+
+    @SerializedName("price")
+    private Integer price;
+
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("imageUrl")
+    private String imageUrl;
+
+    @SerializedName("description")
+    private String description;
 }

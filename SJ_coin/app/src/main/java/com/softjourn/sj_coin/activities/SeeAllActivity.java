@@ -213,6 +213,9 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     protected void onDestroy() {
         super.onDestroy();
         mVendingPresenter.onDestroy();
+        mPurchasePresenter.onDestroy();
+        mVendingPresenter = null;
+        mPurchasePresenter = null;
     }
 
     @Override

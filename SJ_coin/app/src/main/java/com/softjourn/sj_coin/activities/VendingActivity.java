@@ -269,6 +269,9 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     protected void onDestroy() {
         super.onDestroy();
         mVendingPresenter.onDestroy();
+        mPurchasePresenter.onDestroy();
+        mVendingPresenter = null;
+        mPurchasePresenter = null;
     }
 
     private void attachFragment(String categoryName, int headerID, int containerID, int seeAllID) {

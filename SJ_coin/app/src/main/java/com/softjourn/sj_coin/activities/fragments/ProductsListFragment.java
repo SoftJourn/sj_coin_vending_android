@@ -273,5 +273,6 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
+        mPresenter = null;
     }
 }

@@ -76,11 +76,12 @@ public class VendingModel extends BaseModel implements Const {
     }
 
     public void buyProductByID(String machineID, String id) {
+        mEventBus.post(new OnBoughtEvent(""));
         mApiProvider.buyProductByID(machineID, id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
+
             @Override
             public void onSuccess(Amount response) {
                 mEventBus.post(new OnAmountReceivedEvent(response));
-                mEventBus.post(new OnBoughtEvent(response));
             }
 
             @Override

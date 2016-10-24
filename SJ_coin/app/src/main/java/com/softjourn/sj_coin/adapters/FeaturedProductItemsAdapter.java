@@ -51,10 +51,10 @@ public class FeaturedProductItemsAdapter extends
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
 
-        if(featureCategory!=null) {
+        if (featureCategory != null) {
             mCategory = featureCategory;
         } else {
-            mCategory="";
+            mCategory = "";
         }
 
         if (recyclerViewType != null) {
@@ -100,9 +100,11 @@ public class FeaturedProductItemsAdapter extends
     @Override
     public void onBindViewHolder(final FeaturedViewHolder holder, int position) {
 
-        List<Product> sFavoritesList = RealmController.getInstance().getProductsFromStaticCategory(FAVORITES);
+        List<Product> sFavoritesList = RealmController.getInstance().getFavoriteProducts();
 
         final Product product = mListProducts.get(position);
+
+        boolean isCurrentProductInMachine = RealmController.getInstance().getSingleProduct(String.valueOf(mListProducts.get(holder.getAdapterPosition()).getId()));
 
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
@@ -111,22 +113,34 @@ public class FeaturedProductItemsAdapter extends
             holder.mProductDescription.setText(product.getDescription());
         }
 
-        if (holder.mParentView != null) {
-            holder.mParentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(holder.getAdapterPosition())));
-                }
-            });
+        if (isCurrentProductInMachine) {
+            if (holder.mParentView != null) {
+                holder.mParentView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(holder.getAdapterPosition())));
+                    }
+                });
+            }
         }
 
-        if (holder.mBuyProduct != null) {
-            holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new OnProductBuyClickEvent(mListProducts.get(holder.getAdapterPosition())));
-                }
-            });
+        if (isCurrentProductInMachine)
+
+        {
+            if (holder.mBuyProduct != null) {
+                holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventBus.getDefault().post(new OnProductBuyClickEvent(mListProducts.get(holder.getAdapterPosition())));
+                    }
+                });
+            }
+        } else
+
+        {
+            if (holder.mBuyProduct != null) {
+                holder.mBuyProduct.setTextColor(App.getContext().getResources().getColor(R.color.colorScreenBackground));
+            }
         }
 
 
@@ -138,9 +152,11 @@ public class FeaturedProductItemsAdapter extends
          * if this product is already in Favorites to remove or add product
          * to favorites list
          */
-        if (holder.mAddFavorite != null) {
+        if (holder.mAddFavorite != null)
+
+        {
             holder.mAddFavorite.setTag(false);
-            if (sFavoritesList !=null && sFavoritesList.size() > 0) {
+            if (sFavoritesList != null && sFavoritesList.size() > 0) {
                 for (int i = 0; i < sFavoritesList.size(); i++) {
                     if (sFavoritesList.get(i).getId().equals(product.getId())) {
                         Picasso.with(App.getContext()).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
@@ -161,11 +177,11 @@ public class FeaturedProductItemsAdapter extends
                         EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
                     } else {
                         EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
-                        if (mCategory.equals(FAVORITES)){
+                        if (mCategory.equals(FAVORITES)) {
                             mListProducts.remove(holder.getAdapterPosition());
                             notifyItemRemoved(holder.getAdapterPosition());
-                            notifyItemRangeChanged(holder.getAdapterPosition(),getItemCount());
-                            if (getItemCount()<1){
+                            notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+                            if (getItemCount() < 1) {
                                 EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
                             }
                         }
@@ -174,10 +190,17 @@ public class FeaturedProductItemsAdapter extends
             });
         }
 
-        if (TextUtils.isEmpty(product.getImageUrl())) {
+        if (TextUtils.isEmpty(product.getImageUrl()))
+
+        {
             Picasso.with(App.getContext()).load(R.drawable.logo).into(holder.mProductImage);
-        } else {
+        } else
+
+        {
             PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(holder.mProductImage);
+            if (!isCurrentProductInMachine) {
+                holder.mProductImage.setAlpha(0.3f);
+            }
         }
     }
 

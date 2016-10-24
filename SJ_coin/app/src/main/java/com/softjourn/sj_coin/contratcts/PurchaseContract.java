@@ -9,5 +9,7 @@ public interface PurchaseContract {
     }
     interface Presenter {
         void buyProduct(String id);
+
+        void onDestroy();
     }
 }

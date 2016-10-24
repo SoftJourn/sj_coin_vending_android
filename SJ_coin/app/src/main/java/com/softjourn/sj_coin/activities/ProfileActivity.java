@@ -71,6 +71,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         super.mProfileIsVisible = false;
         super.onDestroy();
         mPresenter.onDestroy();
+        mPresenter = null;
     }
 
     @Override
