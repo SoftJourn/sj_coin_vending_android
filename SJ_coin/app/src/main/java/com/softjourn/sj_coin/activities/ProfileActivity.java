@@ -3,7 +3,10 @@ package com.softjourn.sj_coin.activities;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
@@ -11,7 +14,6 @@ import com.softjourn.sj_coin.adapters.PurchaseHistoryItemsAdapter;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Const;
 
@@ -36,12 +38,13 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
     private ProfileContract.Presenter mPresenter;
     private PurchaseHistoryItemsAdapter mHistoryAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        LinearLayout layout = (LinearLayout)findViewById(R.id.root_layout_profile);
 
         super.mProfileIsVisible = true;
 
@@ -49,12 +52,11 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
         mPresenter = new ProfilePresenter(this);
 
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mHistoryAdapter = new PurchaseHistoryItemsAdapter();
-        mHistoryList.setLayoutManager(mLayoutManager);
+        mHistoryList.setLayoutManager(layoutManager);
         mHistoryList.setAdapter(mHistoryAdapter);
 
-        mPresenter.showHistory();
         mPresenter.getAccount();
     }
 
@@ -69,22 +71,32 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         super.mProfileIsVisible = false;
         super.onDestroy();
         mPresenter.onDestroy();
+        mPresenter = null;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        menu.findItem(R.id.select_machine).setVisible(false);
+        return true;
     }
 
     @Override
     public void showBalance(String amount) {
         mCoinsLabel.setVisibility(View.VISIBLE);
         mUserBalance.setText(amount);
+        mUserBalance.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
     }
 
     @Override
     public void setUserName(String message) {
         mUserName.setText(message);
+        mUserName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
     }
 
     @Override
-    public void setData(List<History> data) {
-        mHistoryAdapter.setData(data);
+    public void setData(List<History> history) {
+        mHistoryAdapter.setData(history);
     }
 
     @Override

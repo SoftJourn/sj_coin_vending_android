@@ -18,11 +18,12 @@ import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
-import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.model.products.Favorites;
+import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
+import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.model.products.RealmProductWrapper;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
-import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,56 +31,59 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmQuery;
+
 public class FeaturedProductItemsAdapter extends
         android.support.v7.widget.RecyclerView.Adapter<FeaturedProductItemsAdapter.FeaturedViewHolder> implements Const,
-        Filterable{
+        Filterable {
 
-    private String mRecyclerViewType;
+    private final String mRecyclerViewType;
 
-    private List<CustomizedProduct> mListProducts = new ArrayList<>();
+    private final String mCategory;
 
-    private List<? extends CustomizedProduct> mOriginal = new ArrayList<>();
+    private List<Product> mListProducts = new ArrayList<>();
 
-    private String mCoins = " " + App.getContext().getString(R.string.item_coins);
+    private List<RealmProductWrapper> mRealmProductWrapperList = new ArrayList<>();
+    private List<RealmProductWrapper> mRealmProductWrapperOriginal = new ArrayList<>();
 
-    private final static List<Favorites> sFavoritesList = FavoritesListSingleton.getInstance().getData();
+    private final String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
+
+        if (featureCategory != null) {
+            mCategory = featureCategory;
+        } else {
+            mCategory = "";
+        }
 
         if (recyclerViewType != null) {
             mRecyclerViewType = recyclerViewType;
         } else {
             mRecyclerViewType = DEFAULT_RECYCLER_VIEW;
         }
+
     }
 
-    public void clearList(){
-        mListProducts.clear();
+    public void setData(List<Product> data) {
+        mListProducts = new ArrayList<>(data);
+        fromProductToRealmProductList();
         notifyDataSetChanged();
     }
 
-    public void addToList(List<? extends CustomizedProduct> products) {
-        mListProducts.addAll(products);
-    }
-
-    public void setData(List<? extends CustomizedProduct> data){
-        ArrayList<CustomizedProduct> newList = new ArrayList<>(data);
-        mListProducts.clear();
-        mListProducts.addAll(newList);
-        mListProducts = newList;
-        notifyDataSetChanged();
-    }
-
-    public List<CustomizedProduct> getCustomizedProductList(){
-        return mListProducts;
+    private void fromProductToRealmProductList() {
+        for (Product products : mListProducts) {
+            RealmProductWrapper currentProduct = new RealmProductWrapper(products);
+            mRealmProductWrapperList.add(currentProduct);
+            mRealmProductWrapperOriginal.add(currentProduct);
+        }
     }
 
     @Override
     public FeaturedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Picasso picassoTrustAdapter = PicassoTrustAdapter.getInstance(App.getContext());
-
         View v;
+        assert mRecyclerViewType != null;
         switch (mRecyclerViewType) {
             case "DEFAULT":
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyler_machine_view_item, parent, false);
@@ -94,9 +98,13 @@ public class FeaturedProductItemsAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(final FeaturedViewHolder holder, final int position) {
+    public void onBindViewHolder(final FeaturedViewHolder holder, int position) {
 
-        final CustomizedProduct product = mListProducts.get(position);
+        List<Product> sFavoritesList = RealmController.getInstance().getFavoriteProducts();
+
+        final Product product = mListProducts.get(position);
+
+        boolean isCurrentProductInMachine = RealmController.getInstance().getSingleProduct(String.valueOf(mListProducts.get(holder.getAdapterPosition()).getId()));
 
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
@@ -105,22 +113,34 @@ public class FeaturedProductItemsAdapter extends
             holder.mProductDescription.setText(product.getDescription());
         }
 
-        if (holder.mParentView != null) {
-            holder.mParentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(position)));
-                }
-            });
+        if (isCurrentProductInMachine) {
+            if (holder.mParentView != null) {
+                holder.mParentView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(holder.getAdapterPosition())));
+                    }
+                });
+            }
         }
 
-        if (holder.mBuyProduct != null) {
-            holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new OnProductBuyClickEvent(mListProducts.get(position)));
-                }
-            });
+        if (isCurrentProductInMachine)
+
+        {
+            if (holder.mBuyProduct != null) {
+                holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventBus.getDefault().post(new OnProductBuyClickEvent(mListProducts.get(holder.getAdapterPosition())));
+                    }
+                });
+            }
+        } else
+
+        {
+            if (holder.mBuyProduct != null) {
+                holder.mBuyProduct.setTextColor(App.getContext().getResources().getColor(R.color.colorScreenBackground));
+            }
         }
 
 
@@ -132,11 +152,13 @@ public class FeaturedProductItemsAdapter extends
          * if this product is already in Favorites to remove or add product
          * to favorites list
          */
-        if (holder.mAddFavorite != null) {
+        if (holder.mAddFavorite != null)
+
+        {
             holder.mAddFavorite.setTag(false);
-            if (FavoritesListSingleton.getInstance().getData().size()>0) {
-                for (int i = 0; i < FavoritesListSingleton.getInstance().getData().size(); i++) {
-                    if (FavoritesListSingleton.getInstance().getData().get(i).getId() == product.getId()) {
+            if (sFavoritesList != null && sFavoritesList.size() > 0) {
+                for (int i = 0; i < sFavoritesList.size(); i++) {
+                    if (sFavoritesList.get(i).getId().equals(product.getId())) {
                         Picasso.with(App.getContext()).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
                         holder.mAddFavorite.setTag(true);
                         break;
@@ -152,21 +174,35 @@ public class FeaturedProductItemsAdapter extends
                 @Override
                 public void onClick(View v) {
                     if (!(Boolean) holder.mAddFavorite.getTag()) {
-                        EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(position)));
+                        EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
                     } else {
-                        EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(position)));
+                        EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
+                        if (mCategory.equals(FAVORITES)) {
+                            mListProducts.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+                            if (getItemCount() < 1) {
+                                EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
+                            }
+                        }
                     }
                 }
             });
         }
 
-        if (TextUtils.isEmpty(product.getImageUrl())) {
-            Picasso.with(App.getContext()).load(R.drawable.softjourn_logo).into(holder.mProductImage);
-        } else {
+        if (TextUtils.isEmpty(product.getImageUrl()))
+
+        {
+            Picasso.with(App.getContext()).load(R.drawable.logo).into(holder.mProductImage);
+        } else
+
+        {
             PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(holder.mProductImage);
+            if (!isCurrentProductInMachine) {
+                holder.mProductImage.setAlpha(0.3f);
+            }
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -179,12 +215,12 @@ public class FeaturedProductItemsAdapter extends
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<CustomizedProduct> results = new ArrayList<CustomizedProduct>();
-                if (mOriginal == null || mOriginal.size() <= 0)
-                    mOriginal = mListProducts;
+                final List<RealmProductWrapper> results = new ArrayList<>();
+                if (mRealmProductWrapperOriginal == null || mRealmProductWrapperOriginal.size() <= 0)
+                    mRealmProductWrapperOriginal = new ArrayList<>(mRealmProductWrapperList);
                 if (constraint != null) {
-                    if (mOriginal != null & mOriginal.size() > 0) {
-                        for (final CustomizedProduct g : mOriginal) {
+                    if (mRealmProductWrapperOriginal != null & mRealmProductWrapperOriginal.size() > 0) {
+                        for (final RealmProductWrapper g : mRealmProductWrapperOriginal) {
                             if (g.getName().toLowerCase().contains(constraint.toString()))
                                 results.add(g);
                         }
@@ -196,26 +232,38 @@ public class FeaturedProductItemsAdapter extends
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                mListProducts = (ArrayList<CustomizedProduct>)results.values;
+                mRealmProductWrapperList = (ArrayList<RealmProductWrapper>) results.values;
+                if (mRealmProductWrapperList.size() > 0) {
+                    List<Integer> list = new ArrayList<>();
+                    for (RealmProductWrapper i : mRealmProductWrapperList) {
+                        list.add(i.getId());
+                    }
+                    Realm realm = Realm.getDefaultInstance();
+                    RealmQuery<Product> query = realm.where(Product.class).in("id", list.toArray(new Integer[list.size()]));
+                    mListProducts = query.findAll();
+
+                } else {
+                    mListProducts = new ArrayList<>();
+                }
                 notifyDataSetChanged();
             }
         };
     }
 
-        public static class FeaturedViewHolder extends RecyclerView.ViewHolder {
+    public static class FeaturedViewHolder extends RecyclerView.ViewHolder {
 
-        public View mParentView;
-        public TextView mProductPrice;
-        public TextView mProductName;
-        public TextView mBuyProduct;
-        public TextView mProductDescription;
+        public final View mParentView;
+        public final TextView mProductPrice;
+        public final TextView mProductName;
+        public final TextView mBuyProduct;
+        public final TextView mProductDescription;
 
-        public ImageView mProductImage;
-        public ImageView mAddFavorite;
+        public final ImageView mProductImage;
+        public final ImageView mAddFavorite;
 
         public FeaturedViewHolder(View v) {
             super(v);
-            mParentView = (View) v.findViewById(R.id.layout_item_product_parent_view);
+            mParentView = v.findViewById(R.id.layout_item_product_parent_view);
             mProductImage = (ImageView) v.findViewById(R.id.layout_item_product_img);
             mProductPrice = (TextView) v.findViewById(R.id.layout_item_product_price);
             mProductName = (TextView) v.findViewById(R.id.layout_item_product_name);

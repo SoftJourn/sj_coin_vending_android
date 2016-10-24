@@ -17,8 +17,8 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
-import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.CustomizedProduct;
+import com.softjourn.sj_coin.contratcts.PurchaseContract;
+import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
@@ -32,13 +32,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public abstract class BaseActivity extends AppCompatActivity implements Const {
 
-    public EventBus mEventBus = EventBus.getDefault();
+    private final EventBus mEventBus = EventBus.getDefault();
 
     protected boolean mProfileIsVisible = false;
-    protected boolean mAllItemsVisible = false;
-    protected boolean mFavoritesVisible = false;
 
-    protected ProgressDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.home:
                 Navigation.goToVendingActivity(this);
                 finish();
@@ -87,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
             case R.id.allProducts:
                 if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
-                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS), TAG_ALL_PRODUCTS_FRAGMENT)
+                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS,0,0), TAG_ALL_PRODUCTS_FRAGMENT)
                             .commit();
                 } else {
                     Navigation.goToSeeAllActivity(this, ALL_ITEMS);
@@ -96,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
             case R.id.favorites:
                 if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
-                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES), TAG_FAVORITES_FRAGMENT)
+                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES,0,0), TAG_FAVORITES_FRAGMENT)
                             .commit();
                 } else {
                     Navigation.goToSeeAllActivity(this, FAVORITES);
@@ -143,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
         Utils.showErrorToast(this, text);
     }
 
-    protected void onCreateDialog(final CustomizedProduct product, final VendingContract.Presenter presenter) {
+    protected void onCreateDialog(final Product product, final PurchaseContract.Presenter presenter) {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -173,6 +172,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
         });
 
         if (!dialog.isShowing()) {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.ConfirmDialogAnimation;
             dialog.show();
         }
     }

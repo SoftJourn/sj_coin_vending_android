@@ -6,23 +6,22 @@ import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Date;
-
 public class ProfilePresenter extends BasePresenterImpl implements ProfileContract.Presenter, Const {
 
-    private ProfileContract.View mView;
-    private ProfileModel mProfileModel;
-    private VendingModel mVendingModel;
-    private LoginPresenter mLoginPresenter;
+    private final ProfileContract.View mView;
+    private final ProfileModel mProfileModel;
+    private final LoginPresenter mLoginPresenter;
+    private final VendingModel mVendingModel;
 
     public ProfilePresenter(ProfileContract.View profileView) {
 
@@ -32,17 +31,16 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         mProfileModel = new ProfileModel();
         mVendingModel = new VendingModel();
         mLoginPresenter = new LoginPresenter();
-        mView.showProgress(App.getContext().getString(R.string.progress_loading));
-        mVendingModel.callFeaturedProductsList(MACHINE_ID);
+        //mView.showProgress(App.getContext().getString(R.string.progress_loading));
     }
 
     @Override
     public void getAccount() {
-        if (!makeNetworkChecking()) {
+        if (!NetworkManager.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+            if (Utils.checkExpirationDate()) {
+                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
@@ -52,26 +50,9 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     }
 
     @Override
-    public void getBalance() {
-        if (!makeNetworkChecking()) {
-            mView.showNoInternetError();
-        } else {
-            if (checkExpirationDate()) {
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            } else {
-                mProfileModel.makeBalanceCall();
-            }
-        }
-    }
-
-    @Override
     public void showHistory() {
-        mView.setData(mProfileModel.loadHistory());
-    }
-
-    @Override
-    public boolean checkExpirationDate() {
-        return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(EXPIRATION_DATE)));
+        //mView.showProgress(App.getContext().getString(R.string.progress_loading));
+        mVendingModel.getPurchaseHistory();
     }
 
     @Override
@@ -79,21 +60,17 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         mLoginPresenter.refreshToken(refreshToken);
     }
 
-    @Override
-    public boolean makeNetworkChecking() {
-        return NetworkManager.isNetworkEnabled();
-    }
-
     @Subscribe
     public void OnEvent(OnAccountReceivedEvent event) {
         mView.hideProgress();
         mView.showBalance(event.getAccount().getAmount());
         mView.setUserName(event.getAccount().getName() + " " + event.getAccount().getSurname());
+        showHistory();
     }
 
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event) {
-        mView.showBalance(String.format("%d", event.getAmount().getAmount()));
+        mView.showBalance(String.valueOf(event.getAmount().getAmount()));
     }
 
     @Subscribe
@@ -107,9 +84,9 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     }
 
     @Subscribe
-    public void OnEvent(OnFeaturedProductsListReceived event) {
+    public void OnEvent(OnHistoryReceived event) {
+        mView.setData(event.getHistoryList());
         mView.hideProgress();
-        showHistory();
     }
 }
 

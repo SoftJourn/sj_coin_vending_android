@@ -1,31 +1,31 @@
 package com.softjourn.sj_coin.model;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
 import lombok.Data;
 
-public class History implements Parcelable{
-
-    @SerializedName("date")
-    private String date;
+@Data
+public class History extends RealmObject implements Parcelable {
 
     @SerializedName("name")
     private String name;
-
+    @SerializedName("time")
+    private String time;
     @SerializedName("price")
-    private String price;
-
-    public History(){
-    }
+    private Integer price;
 
     protected History(Parcel in) {
-        date = in.readString();
+        time = in.readString();
         name = in.readString();
-        price = in.readString();
+        price = in.readInt();
+    }
+
+    public History(){
+
     }
 
     public static final Creator<History> CREATOR = new Creator<History>() {
@@ -47,32 +47,8 @@ public class History implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(date);
+        dest.writeString(time);
         dest.writeString(name);
-        dest.writeString(price);
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPrice() {
-        return price;
+        dest.writeInt(price);
     }
 }

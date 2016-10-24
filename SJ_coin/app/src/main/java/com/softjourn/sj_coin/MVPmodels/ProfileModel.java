@@ -1,25 +1,19 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
+import android.util.Log;
+
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.coins.CoinsApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
-import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.ModelsManager;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
-import com.softjourn.sj_coin.model.products.Products;
-import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
-
-import java.util.Collections;
-import java.util.List;
 
 public class ProfileModel extends BaseModel {
 
-    private CoinsApiProvider mCoinsApiProvider;
+    private final CoinsApiProvider mCoinsApiProvider;
 
     public ProfileModel() {
         mCoinsApiProvider = ApiManager.getInstance().getCoinsApiProvider();
@@ -35,7 +29,7 @@ public class ProfileModel extends BaseModel {
 
             @Override
             public void onError(String errorMsg) {
-
+                Log.d("Tag",errorMsg);
             }
         });
     }
@@ -49,19 +43,8 @@ public class ProfileModel extends BaseModel {
 
             @Override
             public void onError(String errorMsg) {
-
+                Log.d("Tag",errorMsg);
             }
         });
     }
-
-    public List<History> loadHistory() {
-        Products products = FeaturedProductsSingleton.getInstance().getData();
-        if (products == null
-                || products.myLastPurchases == null) {
-            return Collections.emptyList();
-        } else {
-            return ModelsManager.getHistoryList(products.myLastPurchases);
-        }
-    }
-
 }

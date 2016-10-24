@@ -1,24 +1,13 @@
 package com.softjourn.sj_coin.model;
 
-import android.support.annotation.Nullable;
-
-import com.softjourn.sj_coin.model.products.MyLastPurchase;
-import com.softjourn.sj_coin.utils.TimeUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by Andriy Ksenych on 13.09.2016.
- */
 public class ModelsManager {
 
-    public static History getHistoryModel(@Nullable MyLastPurchase myLastPurchaseModel) {
+   /* public static History getHistoryModel(@Nullable MyLastPurchase myLastPurchaseModel) {
         if (myLastPurchaseModel != null) {
             History history = new History();
             history.setDate(TimeUtils.getPrettyTime(myLastPurchaseModel.getTime()));
             history.setName(myLastPurchaseModel.getName());
-            history.setPrice(String.format("%d", myLastPurchaseModel.getPrice()));
+            history.setPrice(String.valueOf(myLastPurchaseModel.getPrice()));
             return history;
         } else {
             return null;
@@ -35,5 +24,5 @@ public class ModelsManager {
         } else {
             return null;
         }
-    }
+    }*/
 }

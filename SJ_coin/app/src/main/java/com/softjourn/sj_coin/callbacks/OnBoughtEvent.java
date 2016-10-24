@@ -1,16 +1,14 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.Amount;
-
 public class OnBoughtEvent {
 
-    private Amount mIsSuccess;
+    private final String mIsSuccess;
 
-    public OnBoughtEvent(Amount isSuccess){
+    public OnBoughtEvent(String isSuccess){
         this.mIsSuccess = isSuccess;
     }
 
-    public Amount getAmount(){
+    public String getAmount(){
         return mIsSuccess;
     }
 }

@@ -5,27 +5,47 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.softjourn.sj_coin.model.CustomizedProduct;
 
+import io.realm.RealmModel;
 import lombok.Data;
 
 @Data
-public class MyLastPurchase extends CustomizedProduct implements Parcelable{
+public class MyLastPurchase implements Parcelable, RealmModel{
     @SerializedName("time")
     String time;
+
+    @SerializedName("id")
+    private Integer id;
+
+    @SerializedName("price")
+    private Integer price;
+
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("imageUrl")
+    private String imageUrl;
+
+    @SerializedName("description")
+    private String description;
+
+    @SerializedName("category")
+    private Category category;
 
     public String getTime() {
         return time;
     }
 
+    public MyLastPurchase(){}
+
     protected MyLastPurchase(Parcel in) {
-        super(in);
+
         time = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
+
         dest.writeString(time);
     }
 

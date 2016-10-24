@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
+@Data
 public class Session {
 
     @SerializedName("access_token")
@@ -14,16 +15,4 @@ public class Session {
 
     @SerializedName("expires_in")
     private String expireIn;
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public String getExpireIn() {
-        return expireIn;
-    }
 }

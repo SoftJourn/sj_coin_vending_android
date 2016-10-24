@@ -3,18 +3,24 @@ package com.softjourn.sj_coin.model.products;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
 import lombok.Data;
 
-public class Favorites {
+@Data
+public class Favorites extends RealmObject {
 
     @SerializedName("id")
     public Integer id;
 
-    public Integer getId() {
-        return id;
-    }
+    @SerializedName("price")
+    private Integer price;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("imageUrl")
+    private String imageUrl;
+
+    @SerializedName("description")
+    private String description;
 }

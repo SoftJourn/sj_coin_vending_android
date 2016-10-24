@@ -2,31 +2,39 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/home"
-        android:title="@string/main_menu_home" />
+        <item
+            android:id="@+id/home"
+            android:title="@string/main_menu_home" />
 
-    <item
-        android:id="@+id/favorites"
-        android:title="@string/menu_item_favorites" />
+        <item
+            android:id="@+id/favorites"
+            android:title="@string/menu_item_favorites" />
 
-    <item
-        android:id="@+id/allProducts"
-        android:title="@string/menu_item_all_products" />
+        <item
+            android:id="@+id/allProducts"
+            android:title="@string/menu_item_all_products" />
 
-    <item
-        android:id="@+id/profile"
-        android:title="@string/main_menu_profile" />
+        <item
+            android:id="@+id/profile"
+            android:title="@string/main_menu_profile" />
 
-    <item
-        android:id="@+id/logout"
-        android:title="@string/main_menu_log_out" />
+        <item
+            android:id="@+id/logout"
+            android:title="@string/main_menu_log_out" />
 
-    <item
-        android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/menu_item_search"
-        android:visible="false"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
+        <item
+            android:id="@+id/action_search"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="@string/menu_item_search"
+            android:visible="false"
+            app:actionViewClass="android.support.v7.widget.SearchView"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/select_machine"
+            android:title="@string/machine_name"
+            android:icon="@drawable/ic_select_machine"
+            app:showAsAction="ifRoom"/>
+
+
 </menu>

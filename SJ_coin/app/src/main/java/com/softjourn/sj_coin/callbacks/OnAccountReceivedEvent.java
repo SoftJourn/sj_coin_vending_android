@@ -4,7 +4,7 @@ import com.softjourn.sj_coin.model.accountInfo.Account;
 
 
 public class OnAccountReceivedEvent {
-    private Account mAccount;
+    private final Account mAccount;
 
     public OnAccountReceivedEvent(Account account) {
         this.mAccount = account;

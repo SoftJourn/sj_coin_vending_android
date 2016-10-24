@@ -1,7 +1,8 @@
 package com.softjourn.sj_coin.callbacks;
 
 public class OnLoginCallEvent {
-    private boolean mIsSuccess;
+
+    private final boolean mIsSuccess;
 
     public OnLoginCallEvent(boolean isSuccess){
         this.mIsSuccess = isSuccess;

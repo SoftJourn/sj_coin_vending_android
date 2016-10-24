@@ -8,54 +8,51 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.base.BaseFragment;
-import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.CustomizedProduct;
-import com.softjourn.sj_coin.presenters.VendingPresenter;
+import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
+import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.presenters.VendingFragmentPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Andriy Ksenych on 15.09.2016.
- */
-public class ProductsListFragment extends BaseFragment implements VendingContract.View, Const, Extras {
+public class ProductsListFragment extends BaseFragment implements VendingFragmentContract.View, Const, Extras {
 
     private String mProductsCategory;
 
     private static final String TAG_PRODUCTS_CATEGORY = "PRODUCTS CATEGORY";
 
-    public static ProductsListFragment newInstance(String category) {
+    private VendingFragmentContract.Presenter mPresenter;
+    private FeaturedProductItemsAdapter mProductAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private int mHeaders;
+
+    public static ProductsListFragment newInstance(String category, @Nullable int headers, @Nullable int container) {
         Bundle bundle = new Bundle();
         bundle.putString(TAG_PRODUCTS_CATEGORY, category);
+        bundle.putString("HEADER", String.valueOf(headers));
         ProductsListFragment fragment = new ProductsListFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    private VendingContract.Presenter mPresenter;
-    private FeaturedProductItemsAdapter mProductAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private int mHeaders;
-    private int mContainer;
+    private List<Product> mProductList;
 
-    List<? extends CustomizedProduct> mProductList;
-
-    List<? extends CustomizedProduct> mCustomizedList;
-
-    Parcelable mListState;
+    private Parcelable mListState;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
@@ -69,18 +66,22 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     Button mButtonSortByPrice;
 
     @Nullable
+    @Bind(R.id.textViewNoProductsInCategory)
+    TextView mNoProductsInCategory;
+
+    @Nullable
     @OnClick(R.id.button_sort_name)
     public void onClickSortByName() {
-        if (mCustomizedList != null && !mCustomizedList.isEmpty()) {
-            sortByName(mSortingByNameForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
+        if (mProductList != null && !mProductList.isEmpty()) {
+            sortByName(mSortingByNameForward, mProductsCategory, mPresenter, mButtonSortByName, mButtonSortByPrice);
         }
     }
 
     @Nullable
     @OnClick(R.id.button_sort_price)
     public void onClickSortByPrice() {
-        if (mCustomizedList != null && !mCustomizedList.isEmpty()) {
-            sortByPrice(mSortingByPriceForward, mCustomizedList, mPresenter, mButtonSortByName, mButtonSortByPrice);
+        if (mProductList != null && !mProductList.isEmpty()) {
+            sortByPrice(mSortingByPriceForward, mProductsCategory, mPresenter, mButtonSortByName, mButtonSortByPrice);
         }
     }
 
@@ -88,12 +89,13 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProductsCategory = getArguments().getString(TAG_PRODUCTS_CATEGORY);
+        mHeaders = Integer.parseInt(getArguments().getString("HEADER"));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view;
+        final View view;
 
         switch (getActivity().getLocalClassName()) {
             case "activities.VendingActivity":
@@ -101,11 +103,15 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 ButterKnife.bind(this, view);
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, null);
+                view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
                 break;
 
             case "activities.SeeAllActivity":
                 view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
                 ButterKnife.bind(this, view);
+                (getActivity()).setTitle(mProductsCategory);
+                ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
+                view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
                 break;
@@ -126,14 +132,13 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
             ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName, mButtonSortByPrice);
         }
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new VendingPresenter(this);
+        mPresenter = new VendingFragmentPresenter(this, this.getActivity());
 
         if (savedInstanceState == null) {
             getLocalProductsList();
@@ -149,29 +154,18 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
                 break;
             case FAVORITES:
                 mHeaders = R.id.favoritesHeader;
-                mContainer = R.id.container_fragment_products_list_favorites;
                 mPresenter.getLocalFavorites();
                 break;
             case LAST_ADDED:
                 mHeaders = R.id.newProductsHeader;
-                mContainer = R.id.container_fragment_products_list_new_products;
                 mPresenter.getLocalLastAddedProducts();
                 break;
             case BEST_SELLERS:
                 mHeaders = R.id.bestSellersHeader;
-                mContainer = R.id.container_fragment_products_list_best_sellers;
                 mPresenter.getLocalBestSellers();
                 break;
-            case SNACKS:
-                mHeaders = R.id.snacksHeader;
-                mContainer = R.id.container_fragment_products_list_snacks;
-                mPresenter.getLocalSnacks();
-                break;
-            case DRINKS:
-                mHeaders = R.id.drinksHeader;
-                mContainer = R.id.container_fragment_products_list_drinks;
-                mPresenter.getLocalDrinks();
-                break;
+            default:
+                mPresenter.getLocalCategoryProducts(mProductsCategory);
         }
     }
 
@@ -195,67 +189,79 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
     }
 
     @Override
-    public void loadData(List<? extends CustomizedProduct> drinks, List<? extends CustomizedProduct> snacks) {
-        mProductList = new ArrayList<>();
-        mProductAdapter.clearList();
+    public void setSortedData(List<Product> product) {
+        mProductAdapter.setData(product);
+    }
 
-        if(drinks != null && !drinks.isEmpty()){
-            mProductAdapter.addToList(drinks);
+    @Override
+    public void changeFavoriteIcon(String action) {
+        if (action.equals(ACTION_ADD_FAVORITE)) {
+            if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
+                ((SeeAllActivity) getActivity()).hideProgress();
+            }
+            mProductAdapter.notifyDataSetChanged();
+        } else {
+            if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
+                ((SeeAllActivity) getActivity()).hideProgress();
+                if (!mProductsCategory.equals(FAVORITES)) {
+                    mProductAdapter.notifyDataSetChanged();
+                }
+            }
         }
-        if(snacks != null && !snacks.isEmpty()){
-            mProductAdapter.addToList(snacks);
+    }
+
+    @Override
+    public void showDataAfterRemovingFavorites(List<Product> productsList) {
+        if (mProductsCategory.equals(FAVORITES)) {
+
+            if (productsList != null && !productsList.isEmpty()) {
+                mProductList = productsList;
+                mProductAdapter.setData(productsList);
+
+                try {
+                    ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+                } catch (ClassCastException e) {
+                    return;
+                }
+            } else {
+                try {
+                    ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+                } catch (ClassCastException e) {
+                    if (mNoProductsInCategory != null) {
+                        mNoProductsInCategory.setVisibility(View.VISIBLE);
+                    }
+                    if (mButtonSortByName != null && mButtonSortByPrice != null) {
+                        mButtonSortByName.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        mButtonSortByPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        mButtonSortByName.setEnabled(false);
+                        mButtonSortByPrice.setEnabled(false);
+                    }
+                }
+            }
         }
-        mProductList = mProductAdapter.getCustomizedProductList();
-        mCustomizedList = mProductList;
     }
 
     @Override
-    public void navigateToBuyProduct(CustomizedProduct product) {
-
-    }
-
-    @Override
-    public void navigateToFragments() {
-
-    }
-
-    @Override
-    public void setSortedData(List<? extends CustomizedProduct> product) {
-        mProductAdapter.setData(mCustomizedList);
-    }
-
-    @Override
-    public void loadUserBalance() {
-
-    }
-
-    @Override
-    public void updateBalanceAmount(String amount) {
-
-    }
-
-    @Override
-    public void changeFavoriteIcon() {
-        mProductAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void loadData(List<? extends CustomizedProduct> productsList) {
-        if (!productsList.isEmpty()) {
+    public void loadData(List<Product> productsList) {
+        if (productsList != null && !productsList.isEmpty()) {
             mProductList = productsList;
             mProductAdapter.setData(productsList);
-            mCustomizedList = mProductList;
 
             try {
-                ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup)getView().getParent()).getId());
-            } catch (ClassCastException e) {}
-
+                ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+            } catch (ClassCastException e) {
+                return;
+            }
         } else {
             try {
-                ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup)getView().getParent()).getId());
+                ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
             } catch (ClassCastException e) {
-                ((SeeAllActivity) getActivity()).showToast("There is currently no Products in chosen category");
+                if (mNoProductsInCategory != null) {
+                    mNoProductsInCategory.setVisibility(View.VISIBLE);
+                }
                 if (mButtonSortByName != null && mButtonSortByPrice != null) {
+                    mButtonSortByName.setBackgroundColor(getResources().getColor(R.color.transparent));
+                    mButtonSortByPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
                     mButtonSortByName.setEnabled(false);
                     mButtonSortByPrice.setEnabled(false);
                 }
@@ -263,20 +269,10 @@ public class ProductsListFragment extends BaseFragment implements VendingContrac
         }
     }
 
-
-    @Override
-    public void showToastMessage(String message) {
-
-    }
-
-    @Override
-    public void showNoInternetError() {
-
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
+        mPresenter = null;
     }
 }

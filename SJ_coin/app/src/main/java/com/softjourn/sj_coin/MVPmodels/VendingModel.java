@@ -1,6 +1,9 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
+import android.app.Activity;
+import android.util.Log;
+
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
@@ -9,37 +12,35 @@ import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
-import com.softjourn.sj_coin.callbacks.OnProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.Amount;
-import com.softjourn.sj_coin.model.CustomizedProduct;
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.machines.Machines;
-import com.softjourn.sj_coin.model.products.BestSeller;
-import com.softjourn.sj_coin.model.products.Drink;
+import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.LastAdded;
+import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.Products;
-import com.softjourn.sj_coin.model.products.Snack;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.Utils;
-import com.softjourn.sj_coin.utils.localData.FavoritesListSingleton;
-import com.softjourn.sj_coin.utils.localData.FeaturedProductsSingleton;
-import com.softjourn.sj_coin.utils.localData.ProductsListSingleton;
+import com.softjourn.sj_coin.utils.RealmUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.Sort;
 
 public class VendingModel extends BaseModel implements Const {
 
-    private VendingApiProvider mApiProvider;
+    private final Realm mRealm = Realm.getDefaultInstance();
+
+    private final VendingApiProvider mApiProvider;
 
     public VendingModel() {
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
+
     }
 
     public void callMachinesList() {
@@ -56,27 +57,14 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public void callConcreteMachine(String machineID) {
+    public void callFeaturedProductsList(String selectedMachine) {
 
-        mApiProvider.getConcreteMachine(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Machines>() {
+        mApiProvider.getFeaturedProductsList(selectedMachine, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
             @Override
-            public void onSuccess(Machines response) {
-                Utils.storeConcreteMachineInfo(response);
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-
-            }
-        });
-    }
-
-    public void callFeaturedProductsList(String machineID) {
-
-        mApiProvider.getFeaturedProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<Products>() {
-            @Override
-            public void onSuccess(Products response) {
-                FeaturedProductsSingleton.getInstance().setData(response);
+            public void onSuccess(Featured response) {
+                Log.d("TAG", response.toString());
+                RealmUtils.clearAllDB(mRealm);
+                RealmUtils.setRealmData(mRealm,response);
                 mEventBus.post(new OnFeaturedProductsListReceived(response));
             }
 
@@ -87,27 +75,13 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public void callProductsList(String machineID) {
+    public void buyProductByID(String machineID, String id) {
+        mEventBus.post(new OnBoughtEvent(""));
+        mApiProvider.buyProductByID(machineID, id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
 
-        mApiProvider.getProductsList(machineID, new com.softjourn.sj_coin.api.callbacks.Callback<List<Product>>() {
-            @Override
-            public void onSuccess(List<Product> response) {
-                mEventBus.post(new OnProductsListReceived(response));
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-
-            }
-        });
-    }
-
-    public void buyProductByID(String id) {
-        mApiProvider.buyProductByID(id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
             @Override
             public void onSuccess(Amount response) {
                 mEventBus.post(new OnAmountReceivedEvent(response));
-                mEventBus.post(new OnBoughtEvent(response));
             }
 
             @Override
@@ -122,7 +96,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getListFavorites(new com.softjourn.sj_coin.api.callbacks.Callback<List<Favorites>>() {
             @Override
             public void onSuccess(List<Favorites> response) {
-                FavoritesListSingleton.getInstance().setData(response);
+                RealmUtils.setRealmData(mRealm,response);
                 mEventBus.post(new OnFavoritesListReceived(response));
             }
 
@@ -138,8 +112,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.addProductToFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                FavoritesListSingleton.getInstance().LocalAddToFavorites(id);
-                mEventBus.post(new OnAddedToFavorites(id));
+                    mEventBus.post(new OnAddedToFavorites(id));
             }
 
             @Override
@@ -154,8 +127,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.removeFromFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                FavoritesListSingleton.getInstance().LocalRemoveFromFavorites(id);
-                mEventBus.post(new OnRemovedFromFavorites(id));
+                    mEventBus.post(new OnRemovedFromFavorites(id));
             }
 
             @Override
@@ -165,92 +137,60 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public List<Product> loadLocalProductList() {
-        return ProductsListSingleton.getInstance().getData();
-    }
-
-    public Products loadLocalFeaturedProductList() {
-        return FeaturedProductsSingleton.getInstance().getData();
-    }
-
-    public List<BestSeller> loadBestSellers() {
-        return FeaturedProductsSingleton.getInstance().getData().getBestSellers();
-    }
-
-    public List<LastAdded> loadLastAdded() {
-        return FeaturedProductsSingleton.getInstance().getData().getNewProducts();
-    }
-
-    public List<Drink> loadDrink() {
-        return FeaturedProductsSingleton.getInstance().getData().getDrink();
-    }
-
-    public List<Snack> loadSnack() {
-        return FeaturedProductsSingleton.getInstance().getData().getSnack();
-    }
-
-    public List<CustomizedProduct> loadFavorites() {
-
-        List<CustomizedProduct> favoritesProducts = new ArrayList<>();
-        favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getDrink()));
-        favoritesProducts.addAll(getFavoriteProducts(FeaturedProductsSingleton.getInstance().getData().getSnack()));
-        return favoritesProducts;
-    }
-
-    private List<CustomizedProduct> getFavoriteProducts(List<? extends CustomizedProduct> products) {
-
-        List<CustomizedProduct> favoritesProducts = new ArrayList<>();
-
-        for (Favorites favorites : FavoritesListSingleton.getInstance().getData()) {
-
-            for (CustomizedProduct product : products) {
-                if (favorites.getId() == product.getId()) {
-                    favoritesProducts.add(product);
-                    break;
-                }
+    public void getPurchaseHistory() {
+        mApiProvider.getPurchaseHistory(new com.softjourn.sj_coin.api.callbacks.Callback<List<History>>() {
+            @Override
+            public void onSuccess(List<History> response) {
+                RealmUtils.setRealmHistoryData(mRealm,response);
+                mEventBus.post(new OnHistoryReceived(response));
             }
-        }
 
-        return favoritesProducts;
+            @Override
+            public void onError(String errorMsg) {
+
+            }
+        });
     }
 
-    public List<? extends CustomizedProduct> sortByName(List<? extends CustomizedProduct> product, boolean isSortingForward) {
+    public List<Product> loadLocalProductList(Activity activity) {
+        return RealmController.with(activity).getProducts();
+    }
+
+    public List<Product> loadBestSellers(Activity activity) {
+        return RealmController.with(activity).getSortedProducts(Const.BEST_SELLERS,"name", Sort.ASCENDING);
+    }
+
+    public List<Product> loadLastAdded(Activity activity) {
+        return RealmController.with(activity).getSortedProducts(Const.LAST_ADDED,"name", Sort.ASCENDING);
+    }
+
+    public List<Product> loadFavorites(Activity activity) {
+        return RealmController.with(activity).getSortedProducts(Const.FAVORITES,"name", Sort.ASCENDING);
+    }
+
+    public List<Product> loadProductsFromDB(Activity activity, String category) {
+        return RealmController.with(activity).getSortedProducts(category,"name", Sort.ASCENDING);
+    }
+
+    public List<Categories> loadCategories(Activity activity) {
+        return RealmController.with(activity).getCategories();
+    }
+
+    public List<Product> sortByName(Activity activity, String productsCategory, boolean isSortingForward) {
         if (isSortingForward) {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return lhs.getName().compareTo(rhs.getName());
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "name", Sort.ASCENDING);
         } else {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return rhs.getName().compareTo(lhs.getName());
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "name", Sort.DESCENDING);
         }
     }
 
-    public List<? extends CustomizedProduct> sortByPrice(List<? extends CustomizedProduct> product, boolean isSortingForward) {
+    public List<Product> sortByPrice(Activity activity, String productsCategory, boolean isSortingForward) {
         if (isSortingForward) {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return lhs.getPrice() - rhs.getPrice();
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "price", Sort.ASCENDING);
         } else {
-            Collections.sort(product, new Comparator<CustomizedProduct>() {
-                @Override
-                public int compare(CustomizedProduct lhs, CustomizedProduct rhs) {
-                    return rhs.getPrice() - lhs.getPrice();
-                }
-            });
-            return product;
+            return RealmController.with(activity).getSortedProducts(productsCategory, "price", Sort.DESCENDING);
         }
     }
+
+
 }

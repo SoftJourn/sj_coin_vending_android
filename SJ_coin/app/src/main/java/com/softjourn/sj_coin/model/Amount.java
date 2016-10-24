@@ -5,18 +5,15 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Andriy Ksenych on 16.09.2016.
- */
 public class Amount implements Parcelable{
     @SerializedName("amount")
-    int amount;
+    private int amount;
 
     public int getAmount() {
         return amount;
     }
 
-    protected Amount(Parcel in) {
+    private Amount(Parcel in) {
         amount = in.readInt();
     }
 

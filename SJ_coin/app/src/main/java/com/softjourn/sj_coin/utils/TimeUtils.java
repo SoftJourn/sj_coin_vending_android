@@ -4,14 +4,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-/**
- * Created by Andriy Ksenych on 16.09.2016.
- */
 public class TimeUtils {
 
-    public static Date getDateFromString(String dateString){
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static Date getDateFromString(String dateString){
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         Date date;
         try {
             date = format.parse(dateString);
@@ -23,7 +21,7 @@ public class TimeUtils {
     }
 
     public static String getPrettyTime(String dateString){
-        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
         Date date = getDateFromString(dateString);
 
         return date == null ? dateString : format.format(date);

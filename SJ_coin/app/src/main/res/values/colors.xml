@@ -2,9 +2,12 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#34855C</color>
+    <color name="colorAccent">#fd218c</color>
     <color name="colorScreenBackground">#50AAAAAA</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="menuBackground">#414141</color>
+    <color name="colorSplitter">#ffbdbdbd</color>
+    <color name="colorBlue">#FF0099CC</color>
+    <color name="colorBackgroundNoInternet">#FFF5F5F5</color>
 </resources>

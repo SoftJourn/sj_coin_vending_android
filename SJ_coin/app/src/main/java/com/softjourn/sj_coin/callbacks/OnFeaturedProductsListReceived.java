@@ -1,18 +1,12 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.products.Products;
+import com.softjourn.sj_coin.model.products.Featured;
 
 public class OnFeaturedProductsListReceived {
 
-    private Products mProduct;
-
-    public OnFeaturedProductsListReceived(Products product) {
-        this.mProduct = product;
+    public OnFeaturedProductsListReceived(Featured product) {
     }
 
-    public Products getProductsList(){
-        return mProduct;
-    }
 }
 
 

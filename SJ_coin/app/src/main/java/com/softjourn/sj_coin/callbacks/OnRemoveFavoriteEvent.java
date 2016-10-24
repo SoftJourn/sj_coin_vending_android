@@ -1,16 +1,16 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.CustomizedProduct;
-
+import com.softjourn.sj_coin.model.products.Product;
 
 public class OnRemoveFavoriteEvent {
-    private CustomizedProduct mProduct;
 
-    public OnRemoveFavoriteEvent(CustomizedProduct product) {
+    private final Product mProduct;
+
+    public OnRemoveFavoriteEvent(Product product) {
         this.mProduct = product;
     }
 
-    public CustomizedProduct removeFavorite() {
+    public Product removeFavorite() {
         return mProduct;
     }
 }

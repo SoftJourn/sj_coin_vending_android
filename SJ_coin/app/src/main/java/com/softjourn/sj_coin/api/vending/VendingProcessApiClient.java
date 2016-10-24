@@ -5,10 +5,10 @@ import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.api.callbacks.Callback;
 import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.model.Amount;
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.Products;
+import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         Request orRequest = request.newBuilder()
-                                .addHeader("Authorization", "Bearer " + Preferences.retrieveStringObject(ACCESS_TOKEN))
+                                .addHeader(HEADER_AUTHORIZATION_KEY, "Bearer " + Preferences.retrieveStringObject(ACCESS_TOKEN))
                                 .build();
                         return chain.proceed(orRequest);
                     }
@@ -51,18 +51,14 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
                     }
                 })
                 .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
                 .build();
     }
 
-    private boolean sendCallBack(com.softjourn.sj_coin.api.callbacks.Callback callback, retrofit2.Response response) {
+    private void sendCallBack(com.softjourn.sj_coin.api.callbacks.Callback callback, retrofit2.Response response) {
         if (response.isSuccessful()) {
             callback.onSuccess(response.body());
-            return true;
         } else {
-            callback.onError(response.message());
-            return false;
+            callback.onError(String.valueOf(response.code()));
         }
     }
 
@@ -83,46 +79,16 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
     }
 
     @Override
-    public void getConcreteMachine(String machineID, final Callback<Machines> callback) {
-        mApiService.getConcreteMachine(machineID).enqueue(new retrofit2.Callback<Machines>() {
+    public void getFeaturedProductsList(String selectedMachine, final Callback<Featured> callback) {
+
+        mApiService.getFeaturedProductsList(selectedMachine).enqueue(new retrofit2.Callback<Featured>() {
             @Override
-            public void onResponse(Call<Machines> call, retrofit2.Response<Machines> response) {
+            public void onResponse(Call<Featured> call, retrofit2.Response<Featured> response) {
                 sendCallBack(callback, response);
             }
 
             @Override
-            public void onFailure(Call<Machines> call, Throwable t) {
-                callback.onError(t.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public void getFeaturedProductsList(String selectedMachine, final Callback<Products> callback) {
-
-        mApiService.getFeaturedProductsList(selectedMachine).enqueue(new retrofit2.Callback<Products>() {
-            @Override
-            public void onResponse(Call<Products> call, retrofit2.Response<Products> response) {
-                sendCallBack(callback, response);
-            }
-
-            @Override
-            public void onFailure(Call<Products> call, Throwable t) {
-                callback.onError(t.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public void getProductsList(String selectedMachine, final Callback<List<Product>> callback) {
-        mApiService.getProductsList(selectedMachine).enqueue(new retrofit2.Callback<List<Product>>() {
-            @Override
-            public void onResponse(Call<List<Product>> call, retrofit2.Response<List<Product>> response) {
-                sendCallBack(callback, response);
-            }
-
-            @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(Call<Featured> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });
@@ -144,8 +110,8 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
     }
 
     @Override
-    public void buyProductByID(String id, final Callback<Amount> callback) {
-        mApiService.buyProductByID(id).enqueue(new retrofit2.Callback<Amount>() {
+    public void buyProductByID(String machineID,String id, final Callback<Amount> callback) {
+        mApiService.buyProductByID(machineID, id).enqueue(new retrofit2.Callback<Amount>() {
             @Override
             public void onResponse(Call<Amount> call, retrofit2.Response<Amount> response) {
                 sendCallBack(callback, response);
@@ -183,6 +149,21 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void getPurchaseHistory(final Callback<List<History>> callback) {
+        mApiService.getPurchaseHistory().enqueue(new retrofit2.Callback<List<History>>() {
+            @Override
+            public void onResponse(Call<List<History>> call, retrofit2.Response<List<History>> response) {
+                sendCallBack(callback, response);
+            }
+
+            @Override
+            public void onFailure(Call<List<History>> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });

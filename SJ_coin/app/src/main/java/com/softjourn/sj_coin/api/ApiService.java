@@ -1,18 +1,18 @@
 package com.softjourn.sj_coin.api;
 
 import com.softjourn.sj_coin.model.Amount;
+import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Favorites;
+import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.Products;
 
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -42,37 +42,40 @@ public interface ApiService {
     /**
      * Vending Server endpoints
      */
-    @GET("v1/machines")
+    @GET("machines")
     Call<List<Machines>> getMachines();
 
-    @GET("v1/machines/{id}")
+    @GET("machines/{id}")
     Call<Machines> getConcreteMachine(@Path("id") String machineID);
 
-    @GET("v1/machines/{machineID}/features")
-    Call<Products> getFeaturedProductsList(@Path("machineID") String machineID);
+    @GET("machines/{machineID}/features")
+    Call<Featured> getFeaturedProductsList(@Path("machineID") String machineID);
 
-    @GET("v1/machines/{machineID}/products")
+    @GET("machines/{machineID}/products")
     Call<List<Product>> getProductsList(@Path("machineID") String machineID);
 
-    @POST ("v1/machines/3/products/{id}")
-    Call<Amount> buyProductByID(@Path("id") String id);
+    @POST ("machines/{machineID}/products/{id}")
+    Call<Amount> buyProductByID(@Path("machineID") String machineID, @Path("id") String id);
 
-    @GET ("v1/favorites")
+    @GET ("favorites")
     Call<List<Favorites>> getListFavorites();
 
-    @POST ("v1/favorites/{id}")
+    @POST ("favorites/{id}")
     Call<Void> addProductToFavorites(@Path("id") int id);
 
-    @DELETE ("v1/favorites/{id}")
+    @DELETE ("favorites/{id}")
     Call<Void> removeFromFavorites(@Path("id") String id);
+
+    @GET ("machines/last")
+    Call<List<History>> getPurchaseHistory();
 
 
     /**
      * Coin server endpoints.
      */
-    @GET("api/v1/account")
+    @GET("account")
     Call<Account> getBalance();
 
-    @GET("api/v1/amount")
+    @GET("amount")
     Call<Balance> getAmount();
 }

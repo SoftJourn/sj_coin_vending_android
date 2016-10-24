@@ -12,16 +12,12 @@ import java.util.Date;
 
 public class Utils {
 
-    public static void showErrorToast(Context context, String text, int gravity) {
+    public static void showErrorToast(Context context, String text) {
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        toast.setGravity(gravity, 0, 0);
-        if (toast == null || toast.getView().getWindowVisibility() != View.VISIBLE) {
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        if (toast.getView().getWindowVisibility() != View.VISIBLE) {
             toast.show();
         }
-    }
-
-    public static void showErrorToast(Context context, String text) {
-        showErrorToast(context, text, Gravity.CENTER);
     }
 
     public static void storeSessionInfo(Session session) {
@@ -31,14 +27,18 @@ public class Utils {
     }
 
     public static void storeConcreteMachineInfo(Machines machine) {
-        Preferences.storeObject(Const.SELECTED_MACHINE_ROWS, machine.getSize().getRows());
-        Preferences.storeObject(Const.SELECTED_MACHINE_COLUMNS, machine.getSize().getColumns());
-        Preferences.storeObject(Const.SELECTED_MACHINE_ID, machine.getId());
+        Preferences.storeObject(Const.SELECTED_MACHINE_ID, String.valueOf(machine.getId()));
         Preferences.storeObject(Const.SELECTED_MACHINE_NAME, machine.getName());
     }
 
     public static void clearUsersData(){
         Preferences.clearStringObject(Const.ACCESS_TOKEN);
         Preferences.clearStringObject(Const.REFRESH_TOKEN);
+        Preferences.clearStringObject(Const.SELECTED_MACHINE_NAME);
+        Preferences.clearStringObject(Const.SELECTED_MACHINE_ID);
+    }
+
+    public static boolean checkExpirationDate() {
+        return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(Const.EXPIRATION_DATE)));
     }
 }
