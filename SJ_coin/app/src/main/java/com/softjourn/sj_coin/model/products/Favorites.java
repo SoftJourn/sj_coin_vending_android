@@ -23,4 +23,14 @@ public class Favorites extends RealmObject {
 
     @SerializedName("description")
     private String description;
+
+    public Favorites(){}
+
+    public Favorites(Product product){
+        this.id = product.getId();
+        this.price = product.getPrice();
+        this.name = product.getName();
+        this.imageUrl = product.getImageUrl();
+        this.description = product.getDescription();
+    }
 }

@@ -10,4 +10,5 @@
     <color name="colorSplitter">#ffbdbdbd</color>
     <color name="colorBlue">#FF0099CC</color>
     <color name="colorBackgroundNoInternet">#FFF5F5F5</color>
+    <color name="colorError">#ff0000</color>
 </resources>

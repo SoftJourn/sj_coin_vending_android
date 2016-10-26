@@ -7,6 +7,7 @@ import com.softjourn.sj_coin.model.products.Featured;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmModel;
 
 public class RealmUtils {
 
@@ -31,6 +32,12 @@ public class RealmUtils {
     public static void clearAllDB(Realm realm) {
         realm.beginTransaction();
         realm.deleteAll();
+        realm.commitTransaction();
+    }
+
+    public static void clearDataFromTable(Realm realm, Class<? extends RealmModel> clazz){
+        realm.beginTransaction();
+        realm.delete(clazz);
         realm.commitTransaction();
     }
 

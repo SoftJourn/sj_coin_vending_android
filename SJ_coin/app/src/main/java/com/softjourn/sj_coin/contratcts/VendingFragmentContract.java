@@ -5,9 +5,6 @@ import com.softjourn.sj_coin.model.products.Product;
 
 import java.util.List;
 
-/**
- * Created by omartynets on 13.10.2016.
- */
 public interface VendingFragmentContract {
 
     interface View {

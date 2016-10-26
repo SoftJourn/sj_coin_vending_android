@@ -11,6 +11,7 @@ public interface SeeAllContract {
 
         void navigateToBuyProduct(Product product);
 
+        void showSnackBar();
     }
 
     interface Presenter extends BasePresenter{

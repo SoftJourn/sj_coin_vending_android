@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.adapters;
 
 
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.model.products.RealmProductWrapper;
 import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -104,7 +106,7 @@ public class FeaturedProductItemsAdapter extends
 
         final Product product = mListProducts.get(position);
 
-        boolean isCurrentProductInMachine = RealmController.getInstance().getSingleProduct(String.valueOf(mListProducts.get(holder.getAdapterPosition()).getId()));
+        boolean isCurrentProductInMachine = RealmController.getInstance().isSingleProductPresent(String.valueOf(mListProducts.get(holder.getAdapterPosition()).getId()));
 
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
@@ -113,7 +115,6 @@ public class FeaturedProductItemsAdapter extends
             holder.mProductDescription.setText(product.getDescription());
         }
 
-        if (isCurrentProductInMachine) {
             if (holder.mParentView != null) {
                 holder.mParentView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -122,10 +123,8 @@ public class FeaturedProductItemsAdapter extends
                     }
                 });
             }
-        }
 
         if (isCurrentProductInMachine)
-
         {
             if (holder.mBuyProduct != null) {
                 holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +138,7 @@ public class FeaturedProductItemsAdapter extends
 
         {
             if (holder.mBuyProduct != null) {
-                holder.mBuyProduct.setTextColor(App.getContext().getResources().getColor(R.color.colorScreenBackground));
+                holder.mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(),R.color.colorScreenBackground));
             }
         }
 
@@ -176,13 +175,15 @@ public class FeaturedProductItemsAdapter extends
                     if (!(Boolean) holder.mAddFavorite.getTag()) {
                         EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
                     } else {
-                        EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
-                        if (mCategory.equals(FAVORITES)) {
-                            mListProducts.remove(holder.getAdapterPosition());
-                            notifyItemRemoved(holder.getAdapterPosition());
-                            notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
-                            if (getItemCount() < 1) {
-                                EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
+                            EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
+                        if (NetworkManager.isNetworkEnabled()) {
+                            if (mCategory.equals(FAVORITES)) {
+                                mListProducts.remove(holder.getAdapterPosition());
+                                notifyItemRemoved(holder.getAdapterPosition());
+                                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+                                if (getItemCount() < 1) {
+                                    EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
+                                }
                             }
                         }
                     }
@@ -208,6 +209,12 @@ public class FeaturedProductItemsAdapter extends
     public int getItemCount() {
         return mListProducts == null ? 0 : mListProducts.size();
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
 
     @Override
     public Filter getFilter() {

@@ -15,6 +15,7 @@ import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Categories;
+import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -162,12 +163,16 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnBoughtEvent event) {
         mView.hideProgress();
-        mView.showToastMessage(App.getContext().getString(R.string.activity_order_processing));
+        mView.showSnackBar(App.getContext().getResources().getString(R.string.activity_order_processing));
     }
 
     @Subscribe
     public void OnEvent(OnProductItemClickEvent event) {
-        mView.navigateToBuyProduct(event.getProduct());
+        if (RealmController.with(mActivity).isSingleProductPresent(String.valueOf(event.getProduct().getId()))) {
+            mView.navigateToBuyProduct(event.getProduct());
+        } else {
+            mView.onCreateErrorDialog(App.getContext().getResources().getString(R.string.product_is_not_available_in_machine));
+        }
     }
 
     @Subscribe

@@ -67,6 +67,7 @@ public class VendingFragmentPresenter extends BasePresenterImpl implements Vendi
     public void OnEvent(OnAddedToFavorites event) {
         RealmController.with(mActivity).addToFavoriteLocal(event.getId());
         mView.changeFavoriteIcon(Const.ACTION_ADD_FAVORITE);
+        //mModel.getListFavorites();
     }
 
     @Subscribe

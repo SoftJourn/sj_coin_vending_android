@@ -3,6 +3,7 @@ package com.softjourn.sj_coin.activities.fragments;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -114,6 +115,12 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
                 view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
                 mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
+                if (mProductsCategory.equals(FAVORITES)) {
+                    assert mButtonSortByName != null;
+                    mButtonSortByName.setVisibility(View.GONE);
+                    assert mButtonSortByPrice != null;
+                    mButtonSortByPrice.setVisibility(View.GONE);
+                }
                 break;
 
             default:
@@ -129,7 +136,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         mMachineItems.setAdapter(mProductAdapter);
 
         if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
-            ((SeeAllActivity) getActivity()).productsList(mProductAdapter);
+            ((SeeAllActivity) getActivity()).productsList(mProductAdapter, mProductsCategory);
             ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName, mButtonSortByPrice);
         }
         return view;
@@ -231,8 +238,8 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
                         mNoProductsInCategory.setVisibility(View.VISIBLE);
                     }
                     if (mButtonSortByName != null && mButtonSortByPrice != null) {
-                        mButtonSortByName.setBackgroundColor(getResources().getColor(R.color.transparent));
-                        mButtonSortByPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        mButtonSortByName.setBackgroundColor(ContextCompat.getColor(App.getContext(),R.color.transparent));
+                        mButtonSortByPrice.setBackgroundColor(ContextCompat.getColor(App.getContext(),R.color.transparent));
                         mButtonSortByName.setEnabled(false);
                         mButtonSortByPrice.setEnabled(false);
                     }
@@ -260,8 +267,8 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
                     mNoProductsInCategory.setVisibility(View.VISIBLE);
                 }
                 if (mButtonSortByName != null && mButtonSortByPrice != null) {
-                    mButtonSortByName.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    mButtonSortByPrice.setBackgroundColor(getResources().getColor(R.color.transparent));
+                    mButtonSortByName.setBackgroundColor(ContextCompat.getColor(App.getContext(),R.color.transparent));
+                    mButtonSortByPrice.setBackgroundColor(ContextCompat.getColor(App.getContext(),R.color.transparent));
                     mButtonSortByName.setEnabled(false);
                     mButtonSortByPrice.setEnabled(false);
                 }

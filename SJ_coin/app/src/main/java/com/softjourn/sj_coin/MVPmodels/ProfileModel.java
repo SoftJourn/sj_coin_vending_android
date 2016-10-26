@@ -1,13 +1,11 @@
 package com.softjourn.sj_coin.MVPmodels;
 
-
-import android.util.Log;
-
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.coins.CoinsApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
+import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.model.accountInfo.Account;
 import com.softjourn.sj_coin.model.accountInfo.Balance;
 
@@ -29,7 +27,7 @@ public class ProfileModel extends BaseModel {
 
             @Override
             public void onError(String errorMsg) {
-                Log.d("Tag",errorMsg);
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }
@@ -43,7 +41,7 @@ public class ProfileModel extends BaseModel {
 
             @Override
             public void onError(String errorMsg) {
-                Log.d("Tag",errorMsg);
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }

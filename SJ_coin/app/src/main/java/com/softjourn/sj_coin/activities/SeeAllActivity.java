@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
@@ -35,12 +37,13 @@ import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-public class SeeAllActivity extends BaseActivity implements SeeAllContract.View, PurchaseContract.View, Const, Extras, NavigationView.OnNavigationItemSelectedListener  {
+public class SeeAllActivity extends BaseActivity implements SeeAllContract.View, PurchaseContract.View, Const, Extras, NavigationView.OnNavigationItemSelectedListener {
 
     private SeeAllContract.Presenter mVendingPresenter;
     private PurchaseContract.Presenter mPurchasePresenter;
@@ -144,7 +147,9 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        menu.findItem(R.id.action_search).setVisible(true);
+        if (!mCategory.equals(FAVORITES)) {
+            menu.findItem(R.id.action_search).setVisible(true);
+        }
         menu.findItem(R.id.select_machine).setVisible(false);
 
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -196,7 +201,12 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
 
     @Override
     public void navigateToBuyProduct(Product product) {
-        onCreateDialog(product, mPurchasePresenter);
+        onCreateConfirmDialog(product, mPurchasePresenter);
+    }
+
+    @Override
+    public void showSnackBar() {
+        Utils.showSnackBar(findViewById(R.id.rootLayout), getString(R.string.activity_order_processing));
     }
 
     @Override
@@ -264,8 +274,8 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         }
     }
 
-    public void setNavigationItemChecked(String category){
-        switch (category){
+    public void setNavigationItemChecked(String category) {
+        switch (category) {
             case ALL_ITEMS:
                 mNavigationView.getMenu().getItem(0).setChecked(true);
                 break;
@@ -319,12 +329,14 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     public void setButtons(Button button, Button button2) {
         this.mFragmentsSortNameButton = button;
         this.mFragmentsSortPriceButton = button2;
-        mFragmentsSortNameButton.setBackgroundColor(getResources().getColor(R.color.colorScreenBackground));
-        mFragmentsSortPriceButton.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mFragmentsSortNameButton.setBackgroundColor(ContextCompat.getColor(App.getContext(),R.color.colorScreenBackground));
+        mFragmentsSortPriceButton.setBackgroundColor(ContextCompat.getColor(App.getContext(),R.color.transparent));
     }
 
-    public void productsList(FeaturedProductItemsAdapter adapter) {
+    public void productsList(FeaturedProductItemsAdapter adapter, String category) {
+        mCategory = category;
         mAdapter = adapter;
+        invalidateOptionsMenu();
     }
 
     @Subscribe
