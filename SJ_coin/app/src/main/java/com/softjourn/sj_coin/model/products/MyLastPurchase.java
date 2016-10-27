@@ -32,10 +32,6 @@ public class MyLastPurchase implements Parcelable, RealmModel{
     @SerializedName("category")
     private Category category;
 
-    public String getTime() {
-        return time;
-    }
-
     public MyLastPurchase(){}
 
     protected MyLastPurchase(Parcel in) {

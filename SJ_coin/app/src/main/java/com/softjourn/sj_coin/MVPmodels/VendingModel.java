@@ -2,7 +2,6 @@ package com.softjourn.sj_coin.MVPmodels;
 
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
@@ -62,7 +61,6 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getFeaturedProductsList(selectedMachine, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
             @Override
             public void onSuccess(Featured response) {
-                Log.d("TAG", response.toString());
                 RealmUtils.clearAllDB(mRealm);
                 RealmUtils.setRealmData(mRealm,response);
                 mEventBus.post(new OnFeaturedProductsListReceived(response));
@@ -96,6 +94,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getListFavorites(new com.softjourn.sj_coin.api.callbacks.Callback<List<Favorites>>() {
             @Override
             public void onSuccess(List<Favorites> response) {
+                RealmUtils.clearDataFromTable(mRealm,Favorites.class);
                 RealmUtils.setRealmData(mRealm,response);
                 mEventBus.post(new OnFavoritesListReceived(response));
             }
@@ -112,6 +111,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.addProductToFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
             public void onSuccess(Void response) {
+
                     mEventBus.post(new OnAddedToFavorites(id));
             }
 
@@ -147,6 +147,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
 
             }
         });

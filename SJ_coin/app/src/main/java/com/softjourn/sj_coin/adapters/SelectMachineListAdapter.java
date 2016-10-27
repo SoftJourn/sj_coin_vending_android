@@ -14,9 +14,6 @@ import com.softjourn.sj_coin.utils.Preferences;
 
 import java.util.List;
 
-/**
- * Created by omartynets on 12.10.2016.
- */
 public class SelectMachineListAdapter extends ArrayAdapter<String> {
 
     List<String> mItems;

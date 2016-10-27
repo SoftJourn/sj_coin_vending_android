@@ -142,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
         Utils.showErrorToast(this, text);
     }
 
-    protected void onCreateDialog(final Product product, final PurchaseContract.Presenter presenter) {
+    protected void onCreateConfirmDialog(final Product product, final PurchaseContract.Presenter presenter) {
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -177,10 +177,33 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
         }
     }
 
+    public void onCreateErrorDialog(String message){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_error);
+
+        // set the custom dialog components
+        TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText(message);
+
+        Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        if (!dialog.isShowing()) {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.ConfirmDialogAnimation;
+            dialog.show();
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final OnServerErrorEvent event) {
         hideProgress();
-        showToast(ServerErrors.showErrorMessage(event.getMessage()));
+        onCreateErrorDialog(ServerErrors.showErrorMessage(event.getMessage()));
     }
 
     @Subscribe

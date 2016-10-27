@@ -16,13 +16,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.VendingActivity"
-            android:label="Vending Machine">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            android:label="Vending Machine" />
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -43,18 +37,13 @@
             android:name=".activities.SeeAllActivity"
             android:label="All Products"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".activities.NoInternetActivity"
-            android:theme="@style/NoActionBarTheme">
-        </activity>
+            android:theme="@style/NoActionBarTheme" />
     </application>
 
 </manifest>

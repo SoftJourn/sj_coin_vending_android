@@ -132,7 +132,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void navigateToBuyProduct(Product product) {
-        onCreateDialog(product, mPurchasePresenter);
+        onCreateConfirmDialog(product, mPurchasePresenter);
     }
 
     @Override
@@ -210,6 +210,11 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void getMachinesList() {
         mVendingPresenter.getMachinesList();
+    }
+
+    @Override
+    public void showSnackBar(String message) {
+        Utils.showSnackBar(findViewById(R.id.mainLayout),message);
     }
 
     @Override

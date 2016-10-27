@@ -2,7 +2,6 @@ package com.softjourn.sj_coin.realm;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Fragment;
 
 import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Favorites;
@@ -29,14 +28,6 @@ public class RealmController {
         realm = Realm.getDefaultInstance();
     }
 
-    public static RealmController with(Fragment fragment) {
-
-        if (instance == null) {
-            instance = new RealmController(fragment.getActivity().getApplication());
-        }
-        return instance;
-    }
-
     public static RealmController with(Activity activity) {
 
         if (instance == null) {
@@ -50,11 +41,6 @@ public class RealmController {
         return instance;
     }
 
-    public Realm getRealm() {
-
-        return realm;
-    }
-
     //clear all objects from Database
     public void clearAll() {
 
@@ -64,12 +50,13 @@ public class RealmController {
     }
 
     public void addToFavoriteLocal(Integer id) {
-        Favorites favorites = new Favorites();
-        favorites.setId(id);
+        if (realm.where(Favorites.class).equalTo("id",id).count()==0) {
+            Favorites favorites = new Favorites(realm.where(Product.class).equalTo("id", id).findFirst());
 
-        realm.beginTransaction();
-        realm.copyToRealm(favorites);
-        realm.commitTransaction();
+            realm.beginTransaction();
+            realm.copyToRealm(favorites);
+            realm.commitTransaction();
+        }
     }
 
     public void removeFromFavoritesLocal(Integer id) {
@@ -79,7 +66,7 @@ public class RealmController {
         realm.commitTransaction();
     }
 
-    public boolean getSingleProduct(String id) {
+    public boolean isSingleProductPresent(String id) {
         return realm.where(Product.class).equalTo("id", Integer.parseInt(id)).findFirst() != null;
     }
 

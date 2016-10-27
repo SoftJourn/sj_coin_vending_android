@@ -6,6 +6,7 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
+import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
@@ -73,6 +74,12 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
+    }
+
+    @Subscribe
+    public void OnEvent(OnBoughtEvent event) {
+        mView.hideProgress();
+        mView.showSnackBar();
     }
 
     @Subscribe

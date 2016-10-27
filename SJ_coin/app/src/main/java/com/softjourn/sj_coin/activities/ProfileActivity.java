@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
@@ -43,8 +42,6 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        LinearLayout layout = (LinearLayout)findViewById(R.id.root_layout_profile);
 
         super.mProfileIsVisible = true;
 

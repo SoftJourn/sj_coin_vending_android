@@ -30,6 +30,10 @@ public interface VendingContract {
         void loadProductList();
 
         void getMachinesList();
+
+        void showSnackBar(String message);
+
+        void onCreateErrorDialog(String message);
     }
 
     interface Presenter extends BasePresenter{

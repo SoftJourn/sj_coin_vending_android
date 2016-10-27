@@ -7,7 +7,8 @@
     android:layout_marginLeft="@dimen/recycler_view_machine_layout_left_margin"
     android:layout_marginRight="@dimen/recycler_view_machine_layout_right_margin"
     android:layout_marginTop="@dimen/recycler_view_machine_layout_top_margin"
-    android:background="@drawable/item_shadow">
+    android:background="@drawable/item_shadow"
+    tools:ignore="RtlHardcoded">
 
     <LinearLayout
         android:id="@+id/layout_item_product_parent_view"

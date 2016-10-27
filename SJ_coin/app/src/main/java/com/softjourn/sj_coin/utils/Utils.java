@@ -1,6 +1,7 @@
 package com.softjourn.sj_coin.utils;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -18,6 +19,13 @@ public class Utils {
         if (toast.getView().getWindowVisibility() != View.VISIBLE) {
             toast.show();
         }
+    }
+
+    public static void showSnackBar(View view, String message){
+        Snackbar snackbar = Snackbar
+                .make(view, message, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
     }
 
     public static void storeSessionInfo(Session session) {

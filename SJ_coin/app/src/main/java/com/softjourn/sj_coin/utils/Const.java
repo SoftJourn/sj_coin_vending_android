@@ -47,7 +47,6 @@ public interface Const {
     String FAVORITES = "Favorites";
     String BEST_SELLERS = "Best Sellers";
     String ALL_ITEMS = "All Items";
-    String PURCHASE = "Purchase";
 
     String DB_NAME = "VENDING_DB";
 
@@ -61,7 +60,6 @@ public interface Const {
     //Actions after refreshToken
     String MACHINES_LIST = "MACHINES_LIST";
     String PRODUCTS_LIST = "PRODUCTS_LIST";
-    String BUY_PRODUCT = "BUY_PRODUCT";
 
     String ACTION_ADD_FAVORITE = "ADD";
     String ACTION_REMOVE_FAVORITE = "REMOVE";
