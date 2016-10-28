@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,8 @@ public class FeaturedProductItemsAdapter extends
 
     private final String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
+    List<Product> sFavoritesList = RealmController.getInstance().getFavoriteProducts();
+
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
 
         if (featureCategory != null) {
@@ -65,6 +68,11 @@ public class FeaturedProductItemsAdapter extends
             mRecyclerViewType = DEFAULT_RECYCLER_VIEW;
         }
 
+    }
+
+    public void notifyDataChanges(){
+        sFavoritesList = RealmController.getInstance().getFavoriteProducts();
+        notifyDataSetChanged();
     }
 
     public void setData(List<Product> data) {
@@ -83,7 +91,7 @@ public class FeaturedProductItemsAdapter extends
 
     @Override
     public FeaturedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        Log.d("bind_view", "created view");
         View v;
         assert mRecyclerViewType != null;
         switch (mRecyclerViewType) {
@@ -102,7 +110,7 @@ public class FeaturedProductItemsAdapter extends
     @Override
     public void onBindViewHolder(final FeaturedViewHolder holder, int position) {
 
-        List<Product> sFavoritesList = RealmController.getInstance().getFavoriteProducts();
+        Log.d("bind_view", "binded");
 
         final Product product = mListProducts.get(position);
 
@@ -180,7 +188,7 @@ public class FeaturedProductItemsAdapter extends
                             if (mCategory.equals(FAVORITES)) {
                                 mListProducts.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
-                                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount());
+                                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount()+1);
                                 if (getItemCount() < 1) {
                                     EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
                                 }

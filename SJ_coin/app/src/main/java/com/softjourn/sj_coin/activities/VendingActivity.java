@@ -115,7 +115,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))){
+        if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
             showToastMessage(getString(R.string.machine_not_selected_toast));
             mSwipeRefreshLayout.setRefreshing(false);
         } else {
@@ -164,7 +164,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void updateBalanceAmount(String balance) {
         mBalance.setVisibility(View.VISIBLE);
-        mBalance.setText(String.format(getString(R.string.your_balance_is),Integer.parseInt(balance)));
+        mBalance.setText(String.format(getString(R.string.your_balance_is), balance));
     }
 
     @Override
@@ -214,14 +214,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void showSnackBar(String message) {
-        Utils.showSnackBar(findViewById(R.id.mainLayout),message);
+        Utils.showSnackBar(findViewById(R.id.mainLayout), message);
     }
 
     @Override
     public void showMachinesSelector(final List<Machines> machines) {
         List<String> names = new ArrayList<>();
-        for (Machines machine : machines)
-        {
+        for (Machines machine : machines) {
             names.add(machine.getName());
         }
 
@@ -303,7 +302,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         fragmentContainer.setVisibility(View.VISIBLE);
     }
 
-    private void removeContainers(){
+    private void removeContainers() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.mainLayout);
         for (int i = 0; i < viewCounter; i++) {
             assert layout != null;
@@ -348,7 +347,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
                 Utils.storeConcreteMachineInfo(event.getMachinesList().get(0));
                 loadProductList();
             } else {
-               showMachinesSelector(event.getMachinesList());
+                showMachinesSelector(event.getMachinesList());
             }
         } else if (event.getMachinesList().size() > 1) {
             showMachinesSelector(event.getMachinesList());

@@ -33,6 +33,11 @@ import butterknife.OnClick;
 
 public class ProductsListFragment extends BaseFragment implements VendingFragmentContract.View, Const, Extras {
 
+    private interface ProductsListFragmentStrategy{
+        View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+        void onChangeFavoriteIcon(String action);
+    }
+
     private String mProductsCategory;
 
     private static final String TAG_PRODUCTS_CATEGORY = "PRODUCTS CATEGORY";
@@ -41,6 +46,8 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     private FeaturedProductItemsAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private int mHeaders;
+    private ProductsListFragmentStrategy mStrategy;
+
 
     public static ProductsListFragment newInstance(String category, @Nullable int headers, @Nullable int container) {
         Bundle bundle = new Bundle();
@@ -52,8 +59,6 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     }
 
     private List<Product> mProductList;
-
-    private Parcelable mListState;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
@@ -96,49 +101,18 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View view;
-
-        switch (getActivity().getLocalClassName()) {
-            case "activities.VendingActivity":
-                view = inflater.inflate(R.layout.fragment_products_list, container, false);
-                ButterKnife.bind(this, view);
-                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, null);
-                view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
-                break;
-
-            case "activities.SeeAllActivity":
-                view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
-                ButterKnife.bind(this, view);
-                (getActivity()).setTitle(mProductsCategory);
-                ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
-                view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
-                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
-                if (mProductsCategory.equals(FAVORITES)) {
-                    assert mButtonSortByName != null;
-                    mButtonSortByName.setVisibility(View.GONE);
-                    assert mButtonSortByPrice != null;
-                    mButtonSortByPrice.setVisibility(View.GONE);
-                }
-                break;
-
-            default:
-                view = inflater.inflate(R.layout.fragment_products_list, container, false);
-                ButterKnife.bind(this, view);
-                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, null);
-                break;
+        if (getActivity() instanceof SeeAllActivity){
+            mStrategy = new ParentSeeAllActivityStrategy();
+        } else if (getActivity() instanceof VendingActivity){
+            mStrategy = new ParentVendingActivityStrategy();
         }
+
+        View view = mStrategy.onCreateView(inflater, container, savedInstanceState);
 
         mMachineItems.setLayoutManager(mLayoutManager);
 
         mMachineItems.setAdapter(mProductAdapter);
 
-        if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
-            ((SeeAllActivity) getActivity()).productsList(mProductAdapter, mProductsCategory);
-            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName, mButtonSortByPrice);
-        }
         return view;
     }
 
@@ -149,8 +123,6 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
 
         if (savedInstanceState == null) {
             getLocalProductsList();
-        } else {
-            mMachineItems.getLayoutManager().onRestoreInstanceState(mListState);
         }
     }
 
@@ -177,44 +149,13 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (outState != null) {
-            mListState = mLayoutManager.onSaveInstanceState();
-            outState.putParcelable(EXTRAS_PRODUCTS_LIST, mListState);
-        } else {
-            getLocalProductsList();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mListState != null) {
-            mLayoutManager.onRestoreInstanceState(mListState);
-        }
-    }
-
-    @Override
     public void setSortedData(List<Product> product) {
         mProductAdapter.setData(product);
     }
 
     @Override
     public void changeFavoriteIcon(String action) {
-        if (action.equals(ACTION_ADD_FAVORITE)) {
-            if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
-                ((SeeAllActivity) getActivity()).hideProgress();
-            }
-            mProductAdapter.notifyDataSetChanged();
-        } else {
-            if (getActivity().getLocalClassName().equals("activities.SeeAllActivity")) {
-                ((SeeAllActivity) getActivity()).hideProgress();
-                if (!mProductsCategory.equals(FAVORITES)) {
-                    mProductAdapter.notifyDataSetChanged();
-                }
-            }
-        }
+        mStrategy.onChangeFavoriteIcon(action);
     }
 
     @Override
@@ -222,8 +163,8 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         if (mProductsCategory.equals(FAVORITES)) {
 
             if (productsList != null && !productsList.isEmpty()) {
-                mProductList = productsList;
-                mProductAdapter.setData(productsList);
+//                mProductList = productsList;
+//                mProductAdapter.setData(productsList);
 
                 try {
                     ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
@@ -282,4 +223,54 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         mPresenter.onDestroy();
         mPresenter = null;
     }
+
+    private class ParentSeeAllActivityStrategy implements ProductsListFragmentStrategy{
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
+            ButterKnife.bind(ProductsListFragment.this, view);
+            (getActivity()).setTitle(mProductsCategory);
+            ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
+            view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
+            mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
+            if (mProductsCategory.equals(FAVORITES)) {
+                assert mButtonSortByName != null;
+                mButtonSortByName.setVisibility(View.GONE);
+                assert mButtonSortByPrice != null;
+                mButtonSortByPrice.setVisibility(View.GONE);
+            }
+            ((SeeAllActivity) getActivity()).productsList(mProductAdapter, mProductsCategory);
+            ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName, mButtonSortByPrice);
+            return view;
+        }
+
+        @Override
+        public void onChangeFavoriteIcon(String action) {
+            ((SeeAllActivity) getActivity()).hideProgress();
+            if (action.equals(ACTION_ADD_FAVORITE) || (!action.equals(ACTION_ADD_FAVORITE) && !mProductsCategory.equals(FAVORITES))) {
+                mProductAdapter.notifyDataChanges();
+            }
+        }
+    }
+
+    private class ParentVendingActivityStrategy implements ProductsListFragmentStrategy{
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_products_list, container, false);
+            ButterKnife.bind(ProductsListFragment.this, view);
+            mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, null);
+            view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
+            return view;
+        }
+
+        @Override
+        public void onChangeFavoriteIcon(String action) {
+
+        }
+    }
+
 }
