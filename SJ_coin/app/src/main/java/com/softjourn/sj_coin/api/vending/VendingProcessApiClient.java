@@ -50,7 +50,9 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
                         return true;
                     }
                 })
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(15,TimeUnit.SECONDS)
+                .writeTimeout(15,TimeUnit.SECONDS)
                 .build();
     }
 

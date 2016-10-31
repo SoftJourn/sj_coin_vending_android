@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +90,6 @@ public class FeaturedProductItemsAdapter extends
 
     @Override
     public FeaturedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("bind_view", "created view");
         View v;
         assert mRecyclerViewType != null;
         switch (mRecyclerViewType) {
@@ -109,8 +107,6 @@ public class FeaturedProductItemsAdapter extends
 
     @Override
     public void onBindViewHolder(final FeaturedViewHolder holder, int position) {
-
-        Log.d("bind_view", "binded");
 
         final Product product = mListProducts.get(position);
 

@@ -156,6 +156,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event) {
+        mView.hideProgress();
         mView.updateBalanceAmount(String.valueOf(event.getAmount().getAmount()));
         mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
     }

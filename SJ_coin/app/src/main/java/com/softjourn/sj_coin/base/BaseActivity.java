@@ -130,6 +130,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
 
     public void showProgress(String message) {
         mProgressDialog.setMessage(message);
+        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 
