@@ -163,7 +163,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnBoughtEvent event) {
-        mView.hideProgress();
         mView.showSnackBar(App.getContext().getResources().getString(R.string.activity_order_processing));
     }
 

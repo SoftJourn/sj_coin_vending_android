@@ -6,6 +6,7 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
+import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
@@ -78,7 +79,6 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
 
     @Subscribe
     public void OnEvent(OnBoughtEvent event) {
-        mView.hideProgress();
         mView.showSnackBar();
     }
 
@@ -111,5 +111,9 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
         }else {
             mView.hideProgress();
         }
+    }
+    @Subscribe
+    public void OnEvent(OnAmountReceivedEvent event){
+        mView.hideProgress();
     }
 }

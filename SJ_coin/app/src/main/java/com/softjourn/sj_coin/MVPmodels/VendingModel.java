@@ -8,6 +8,7 @@ import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
@@ -73,7 +74,7 @@ public class VendingModel extends BaseModel implements Const {
     }
 
     public void buyProductByID(String machineID, String id) {
-        //mEventBus.post(new OnBoughtEvent(""));
+        mEventBus.post(new OnBoughtEvent(""));
         mApiProvider.buyProductByID(machineID, id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
 
             @Override
