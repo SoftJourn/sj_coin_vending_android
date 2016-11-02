@@ -6,7 +6,7 @@
     <string name="screen_login_password_hint">Password</string>
     <string name="screen_login_login_button">Login</string>
     <string name="activity_login_login_failed">Login failed</string>
-    <string name="activity_login_invalid_email">Login should not be empty</string>
+    <string name="activity_login_invalid_email">Login should contains only lower case alphabetical characters</string>
     <string name="activity_login_invalid_password">Password should not be empty</string>
 
     <!--Vending Activity-->

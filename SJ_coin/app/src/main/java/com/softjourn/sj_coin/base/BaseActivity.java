@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.base;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -35,8 +36,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     private final EventBus mEventBus = EventBus.getDefault();
 
     protected boolean mProfileIsVisible = false;
+    protected boolean mConfirmDialogIsVisible = false;
 
     private ProgressDialog mProgressDialog;
+
+    protected Dialog mConfirmDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,38 +148,55 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     }
 
     protected void onCreateConfirmDialog(final Product product, final PurchaseContract.Presenter presenter) {
-
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_confirm);
+        mConfirmDialog = new Dialog(this);
+        mConfirmDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mConfirmDialog.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
+        mConfirmDialog.setContentView(R.layout.dialog_confirm);
 
         // set the custom dialog components
-        TextView text = (TextView) dialog.findViewById(R.id.text);
+        TextView text = (TextView) mConfirmDialog.findViewById(R.id.text);
         text.setText(String.format(getString(R.string.dialog_msg_confirm_buy_product), product.getName(), product.getPrice()));
-        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        ImageView image = (ImageView) mConfirmDialog.findViewById(R.id.image);
         PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(image);
 
-        Button okButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        if (!mConfirmDialog.isShowing()) {
+            mConfirmDialog.getWindow().getAttributes().windowAnimations = R.style.ConfirmDialogAnimation;
+            mConfirmDialogIsVisible = true;
+            mConfirmDialog.show();
+        }
+
+        Button okButton = (Button) mConfirmDialog.findViewById(R.id.dialogButtonOK);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.buyProduct(String.valueOf(product.getId()));
-                dialog.dismiss();
+                mConfirmDialogIsVisible = false;
+                mConfirmDialog.dismiss();
             }
         });
 
-        Button cancelButton = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+        Button cancelButton = (Button) mConfirmDialog.findViewById(R.id.dialogButtonCancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                mConfirmDialogIsVisible = false;
+                mConfirmDialog.dismiss();
             }
         });
 
-        if (!dialog.isShowing()) {
-            dialog.getWindow().getAttributes().windowAnimations = R.style.ConfirmDialogAnimation;
-            dialog.show();
-        }
+        mConfirmDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mConfirmDialogIsVisible = false;
+            }
+        });
+
+        mConfirmDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                mConfirmDialogIsVisible = false;
+            }
+        });
     }
 
     public void onCreateErrorDialog(String message){

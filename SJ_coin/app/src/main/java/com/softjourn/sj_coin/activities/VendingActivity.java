@@ -107,9 +107,9 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
         switch (item.getItemId()) {
             case R.id.select_machine:
-                mVendingPresenter.getMachinesList();
-                return true;
-        }
+                    mVendingPresenter.getMachinesList();
+                    return true;
+                }
         return super.onOptionsItemSelected(item);
     }
 
@@ -227,11 +227,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         final Dialog dialog = new Dialog(this);
         if (!dialog.isShowing()) {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
             dialog.setContentView(R.layout.dialog_select_machine);
             ListView machinesList = (ListView) dialog.findViewById(R.id.lv);
             final SelectMachineListAdapter adapter = new SelectMachineListAdapter(this, android.R.layout.simple_list_item_1, names);
             machinesList.setAdapter(adapter);
             dialog.getWindow().getAttributes().windowAnimations = R.style.MachinesDialogAnimation;
+            hideProgress();
             dialog.show();
 
             machinesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -245,6 +247,10 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
                         }
                     }
                     showProgress(getString(R.string.progress_loading));
+                    if (mConfirmDialogIsVisible)
+                    {
+                        mConfirmDialog.dismiss();
+                    }
                     loadProductList();
                     dialog.dismiss();
                 }
@@ -255,7 +261,6 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
                     if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
                         showToastMessage(getString(R.string.machine_not_selected_toast));
                     }
-                    hideProgress();
                 }
             });
         }
@@ -342,6 +347,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Subscribe
     public void OnEvent(OnMachinesListReceived event) {
+        hideProgress();
         if (event.getMachinesList().size() == 1) {
             if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
                 Utils.storeConcreteMachineInfo(event.getMachinesList().get(0));
