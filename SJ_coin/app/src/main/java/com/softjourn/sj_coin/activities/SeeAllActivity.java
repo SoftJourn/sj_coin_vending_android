@@ -341,6 +341,11 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
 
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event) {
-        navigateToBuyProduct(event.buyProduct());
+        if (RealmController.with(this).isSingleProductPresent(String.valueOf(event.buyProduct().getId()))) {
+            navigateToBuyProduct(event.buyProduct());
+        } else {
+            onCreateErrorDialog(App.getContext().getResources().getString(R.string.product_is_not_available_in_machine));
+        }
+        //navigateToBuyProduct(event.buyProduct());
     }
 }

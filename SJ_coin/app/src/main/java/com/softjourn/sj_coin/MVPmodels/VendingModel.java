@@ -51,7 +51,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }
@@ -68,8 +68,8 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-
-            }
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
+;            }
         });
     }
 
@@ -101,7 +101,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }
@@ -117,7 +117,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }
@@ -132,7 +132,7 @@ public class VendingModel extends BaseModel implements Const {
 
             @Override
             public void onError(String errorMsg) {
-
+                mEventBus.post(new OnServerErrorEvent(errorMsg));
             }
         });
     }

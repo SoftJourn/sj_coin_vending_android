@@ -51,7 +51,7 @@ public class FeaturedProductItemsAdapter extends
 
     private final String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
-    List<Product> sFavoritesList = RealmController.getInstance().getFavoriteProducts();
+    private List<Product> sFavoritesList = RealmController.getInstance().getFavoriteProducts();
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
 
@@ -108,11 +108,11 @@ public class FeaturedProductItemsAdapter extends
     @Override
     public void onBindViewHolder(final FeaturedViewHolder holder, int position) {
 
-        final Product product = mListProducts.get(position);
+        Product product = mListProducts.get(holder.getAdapterPosition());
 
-        boolean isCurrentProductInMachine = RealmController.getInstance().isSingleProductPresent(String.valueOf(mListProducts.get(holder.getAdapterPosition()).getId()));
+        boolean isCurrentProductInMachine = RealmController.getInstance().isSingleProductPresent(String.valueOf(product.getId()));
 
-        holder.mProductName.setText(product.getName());
+        holder.mProductName.setText(mListProducts.get(holder.getAdapterPosition()).getName());
         holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
 
         if (holder.mProductDescription != null) {
@@ -128,9 +128,12 @@ public class FeaturedProductItemsAdapter extends
                 });
             }
 
-        if (isCurrentProductInMachine)
-        {
             if (holder.mBuyProduct != null) {
+                if (isCurrentProductInMachine) {
+                    holder.mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorBlue));
+                } else {
+                    holder.mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(),R.color.colorScreenBackground));
+                }
                 holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -138,15 +141,6 @@ public class FeaturedProductItemsAdapter extends
                     }
                 });
             }
-        } else
-
-        {
-            if (holder.mBuyProduct != null) {
-                holder.mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(),R.color.colorScreenBackground));
-            }
-        }
-
-
         /**
          * Here We compare ID of product from general products list
          * and ID of favorites list
@@ -156,7 +150,6 @@ public class FeaturedProductItemsAdapter extends
          * to favorites list
          */
         if (holder.mAddFavorite != null)
-
         {
             holder.mAddFavorite.setTag(false);
             if (sFavoritesList != null && sFavoritesList.size() > 0) {
@@ -184,7 +177,7 @@ public class FeaturedProductItemsAdapter extends
                             if (mCategory.equals(FAVORITES)) {
                                 mListProducts.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
-                                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount()+1);
+                                notifyItemRangeChanged(0, getItemCount()+1);
                                 if (getItemCount() < 1) {
                                     EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
                                 }
@@ -196,15 +189,15 @@ public class FeaturedProductItemsAdapter extends
         }
 
         if (TextUtils.isEmpty(product.getImageUrl()))
-
         {
             Picasso.with(App.getContext()).load(R.drawable.logo).into(holder.mProductImage);
-        } else
-
-        {
-            PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + product.getImageUrl()).into(holder.mProductImage);
+            holder.mProductImage.setAlpha(1.0f);
+        } else  {
+            PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + mListProducts.get(holder.getAdapterPosition()).getImageUrl()).into(holder.mProductImage);
             if (!isCurrentProductInMachine) {
                 holder.mProductImage.setAlpha(0.3f);
+            } else {
+                holder.mProductImage.setAlpha(1.0f);
             }
         }
     }

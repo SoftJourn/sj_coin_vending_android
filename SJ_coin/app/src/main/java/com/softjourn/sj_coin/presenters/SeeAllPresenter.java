@@ -42,7 +42,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
-                actionAfterRefresh = "ADD";
+                actionAfterRefresh = Const.ACTION_ADD_FAVORITE;
                 itemId = id;
 
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
@@ -60,7 +60,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
-                actionAfterRefresh = "REMOVE";
+                actionAfterRefresh = Const.ACTION_REMOVE_FAVORITE;
                 itemId = Integer.parseInt(id);
 
                 mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
@@ -98,10 +98,10 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
             if (actionAfterRefresh != null) {
                 Log.d("ActAfterRefreshSeeAll", actionAfterRefresh);
                 switch (actionAfterRefresh) {
-                    case "ADD":
+                    case Const.ACTION_ADD_FAVORITE:
                         addToFavorite(itemId);
                         break;
-                    case "REMOVE":
+                    case Const.ACTION_REMOVE_FAVORITE:
                         removeFromFavorite(String.valueOf(itemId));
                         break;
                     default:
