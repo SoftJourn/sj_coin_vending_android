@@ -49,8 +49,8 @@ public class RealmController {
         realm.commitTransaction();
     }
 
-    public void addToFavoriteLocal(Integer id) {
-        if (realm.where(Favorites.class).equalTo("id",id).count()==0) {
+    public void addToFavoriteLocal(int id) {
+        if (realm.where(Favorites.class).equalTo("id",id).count()<=0) {
             Favorites favorites = new Favorites(realm.where(Product.class).equalTo("id", id).findFirst());
 
             realm.beginTransaction();
