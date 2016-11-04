@@ -13,13 +13,10 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
 
 
 public class CustomHttpClient implements Const {
@@ -33,26 +30,8 @@ public class CustomHttpClient implements Const {
             TrustManagerFactory tmf = TrustManagerFactory
                     .getInstance(TrustManagerFactory.getDefaultAlgorithm());
             tmf.init(ksTrust);
-            TrustManager[] trustManagers = tmf.getTrustManagers();
-            final X509TrustManager origTrustManager = (X509TrustManager)trustManagers[0];
-
-            TrustManager[] wrappedTrustManagers = new TrustManager[]{
-                    new X509TrustManager() {
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return origTrustManager.getAcceptedIssuers();
-                        }
-
-                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-
-                        }
-
-                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-
-                        }
-                    }
-            };
             SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, wrappedTrustManagers, null);
+            sslContext.init(null, tmf.getTrustManagers(), null);
             return sslContext.getSocketFactory();
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException | KeyManagementException e) {
             Log.d("Tag",e.toString());
