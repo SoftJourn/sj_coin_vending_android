@@ -19,7 +19,7 @@ import java.util.List;
 public class DataManager implements Const {
 
     public List<Product> loadLocalProductList() {
-        return ProductsStorage.getInstance().getData();
+        return sortBeforeReturning(ProductsStorage.getInstance().getData());
     }
 
     public List<Product> loadBestSellers() {
@@ -101,6 +101,9 @@ public class DataManager implements Const {
     public List<Product> getConcreteCategory(String productsCategory) {
         List<Product> product = new ArrayList<>();
         switch (productsCategory) {
+            case ALL_ITEMS:
+                product = loadLocalProductList();
+                break;
             case BEST_SELLERS:
                 product = loadBestSellers();
                 break;

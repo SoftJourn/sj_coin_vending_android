@@ -188,7 +188,7 @@ public class VendingModel extends BaseModel implements Const {
             Collections.sort(product, new Comparator<Product>() {
                 @Override
                 public int compare(Product lhs, Product rhs) {
-                    return lhs.getName().compareTo(rhs.getName());
+                    return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
                 }
             });
             return product;
@@ -196,7 +196,7 @@ public class VendingModel extends BaseModel implements Const {
             Collections.sort(product, new Comparator<Product>() {
                 @Override
                 public int compare(Product lhs, Product rhs) {
-                    return rhs.getName().compareTo(lhs.getName());
+                    return rhs.getName().toLowerCase().compareTo(lhs.getName().toLowerCase());
                 }
             });
             return product;
