@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,6 +12,7 @@ import com.softjourn.sj_coin.contratcts.LoginContract;
 import com.softjourn.sj_coin.presenters.LoginPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,7 +96,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
 
     @Override
     public void showToastMessage(String message) {
-        showToast(message);
+        Utils.showSnackBar(findViewById(R.id.login_root), message);
+        mUserName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
+        mPasswordText.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake));
     }
 
     @Override
