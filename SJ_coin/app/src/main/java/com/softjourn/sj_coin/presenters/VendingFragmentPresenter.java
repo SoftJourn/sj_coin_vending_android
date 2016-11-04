@@ -7,7 +7,6 @@ import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -30,51 +29,49 @@ public class VendingFragmentPresenter extends BasePresenterImpl implements Vendi
 
     @Override
     public void getLocalProductList() {
-        mView.loadData(mModel.loadLocalProductList(mActivity));
+        mView.loadData(mModel.loadLocalProductList());
     }
 
     @Override
     public void getLocalLastAddedProducts() {
-        mView.loadData(mModel.loadLastAdded(mActivity));
+        mView.loadData(mModel.loadLastAdded());
     }
 
     @Override
     public void getLocalBestSellers() {
-        mView.loadData(mModel.loadBestSellers(mActivity));
+        mView.loadData(mModel.loadBestSellers());
     }
 
     @Override
     public void getLocalFavorites() {
-        mView.loadData(mModel.loadFavorites(mActivity));
+        mView.loadData(mModel.loadFavorites());
     }
 
     @Override
     public void getLocalCategoryProducts(String category) {
-        mView.loadData(mModel.loadProductsFromDB(mActivity, category));
+        mView.loadData(mModel.loadProductsFromDB(category));
     }
 
     @Override
     public void sortByName(String productsCategory, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByName(mActivity, productsCategory, isSortingForward));
+        mView.setSortedData(mModel.sortByName(productsCategory, isSortingForward));
     }
 
     @Override
     public void sortByPrice(String productsCategory, boolean isSortingForward) {
-        mView.setSortedData(mModel.sortByPrice(mActivity, productsCategory, isSortingForward));
+        mView.setSortedData(mModel.sortByPrice(productsCategory, isSortingForward));
     }
 
     @Subscribe
     public void OnEvent(OnAddedToFavorites event) {
-        RealmController.with(mActivity).addToFavoriteLocal(event.getId());
+        mModel.addToFavoriteLocal(event.getId());
         mView.changeFavoriteIcon(Const.ACTION_ADD_FAVORITE);
-        //mModel.getListFavorites();
     }
 
     @Subscribe
     public void OnEvent(OnRemovedFromFavorites event) {
-        RealmController.with(mActivity).removeFromFavoritesLocal(Integer.parseInt(event.getId()));
+        mModel.removeFromFavoriteLocal(event.getId());
         mView.changeFavoriteIcon(Const.ACTION_REMOVE_FAVORITE);
-        //mView.showDataAfterRemovingFavorites(RealmController.with(mActivity).getProductsFromStaticCategory(Const.FAVORITES));
     }
 
     @Subscribe

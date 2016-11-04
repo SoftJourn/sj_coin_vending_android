@@ -2,13 +2,13 @@ package com.softjourn.sj_coin.callbacks;
 
 public class OnRemovedFromFavorites {
 
-    private final String mId;
+    private final int mId;
 
-    public OnRemovedFromFavorites(String id){
+    public OnRemovedFromFavorites(int id){
         this.mId = id;
     }
 
-    public String getId(){
+    public int getId(){
         return mId;
     }
 }

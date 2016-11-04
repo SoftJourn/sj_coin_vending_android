@@ -32,7 +32,6 @@ import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.SeeAllPresenter;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.Navigation;
@@ -289,7 +288,7 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     }
 
     private void addCategoriesToMenu(Menu menu) {
-        List<Categories> categoriesList = RealmController.with(this).getCategories();
+        List<Categories> categoriesList = mVendingPresenter.getCategories();
         for (Categories currentCategory : categoriesList) {
             menu.add(Preferences.retrieveStringObject(currentCategory.getName().toUpperCase()));
         }
@@ -341,7 +340,7 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
 
     @Subscribe
     public void OnEvent(OnProductBuyClickEvent event) {
-        if (RealmController.with(this).isSingleProductPresent(String.valueOf(event.buyProduct().getId()))) {
+        if (mVendingPresenter.isProductInMachine(event.buyProduct().getId())) {
             navigateToBuyProduct(event.buyProduct());
         } else {
             onCreateErrorDialog(App.getContext().getResources().getString(R.string.product_is_not_available_in_machine));

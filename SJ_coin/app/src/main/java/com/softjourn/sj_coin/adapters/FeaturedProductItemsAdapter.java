@@ -20,9 +20,8 @@ import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
+import com.softjourn.sj_coin.managers.DataManager;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.model.products.RealmProductWrapper;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
@@ -32,9 +31,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmQuery;
 
 public class FeaturedProductItemsAdapter extends
         android.support.v7.widget.RecyclerView.Adapter<FeaturedProductItemsAdapter.FeaturedViewHolder> implements Const,
@@ -46,12 +42,13 @@ public class FeaturedProductItemsAdapter extends
 
     private List<Product> mListProducts = new ArrayList<>();
 
-    private List<RealmProductWrapper> mRealmProductWrapperList = new ArrayList<>();
-    private List<RealmProductWrapper> mRealmProductWrapperOriginal = new ArrayList<>();
+    private DataManager mDataManager = new DataManager();
+
+    private List<Product> mOriginal = new ArrayList<>();
 
     private final String mCoins = " " + App.getContext().getString(R.string.item_coins);
 
-    private List<Product> sFavoritesList = RealmController.getInstance().getFavoriteProducts();
+    private List<Product> sFavoritesList = mDataManager.loadFavorites();
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
 
@@ -70,22 +67,14 @@ public class FeaturedProductItemsAdapter extends
     }
 
     public void notifyDataChanges(){
-        sFavoritesList = RealmController.getInstance().getFavoriteProducts();
+        sFavoritesList = mDataManager.loadFavorites();
         notifyDataSetChanged();
     }
 
     public void setData(List<Product> data) {
         mListProducts = new ArrayList<>(data);
-        fromProductToRealmProductList();
+        mOriginal = new ArrayList<>(data);
         notifyDataSetChanged();
-    }
-
-    private void fromProductToRealmProductList() {
-        for (Product products : mListProducts) {
-            RealmProductWrapper currentProduct = new RealmProductWrapper(products);
-            mRealmProductWrapperList.add(currentProduct);
-            mRealmProductWrapperOriginal.add(currentProduct);
-        }
     }
 
     @Override
@@ -110,7 +99,7 @@ public class FeaturedProductItemsAdapter extends
 
         Product product = mListProducts.get(holder.getAdapterPosition());
 
-        boolean isCurrentProductInMachine = RealmController.getInstance().isSingleProductPresent(String.valueOf(product.getId()));
+        boolean isCurrentProductInMachine = mDataManager.isSingleProductPresent(product.getId());
 
         holder.mProductName.setText(mListProducts.get(holder.getAdapterPosition()).getName());
         holder.mProductPrice.setText(String.valueOf(product.getPrice()) + mCoins);
@@ -219,12 +208,12 @@ public class FeaturedProductItemsAdapter extends
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<RealmProductWrapper> results = new ArrayList<>();
-                if (mRealmProductWrapperOriginal == null || mRealmProductWrapperOriginal.size() <= 0)
-                    mRealmProductWrapperOriginal = new ArrayList<>(mRealmProductWrapperList);
+                final List<Product> results = new ArrayList<>();
+                if (mOriginal == null || mOriginal.size() <= 0)
+                    mOriginal = mListProducts;
                 if (constraint != null) {
-                    if (mRealmProductWrapperOriginal != null & mRealmProductWrapperOriginal.size() > 0) {
-                        for (final RealmProductWrapper g : mRealmProductWrapperOriginal) {
+                    if (mOriginal != null & mOriginal.size() > 0) {
+                        for (final Product g : mOriginal) {
                             if (g.getName().toLowerCase().contains(constraint.toString()))
                                 results.add(g);
                         }
@@ -236,36 +225,24 @@ public class FeaturedProductItemsAdapter extends
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                mRealmProductWrapperList = (ArrayList<RealmProductWrapper>) results.values;
-                if (mRealmProductWrapperList.size() > 0) {
-                    List<Integer> list = new ArrayList<>();
-                    for (RealmProductWrapper i : mRealmProductWrapperList) {
-                        list.add(i.getId());
-                    }
-                    Realm realm = Realm.getDefaultInstance();
-                    RealmQuery<Product> query = realm.where(Product.class).in("id", list.toArray(new Integer[list.size()]));
-                    mListProducts = query.findAll();
-
-                } else {
-                    mListProducts = new ArrayList<>();
-                }
+                mListProducts = (ArrayList<Product>)results.values;
                 notifyDataSetChanged();
             }
         };
     }
 
-    public static class FeaturedViewHolder extends RecyclerView.ViewHolder {
+    static class FeaturedViewHolder extends RecyclerView.ViewHolder {
 
-        public final View mParentView;
-        public final TextView mProductPrice;
-        public final TextView mProductName;
-        public final TextView mBuyProduct;
-        public final TextView mProductDescription;
+        final View mParentView;
+        final TextView mProductPrice;
+        final TextView mProductName;
+        final TextView mBuyProduct;
+        final TextView mProductDescription;
 
-        public final ImageView mProductImage;
-        public final ImageView mAddFavorite;
+        final ImageView mProductImage;
+        final ImageView mAddFavorite;
 
-        public FeaturedViewHolder(View v) {
+        FeaturedViewHolder(View v) {
             super(v);
             mParentView = v.findViewById(R.id.layout_item_product_parent_view);
             mProductImage = (ImageView) v.findViewById(R.id.layout_item_product_img);

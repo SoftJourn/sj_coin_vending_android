@@ -11,12 +11,15 @@ import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
+import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract.Presenter {
 
@@ -52,6 +55,16 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
                 mModel.addProductToFavorite(id);
             }
         }
+    }
+
+    @Override
+    public boolean isProductInMachine(int id) {
+        return mModel.isSingleProductPresent(id);
+    }
+
+    @Override
+    public List<Categories> getCategories() {
+        return mModel.loadCategories();
     }
 
     @Override

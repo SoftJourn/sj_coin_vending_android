@@ -1,8 +1,6 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
-import android.app.Activity;
-
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
@@ -15,6 +13,9 @@ import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
 import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
+import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
+import com.softjourn.sj_coin.managers.DataManager;
 import com.softjourn.sj_coin.model.Amount;
 import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.model.machines.Machines;
@@ -22,20 +23,17 @@ import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.model.products.Product;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.RealmUtils;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.Sort;
 
 public class VendingModel extends BaseModel implements Const {
 
-    private final Realm mRealm = Realm.getDefaultInstance();
-
     private final VendingApiProvider mApiProvider;
+
+    private DataManager mDataManager = new DataManager();
 
     public VendingModel() {
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
@@ -61,15 +59,15 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getFeaturedProductsList(selectedMachine, new com.softjourn.sj_coin.api.callbacks.Callback<Featured>() {
             @Override
             public void onSuccess(Featured response) {
-                RealmUtils.clearAllDB(mRealm);
-                RealmUtils.setRealmData(mRealm,response);
+                FeaturesStorage.getInstance().setData(response);
                 mEventBus.post(new OnFeaturedProductsListReceived(response));
             }
 
             @Override
             public void onError(String errorMsg) {
                 mEventBus.post(new OnServerErrorEvent(errorMsg));
-;            }
+                ;
+            }
         });
     }
 
@@ -94,8 +92,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getListFavorites(new com.softjourn.sj_coin.api.callbacks.Callback<List<Favorites>>() {
             @Override
             public void onSuccess(List<Favorites> response) {
-                RealmUtils.clearDataFromTable(mRealm,Favorites.class);
-                RealmUtils.setRealmData(mRealm,response);
+                FavoritesStorage.getInstance().setData(response);
                 mEventBus.post(new OnFavoritesListReceived(response));
             }
 
@@ -112,7 +109,7 @@ public class VendingModel extends BaseModel implements Const {
             @Override
             public void onSuccess(Void response) {
 
-                    mEventBus.post(new OnAddedToFavorites(id));
+                mEventBus.post(new OnAddedToFavorites(id));
             }
 
             @Override
@@ -127,7 +124,7 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.removeFromFavorites(id, new com.softjourn.sj_coin.api.callbacks.Callback<Void>() {
             @Override
             public void onSuccess(Void response) {
-                    mEventBus.post(new OnRemovedFromFavorites(id));
+                mEventBus.post(new OnRemovedFromFavorites(Integer.parseInt(id)));
             }
 
             @Override
@@ -141,7 +138,6 @@ public class VendingModel extends BaseModel implements Const {
         mApiProvider.getPurchaseHistory(new com.softjourn.sj_coin.api.callbacks.Callback<List<History>>() {
             @Override
             public void onSuccess(List<History> response) {
-                RealmUtils.setRealmHistoryData(mRealm,response);
                 mEventBus.post(new OnHistoryReceived(response));
             }
 
@@ -153,45 +149,83 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public List<Product> loadLocalProductList(Activity activity) {
-        return RealmController.with(activity).getProducts();
+    public List<Product> loadLocalProductList() {
+        return mDataManager.loadLocalProductList();
     }
 
-    public List<Product> loadBestSellers(Activity activity) {
-        return RealmController.with(activity).getSortedProducts(Const.BEST_SELLERS,"name", Sort.ASCENDING);
+    public List<Product> loadBestSellers() {
+        return mDataManager.loadBestSellers();
     }
 
-    public List<Product> loadLastAdded(Activity activity) {
-        return RealmController.with(activity).getSortedProducts(Const.LAST_ADDED,"name", Sort.ASCENDING);
+    public List<Product> loadLastAdded() {
+        return mDataManager.loadLastAdded();
     }
 
-    public List<Product> loadFavorites(Activity activity) {
-        return RealmController.with(activity).getSortedProducts(Const.FAVORITES,"name", Sort.ASCENDING);
+    public List<Product> loadFavorites() {
+        return mDataManager.loadFavorites();
     }
 
-    public List<Product> loadProductsFromDB(Activity activity, String category) {
-        return RealmController.with(activity).getSortedProducts(category,"name", Sort.ASCENDING);
+    public List<Product> loadProductsFromDB(String category) {
+        return mDataManager.loadProductsFromDB(category);
     }
 
-    public List<Categories> loadCategories(Activity activity) {
-        return RealmController.with(activity).getCategories();
+    public List<Categories> loadCategories() {
+        return mDataManager.loadCategories();
     }
 
-    public List<Product> sortByName(Activity activity, String productsCategory, boolean isSortingForward) {
+    public void addToFavoriteLocal(Integer id) {
+        mDataManager.addToFavorites(id);
+    }
+
+    public void removeFromFavoriteLocal(Integer id) {
+        mDataManager.removeFromFavorites(id);
+    }
+
+    public List<Product> sortByName(String productsCategory, boolean isSortingForward) {
+        List<Product> product = mDataManager.getConcreteCategory(productsCategory);
+
         if (isSortingForward) {
-            return RealmController.with(activity).getSortedProducts(productsCategory, "name", Sort.ASCENDING);
+            Collections.sort(product, new Comparator<Product>() {
+                @Override
+                public int compare(Product lhs, Product rhs) {
+                    return lhs.getName().compareTo(rhs.getName());
+                }
+            });
+            return product;
         } else {
-            return RealmController.with(activity).getSortedProducts(productsCategory, "name", Sort.DESCENDING);
+            Collections.sort(product, new Comparator<Product>() {
+                @Override
+                public int compare(Product lhs, Product rhs) {
+                    return rhs.getName().compareTo(lhs.getName());
+                }
+            });
+            return product;
         }
     }
 
-    public List<Product> sortByPrice(Activity activity, String productsCategory, boolean isSortingForward) {
+    public List<Product> sortByPrice(String productsCategory, boolean isSortingForward) {
+        List<Product> product = mDataManager.getConcreteCategory(productsCategory);
+
         if (isSortingForward) {
-            return RealmController.with(activity).getSortedProducts(productsCategory, "price", Sort.ASCENDING);
+            Collections.sort(product, new Comparator<Product>() {
+                @Override
+                public int compare(Product lhs, Product rhs) {
+                    return lhs.getPrice() - rhs.getPrice();
+                }
+            });
+            return product;
         } else {
-            return RealmController.with(activity).getSortedProducts(productsCategory, "price", Sort.DESCENDING);
+            Collections.sort(product, new Comparator<Product>() {
+                @Override
+                public int compare(Product lhs, Product rhs) {
+                    return rhs.getPrice() - lhs.getPrice();
+                }
+            });
+            return product;
         }
     }
 
-
+    public boolean isSingleProductPresent(Integer id) {
+        return mDataManager.isSingleProductPresent(id);
+    }
 }

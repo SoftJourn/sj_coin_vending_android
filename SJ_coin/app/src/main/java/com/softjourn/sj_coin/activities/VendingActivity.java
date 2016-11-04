@@ -25,11 +25,12 @@ import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
+import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
 import com.softjourn.sj_coin.model.machines.Machines;
 import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -269,7 +270,8 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void loadProductList() {
         removeContainers();
-        RealmController.with(this).clearAll();
+        FeaturesStorage.getInstance().onDestroy();
+        FavoritesStorage.getInstance().onDestroy();
         mVendingPresenter.getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
         loadUserBalance();
     }
