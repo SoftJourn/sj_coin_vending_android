@@ -1,6 +1,5 @@
 package com.softjourn.sj_coin.presenters;
 
-import android.app.Activity;
 import android.text.TextUtils;
 
 import com.softjourn.sj_coin.App;
@@ -13,8 +12,8 @@ import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.managers.DataManager;
 import com.softjourn.sj_coin.model.products.Categories;
-import com.softjourn.sj_coin.realm.RealmController;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -31,7 +30,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private final VendingModel mModel;
     private final LoginPresenter mLoginPresenter;
     private final ProfileModel mProfileModel;
-    private Activity mActivity;
+    private DataManager mDataManager = new DataManager();
 
     private static String actionAfterRefresh;
 
@@ -113,7 +112,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getCategoriesFromDB() {
         List<String> categoriesNames = new ArrayList<>();
-        List<Categories> categories = mModel.loadCategories(mActivity);
+        List<Categories> categories = mModel.loadCategories();
         for (Categories category : categories) {
             if (!categoriesNames.contains(category.getName())) {
                 categoriesNames.add(category.getName());
@@ -166,7 +165,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnProductItemClickEvent event) {
-        if (RealmController.with(mActivity).isSingleProductPresent(String.valueOf(event.getProduct().getId()))) {
+        if (mModel.isSingleProductPresent(event.getProduct().getId())) {
             mView.navigateToBuyProduct(event.getProduct());
         } else {
             mView.onCreateErrorDialog(App.getContext().getResources().getString(R.string.product_is_not_available_in_machine));

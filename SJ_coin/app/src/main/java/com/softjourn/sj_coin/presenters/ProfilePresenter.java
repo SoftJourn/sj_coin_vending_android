@@ -51,7 +51,6 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void showHistory() {
-        //mView.showProgress(App.getContext().getString(R.string.progress_loading));
         mVendingModel.getPurchaseHistory();
     }
 

@@ -1,7 +1,6 @@
 package com.softjourn.sj_coin.api;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.utils.Const;
@@ -34,7 +33,6 @@ public class CustomHttpClient implements Const {
             sslContext.init(null, tmf.getTrustManagers(), null);
             return sslContext.getSocketFactory();
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException | KeyManagementException e) {
-            Log.d("Tag",e.toString());
         }
         return null;
     }

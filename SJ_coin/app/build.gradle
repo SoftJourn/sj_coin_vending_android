@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 23
@@ -33,6 +32,8 @@ dependencies {
 
     //ButterKnife
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
 
     //Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"

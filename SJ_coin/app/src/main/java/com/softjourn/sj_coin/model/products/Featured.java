@@ -4,23 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-import com.softjourn.sj_coin.realm.realmTypes.RealmInteger;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
-public class Featured extends RealmObject implements Parcelable {
+public class Featured implements Parcelable {
 
     @SerializedName("lastAdded")
-    private RealmList<RealmInteger> lastAdded = new RealmList<>();
+    private List<Integer> lastAdded = new ArrayList<>();
 
     @SerializedName("bestSellers")
-    private RealmList<RealmInteger> bestSellers = new RealmList<>();
+    private List<Integer> bestSellers = new ArrayList<>();
 
     @SerializedName("categories")
-    private RealmList<Categories> categories = new RealmList<>();
+    private List<Categories> categories = new ArrayList<>();
 
     public Featured(){}
 

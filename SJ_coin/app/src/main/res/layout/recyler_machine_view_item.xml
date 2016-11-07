@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_item_product_parent_view"
     android:layout_width="100dp"
     android:layout_height="160dp"
     android:layout_marginBottom="@dimen/recycler_view_machine_layout_bottom_margin"
     android:layout_marginLeft="@dimen/recycler_view_machine_layout_left_margin"
     android:layout_marginRight="@dimen/recycler_view_machine_layout_right_margin"
     android:layout_marginTop="@dimen/recycler_view_machine_layout_top_margin"
-    android:background="@drawable/item_shadow"
+    android:background="@drawable/item_shape"
+    android:orientation="vertical"
+    android:elevation="1dp"
     tools:ignore="RtlHardcoded">
-
-    <LinearLayout
-        android:id="@+id/layout_item_product_parent_view"
-        android:layout_width="100dp"
-        android:layout_height="160dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginRight="1dp"
-        android:background="@drawable/item_shape"
-        android:orientation="vertical"
-        tools:ignore="RtlHardcoded">
 
         <ImageView
             android:id="@+id/layout_item_product_img"
@@ -52,7 +45,5 @@
             android:layout_marginTop="4dp"
             android:text="@string/dummy_text_view_text"
             android:textSize="12sp" />
-
-    </LinearLayout>
 
 </LinearLayout>

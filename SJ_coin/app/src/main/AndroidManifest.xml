@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.softjourn.sj_coin">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,14 +14,15 @@
         android:icon="@mipmap/ic_launcher_sj"
         android:label="SJ_Coins"
         android:supportsRtl="true"
+        tools:replace="android:label"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.VendingActivity"
-            android:label="Vending Machine" />
+            android:label="" />
         <activity
             android:name=".activities.SplashActivity"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
+            android:theme="@style/NoActionBarLoginTheme">
+                        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,7 +31,7 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label=""
-            android:theme="@style/AppTheme" />
+            android:theme="@style/NoActionBarLoginTheme" />
         <activity
             android:name=".activities.ProfileActivity"
             android:label="Profile" />

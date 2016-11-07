@@ -9,15 +9,20 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.utils.Const;
+
+import butterknife.Bind;
 
 
 public class NoInternetActivity extends AppCompatActivity implements Const {
 
     private BroadcastListener mBroadcastListener;
 
+    @Bind(R.id.imageView)
+    ImageView imageview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

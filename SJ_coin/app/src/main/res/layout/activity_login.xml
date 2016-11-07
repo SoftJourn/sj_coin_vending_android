@@ -6,6 +6,7 @@
     android:fitsSystemWindows="true">
 
     <LinearLayout
+        android:id="@+id/login_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -15,12 +16,12 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:contentDescription="@string/company_logo"
             android:nestedScrollingEnabled="false"
-            android:src="@drawable/logo" />
+            android:src="@drawable/vending_machine_png" />
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout

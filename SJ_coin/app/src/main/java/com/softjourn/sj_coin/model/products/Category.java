@@ -5,11 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmObject;
 import lombok.Data;
 
 @Data
-public class Category extends RealmObject implements Parcelable {
+public class Category implements Parcelable {
 
     @SerializedName("id")
     private Integer id;

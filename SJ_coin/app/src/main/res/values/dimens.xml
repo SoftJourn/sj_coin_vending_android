@@ -7,7 +7,7 @@
     <dimen name="recycler_view_layout_left_margin">10dp</dimen>
 
     <!-- Fragment Machine View margins. -->
-    <dimen name="recycler_view_machine_layout_left_margin">2dp</dimen>
+    <dimen name="recycler_view_machine_layout_left_margin">3dp</dimen>
     <dimen name="recycler_view_machine_layout_top_margin">2dp</dimen>
     <dimen name="recycler_view_machine_layout_bottom_margin">2dp</dimen>
     <dimen name="recycler_view_machine_layout_right_margin">2dp</dimen>

@@ -2,7 +2,6 @@ package com.softjourn.sj_coin.utils;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
@@ -71,7 +70,6 @@ public class PicassoTrustAdapter {
                 .listener(new Picasso.Listener() {
                     @Override
                     public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                        Log.e("PICASSO", exception.toString());
                     }
                 }).build();
 

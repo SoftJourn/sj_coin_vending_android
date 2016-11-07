@@ -1,19 +1,49 @@
 package com.softjourn.sj_coin.activities;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.viksaa.sssplash.lib.activity.AwesomeSplash;
+import com.viksaa.sssplash.lib.cnst.Flags;
+import com.viksaa.sssplash.lib.model.ConfigSplash;
 
-public class SplashActivity extends AppCompatActivity implements Const {
+public class SplashActivity extends AwesomeSplash implements Const {
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void initSplash(ConfigSplash configSplash) {
 
+        configSplash.setBackgroundColor(R.color.colorScreenBackground);
+        configSplash.setAnimCircularRevealDuration(1000); //int ms
+        configSplash.setRevealFlagX(Flags.REVEAL_RIGHT);  //or Flags.REVEAL_LEFT
+        configSplash.setRevealFlagY(Flags.REVEAL_BOTTOM); //or Flags.REVEAL_TOP
+
+        //Customize Logo
+        configSplash.setLogoSplash(R.drawable.vending_machine_png); //or any other drawable
+        configSplash.setAnimLogoSplashDuration(2000); //int ms
+        configSplash.setAnimLogoSplashTechnique(Techniques.FadeIn); //choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
+
+        configSplash.setOriginalHeight(400); //in relation to your svg (path) resource
+        configSplash.setOriginalWidth(400); //in relation to your svg (path) resource
+        configSplash.setAnimPathStrokeDrawingDuration(3000);
+        configSplash.setPathSplashStrokeSize(3); //I advise value be <5
+        configSplash.setPathSplashStrokeColor(R.color.colorAccent); //any color you want form colors.xml
+        configSplash.setAnimPathFillingDuration(3000);
+        configSplash.setPathSplashFillColor(R.color.transparent); //path object filling color
+
+        //Customize Title
+        configSplash.setTitleSplash(""); // Empty string to not appear application title
+        configSplash.setTitleTextColor(R.color.colorBlue);
+        configSplash.setTitleTextSize(30f); //float value
+        configSplash.setAnimTitleDuration(100);
+    }
+
+    @Override
+    public void animationsFinished() {
         if (!NetworkManager.isNetworkEnabled()) {
             Navigation.goToNoInternetScreen(this);
             finish();
