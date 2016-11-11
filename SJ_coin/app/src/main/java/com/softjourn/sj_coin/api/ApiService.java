@@ -39,6 +39,11 @@ public interface ApiService {
             @Field("grant_type") String grantType);
 
 
+    @FormUrlEncoded
+    @POST("oauth/token/revoke")
+    Call<Void> revokeRefreshToken(
+            @Field("token_value") String refreshToken);
+
     /**
      * Vending Server endpoints
      */

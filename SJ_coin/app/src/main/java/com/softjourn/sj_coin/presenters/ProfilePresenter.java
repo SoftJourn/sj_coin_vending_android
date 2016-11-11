@@ -8,6 +8,7 @@ import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
+import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
@@ -50,6 +51,16 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     }
 
     @Override
+    public void logOut(String refreshToken) {
+        if (!NetworkManager.isNetworkEnabled()) {
+            mView.showNoInternetError();
+        } else {
+            mView.showProgress(App.getContext().getString(R.string.progress_loading));
+            mLoginPresenter.logOut(refreshToken);
+        }
+    }
+
+    @Override
     public void showHistory() {
         mVendingModel.getPurchaseHistory();
     }
@@ -86,6 +97,14 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     public void OnEvent(OnHistoryReceived event) {
         mView.setData(event.getHistoryList());
         mView.hideProgress();
+    }
+
+    @Subscribe
+    public void OnEvent(OnTokenRevoked event) {
+        if (event.isSuccess()) {
+            mView.hideProgress();
+            mView.logOut();
+        }
     }
 }
 

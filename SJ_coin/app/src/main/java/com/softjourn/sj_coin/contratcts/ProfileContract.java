@@ -16,6 +16,8 @@ public interface ProfileContract {
 
         void setData(List<History> history);
 
+        void logOut();
+
     }
 
     interface Presenter extends BasePresenter {

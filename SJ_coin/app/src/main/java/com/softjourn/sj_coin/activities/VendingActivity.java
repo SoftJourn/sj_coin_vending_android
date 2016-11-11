@@ -110,6 +110,9 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
             case R.id.select_machine:
                     mVendingPresenter.getMachinesList();
                     return true;
+            case R.id.logout:
+                mVendingPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
+                return true;
                 }
         return super.onOptionsItemSelected(item);
     }
@@ -216,6 +219,13 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void showSnackBar(String message) {
         Utils.showSnackBar(findViewById(R.id.mainLayout), message);
+    }
+
+    @Override
+    public void logOut() {
+        Utils.clearUsersData();
+        Navigation.goToLoginActivity(this);
+        finish();
     }
 
     @Override

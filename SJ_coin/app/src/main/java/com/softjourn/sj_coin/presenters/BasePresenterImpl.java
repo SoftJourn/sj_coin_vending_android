@@ -24,4 +24,8 @@ public class BasePresenterImpl implements BasePresenter{
     @Override
     public void refreshToken(String refreshToken) {
     }
+
+    @Override
+    public void logOut(String refreshToken) {
+    }
 }

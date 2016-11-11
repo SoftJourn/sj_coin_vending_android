@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -15,6 +16,9 @@ import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.Utils;
 
 import java.util.List;
 
@@ -79,6 +83,17 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                mPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void showBalance(String amount) {
         mCoinsLabel.setVisibility(View.VISIBLE);
         mUserBalance.setText(amount);
@@ -94,6 +109,13 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     @Override
     public void setData(List<History> history) {
         mHistoryAdapter.setData(history);
+    }
+
+    @Override
+    public void logOut() {
+        Utils.clearUsersData();
+        Navigation.goToLoginActivity(this);
+        finish();
     }
 
     @Override

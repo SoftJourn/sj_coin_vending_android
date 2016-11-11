@@ -19,9 +19,11 @@
         tools:replace="android:label" >
         <activity
             android:name=".activities.VendingActivity"
+            android:screenOrientation="portrait"
             android:label="" />
         <activity
             android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBarLoginTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,13 +33,16 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/NoActionBarLoginTheme" />
         <activity
             android:name=".activities.ProfileActivity"
+            android:screenOrientation="portrait"
             android:label="Profile" />
         <activity
             android:name=".activities.SeeAllActivity"
+            android:screenOrientation="portrait"
             android:label="All Products"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
@@ -46,6 +51,7 @@
         </activity>
         <activity
             android:name=".activities.NoInternetActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme" />
     </application>
 
