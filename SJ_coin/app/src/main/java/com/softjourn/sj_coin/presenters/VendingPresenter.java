@@ -11,8 +11,8 @@ import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
+import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.managers.DataManager;
 import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
@@ -30,7 +30,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     private final VendingModel mModel;
     private final LoginPresenter mLoginPresenter;
     private final ProfileModel mProfileModel;
-    private DataManager mDataManager = new DataManager();
 
     private static String actionAfterRefresh;
 
@@ -97,7 +96,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     public void getBalance() {
         if (NetworkManager.isNetworkEnabled()) {
             if (Utils.checkExpirationDate()) {
-                refreshToken(Const.REFRESH_TOKEN);
+                refreshToken(REFRESH_TOKEN);
             } else {
                 mProfileModel.makeBalanceCall();
             }
@@ -107,6 +106,16 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
+    }
+
+    @Override
+    public void logOut(String refreshToken) {
+        if (!NetworkManager.isNetworkEnabled()) {
+            mView.showNoInternetError();
+        } else {
+            mView.showProgress(App.getContext().getString(R.string.progress_loading));
+            mLoginPresenter.logOut(refreshToken);
+        }
     }
 
     @Override
@@ -175,5 +184,13 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Subscribe
     public void OnEvent(OnBalanceReceivedEvent event) {
         mView.updateBalanceAmount(event.getBalance());
+    }
+
+    @Subscribe
+    public void OnEvent(OnTokenRevoked event) {
+        if (event.isSuccess()) {
+            mView.hideProgress();
+            mView.logOut();
+        }
     }
 }

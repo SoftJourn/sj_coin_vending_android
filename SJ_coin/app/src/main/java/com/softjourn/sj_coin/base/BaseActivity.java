@@ -112,11 +112,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
                 } else {
                     return false;
                 }
-            case R.id.logout:
-                Utils.clearUsersData();
-                Navigation.goToLoginActivity(this);
-                finish();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -59,4 +59,9 @@ public class OAuthApiClient extends BaseApiClient implements OAuthApiProvider {
     public void makeRefreshToken(String refreshToken, String type, Callback<Session> callback) {
         mApiService.getAccessTokenViaRefreshToken(refreshToken, type).enqueue(callback);
     }
+
+    @Override
+    public void makeRevokeRefreshToken(String refreshToken, Callback<Void> callback) {
+        mApiService.revokeRefreshToken(refreshToken).enqueue(callback);
+    }
 }

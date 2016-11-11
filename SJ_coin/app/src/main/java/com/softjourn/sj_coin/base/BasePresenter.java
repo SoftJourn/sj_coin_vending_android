@@ -7,4 +7,6 @@ public interface BasePresenter{
     void onDestroy();
 
     void refreshToken(String refreshToken);
+
+    void logOut(String refreshToken);
 }

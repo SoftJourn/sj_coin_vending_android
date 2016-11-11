@@ -1,11 +1,14 @@
 package com.softjourn.sj_coin.MVPmodels;
 
 
+import android.util.Log;
+
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.auth.OAuthApiProvider;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
+import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
 import com.softjourn.sj_coin.model.Session;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Utils;
@@ -64,6 +67,30 @@ public class LoginModel extends BaseModel{
             }
         };
         mApiProvider.makeLoginRequest(userName, password, Const.GRANT_TYPE_PASSWORD, callback);
+    }
+
+    public void revokeRefreshToken(String refreshToken) {
+        createApiManager();
+
+        Callback<Void> callback = new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    mEventBus.post(new OnTokenRevoked(false));
+                    Log.d("Tag", ""+response.code());
+                } else {
+                    mEventBus.post(new OnTokenRevoked(true));
+                    Log.d("Tag", ""+response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                mEventBus.post(new OnTokenRevoked(false));
+                Log.d("Tag", t.toString());
+            }
+        };
+        mApiProvider.makeRevokeRefreshToken(refreshToken, callback);
     }
 
     private void createApiManager() {

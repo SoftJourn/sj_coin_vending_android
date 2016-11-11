@@ -34,6 +34,8 @@ public interface VendingContract {
         void showSnackBar(String message);
 
         void onCreateErrorDialog(String message);
+
+        void logOut();
     }
 
     interface Presenter extends BasePresenter{

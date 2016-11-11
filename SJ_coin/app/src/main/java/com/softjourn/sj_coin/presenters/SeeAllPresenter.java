@@ -8,6 +8,7 @@ import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
+import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
 import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.utils.Const;
@@ -52,6 +53,16 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
                 mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.addProductToFavorite(id);
             }
+        }
+    }
+
+    @Override
+    public void logOut(String refreshToken) {
+        if (!NetworkManager.isNetworkEnabled()) {
+            mView.showNoInternetError();
+        } else {
+            mView.showProgress(App.getContext().getString(R.string.progress_loading));
+            mLoginPresenter.logOut(refreshToken);
         }
     }
 
@@ -125,5 +136,13 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event){
         mView.hideProgress();
+    }
+
+    @Subscribe
+    public void OnEvent(OnTokenRevoked event) {
+        if (event.isSuccess()) {
+            mView.hideProgress();
+            mView.logOut();
+        }
     }
 }

@@ -43,6 +43,11 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
     }
 
     @Override
+    public void logOut(String refreshToken) {
+            mModel.revokeRefreshToken(refreshToken);
+    }
+
+    @Override
     public void refreshToken(String refreshToken) {
         mModel.makeRefreshToken(refreshToken);
     }

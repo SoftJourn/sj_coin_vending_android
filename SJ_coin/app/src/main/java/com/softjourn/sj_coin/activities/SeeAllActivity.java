@@ -199,6 +199,18 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                mVendingPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
     public void navigateToBuyProduct(Product product) {
         onCreateConfirmDialog(product, mPurchasePresenter);
     }
@@ -206,6 +218,13 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     @Override
     public void showSnackBar() {
         Utils.showSnackBar(findViewById(R.id.rootLayout), getString(R.string.activity_order_processing));
+    }
+
+    @Override
+    public void logOut() {
+        Utils.clearUsersData();
+        Navigation.goToLoginActivity(this);
+        finish();
     }
 
     @Override
