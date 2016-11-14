@@ -2,8 +2,8 @@ package com.softjourn.sj_coin.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -75,7 +75,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         ButterKnife.bind(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this,R.color.colorAccent));
 
         makeActionOverflowMenuShown();
 

@@ -9,26 +9,32 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
 
+import com.jrummyapps.android.widget.AnimatedSvgView;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.utils.Const;
-
-import butterknife.Bind;
 
 
 public class NoInternetActivity extends AppCompatActivity implements Const {
 
     private BroadcastListener mBroadcastListener;
 
-    @Bind(R.id.imageView)
-    ImageView imageview;
+    private AnimatedSvgView svgView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.no_internet_activity);
         mBroadcastListener = new BroadcastListener();
+
+        svgView = (AnimatedSvgView) findViewById(R.id.animated_svg_view);
+        svgView.postDelayed(new Runnable() {
+
+            @Override public void run() {
+                svgView.start();
+            }
+        }, 500);
+        svgView.start();
 
         registerReceiver(mBroadcastListener,new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }

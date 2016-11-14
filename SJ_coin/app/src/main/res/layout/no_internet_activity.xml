@@ -2,17 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="1">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/vending_machine_png"
-        android:layout_gravity="center"
-        android:contentDescription="@string/no_internet_image_description"
-        android:layout_weight="0.7"/>
+
+    <com.jrummyapps.android.widget.AnimatedSvgView
+        android:layout_weight="0.7"
+        android:id="@+id/animated_svg_view"
+        android:layout_marginTop="100dp"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginLeft="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="25dp"
+        app:animatedSvgFillColors="@array/t_rex_colors"
+        app:animatedSvgGlyphStrings="@array/t_rex_strings"
+        app:animatedSvgFillStart="1200"
+        app:animatedSvgFillTime="1500"
+        app:animatedSvgImageSizeX="400"
+        app:animatedSvgImageSizeY="400"
+        app:animatedSvgTraceTime="5000"
+        app:animatedSvgTraceTimePerGlyph="1000"/>
 
     <TextView
         android:layout_width="wrap_content"
