@@ -3,13 +3,13 @@
     <item android:state_pressed="false">
         <layer-list>
             <item android:left="4dp" android:top="4dp" android:drawable="@drawable/button_transformed_shadow"/>
-            <item android:drawable="@drawable/button_transformed"/>
+            <item android:drawable="@drawable/button_transformed" />
         </layer-list>
     </item>
     <item android:state_pressed="true">
         <layer-list>
             <item android:left="4dp" android:top="4dp" android:drawable="@drawable/button_transformed_shadow"/>
-            <item android:drawable="@drawable/button_transformed_pressed"/>
+            <item android:drawable="@drawable/button_transformed_pressed" />
         </layer-list>
     </item>
 </selector>
