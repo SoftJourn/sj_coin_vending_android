@@ -139,9 +139,11 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             switch (actionAfterRefresh) {
                 case MACHINES_LIST:
                     mView.getMachinesList();
+                    actionAfterRefresh = null;
                     break;
                 case PRODUCTS_LIST:
                     mView.loadProductList();
+                    actionAfterRefresh = null;
                     break;
                 default:
                     break;

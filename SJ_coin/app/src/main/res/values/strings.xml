@@ -47,11 +47,12 @@
     <string name="progress_authenticating">Authenticating…</string>
 
     <!--Server Errors-->
-    <string name="server_error_400">The request was malformed.</string>
+    <string name="server_error_400">Not clear request to server.</string>
     <string name="server_error_401">Something wrong with your authentication.</string>
-    <string name="server_error_404">The requested resource did not exist.</string>
+    <string name="server_error_404">Product is not available.</string>
     <string name="server_error_409">Not enough coins to buy item.</string>
-    <string name="server_error_other">Server error. Please try again later</string>
+    <string name="server_error_509">Machine is locked by queue. Try again later.</string>
+    <string name="server_error_other">Something wrong on server side. Please try again later</string>
 
     <!--Sorting Button Bar-->
     <string name="button_sort_name">Name</string>
