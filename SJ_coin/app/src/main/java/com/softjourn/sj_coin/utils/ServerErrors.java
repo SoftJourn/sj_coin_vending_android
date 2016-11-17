@@ -14,6 +14,8 @@ public class ServerErrors {
                 return App.getContext().getString(R.string.server_error_404);
             case "409":
                 return App.getContext().getString(R.string.server_error_409);
+            case "509" :
+                return App.getContext().getString(R.string.server_error_509);
             default:
                 return App.getContext().getString(R.string.server_error_other);
         }

@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/colorScreenBackground"
+    android:background="@drawable/background_pattern"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -55,14 +55,15 @@
                 android:nextFocusDown="@+id/btn_login" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
-            android:padding="12dp"
-            android:text="@string/screen_login_login_button" />
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:background="@drawable/button_with_shadow"
+                android:padding="12dp"
+                android:text="@string/screen_login_login_button"
+                android:textColor="@color/colorTextSimple"
+                android:layout_marginTop="16dp"/>
 
     </LinearLayout>
 </ScrollView>
