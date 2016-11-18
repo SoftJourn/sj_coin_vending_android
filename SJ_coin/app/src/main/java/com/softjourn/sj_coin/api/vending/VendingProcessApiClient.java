@@ -11,6 +11,9 @@ import com.softjourn.sj_coin.model.products.Favorites;
 import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.utils.Preferences;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +63,14 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
         if (response.isSuccessful()) {
             callback.onSuccess(response.body());
         } else {
-            callback.onError(String.valueOf(response.code()));
+            String errorCode;
+            try {
+                JSONObject jObjError = new JSONObject(response.errorBody().string());
+                errorCode = jObjError.getString("status");
+            } catch (IOException|JSONException e) {
+                errorCode = String.valueOf(response.code());
+            }
+            callback.onError(errorCode);
         }
     }
 
