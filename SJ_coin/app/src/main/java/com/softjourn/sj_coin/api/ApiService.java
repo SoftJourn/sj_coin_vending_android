@@ -65,10 +65,10 @@ public interface ApiService {
     @GET ("favorites")
     Call<List<Favorites>> getListFavorites();
 
-    @POST ("favoritesss/{id}")
+    @POST ("favorites/{id}")
     Call<Void> addProductToFavorites(@Path("id") int id);
 
-    @DELETE ("favoritesss/{id}")
+    @DELETE ("favorites/{id}")
     Call<Void> removeFromFavorites(@Path("id") String id);
 
     @GET ("machines/last")
