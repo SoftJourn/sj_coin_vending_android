@@ -36,7 +36,7 @@ public class FavoritesStorage {
 
         if (mFavoritesList != null) {
             for (Favorites favorites : mFavoritesList) {
-                if (favorites.getId() == id) {
+                if (favorites.getId().equals(id)) {
                     return;
                 }
             }
