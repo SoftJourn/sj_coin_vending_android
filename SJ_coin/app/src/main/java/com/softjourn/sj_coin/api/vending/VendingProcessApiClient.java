@@ -66,7 +66,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
             String errorCode;
             try {
                 JSONObject jObjError = new JSONObject(response.errorBody().string());
-                errorCode = jObjError.getString("status");
+                errorCode = jObjError.getString("code");
             } catch (IOException|JSONException e) {
                 errorCode = String.valueOf(response.code());
             }

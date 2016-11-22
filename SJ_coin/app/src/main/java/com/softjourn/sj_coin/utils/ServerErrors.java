@@ -6,16 +6,6 @@ import com.softjourn.sj_coin.R;
 public class ServerErrors {
     public static String showErrorMessage(String message) {
         switch (message) {
-            case "400":
-                return App.getContext().getString(R.string.server_error_400);
-            case "401":
-                return App.getContext().getString(R.string.server_error_401);
-            case "404":
-                return App.getContext().getString(R.string.server_error_404);
-            case "409":
-                return App.getContext().getString(R.string.server_error_409);
-            case "509" :
-                return App.getContext().getString(R.string.server_error_509);
             case "40401" :
                 return App.getContext().getString(R.string.server_error_40401);
             case "40402" :
@@ -44,6 +34,16 @@ public class ServerErrors {
                 return App.getContext().getString(R.string.server_error_40903);
             case "50901" :
                 return App.getContext().getString(R.string.server_error_50901);
+            case "400":
+                return App.getContext().getString(R.string.server_error_400);
+            case "401":
+                return App.getContext().getString(R.string.server_error_401);
+            case "404":
+                return App.getContext().getString(R.string.server_error_404);
+            case "409":
+                return App.getContext().getString(R.string.server_error_409);
+            case "509" :
+                return App.getContext().getString(R.string.server_error_509);
             default:
                 return App.getContext().getString(R.string.server_error_other);
         }
