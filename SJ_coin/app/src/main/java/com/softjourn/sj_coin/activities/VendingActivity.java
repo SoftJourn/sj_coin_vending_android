@@ -23,6 +23,7 @@ import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
+import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
@@ -371,5 +372,17 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
             showMachinesSelector(event.getMachinesList());
         }
     }
+
+    @Subscribe
+    public void OnEvent(OnTokenRefreshed event) {
+        if (event.isSuccess()) {
+            mVendingPresenter.getActionAfterRefresh();
+            mPurchasePresenter.buyAfterRefresh();
+            hideProgress();
+        } else {
+            hideProgress();
+        }
+    }
+
 }
 

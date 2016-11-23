@@ -10,7 +10,6 @@ import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
-import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.model.products.Categories;
@@ -134,7 +133,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.hideProgress();
     }
 
-    private void getActionAfterRefresh() {
+    public void getActionAfterRefresh() {
         if (actionAfterRefresh != null) {
             switch (actionAfterRefresh) {
                 case MACHINES_LIST:
@@ -148,17 +147,6 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
                 default:
                     break;
             }
-            mView.hideProgress();
-        }
-    }
-
-    @Subscribe
-    public void OnEvent(OnTokenRefreshed event) {
-        if (event.isSuccess()) {
-            getActionAfterRefresh();
-            mView.hideProgress();
-        } else {
-            mView.hideProgress();
         }
     }
 

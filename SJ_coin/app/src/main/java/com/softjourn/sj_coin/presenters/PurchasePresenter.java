@@ -3,13 +3,13 @@ package com.softjourn.sj_coin.presenters;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
+import org.greenrobot.eventbus.NoSubscriberEvent;
 import org.greenrobot.eventbus.Subscribe;
 
 public class PurchasePresenter extends BasePresenterImpl implements PurchaseContract.Presenter, Const {
@@ -48,14 +48,16 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
         }
     }
 
-    @Subscribe
-    public void OnEvent(OnTokenRefreshed event) {
-        if (event.isSuccess()) {
-            if (productId != null) {
-                buyProduct(productId);
-            }
-        } else {
-            mView.hideProgress();
+    @Override
+    public void buyAfterRefresh() {
+        if (productId != null) {
+            buyProduct(productId);
+            productId = null;
         }
+    }
+
+    @Subscribe
+    public void OnEvent(NoSubscriberEvent event) {
+
     }
 }

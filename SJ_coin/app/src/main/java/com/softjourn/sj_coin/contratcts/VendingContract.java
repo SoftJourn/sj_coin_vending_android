@@ -51,5 +51,7 @@ public interface VendingContract {
         void getBalance();
 
         void getCategoriesFromDB();
+
+        void getActionAfterRefresh();
     }
 }
