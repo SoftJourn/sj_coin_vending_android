@@ -27,7 +27,6 @@
         <item name="android:text">@string/layout_vending_see_all</item>
         <item name="android:textColor">@color/colorBlue</item>
         <item name="android:gravity">right</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
 
@@ -114,8 +113,8 @@
     </style>
 
     <style name="ConfirmDialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/slide_left</item>
-        <item name="android:windowExitAnimation">@anim/slide_right</item>
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
 </resources>
