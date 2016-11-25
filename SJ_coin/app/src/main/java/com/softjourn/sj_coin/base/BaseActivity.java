@@ -143,6 +143,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     }
 
     protected void onCreateConfirmDialog(final Product product, final PurchaseContract.Presenter presenter) {
+
         mConfirmDialog = new Dialog(this);
         mConfirmDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mConfirmDialog.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);

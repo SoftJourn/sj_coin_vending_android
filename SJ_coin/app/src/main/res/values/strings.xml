@@ -55,7 +55,7 @@
     <string name="server_error_40401">There is no machines.</string>
     <string name="server_error_40402">There is not such machine</string>
     <string name="server_error_40403">Data could not be downloaded. Please try again later</string>
-    <string name="server_error_40404">There is no such product in current machine</string>
+    <string name="server_error_40404">Chosen product is not available. Please refresh the page</string>
     <string name="server_error_40405">Data could not be downloaded. Please try again later</string>
     <string name="server_error_40406">There is no such product.</string>
     <string name="server_error_40407">There is no such product</string>
@@ -102,7 +102,7 @@
 
 
     <!-- Select Machine functionality-->
-    <string name="machine_name">Machine Name</string>
+    <string name="machine_name">Select Machine</string>
     <string name="dialog_select_machine_title">Select Machine</string>
     <string name="no_internet_image_description">NoInternetConnectionImageDesc</string>
     <string name="product_is_not_available_in_machine">Chosen product is not available in current vending machine</string>
@@ -120,7 +120,7 @@
     </string-array>
 
     <integer-array name="t_rex_colors">
-        <item>@color/colorPrimaryText</item>
+        <item>@color/colorSecondaryText</item>
         <item>@color/colorBlue</item>
         <item>@color/colorBlue</item>
         <item>@color/colorBlue</item>
