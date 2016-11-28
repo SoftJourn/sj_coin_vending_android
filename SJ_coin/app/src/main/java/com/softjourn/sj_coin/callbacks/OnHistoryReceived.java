@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.History;
+import com.softjourn.sj_coin.api_models.History;
 
 import java.util.List;
 

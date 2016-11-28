@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.PurchaseHistoryItemsAdapter;
+import com.softjourn.sj_coin.api_models.History;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
-import com.softjourn.sj_coin.model.History;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;

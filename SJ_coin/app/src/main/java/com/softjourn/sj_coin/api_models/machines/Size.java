@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.model.machines;
+package com.softjourn.sj_coin.api_models.machines;
 
 import android.os.Parcel;
 import android.os.Parcelable;

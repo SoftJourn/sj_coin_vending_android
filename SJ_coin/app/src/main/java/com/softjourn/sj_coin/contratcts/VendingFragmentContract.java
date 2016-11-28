@@ -1,7 +1,7 @@
 package com.softjourn.sj_coin.contratcts;
 
+import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.base.BasePresenter;
-import com.softjourn.sj_coin.model.products.Product;
 
 import java.util.List;
 

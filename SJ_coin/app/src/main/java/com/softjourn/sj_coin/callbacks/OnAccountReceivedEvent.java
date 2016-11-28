@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.accountInfo.Account;
+import com.softjourn.sj_coin.api_models.accountInfo.Account;
 
 
 public class OnAccountReceivedEvent {

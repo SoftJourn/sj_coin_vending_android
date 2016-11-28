@@ -1,7 +1,7 @@
 package com.softjourn.sj_coin.dataStorage;
 
-import com.softjourn.sj_coin.model.products.Featured;
-import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.api_models.products.Featured;
+import com.softjourn.sj_coin.api_models.products.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,10 @@ public class FeaturesStorage {
         }
     }
 
+    /**
+     * Adding products to Local Product Storage.
+     * by retrieving objects from Category->List<Product>
+     */
     private void setProductStorage() {
         List<Product> productList = new ArrayList<>();
 

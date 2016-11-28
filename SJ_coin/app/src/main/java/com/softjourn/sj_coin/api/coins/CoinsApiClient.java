@@ -3,9 +3,9 @@ package com.softjourn.sj_coin.api.coins;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.api.callbacks.Callback;
+import com.softjourn.sj_coin.api_models.accountInfo.Account;
+import com.softjourn.sj_coin.api_models.accountInfo.Balance;
 import com.softjourn.sj_coin.base.BaseApiClient;
-import com.softjourn.sj_coin.model.accountInfo.Account;
-import com.softjourn.sj_coin.model.accountInfo.Balance;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import java.io.IOException;

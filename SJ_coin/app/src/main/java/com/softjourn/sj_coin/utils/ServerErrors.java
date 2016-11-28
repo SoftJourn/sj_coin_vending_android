@@ -3,6 +3,11 @@ package com.softjourn.sj_coin.utils;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 
+
+/**
+ * Class to handle errors returned from server
+ * to appear correct message to user.
+ */
 public class ServerErrors {
     public static String showErrorMessage(String message) {
         switch (message) {

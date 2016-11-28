@@ -1,10 +1,10 @@
 package com.softjourn.sj_coin.managers;
 
+import com.softjourn.sj_coin.api_models.products.Categories;
+import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
 import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
 import com.softjourn.sj_coin.dataStorage.ProductsStorage;
-import com.softjourn.sj_coin.model.products.Categories;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
 
 import java.util.ArrayList;
@@ -14,6 +14,8 @@ import java.util.List;
 
 /**
  * Created by omartynets on 04.11.2016.
+ * To make local manipulations with data on device
+ * till application is not closed
  */
 
 public class DataManager implements Const {
@@ -99,7 +101,7 @@ public class DataManager implements Const {
     }
 
     public List<Product> getConcreteCategory(String productsCategory) {
-        List<Product> product = new ArrayList<>();
+        List<Product> product;
         switch (productsCategory) {
             case ALL_ITEMS:
                 product = loadLocalProductList();
@@ -120,6 +122,13 @@ public class DataManager implements Const {
         return product;
     }
 
+    /**
+     * List of products should be sorted by Name ascending
+     * before showing on the screen.
+     *
+     * @param productList = list of products to be displayed.
+     * @return
+     */
     private List<Product> sortBeforeReturning (List<Product> productList) {
         Collections.sort(productList, new Comparator<Product>() {
             @Override

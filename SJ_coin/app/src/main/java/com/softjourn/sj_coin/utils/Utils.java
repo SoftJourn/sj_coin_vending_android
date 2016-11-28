@@ -6,8 +6,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.softjourn.sj_coin.model.Session;
-import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.api_models.Session;
+import com.softjourn.sj_coin.api_models.machines.Machines;
 
 import java.util.Date;
 
@@ -46,6 +46,9 @@ public class Utils {
         Preferences.clearStringObject(Const.SELECTED_MACHINE_ID);
     }
 
+    /**
+     * @return true if Token have expired
+     */
     public static boolean checkExpirationDate() {
         return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(Const.EXPIRATION_DATE)));
     }

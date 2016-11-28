@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.api_models.products.Product;
 
 public class OnAddFavoriteEvent {
     private final Product mProduct;

@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.adapters.SelectMachineListAdapter;
+import com.softjourn.sj_coin.api_models.machines.Machines;
+import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
 import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
@@ -28,13 +30,12 @@ import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
 import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
-import com.softjourn.sj_coin.model.machines.Machines;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -182,34 +183,43 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         LinearLayout ll;
 
         ll = (LinearLayout) getLayoutInflater().inflate(R.layout.category_header_layout, null);
-        assert mainLayout != null;
-        mainLayout.addView(ll);
+        if (mainLayout != null) {
+            mainLayout.addView(ll);
+        }
 
         LinearLayout llHeader = (LinearLayout) findViewById(R.id.dummyHeaderID);
-        assert llHeader != null;
-        llHeader.setId(View.generateViewId());
+        if (llHeader != null) {
+            llHeader.setId(View.generateViewId());
+        }
 
         TextView tvCategoryName = (TextView) findViewById(R.id.categoryName);
-        assert tvCategoryName != null;
-        tvCategoryName.setId(View.generateViewId());
-        tvCategoryName.setText(categoryName);
+        if (tvCategoryName != null) {
+            tvCategoryName.setId(View.generateViewId());
+            tvCategoryName.setText(categoryName);
+        }
 
         TextView tvSeeAll = (TextView) findViewById(R.id.dummySeeAllID);
-        assert tvSeeAll != null;
-        tvSeeAll.setId(View.generateViewId());
+        if (tvSeeAll != null) {
+            tvSeeAll.setId(View.generateViewId());
+        }
 
         LinearLayout llContainer = (LinearLayout) findViewById(R.id.container_dummyID);
-        assert llContainer != null;
-        llContainer.setId(View.generateViewId());
+        if (llContainer != null) {
+            llContainer.setId(View.generateViewId());
+        }
 
-        tvSeeAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.goToSeeAllActivity(VendingActivity.this, categoryName);
-            }
-        });
+        if (tvSeeAll != null) {
+            tvSeeAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Navigation.goToSeeAllActivity(VendingActivity.this, categoryName);
+                }
+            });
+        }
 
-        attachFragment(categoryName, llHeader.getId(), llContainer.getId(), tvSeeAll.getId());
+        if (llHeader != null && llContainer != null && tvSeeAll != null) {
+            attachFragment(categoryName, llHeader.getId(), llContainer.getId(), tvSeeAll.getId());
+        }
     }
 
     @Override
@@ -283,8 +293,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         removeContainers();
         FeaturesStorage.getInstance().onDestroy();
         FavoritesStorage.getInstance().onDestroy();
-        mVendingPresenter.getFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
-        loadUserBalance();
+        mVendingPresenter.getFeaturedProductsList();
     }
 
     @Override
@@ -314,20 +323,22 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         View view = findViewById(headers);
         View fragmentContainer = findViewById(fragmentContainerId);
 
-        assert view != null;
-        view.setVisibility(View.VISIBLE);
-        assert fragmentContainer != null;
-        fragmentContainer.setVisibility(View.VISIBLE);
+        if (view != null) {
+            view.setVisibility(View.VISIBLE);
+        }
+        if (fragmentContainer != null) {
+            fragmentContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     private void removeContainers() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.mainLayout);
         for (int i = 0; i < viewCounter; i++) {
-            assert layout != null;
-            layout.removeView(findViewById(R.id.categoryLayout));
+            if (layout != null) {
+                layout.removeView(findViewById(R.id.categoryLayout));
+            }
         }
     }
-
 
     //Method for showing overflow menu in actionbar
     //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu by default
@@ -348,6 +359,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
         removeContainers();
+        loadUserBalance();
         mVendingPresenter.getFavoritesList();
     }
 
@@ -380,6 +392,10 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
             mPurchasePresenter.buyAfterRefresh();
             hideProgress();
         } else {
+            onCreateErrorDialog(ServerErrors.showErrorMessage(getString(R.string.default_error_message)));
+            hideContainer(R.id.favoritesHeader, R.id.container_fragment_products_list_favorites);
+            hideContainer(R.id.bestSellersHeader, R.id.container_fragment_products_list_best_sellers);
+            hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
             hideProgress();
         }
     }

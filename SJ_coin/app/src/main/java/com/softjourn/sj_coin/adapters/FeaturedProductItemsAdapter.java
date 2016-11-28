@@ -1,6 +1,5 @@
 package com.softjourn.sj_coin.adapters;
 
-
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -15,13 +14,13 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
 import com.softjourn.sj_coin.managers.DataManager;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
@@ -117,6 +116,10 @@ public class FeaturedProductItemsAdapter extends
                 });
             }
 
+        /**
+         * Changing color of Buy TextView depands on is product in chosen machine or not
+         * Also if product is not available in current machine there is no listener for click on TextView.
+         */
             if (holder.mBuyProduct != null) {
                 if (isCurrentProductInMachine) {
                     holder.mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorBlue));
@@ -177,6 +180,9 @@ public class FeaturedProductItemsAdapter extends
             });
         }
 
+        /**
+         * Changing Alpha of image depends on is product present in chosen machine or not
+         */
         if (TextUtils.isEmpty(product.getImageUrl()))
         {
             Picasso.with(App.getContext()).load(R.drawable.logo).into(holder.mProductImage);
@@ -202,6 +208,9 @@ public class FeaturedProductItemsAdapter extends
     }
 
 
+    /**
+     * Filters products in list by given string in SearchView
+     */
     @Override
     public Filter getFilter() {
         return new Filter() {

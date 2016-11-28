@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.model.products;
+package com.softjourn.sj_coin.api_models.products;
 
 import com.google.gson.annotations.SerializedName;
 

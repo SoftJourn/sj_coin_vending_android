@@ -3,6 +3,13 @@ package com.softjourn.sj_coin.MVPmodels;
 
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
+import com.softjourn.sj_coin.api_models.Amount;
+import com.softjourn.sj_coin.api_models.History;
+import com.softjourn.sj_coin.api_models.machines.Machines;
+import com.softjourn.sj_coin.api_models.products.Categories;
+import com.softjourn.sj_coin.api_models.products.Favorites;
+import com.softjourn.sj_coin.api_models.products.Featured;
+import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.base.BaseModel;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
@@ -16,13 +23,6 @@ import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
 import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
 import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
 import com.softjourn.sj_coin.managers.DataManager;
-import com.softjourn.sj_coin.model.Amount;
-import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.machines.Machines;
-import com.softjourn.sj_coin.model.products.Categories;
-import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.Featured;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.utils.Const;
 
 import java.util.Collections;
@@ -60,19 +60,18 @@ public class VendingModel extends BaseModel implements Const {
             @Override
             public void onSuccess(Featured response) {
                 FeaturesStorage.getInstance().setData(response);
-                mEventBus.post(new OnFeaturedProductsListReceived(response));
+                mEventBus.post(new OnFeaturedProductsListReceived());
             }
 
             @Override
             public void onError(String errorMsg) {
                 mEventBus.post(new OnServerErrorEvent(errorMsg));
-                ;
             }
         });
     }
 
     public void buyProductByID(String machineID, String id) {
-        mEventBus.post(new OnBoughtEvent(""));
+        mEventBus.post(new OnBoughtEvent(true));
         mApiProvider.buyProductByID(machineID, id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
 
             @Override
@@ -87,7 +86,7 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public void getListFavorites() {
+    public void callListFavorites() {
 
         mApiProvider.getListFavorites(new com.softjourn.sj_coin.api.callbacks.Callback<List<Favorites>>() {
             @Override

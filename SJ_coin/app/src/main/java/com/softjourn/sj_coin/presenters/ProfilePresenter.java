@@ -13,6 +13,7 @@ import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -89,6 +90,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
             mView.hideProgress();
             mProfileModel.makeAccountCall();
         } else {
+            mView.onCreateErrorDialog(ServerErrors.showErrorMessage("default"));
             mView.hideProgress();
         }
     }

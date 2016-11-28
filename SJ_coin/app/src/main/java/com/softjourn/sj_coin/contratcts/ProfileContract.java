@@ -1,8 +1,8 @@
 package com.softjourn.sj_coin.contratcts;
 
+import com.softjourn.sj_coin.api_models.History;
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
-import com.softjourn.sj_coin.model.History;
 
 import java.util.List;
 
@@ -16,6 +16,8 @@ public interface ProfileContract {
 
         void setData(List<History> history);
 
+        void onCreateErrorDialog(String message);
+
         void logOut();
 
     }
@@ -24,7 +26,10 @@ public interface ProfileContract {
 
         void getAccount();
 
+        /**
+         * get History of purchases from server
+         * and sets it as List to History adapter
+         */
         void showHistory();
-
     }
 }

@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.api.auth;
 
-import com.softjourn.sj_coin.model.Session;
+import com.softjourn.sj_coin.api_models.Session;
 
 import retrofit2.Callback;
 

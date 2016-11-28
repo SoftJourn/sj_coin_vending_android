@@ -6,13 +6,13 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.MVPmodels.ProfileModel;
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.api_models.products.Categories;
 import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
 import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
 import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.model.products.Categories;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkManager;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -70,7 +70,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     }
 
     @Override
-    public void getFeaturedProductsList(String machineID) {
+    public void getFeaturedProductsList() {
 
         if (!NetworkManager.isNetworkEnabled()) {
             mView.showNoInternetError();
@@ -88,7 +88,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getFavoritesList() {
-        mModel.getListFavorites();
+        mModel.callListFavorites();
     }
 
     @Override
@@ -159,6 +159,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnBoughtEvent event) {
+        //mView.hideProgress();
         mView.showSnackBar(App.getContext().getResources().getString(R.string.activity_order_processing));
     }
 

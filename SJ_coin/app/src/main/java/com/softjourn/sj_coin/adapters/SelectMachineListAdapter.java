@@ -16,9 +16,9 @@ import java.util.List;
 
 public class SelectMachineListAdapter extends ArrayAdapter<String> {
 
-    List<String> mItems;
+    private List<String> mItems;
 
-    Context mContext;
+    private Context mContext;
 
     public SelectMachineListAdapter(Context context, int resource, List<String> list){
         super(context,resource,list);

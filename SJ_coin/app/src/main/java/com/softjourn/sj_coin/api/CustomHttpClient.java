@@ -33,6 +33,7 @@ public class CustomHttpClient implements Const {
             sslContext.init(null, tmf.getTrustManagers(), null);
             return sslContext.getSocketFactory();
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException | KeyManagementException e) {
+            e.printStackTrace();
         }
         return null;
     }

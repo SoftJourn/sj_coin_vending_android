@@ -1,14 +1,14 @@
 package com.softjourn.sj_coin.api;
 
-import com.softjourn.sj_coin.model.Amount;
-import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.Session;
-import com.softjourn.sj_coin.model.accountInfo.Account;
-import com.softjourn.sj_coin.model.accountInfo.Balance;
-import com.softjourn.sj_coin.model.machines.Machines;
-import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.Featured;
-import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.api_models.Amount;
+import com.softjourn.sj_coin.api_models.History;
+import com.softjourn.sj_coin.api_models.Session;
+import com.softjourn.sj_coin.api_models.accountInfo.Account;
+import com.softjourn.sj_coin.api_models.accountInfo.Balance;
+import com.softjourn.sj_coin.api_models.machines.Machines;
+import com.softjourn.sj_coin.api_models.products.Favorites;
+import com.softjourn.sj_coin.api_models.products.Featured;
+import com.softjourn.sj_coin.api_models.products.Product;
 
 import java.util.List;
 

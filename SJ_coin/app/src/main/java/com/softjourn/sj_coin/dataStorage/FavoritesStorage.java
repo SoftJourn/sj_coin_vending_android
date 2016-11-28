@@ -1,7 +1,7 @@
 package com.softjourn.sj_coin.dataStorage;
 
-import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.api_models.products.Favorites;
+import com.softjourn.sj_coin.api_models.products.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by omartynets on 04.11.2016.
+ * to handle local manipulations with favorites list
  */
 public class FavoritesStorage {
 

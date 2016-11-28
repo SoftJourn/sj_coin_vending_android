@@ -16,9 +16,9 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
+import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
-import com.softjourn.sj_coin.model.products.Product;
 import com.softjourn.sj_coin.presenters.VendingFragmentPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
@@ -45,6 +45,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     private RecyclerView.LayoutManager mLayoutManager;
     private int mHeaders;
     private ProductsListFragmentStrategy mStrategy;
+    private List<Product> mProductList;
 
 
     public static ProductsListFragment newInstance(String category, @Nullable int headers, @Nullable int container) {
@@ -55,8 +56,6 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    private List<Product> mProductList;
 
     @Bind(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
@@ -117,13 +116,17 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new VendingFragmentPresenter(this, this.getActivity());
+        mPresenter = new VendingFragmentPresenter(this);
 
         if (savedInstanceState == null) {
             getLocalProductsList();
         }
     }
 
+    /**
+     * Retrieves chosen list of products from local storage
+     * depends on mProductsCategory;
+     */
     private void getLocalProductsList() {
         switch (mProductsCategory) {
             case ALL_ITEMS:
@@ -156,31 +159,22 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         mStrategy.onChangeFavoriteIcon(action);
     }
 
+    /**
+     * Is used to hide category (Vending Activity case) when there is no products
+     * and to show special message (See All Activity) when there is no products
+     */
     @Override
     public void showDataAfterRemovingFavorites(List<Product> productsList) {
         if (mProductsCategory.equals(FAVORITES)) {
 
             if (productsList != null && !productsList.isEmpty()) {
-//                mProductList = productsList;
-//                mProductAdapter.setData(productsList);
-
                 try {
                     ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
                 } catch (ClassCastException e) {
-                    return;
+                    e.printStackTrace();
                 }
             } else {
-                try {
-                    ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
-                } catch (ClassCastException e) {
-                    if (mNoProductsInCategory != null) {
-                        mNoProductsInCategory.setVisibility(View.VISIBLE);
-                    }
-                    if (mButtonSortByName != null && mButtonSortByPrice != null) {
-                        mButtonSortByName.setVisibility(View.GONE);
-                        mButtonSortByPrice.setVisibility(View.GONE);
-                    }
-                }
+                hideContainer();
             }
         }
     }
@@ -194,20 +188,10 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
             try {
                 ((VendingActivity) getActivity()).showContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
             } catch (ClassCastException e) {
-                return;
+                e.printStackTrace();
             }
         } else {
-            try {
-                ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
-            } catch (ClassCastException e) {
-                if (mNoProductsInCategory != null) {
-                    mNoProductsInCategory.setVisibility(View.VISIBLE);
-                }
-                if (mButtonSortByName != null && mButtonSortByPrice != null) {
-                    mButtonSortByName.setVisibility(View.GONE);
-                    mButtonSortByPrice.setVisibility(View.GONE);
-                }
-            }
+            hideContainer();
         }
     }
 
@@ -218,6 +202,27 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         mPresenter = null;
     }
 
+    /**
+     * Hides Container and headers or shows special message
+     * when there are no products to show in chosen category
+     */
+    private void hideContainer() {
+        try {
+            ((VendingActivity) getActivity()).hideContainer(mHeaders, ((ViewGroup) getView().getParent()).getId());
+        } catch (ClassCastException e) {
+            if (mNoProductsInCategory != null) {
+                mNoProductsInCategory.setVisibility(View.VISIBLE);
+            }
+            if (mButtonSortByName != null && mButtonSortByPrice != null) {
+                mButtonSortByName.setVisibility(View.GONE);
+                mButtonSortByPrice.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    /**
+     * Strategy implementation for case of SeeAll activity should be as container for fragment
+     */
     private class ParentSeeAllActivityStrategy implements ProductsListFragmentStrategy{
 
         @Override
@@ -227,13 +232,17 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
             (getActivity()).setTitle(mProductsCategory);
             ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
             view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
+
             mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
+
             if (mProductsCategory.equals(FAVORITES)) {
-                assert mButtonSortByName != null;
-                mButtonSortByName.setVisibility(View.GONE);
-                assert mButtonSortByPrice != null;
-                mButtonSortByPrice.setVisibility(View.GONE);
+                if (mButtonSortByName != null) {
+                    mButtonSortByName.setVisibility(View.GONE);
+                }
+                if (mButtonSortByPrice != null) {
+                    mButtonSortByPrice.setVisibility(View.GONE);
+                }
             }
             ((SeeAllActivity) getActivity()).productsList(mProductAdapter, mProductsCategory);
             ((SeeAllActivity) getActivity()).setButtons(mButtonSortByName, mButtonSortByPrice);
@@ -249,6 +258,9 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         }
     }
 
+    /**
+     * Strategy implementation for case of Vending activity should be as container for fragment
+     */
     private class ParentVendingActivityStrategy implements ProductsListFragmentStrategy{
 
         @Override

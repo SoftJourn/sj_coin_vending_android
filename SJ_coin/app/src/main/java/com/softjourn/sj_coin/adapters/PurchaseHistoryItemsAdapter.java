@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.model.History;
+import com.softjourn.sj_coin.api_models.History;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.TimeUtils;
 
@@ -50,14 +50,14 @@ public class PurchaseHistoryItemsAdapter extends
         return mHistoryList == null ? 0 : mHistoryList.size();
     }
 
-    public static class HistoryViewHolder extends RecyclerView.ViewHolder {
+    static class HistoryViewHolder extends RecyclerView.ViewHolder {
 
-        public final View mParentView;
-        public final TextView mProductPrice;
-        public final TextView mProductName;
-        public final TextView mPurchaseDate;
+        final View mParentView;
+        final TextView mProductPrice;
+        final TextView mProductName;
+        final TextView mPurchaseDate;
 
-        public HistoryViewHolder(View v) {
+        HistoryViewHolder(View v) {
             super(v);
             mParentView = v.findViewById(R.id.layout_item_parent_view);
             mProductPrice = (TextView) v.findViewById(R.id.layout_item_product_price);

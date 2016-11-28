@@ -1,7 +1,5 @@
 package com.softjourn.sj_coin.presenters;
 
-import android.app.Activity;
-
 import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
 import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
@@ -15,13 +13,11 @@ public class VendingFragmentPresenter extends BasePresenterImpl implements Vendi
 
     private final VendingFragmentContract.View mView;
     private final VendingModel mModel;
-    private Activity mActivity;
 
-    public VendingFragmentPresenter(VendingFragmentContract.View vendingView, Activity activity) {
+    public VendingFragmentPresenter(VendingFragmentContract.View vendingView) {
 
         onCreate();
 
-        this.mActivity = activity;
         this.mView = vendingView;
         this.mModel = new VendingModel();
     }

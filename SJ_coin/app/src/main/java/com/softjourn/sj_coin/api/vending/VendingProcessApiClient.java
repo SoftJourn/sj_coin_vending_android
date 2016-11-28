@@ -3,12 +3,12 @@ package com.softjourn.sj_coin.api.vending;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.api.callbacks.Callback;
+import com.softjourn.sj_coin.api_models.Amount;
+import com.softjourn.sj_coin.api_models.History;
+import com.softjourn.sj_coin.api_models.machines.Machines;
+import com.softjourn.sj_coin.api_models.products.Favorites;
+import com.softjourn.sj_coin.api_models.products.Featured;
 import com.softjourn.sj_coin.base.BaseApiClient;
-import com.softjourn.sj_coin.model.Amount;
-import com.softjourn.sj_coin.model.History;
-import com.softjourn.sj_coin.model.machines.Machines;
-import com.softjourn.sj_coin.model.products.Favorites;
-import com.softjourn.sj_coin.model.products.Featured;
 import com.softjourn.sj_coin.utils.Preferences;
 
 import org.json.JSONException;

@@ -12,14 +12,10 @@ public interface LoginContract {
         void setPasswordError();
 
         void navigateToMain();
-
     }
 
     interface Presenter extends BasePresenter{
 
         void login(String userName, String password);
-
-
-
     }
 }

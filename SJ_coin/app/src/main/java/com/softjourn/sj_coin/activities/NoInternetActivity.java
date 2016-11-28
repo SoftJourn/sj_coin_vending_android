@@ -27,6 +27,7 @@ public class NoInternetActivity extends AppCompatActivity implements Const {
         setContentView(R.layout.no_internet_activity);
         mBroadcastListener = new BroadcastListener();
 
+        //Draw svg image
         svgView = (AnimatedSvgView) findViewById(R.id.animated_svg_view);
         svgView.postDelayed(new Runnable() {
 
@@ -45,6 +46,10 @@ public class NoInternetActivity extends AppCompatActivity implements Const {
         super.onDestroy();
     }
 
+    /**
+     * Listener for Internet state. If Application was launched with no Internet
+     * and internet state with changed to true start Launcher activity.
+     */
     private class BroadcastListener extends BroadcastReceiver {
 
         @Override

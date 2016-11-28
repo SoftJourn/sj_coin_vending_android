@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.callbacks;
 
-import com.softjourn.sj_coin.model.machines.Machines;
+import com.softjourn.sj_coin.api_models.machines.Machines;
 
 import java.util.List;
 

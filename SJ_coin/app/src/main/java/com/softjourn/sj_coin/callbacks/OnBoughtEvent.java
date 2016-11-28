@@ -2,13 +2,13 @@ package com.softjourn.sj_coin.callbacks;
 
 public class OnBoughtEvent {
 
-    private final String mIsSuccess;
+    private final boolean mIsSuccess;
 
-    public OnBoughtEvent(String isSuccess){
+    public OnBoughtEvent(boolean isSuccess) {
         this.mIsSuccess = isSuccess;
     }
 
-    public String getAmount(){
+    public boolean getAmount() {
         return mIsSuccess;
     }
 }

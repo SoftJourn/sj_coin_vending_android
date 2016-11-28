@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.dataStorage;
 
-import com.softjourn.sj_coin.model.products.Product;
+import com.softjourn.sj_coin.api_models.products.Product;
 
 import java.util.Collections;
 import java.util.List;

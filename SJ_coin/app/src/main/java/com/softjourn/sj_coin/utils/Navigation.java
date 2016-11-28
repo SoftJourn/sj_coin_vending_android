@@ -43,30 +43,39 @@ public class Navigation implements Const,Extras {
         context.startActivity(intent);
     }
 
-    public static void navigationOnCategoriesSeeAll(int position, Activity context, @Nullable String category){
+    /**
+     * Is used to hadle Navigation in NavBar menu.
+     * Is loading needed fragment to the SeeAll Activity.
+     *
+     * @param position = position of item in NavBar Menu.
+     * @param activity = Activity where fragment sould be displayed
+     * @param category = Category name to be displayed in case chosen item
+     *                 is for dynamic category.
+     */
+    public static void navigationOnCategoriesSeeAll(int position, Activity activity, @Nullable String category) {
         switch (position){
             case 0:
-                context.getFragmentManager().beginTransaction()
+                activity.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS,0,0), TAG_ALL_PRODUCTS_FRAGMENT)
                         .commit();
                 break;
             case 1:
-                context.getFragmentManager().beginTransaction()
+                activity.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES,0,0), TAG_FAVORITES_FRAGMENT)
                         .commit();
                 break;
             case 2:
-                context.getFragmentManager().beginTransaction()
+                activity.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(LAST_ADDED,0,0), TAG_PRODUCTS_LAST_ADDED_FRAGMENT)
                         .commit();
                 break;
             case 3:
-                context.getFragmentManager().beginTransaction()
+                activity.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(BEST_SELLERS,0,0), TAG_PRODUCTS_BEST_SELLERS_FRAGMENT)
                         .commit();
                 break;
             default:
-                context.getFragmentManager().beginTransaction()
+                activity.getFragmentManager().beginTransaction()
                         .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(category,0,0), category)
                         .commit();
         }
