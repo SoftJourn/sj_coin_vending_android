@@ -140,9 +140,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
 
     @Subscribe
     public void OnEvent(OnTokenRevoked event) {
-        if (event.isSuccess()) {
             mView.hideProgress();
             mView.logOut();
-        }
     }
 }

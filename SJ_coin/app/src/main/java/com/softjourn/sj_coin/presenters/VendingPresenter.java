@@ -179,9 +179,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnTokenRevoked event) {
-        if (event.isSuccess()) {
             mView.hideProgress();
             mView.logOut();
-        }
     }
 }
