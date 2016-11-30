@@ -18,7 +18,7 @@ public class SplashActivity extends AwesomeSplash implements Const {
     public void initSplash(ConfigSplash configSplash) {
 
         configSplash.setBackgroundColor(R.color.colorScreenBackground);
-        configSplash.setAnimCircularRevealDuration(1000); //int ms
+        configSplash.setAnimCircularRevealDuration(100); //int ms
         configSplash.setRevealFlagX(Flags.REVEAL_RIGHT);  //or Flags.REVEAL_LEFT
         configSplash.setRevealFlagY(Flags.REVEAL_BOTTOM); //or Flags.REVEAL_TOP
 

@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEventBus.register(this);
-        mProgressDialog = new ProgressDialog(this, R.style.Base_V7_Theme_AppCompat_Dialog);
+        mProgressDialog = new ProgressDialog(this, R.style.AppCompatProgressDialogStyle);
     }
 
 

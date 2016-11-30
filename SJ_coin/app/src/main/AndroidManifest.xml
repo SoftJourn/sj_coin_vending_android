@@ -12,7 +12,7 @@
         android:name=".App"
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:icon="@mipmap/ic_launcher_sj"
+        android:icon="@mipmap/ic_launcher"
         android:label="SJ_Coins"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
