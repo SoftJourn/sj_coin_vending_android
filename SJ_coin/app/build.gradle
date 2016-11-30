@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 24
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "com.softjourn.sj_coin"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -21,14 +21,17 @@ android {
 
 ext {
     retrofitVersion = '2.1.0'
+    supportLibraryVersion = '24.+'
+    designLibraryVersion = '24.+'
+    recyclerViewVersion = '24.2.0'
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:design:$designLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$recyclerViewVersion"
 
     //ButterKnife
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -51,5 +54,5 @@ dependencies {
     compile "com.squareup.picasso:picasso:2.5.2"
 
     compile 'com.jaredrummler:animated-svg-view:1.0.0'
-    compile 'com.android.support:animated-vector-drawable:23.2.1'
+    compile 'com.android.support:animated-vector-drawable:24.+'
 }
