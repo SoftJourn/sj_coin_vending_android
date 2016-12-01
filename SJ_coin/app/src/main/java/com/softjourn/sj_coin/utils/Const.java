@@ -18,9 +18,9 @@ public interface Const {
     String TAG_ALL_PRODUCTS_FRAGMENT = "TAG_ALL_PRODUCTS_FRAGMENT";
 
     //URLs
-    String BASE_URL = "https://sjcoins-testing.softjourn.if.ua";
-    //URL for testing
-    //String BASE_URL = "http://192.168.102.251:8111";
+    String BASE_URL = "https://vending.softjourn.if.ua/api";
+    //URL for testing server
+    //String BASE_URL = "https://sjcoins-testing.softjourn.if.ua";
 
     String VENDING_API_VERSION = "v1/";
     String COINS_API_VERSION = "api/v1/";
