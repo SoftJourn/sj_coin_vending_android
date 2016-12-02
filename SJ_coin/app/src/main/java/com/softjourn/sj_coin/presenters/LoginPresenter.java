@@ -1,11 +1,13 @@
 package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.MVPmodels.LoginModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
 import com.softjourn.sj_coin.contratcts.LoginContract;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.events.OnLoginCallEvent;
+import com.softjourn.sj_coin.mvpmodels.LoginModel;
+import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.NetworkUtils;
+import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -34,7 +36,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
         if (validateCredentials(userName, password)) {
             mLoginView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-            if (NetworkManager.isNetworkEnabled()) {
+            if (NetworkUtils.isNetworkEnabled()) {
                 mModel.makeLoginCall(userName, password);
             } else {
                 mLoginView.showNoInternetError();
@@ -49,7 +51,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
 
     @Override
     public void refreshToken(String refreshToken) {
-        mModel.makeRefreshToken(refreshToken);
+        mModel.makeRefreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
     }
 
     public boolean validateCredentials(String userName, String password) {

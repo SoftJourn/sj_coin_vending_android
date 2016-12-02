@@ -14,5 +14,14 @@
 
     <!-- Main Screen dimensions-->
     <dimen name="category_header_bottom_margin">6dp</dimen>
+
+    <!-- Default sizes for left-side menu -->
+    <dimen name="menu_header_horizontal_margins">64dp</dimen>
+    <dimen name="menu_content_vertical_margins">8dp</dimen>
+    <dimen name="menu_header_vertical_margins">36dp</dimen>
+    <dimen name="menu_horizontal_padding">16dp</dimen>
+    <dimen name="menu_vertical_padding">24dp</dimen>
+    <dimen name="menu_icon_size">48dp</dimen>
+    <dimen name="menu_icon_size_small">36dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
 </resources>

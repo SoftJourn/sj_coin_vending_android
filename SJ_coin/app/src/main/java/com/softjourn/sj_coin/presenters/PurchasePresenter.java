@@ -1,11 +1,11 @@
 package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
+import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -33,7 +33,7 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
     @Override
     public void buyProduct(String id) {
 
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {

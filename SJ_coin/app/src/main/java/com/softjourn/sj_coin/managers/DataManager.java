@@ -1,10 +1,10 @@
 package com.softjourn.sj_coin.managers;
 
-import com.softjourn.sj_coin.api_models.products.Categories;
-import com.softjourn.sj_coin.api_models.products.Product;
-import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
-import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
-import com.softjourn.sj_coin.dataStorage.ProductsStorage;
+import com.softjourn.sj_coin.api.models.products.Categories;
+import com.softjourn.sj_coin.api.models.products.Product;
+import com.softjourn.sj_coin.datastorage.FavoritesStorage;
+import com.softjourn.sj_coin.datastorage.FeaturesStorage;
+import com.softjourn.sj_coin.datastorage.ProductsStorage;
 import com.softjourn.sj_coin.utils.Const;
 
 import java.util.ArrayList;
@@ -93,7 +93,7 @@ public class DataManager implements Const {
     }
 
     public void addToFavorites(Integer id) {
-        FavoritesStorage.getInstance().LocalAddToFavorites(id);
+        FavoritesStorage.getInstance().localAddToFavorites(id);
     }
 
     public void removeFromFavorites(Integer id) {

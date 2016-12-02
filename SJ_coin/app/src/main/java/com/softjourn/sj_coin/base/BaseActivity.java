@@ -16,12 +16,10 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
-import com.softjourn.sj_coin.api_models.products.Product;
-import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
+import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
+import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
@@ -67,9 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mEventBus.isRegistered(this)) {
-            mEventBus.unregister(this);
-        }
     }
 
     @Override
@@ -83,11 +78,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.home:
+            /*case R.id.home:
                 Navigation.goToVendingActivity(this);
                 finish();
                 return true;
-            case R.id.allProducts:
+            case R.id.menu_all_products:
                 if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
                             .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS,0,0), TAG_ALL_PRODUCTS_FRAGMENT)
@@ -96,7 +91,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
                     Navigation.goToSeeAllActivity(this, ALL_ITEMS);
                 }
                 return true;
-            case R.id.favorites:
+            case R.id.menu_favorites:
                 if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
                     this.getFragmentManager().beginTransaction()
                             .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES,0,0), TAG_FAVORITES_FRAGMENT)
@@ -111,7 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
                     return true;
                 } else {
                     return false;
-                }
+                }*/
             default:
                 return super.onOptionsItemSelected(item);
         }

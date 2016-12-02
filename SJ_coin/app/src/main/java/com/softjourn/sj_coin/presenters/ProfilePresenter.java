@@ -1,17 +1,20 @@
 package com.softjourn.sj_coin.presenters;
 
+import com.google.gson.Gson;
 import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.MVPmodels.ProfileModel;
-import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.callbacks.OnAccountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
-import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
-import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
+import com.softjourn.sj_coin.api.models.accountInfo.Cash;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
+import com.softjourn.sj_coin.events.OnAccountReceivedEvent;
+import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.events.OnBalanceUpdatedEvent;
+import com.softjourn.sj_coin.events.OnHistoryReceived;
+import com.softjourn.sj_coin.events.OnTokenRefreshed;
+import com.softjourn.sj_coin.events.OnTokenRevoked;
+import com.softjourn.sj_coin.mvpmodels.ProfileModel;
+import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
@@ -38,7 +41,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void getAccount() {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
@@ -53,7 +56,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Override
     public void logOut(String refreshToken) {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             mView.showProgress(App.getContext().getString(R.string.progress_loading));
@@ -64,6 +67,22 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     @Override
     public void showHistory() {
         mVendingModel.getPurchaseHistory();
+    }
+
+    @Override
+    public void addMoney(String fromCode) {
+        if (!NetworkUtils.isNetworkEnabled()) {
+            mView.showNoInternetError();
+        } else {
+            if (Utils.checkExpirationDate()) {
+                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            } else {
+                Cash cash = new Gson().fromJson(fromCode, Cash.class);
+                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                mProfileModel.putMoneyToWallet(cash);
+            }
+        }
     }
 
     @Override
@@ -82,6 +101,12 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event) {
         mView.showBalance(String.valueOf(event.getAmount().getAmount()));
+    }
+
+    @Subscribe
+    public void OnEvent(OnBalanceUpdatedEvent event) {
+        mView.hideProgress();
+        mView.showBalance(event.getBalance());
     }
 
     @Subscribe

@@ -1,6 +1,6 @@
 package com.softjourn.sj_coin.contratcts;
 
-import com.softjourn.sj_coin.api_models.History;
+import com.softjourn.sj_coin.api.models.History;
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
 
@@ -31,5 +31,7 @@ public interface ProfileContract {
          * and sets it as List to History adapter
          */
         void showHistory();
+
+        void addMoney(String code);
     }
 }

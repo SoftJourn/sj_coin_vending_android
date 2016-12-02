@@ -1,5 +1,6 @@
 package com.softjourn.sj_coin.adapters;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -12,17 +13,16 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.api_models.products.Product;
-import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
-import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
-import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
-import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
-import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
+import com.softjourn.sj_coin.api.models.products.Product;
+import com.softjourn.sj_coin.events.OnAddFavoriteEvent;
+import com.softjourn.sj_coin.events.OnProductBuyClickEvent;
+import com.softjourn.sj_coin.events.OnProductItemClickEvent;
+import com.softjourn.sj_coin.events.OnRemoveFavoriteEvent;
+import com.softjourn.sj_coin.events.OnRemovedLastFavoriteEvent;
 import com.softjourn.sj_coin.managers.DataManager;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -45,11 +45,15 @@ public class FeaturedProductItemsAdapter extends
 
     private List<Product> mOriginal = new ArrayList<>();
 
-    private final String mCoins = " " + App.getContext().getString(R.string.item_coins);
+    private final String mCoins;
 
     private List<Product> sFavoritesList = mDataManager.loadFavorites();
 
-    public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType) {
+    private Context mContext;
+
+    public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType, Context context) {
+
+        mContext = context;
 
         if (featureCategory != null) {
             mCategory = featureCategory;
@@ -62,7 +66,7 @@ public class FeaturedProductItemsAdapter extends
         } else {
             mRecyclerViewType = DEFAULT_RECYCLER_VIEW;
         }
-
+        mCoins = " " + mContext.getString(R.string.item_coins);
     }
 
     public void notifyDataChanges(){
@@ -122,9 +126,9 @@ public class FeaturedProductItemsAdapter extends
          */
             if (holder.mBuyProduct != null) {
                 if (isCurrentProductInMachine) {
-                    holder.mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorBlue));
+                    holder.mBuyProduct.setTextColor(ContextCompat.getColor(mContext, R.color.colorBlue));
                 } else {
-                    holder.mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(),R.color.colorScreenBackground));
+                    holder.mBuyProduct.setTextColor(ContextCompat.getColor(mContext, R.color.colorScreenBackground));
                 }
                 holder.mBuyProduct.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -147,16 +151,16 @@ public class FeaturedProductItemsAdapter extends
             if (sFavoritesList != null && sFavoritesList.size() > 0) {
                 for (int i = 0; i < sFavoritesList.size(); i++) {
                     if (sFavoritesList.get(i).getId().equals(product.getId())) {
-                        Picasso.with(App.getContext()).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
+                        Picasso.with(mContext).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
                         holder.mAddFavorite.setTag(true);
                         break;
                     } else {
-                        Picasso.with(App.getContext()).load(R.drawable.ic_favorite_border).into(holder.mAddFavorite);
+                        Picasso.with(mContext).load(R.drawable.ic_favorite_border).into(holder.mAddFavorite);
                         holder.mAddFavorite.setTag(false);
                     }
                 }
             } else {
-                Picasso.with(App.getContext()).load(R.drawable.ic_favorite_border).into(holder.mAddFavorite);
+                Picasso.with(mContext).load(R.drawable.ic_favorite_border).into(holder.mAddFavorite);
             }
             holder.mAddFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,7 +169,7 @@ public class FeaturedProductItemsAdapter extends
                         EventBus.getDefault().post(new OnAddFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
                     } else {
                             EventBus.getDefault().post(new OnRemoveFavoriteEvent(mListProducts.get(holder.getAdapterPosition())));
-                        if (NetworkManager.isNetworkEnabled()) {
+                        if (NetworkUtils.isNetworkEnabled()) {
                             if (mCategory.equals(FAVORITES)) {
                                 mListProducts.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
@@ -185,10 +189,10 @@ public class FeaturedProductItemsAdapter extends
          */
         if (TextUtils.isEmpty(product.getImageUrl()))
         {
-            Picasso.with(App.getContext()).load(R.drawable.logo).into(holder.mProductImage);
+            Picasso.with(mContext).load(R.drawable.logo).into(holder.mProductImage);
             holder.mProductImage.setAlpha(1.0f);
         } else  {
-            PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + mListProducts.get(holder.getAdapterPosition()).getImageUrl()).into(holder.mProductImage);
+            PicassoTrustAdapter.getInstance(mContext).load(URL_VENDING_SERVICE + mListProducts.get(holder.getAdapterPosition()).getImageUrl()).into(holder.mProductImage);
             if (!isCurrentProductInMachine) {
                 holder.mProductImage.setAlpha(0.3f);
             } else {

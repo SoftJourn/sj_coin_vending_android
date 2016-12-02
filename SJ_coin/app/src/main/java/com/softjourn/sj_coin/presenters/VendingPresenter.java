@@ -3,19 +3,21 @@ package com.softjourn.sj_coin.presenters;
 import android.text.TextUtils;
 
 import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.MVPmodels.ProfileModel;
-import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.api_models.products.Categories;
-import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
-import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
-import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
+import com.softjourn.sj_coin.api.models.products.Categories;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.events.OnAccountReceivedEvent;
+import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.events.OnBalanceReceivedEvent;
+import com.softjourn.sj_coin.events.OnBoughtEvent;
+import com.softjourn.sj_coin.events.OnProductItemClickEvent;
+import com.softjourn.sj_coin.events.OnTokenRevoked;
+import com.softjourn.sj_coin.mvpmodels.ProfileModel;
+import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.UIUtils;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +48,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getMachinesList() {
 
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
@@ -72,7 +74,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getFeaturedProductsList() {
 
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
@@ -93,11 +95,12 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getBalance() {
-        if (NetworkManager.isNetworkEnabled()) {
+        if (NetworkUtils.isNetworkEnabled()) {
             if (Utils.checkExpirationDate()) {
                 refreshToken(REFRESH_TOKEN);
             } else {
                 mProfileModel.makeBalanceCall();
+                mProfileModel.makeAccountCall();
             }
         }
     }
@@ -109,7 +112,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void logOut(String refreshToken) {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             mView.showProgress(App.getContext().getString(R.string.progress_loading));
@@ -133,6 +136,12 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.hideProgress();
     }
 
+    @Override
+    public List<Categories> getCategories() {
+        return mModel.loadCategories();
+    }
+
+    @Override
     public void getActionAfterRefresh() {
         if (actionAfterRefresh != null) {
             switch (actionAfterRefresh) {
@@ -174,7 +183,13 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnBalanceReceivedEvent event) {
+        Preferences.storeObject(USER_BALANCE_PREFERENCES_KEY, event.getBalance());
         mView.updateBalanceAmount(event.getBalance());
+    }
+
+    @Subscribe
+    public void OnEvent(OnAccountReceivedEvent event) {
+        Preferences.storeObject(USER_EMAIL_PREFERENCES_KEY, UIUtils.getUserFullName(event.getAccount().getName(), event.getAccount().getSurname()));
     }
 
     @Subscribe

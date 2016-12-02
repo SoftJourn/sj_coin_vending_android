@@ -1,18 +1,18 @@
 package com.softjourn.sj_coin.presenters;
 
 import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.api_models.products.Categories;
-import com.softjourn.sj_coin.callbacks.OnAddFavoriteEvent;
-import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
-import com.softjourn.sj_coin.callbacks.OnRemoveFavoriteEvent;
-import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
-import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
+import com.softjourn.sj_coin.api.models.products.Categories;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
+import com.softjourn.sj_coin.events.OnAddFavoriteEvent;
+import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.events.OnBoughtEvent;
+import com.softjourn.sj_coin.events.OnRemoveFavoriteEvent;
+import com.softjourn.sj_coin.events.OnTokenRefreshed;
+import com.softjourn.sj_coin.events.OnTokenRevoked;
+import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -40,7 +40,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
 
     @Override
     public void addToFavorite(int id) {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
@@ -58,7 +58,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
 
     @Override
     public void logOut(String refreshToken) {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             mView.showProgress(App.getContext().getString(R.string.progress_loading));
@@ -78,7 +78,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
 
     @Override
     public void removeFromFavorite(String id) {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {

@@ -6,7 +6,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.viksaa.sssplash.lib.activity.AwesomeSplash;
 import com.viksaa.sssplash.lib.cnst.Flags;
@@ -44,7 +44,7 @@ public class SplashActivity extends AwesomeSplash implements Const {
 
     @Override
     public void animationsFinished() {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             Navigation.goToNoInternetScreen(this);
             finish();
         } else {

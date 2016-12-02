@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.api_models.History;
+import com.softjourn.sj_coin.api.models.History;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.TimeUtils;
 

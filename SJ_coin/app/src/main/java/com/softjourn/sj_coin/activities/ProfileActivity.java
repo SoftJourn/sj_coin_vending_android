@@ -1,6 +1,12 @@
 package com.softjourn.sj_coin.activities;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -9,15 +15,16 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.PurchaseHistoryItemsAdapter;
-import com.softjourn.sj_coin.api_models.History;
+import com.softjourn.sj_coin.api.models.History;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
-import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
 import java.util.List;
@@ -42,12 +49,16 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     private ProfileContract.Presenter mPresenter;
     private PurchaseHistoryItemsAdapter mHistoryAdapter;
 
+    private final static int PERMISSION_ALL = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
         super.mProfileIsVisible = true;
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
 
@@ -79,19 +90,78 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.select_machine).setVisible(false);
+        menu.findItem(R.id.scan_barcode).setVisible(true);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
-            case R.id.logout:
-                mPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            case android.R.id.home:
+                this.finish();
                 return true;
+            case R.id.scan_barcode:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                /*In case other permissions needed just add them to String array
+                * and work on them in onRequestPermissionsResult*/
+                    String[] PERMISSIONS = {Manifest.permission.CAMERA};
+
+                    if (!hasPermissions(this, PERMISSIONS)) {
+                        ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+                    } else {
+                        IntentIntegrator integrator = new IntentIntegrator(this);
+                        integrator.initiateScan();
+                    }
+                } else {
+                    IntentIntegrator integrator = new IntentIntegrator(this);
+                    integrator.initiateScan();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_ALL: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    IntentIntegrator integrator = new IntentIntegrator(this);
+                    integrator.initiateScan();
+                } else {
+                    Utils.showSnackBar(findViewById(R.id.root_layout_profile), getString(R.string.permissions_camera_message));
+                }
+            }
+        }
+    }
+
+    private static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Utils.showSnackBar(findViewById(R.id.root_layout_profile), getString(R.string.permissions_camera_message));
+            } else {
+                mPresenter.addMoney(result.getContents());
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 
     @Override
     public void showBalance(String amount) {

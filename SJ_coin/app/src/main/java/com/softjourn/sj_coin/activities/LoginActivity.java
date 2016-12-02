@@ -90,7 +90,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
     public void navigateToMain() {
         mPresenter.onDestroy();
         mPresenter = null;
-        Navigation.goToVendingActivity(LoginActivity.this);
+        Navigation.goToVendingActivity(this);
         finish();
     }
 

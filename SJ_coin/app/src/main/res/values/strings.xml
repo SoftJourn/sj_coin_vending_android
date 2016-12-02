@@ -25,7 +25,7 @@
     <string name="favorite_icon_content_description">Favorite Icon</string>
 
     <!--Menu Main-->
-    <string name="main_menu_log_out">Log Out</string>
+    <string name="menu_log_out">Log Out</string>
     <string name="main_menu_profile">Profile</string>
     <string name="menu_item_all_products">All Items</string>
     <string name="menu_item_favorites">Favorites</string>
@@ -107,6 +107,12 @@
     <string name="dialog_select_machine_title">Select Machine</string>
     <string name="no_internet_image_description">NoInternetConnectionImageDesc</string>
     <string name="product_is_not_available_in_machine">Chosen product is not available in current vending machine</string>
+    <string name="profile_activity_label">Profile</string>
+    <string name="see_all_activity_label">All Products</string>
+    <string name="menu_icon_description">profile_image</string>
+    <string name="menu_default_username">John Smith</string>
+    <string name="menu_header_label_categories">Categories</string>
+    <string name="permissions_camera_message">Camera permissions needed</string>
 
     <string-array name="t_rex_strings">
         <item>M143,49.5l0,4.5 -4.5,0 -4.5,0 0,29 0,29 -4.5,0 -4.5,0 0,4.5 0,4.5 -7,0 -7,0 0,4.5 0,4.5 -6.5,0 -6.5,0 0,4.5 0,4.5 -4.5,0 -4.5,0 0,4.5 0,4.5 -9,0 -9,0 0,-4.5 0,-4.5 -4.5,0 -4.5,0 0,-3.5 0,-4.5 -4.5,0 -4.5,0 0,-9 0,-9 -4.5,0 -4.5,0 0,27 0,27 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,18 0,18 9,0 9,0 0,-4.5 0,-4.5 -4.5,0 -4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,13.5 0,13.5 9,0 9,0 0,-4.5 0,-4.5 -4.5,0 -4.5,0 0,-18 0,-18 4.5,0 4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,-6.5 0,-6.5 4.5,0 4.5,0 0,-16 0,-16 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,-9 0,-9 -9,0 -9,0 0,-9 0,-9 18,0 18,0 0,-4.5 0,-4.5 -13.5,0 -13.5,0 0,-4.5 0,-4.5 22.5,0 22.5,0 0,-20 0,-20 -4.5,0 -4.5,0 0,-4.5 0,-4.5 -36,0 -36,0 0,4.5zM162,62.5l0,4.5 -4.5,0 -4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,4.5z</item>

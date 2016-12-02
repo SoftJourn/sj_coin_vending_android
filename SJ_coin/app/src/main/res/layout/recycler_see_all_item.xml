@@ -62,6 +62,7 @@
                     android:id="@+id/layout_item_product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/dummy_text_view_text" />
 
 

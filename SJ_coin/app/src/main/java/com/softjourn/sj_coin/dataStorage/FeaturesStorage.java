@@ -1,7 +1,7 @@
-package com.softjourn.sj_coin.dataStorage;
+package com.softjourn.sj_coin.datastorage;
 
-import com.softjourn.sj_coin.api_models.products.Featured;
-import com.softjourn.sj_coin.api_models.products.Product;
+import com.softjourn.sj_coin.api.models.products.Featured;
+import com.softjourn.sj_coin.api.models.products.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ public class FeaturesStorage {
 
     private Featured mFeaturesProducts;
 
-    private static FeaturesStorage sOurInstance = new FeaturesStorage();
+    private static final FeaturesStorage sOurInstance = new FeaturesStorage();
 
     public static FeaturesStorage getInstance() {
         return sOurInstance;

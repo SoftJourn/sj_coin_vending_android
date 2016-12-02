@@ -7,11 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,18 +18,16 @@ import android.widget.EditText;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
-import com.softjourn.sj_coin.api_models.products.Product;
+import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BaseActivity;
-import com.softjourn.sj_coin.callbacks.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
-import com.softjourn.sj_coin.managers.LeftSideMenuManager;
+import com.softjourn.sj_coin.events.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.SeeAllPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.Navigation;
-import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +37,7 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     private SeeAllContract.Presenter mVendingPresenter;
     private PurchaseContract.Presenter mPurchasePresenter;
 
-    private LeftSideMenuManager mLeftSideMenuManager;
+    //private LeftSideMenuController mLeftSideMenuController;
 
     private FeaturedProductItemsAdapter mAdapter;
 
@@ -70,14 +64,16 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         mCategory = getIntent().getStringExtra(EXTRAS_CATEGORY);
         setTitle(mCategory);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);*/
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.see_all_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         if (drawer != null) {
@@ -88,36 +84,36 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
 
         if (mNavigationView != null) {
-            mLeftSideMenuManager = new LeftSideMenuManager(mNavigationView);
+            mLeftSideMenuController = new LeftSideMenuController(mNavigationView);
 
-            mLeftSideMenuManager.addCategoriesToMenu(mNavigationView.getMenu(), mVendingPresenter.getCategories());
+            mLeftSideMenuController.addCategoriesToMenu(mNavigationView.getMenu(), mVendingPresenter.getCategories());
             mNavigationView.setNavigationItemSelectedListener(this);
-        }
+        }*/
         attachFragment(mCategory);
     }
 
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        /*int id = item.getItemId();
         mCategory = item.getTitle().toString();
-        mLeftSideMenuManager.unCheckAllMenuItems(mNavigationView);
+        mLeftSideMenuController.unCheckAllMenuItems(mNavigationView);
 
         switch (id) {
-            case R.id.allProducts:
+            case R.id.menu_all_products:
                 changeCategory(0, getString(R.string.allItems), item);
                 break;
-            case R.id.favorites:
+            case R.id.menu_favorites:
                 changeCategory(1, getString(R.string.favorites), item);
                 break;
-            case R.id.lastAdded:
+            case R.id.menu_last_added:
                 changeCategory(2, getString(R.string.lastAdded), item);
                 break;
-            case R.id.bestSellers:
+            case R.id.menu_best_sellers:
                 changeCategory(3, getString(R.string.bestSellers), item);
                 break;
             default:
-                changeCategory(mLeftSideMenuManager.getItemPosition(mCategory), item.getTitle().toString(), item);
+                changeCategory(mLeftSideMenuController.getItemPosition(mCategory), item.getTitle().toString(), item);
                 break;
         }
 
@@ -125,7 +121,8 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        return true;
+        return true;*/
+        return false;
     }
 
     @Override
@@ -186,8 +183,8 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logout:
-                mVendingPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
+            case android.R.id.home:
+                this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -232,14 +229,15 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer != null) {
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
             } else {
                 super.onBackPressed();
             }
-        }
+        }*/
+        super.onBackPressed();
     }
 
     /**
@@ -260,29 +258,29 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     private void attachFragment(String stringExtra) {
         switch (stringExtra) {
             case ALL_ITEMS:
-                mNavigationView.getMenu().getItem(0).setChecked(true);
+                //mNavigationView.getMenu().getItem(0).setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(0, SeeAllActivity.this, ALL_ITEMS);
                 break;
             case FAVORITES:
-                mNavigationView.getMenu().getItem(1).setChecked(true);
+                //mNavigationView.getMenu().getItem(1).setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(1, SeeAllActivity.this, FAVORITES);
                 break;
             case BEST_SELLERS:
-                mNavigationView.getMenu().getItem(3).setChecked(true);
+                //mNavigationView.getMenu().getItem(3).setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(3, SeeAllActivity.this, BEST_SELLERS);
                 break;
             case LAST_ADDED:
-                mNavigationView.getMenu().getItem(2).setChecked(true);
+                //mNavigationView.getMenu().getItem(2).setChecked(true);
                 Navigation.navigationOnCategoriesSeeAll(2, SeeAllActivity.this, LAST_ADDED);
                 break;
             default:
-                mNavigationView.getMenu().getItem(mLeftSideMenuManager.getItemPosition(mCategory)).setChecked(true);
-                Navigation.navigationOnCategoriesSeeAll(mLeftSideMenuManager.getItemPosition(mCategory), SeeAllActivity.this, mCategory);
+                //mNavigationView.getMenu().getItem(mLeftSideMenuController.getItemPosition(mCategory)).setChecked(true);
+                Navigation.navigationOnCategoriesSeeAll(-1, SeeAllActivity.this, mCategory);
         }
     }
 
     public void setNavigationItemChecked(String category) {
-        mLeftSideMenuManager.setCheckedCategory(category);
+        //mLeftSideMenuController.setCheckedCategory(category);
     }
 
     /**

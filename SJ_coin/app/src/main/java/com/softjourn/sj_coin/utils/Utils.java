@@ -6,8 +6,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.softjourn.sj_coin.api_models.Session;
-import com.softjourn.sj_coin.api_models.machines.Machines;
+import com.softjourn.sj_coin.api.models.Session;
+import com.softjourn.sj_coin.api.models.machines.Machines;
 
 import java.util.Date;
 

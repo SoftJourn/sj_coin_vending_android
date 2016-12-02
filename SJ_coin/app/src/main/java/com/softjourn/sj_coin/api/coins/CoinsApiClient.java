@@ -3,8 +3,10 @@ package com.softjourn.sj_coin.api.coins;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.api.callbacks.Callback;
-import com.softjourn.sj_coin.api_models.accountInfo.Account;
-import com.softjourn.sj_coin.api_models.accountInfo.Balance;
+import com.softjourn.sj_coin.api.models.accountInfo.Account;
+import com.softjourn.sj_coin.api.models.accountInfo.Balance;
+import com.softjourn.sj_coin.api.models.accountInfo.Cash;
+import com.softjourn.sj_coin.api.models.accountInfo.DepositeTransaction;
 import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.utils.Preferences;
 
@@ -86,6 +88,21 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
 
             @Override
             public void onFailure(Call<Balance> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void putMoneyInWallet(Cash scannedCode, final Callback<DepositeTransaction> callback) {
+        mApiService.putMoneyInWallet(scannedCode).enqueue(new retrofit2.Callback<DepositeTransaction>() {
+            @Override
+            public void onResponse(Call<DepositeTransaction> call, retrofit2.Response<DepositeTransaction> response) {
+                sendCallBack(callback, response);
+            }
+
+            @Override
+            public void onFailure(Call<DepositeTransaction> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });

@@ -3,6 +3,7 @@ package com.softjourn.sj_coin.activities;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
@@ -19,20 +20,21 @@ import android.widget.TextView;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.adapters.SelectMachineListAdapter;
-import com.softjourn.sj_coin.api_models.machines.Machines;
-import com.softjourn.sj_coin.api_models.products.Product;
-import com.softjourn.sj_coin.base.BaseActivity;
-import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
-import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
-import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
+import com.softjourn.sj_coin.api.models.machines.Machines;
+import com.softjourn.sj_coin.api.models.products.Product;
+import com.softjourn.sj_coin.base.BaseMenuActivity;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.VendingContract;
-import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
-import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
+import com.softjourn.sj_coin.datastorage.FavoritesStorage;
+import com.softjourn.sj_coin.datastorage.FeaturesStorage;
+import com.softjourn.sj_coin.events.OnFavoritesListReceived;
+import com.softjourn.sj_coin.events.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.events.OnMachinesListReceived;
+import com.softjourn.sj_coin.events.OnTokenRefreshed;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.LeftSideMenuController;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ServerErrors;
@@ -48,7 +50,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
+public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLayout.OnRefreshListener,
         VendingContract.View, PurchaseContract.View, Const {
 
     private VendingContract.Presenter mVendingPresenter;
@@ -77,9 +79,9 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         ButterKnife.bind(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this,R.color.colorAccent));
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));
 
-        makeActionOverflowMenuShown();
+        //makeActionOverflowMenuShown();
 
         mVendingPresenter.isMachineSet();
     }
@@ -106,17 +108,33 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
+    public void logOut(@NonNull MenuItem item) {
+        mVendingPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
+    }
+
+    @Override
+    public void onCategorySelected(@NonNull MenuItem item) {
+        Navigation.goToSeeAllActivity(this, item.getTitle().toString());
+    }
+
+    // TODO: Add Unchecking all menu items before opening menu.
+    @Override
+    public void setUpNavigationViewContent() {
+        LeftSideMenuController leftSideMenuController = new LeftSideMenuController(mMenuView);
+        leftSideMenuController.uncheckAllMenuItems(mMenuView);
+        leftSideMenuController.addCategoriesToMenu(getMenu(), mVendingPresenter.getCategories());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.select_machine:
-                    mVendingPresenter.getMachinesList();
-                    return true;
-            case R.id.logout:
-                mVendingPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
+                mVendingPresenter.getMachinesList();
                 return true;
-                }
-        return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -129,7 +147,7 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
             loadProductList();
             mSwipeRefreshLayout.setRefreshing(false);
         }
-    }
+        }
 
     @Override
     public void showNoInternetError() {
@@ -220,24 +238,24 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
         if (llHeader != null && llContainer != null && tvSeeAll != null) {
             attachFragment(categoryName, llHeader.getId(), llContainer.getId(), tvSeeAll.getId());
         }
-    }
+        }
 
     @Override
     public void getMachinesList() {
         mVendingPresenter.getMachinesList();
-    }
+        }
 
     @Override
     public void showSnackBar(String message) {
         Utils.showSnackBar(findViewById(R.id.mainLayout), message);
-    }
+        }
 
     @Override
     public void logOut() {
         Utils.clearUsersData();
         Navigation.goToLoginActivity(this);
         finish();
-    }
+        }
 
     @Override
     public void showMachinesSelector(final List<Machines> machines) {
@@ -267,15 +285,14 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
                             Preferences.storeObject(SELECTED_MACHINE_NAME, machine.getName());
                             break;
                         }
-                    }
+                        }
                     showProgress(getString(R.string.progress_loading));
-                    if (mConfirmDialogIsVisible)
-                    {
+                    if (mConfirmDialogIsVisible) {
                         mConfirmDialog.dismiss();
                     }
                     loadProductList();
                     dialog.dismiss();
-                }
+                    }
             });
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
@@ -283,10 +300,10 @@ public class VendingActivity extends BaseActivity implements SwipeRefreshLayout.
                     if (TextUtils.isEmpty(Preferences.retrieveStringObject(SELECTED_MACHINE_ID))) {
                         showToastMessage(getString(R.string.machine_not_selected_toast));
                     }
-                }
+                    }
             });
         }
-    }
+        }
 
     @Override
     public void loadProductList() {

@@ -1,6 +1,6 @@
-package com.softjourn.sj_coin.dataStorage;
+package com.softjourn.sj_coin.datastorage;
 
-import com.softjourn.sj_coin.api_models.products.Product;
+import com.softjourn.sj_coin.api.models.products.Product;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +12,7 @@ public class ProductsStorage {
 
     private List<Product> mProductsList;
 
-    private static ProductsStorage sOurInstance = new ProductsStorage();
+    private static final ProductsStorage sOurInstance = new ProductsStorage();
 
     public static ProductsStorage getInstance() {
         return sOurInstance;

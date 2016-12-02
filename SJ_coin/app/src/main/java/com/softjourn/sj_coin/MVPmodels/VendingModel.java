@@ -1,27 +1,27 @@
-package com.softjourn.sj_coin.MVPmodels;
+package com.softjourn.sj_coin.mvpmodels;
 
 
 import com.softjourn.sj_coin.api.ApiManager;
+import com.softjourn.sj_coin.api.models.Amount;
+import com.softjourn.sj_coin.api.models.History;
+import com.softjourn.sj_coin.api.models.machines.Machines;
+import com.softjourn.sj_coin.api.models.products.Categories;
+import com.softjourn.sj_coin.api.models.products.Favorites;
+import com.softjourn.sj_coin.api.models.products.Featured;
+import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
-import com.softjourn.sj_coin.api_models.Amount;
-import com.softjourn.sj_coin.api_models.History;
-import com.softjourn.sj_coin.api_models.machines.Machines;
-import com.softjourn.sj_coin.api_models.products.Categories;
-import com.softjourn.sj_coin.api_models.products.Favorites;
-import com.softjourn.sj_coin.api_models.products.Featured;
-import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.base.BaseModel;
-import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
-import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
-import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
-import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
-import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
-import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
-import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
-import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
-import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
+import com.softjourn.sj_coin.datastorage.FavoritesStorage;
+import com.softjourn.sj_coin.datastorage.FeaturesStorage;
+import com.softjourn.sj_coin.events.OnAddedToFavorites;
+import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.events.OnBoughtEvent;
+import com.softjourn.sj_coin.events.OnFavoritesListReceived;
+import com.softjourn.sj_coin.events.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.events.OnHistoryReceived;
+import com.softjourn.sj_coin.events.OnMachinesListReceived;
+import com.softjourn.sj_coin.events.OnRemovedFromFavorites;
+import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.managers.DataManager;
 import com.softjourn.sj_coin.utils.Const;
 
@@ -33,7 +33,7 @@ public class VendingModel extends BaseModel implements Const {
 
     private final VendingApiProvider mApiProvider;
 
-    private DataManager mDataManager = new DataManager();
+    private final DataManager mDataManager = new DataManager();
 
     public VendingModel() {
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();

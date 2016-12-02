@@ -6,20 +6,21 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".App"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="SJ_Coins"
+        android:label="SJ Coins"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label" >
         <activity
             android:name=".activities.VendingActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeForCustomToolbar"
             android:label="" />
         <activity
             android:name=".activities.SplashActivity"
@@ -39,12 +40,11 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:screenOrientation="portrait"
-            android:label="Profile" />
+            android:label="@string/profile_activity_label" />
         <activity
             android:name=".activities.SeeAllActivity"
             android:screenOrientation="portrait"
-            android:label="All Products"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:label="@string/see_all_activity_label">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

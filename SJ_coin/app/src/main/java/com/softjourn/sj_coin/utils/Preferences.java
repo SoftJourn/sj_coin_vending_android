@@ -16,11 +16,11 @@ public class Preferences implements Const {
 
     public static void storeObject(String key, String value) {
         editor.putString(key, value);
-        editor.apply();
+        editor.commit();
     }
 
     public static void clearStringObject(String key){
         editor.putString(key, "");
-        editor.apply();
+        editor.commit();
     }
 }

@@ -1,15 +1,15 @@
-package com.softjourn.sj_coin.MVPmodels;
+package com.softjourn.sj_coin.mvpmodels;
 
 
 import android.util.Log;
 
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.auth.OAuthApiProvider;
-import com.softjourn.sj_coin.api_models.Session;
+import com.softjourn.sj_coin.api.models.Session;
 import com.softjourn.sj_coin.base.BaseModel;
-import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
-import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
-import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
+import com.softjourn.sj_coin.events.OnLoginCallEvent;
+import com.softjourn.sj_coin.events.OnTokenRefreshed;
+import com.softjourn.sj_coin.events.OnTokenRevoked;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -31,6 +31,7 @@ public class LoginModel extends BaseModel{
                     mEventBus.post(new OnTokenRefreshed(Const.TOKEN_NOT_REFRESHED));
                 } else {
                     Utils.storeSessionInfo(response.body());
+                    Log.d("TagRefreshToken", response.body().toString());
                     mEventBus.post(new OnTokenRefreshed(Const.TOKEN_REFRESHED));
                 }
             }

@@ -16,7 +16,7 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
-import com.softjourn.sj_coin.api_models.products.Product;
+import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
 import com.softjourn.sj_coin.presenters.VendingFragmentPresenter;
@@ -231,10 +231,10 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
             ButterKnife.bind(ProductsListFragment.this, view);
             (getActivity()).setTitle(mProductsCategory);
             ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
-            view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
+            //view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
 
             mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW);
+            mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW, getActivity());
 
             if (mProductsCategory.equals(FAVORITES)) {
                 if (mButtonSortByName != null) {
@@ -268,7 +268,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
             View view = inflater.inflate(R.layout.fragment_products_list, container, false);
             ButterKnife.bind(ProductsListFragment.this, view);
             mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-            mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, null);
+            mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, null, getActivity());
             view.startAnimation(AnimationUtils.loadAnimation(App.getContext(), R.anim.slide_left));
             return view;
         }

@@ -1,10 +1,10 @@
 package com.softjourn.sj_coin.presenters;
 
-import com.softjourn.sj_coin.MVPmodels.VendingModel;
-import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
-import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
-import com.softjourn.sj_coin.callbacks.OnRemovedLastFavoriteEvent;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
+import com.softjourn.sj_coin.events.OnAddedToFavorites;
+import com.softjourn.sj_coin.events.OnRemovedFromFavorites;
+import com.softjourn.sj_coin.events.OnRemovedLastFavoriteEvent;
+import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
 
 import org.greenrobot.eventbus.Subscribe;

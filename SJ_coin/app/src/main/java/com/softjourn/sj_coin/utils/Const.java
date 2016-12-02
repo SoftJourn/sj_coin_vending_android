@@ -11,6 +11,9 @@ public interface Const {
     String SELECTED_MACHINE_NAME = "SELECTED_MACHINE_NAME";
     String SELECTED_MACHINE_ID = "SELECTED_MACHINE_ID";
 
+    String USER_EMAIL_PREFERENCES_KEY = "USER_EMAIL_PREFERENCES_KEY";
+    String USER_BALANCE_PREFERENCES_KEY = "USER_BALANCE_PREFERENCES_KEY";
+
     //Fragments tags
     String TAG_PRODUCTS_LAST_ADDED_FRAGMENT = "TAG_PRODUCTS_LAST_ADDED_FRAGMENT";
     String TAG_PRODUCTS_BEST_SELLERS_FRAGMENT = "TAG_PRODUCTS_BEST_SELLERS_FRAGMENT";
@@ -18,9 +21,12 @@ public interface Const {
     String TAG_ALL_PRODUCTS_FRAGMENT = "TAG_ALL_PRODUCTS_FRAGMENT";
 
     //URLs
-    String BASE_URL = "https://vending.softjourn.if.ua/api";
+    //String BASE_URL = "https://vending.softjourn.if.ua/api";
     //URL for testing server
     //String BASE_URL = "https://sjcoins-testing.softjourn.if.ua";
+
+    //Test URL
+    String BASE_URL = "http://192.168.102.251:8111";
 
     String VENDING_API_VERSION = "v1/";
     String COINS_API_VERSION = "api/v1/";
@@ -62,5 +68,8 @@ public interface Const {
 
     String ACTION_ADD_FAVORITE = "ADD";
     String ACTION_REMOVE_FAVORITE = "REMOVE";
+
+    //SwipeToRefresh Offset end option
+    int END_OF_SWIPE_SPINNER = 200;
 }
 

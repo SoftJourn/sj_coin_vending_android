@@ -2,7 +2,7 @@ package com.softjourn.sj_coin.api.auth;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
-import com.softjourn.sj_coin.api_models.Session;
+import com.softjourn.sj_coin.api.models.Session;
 import com.softjourn.sj_coin.base.BaseApiClient;
 
 import java.io.IOException;
