@@ -5,20 +5,14 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import lombok.Data;
+
 /**
  * Created by omartynets on 02.12.2016.
  */
 
+@Data
 public class Cash implements Parcelable {
-
-    public Cash() {
-    }
-
-    protected Cash(Parcel in) {
-        tokenContractAddress = in.readString();
-        offlineContractAddress = in.readString();
-        chequeHash = in.readString();
-    }
 
     @SerializedName("tokenContractAddress")
     public String tokenContractAddress;
@@ -31,6 +25,15 @@ public class Cash implements Parcelable {
 
     @SerializedName("amount")
     public Integer amount;
+
+    public Cash() {
+    }
+
+    protected Cash(Parcel in) {
+        tokenContractAddress = in.readString();
+        offlineContractAddress = in.readString();
+        chequeHash = in.readString();
+    }
 
     public static final Creator<Cash> CREATOR = new Creator<Cash>() {
         @Override

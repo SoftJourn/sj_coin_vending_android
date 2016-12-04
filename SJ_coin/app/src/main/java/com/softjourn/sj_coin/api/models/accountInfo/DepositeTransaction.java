@@ -5,10 +5,13 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import lombok.Data;
+
 /**
  * Created by omartynets on 02.12.2016.
  */
 
+@Data
 public class DepositeTransaction implements Parcelable {
 
     @SerializedName("id")
@@ -37,10 +40,6 @@ public class DepositeTransaction implements Parcelable {
 
     @SerializedName("error")
     private Object error;
-
-    public int getRemain() {
-        return remain;
-    }
 
     protected DepositeTransaction(Parcel in) {
         account = in.readString();

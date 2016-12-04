@@ -25,6 +25,7 @@ ext {
     designLibraryVersion = '24.+'
     recyclerViewVersion = '24.2.0'
     ZXingVersion = '3.4.0'
+    constraintLayotVersion = '1.0.0-beta4'
 }
 
 dependencies {
@@ -60,4 +61,7 @@ dependencies {
 
     //Zebra Crossing
     compile "com.journeyapps:zxing-android-embedded:$ZXingVersion"
+    
+    //ConstraintLayout
+    compile "com.android.support.constraint:constraint-layout:$constraintLayotVersion"
 }

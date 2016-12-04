@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SearchView;
@@ -17,12 +18,14 @@ import android.widget.EditText;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.fragments.ProductDetailsFragment;
 import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
 import com.softjourn.sj_coin.events.OnProductBuyClickEvent;
+import com.softjourn.sj_coin.events.OnProductItemClickEvent;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.SeeAllPresenter;
 import com.softjourn.sj_coin.utils.Const;
@@ -306,6 +309,17 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         mCategory = category;
         mAdapter = adapter;
         invalidateOptionsMenu();
+    }
+
+    @Subscribe
+    public void OnEvent(OnProductItemClickEvent event) {
+        //mView.navigateToBuyProduct(event.getProduct());
+        Bundle args = new Bundle();
+        args.putParcelable("PRODUCT_EXTRAS", event.getProduct());
+
+        BottomSheetDialogFragment bottomSheetDialogFragment = new ProductDetailsFragment();
+        bottomSheetDialogFragment.setArguments(args);
+        bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
     }
 
     @Subscribe

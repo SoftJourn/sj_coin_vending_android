@@ -36,19 +36,13 @@ public class FeaturedProductItemsAdapter extends
         Filterable {
 
     private final String mRecyclerViewType;
-
     private final String mCategory;
-
-    private List<Product> mListProducts = new ArrayList<>();
-
-    private DataManager mDataManager = new DataManager();
-
-    private List<Product> mOriginal = new ArrayList<>();
-
     private final String mCoins;
 
+    private List<Product> mListProducts = new ArrayList<>();
+    private DataManager mDataManager = new DataManager();
+    private List<Product> mOriginal = new ArrayList<>();
     private List<Product> sFavoritesList = mDataManager.loadFavorites();
-
     private Context mContext;
 
     public FeaturedProductItemsAdapter(@Nullable String featureCategory, @Nullable String recyclerViewType, Context context) {
@@ -119,6 +113,14 @@ public class FeaturedProductItemsAdapter extends
                     }
                 });
             }
+        if (holder.mParentViewSeeAll!=null) {
+            holder.mParentViewSeeAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(holder.getAdapterPosition())));
+                }
+            });
+        }
 
         /**
          * Changing color of Buy TextView depands on is product in chosen machine or not
@@ -247,6 +249,7 @@ public class FeaturedProductItemsAdapter extends
     static class FeaturedViewHolder extends RecyclerView.ViewHolder {
 
         final View mParentView;
+        final View mParentViewSeeAll;
         final TextView mProductPrice;
         final TextView mProductName;
         final TextView mBuyProduct;
@@ -257,6 +260,7 @@ public class FeaturedProductItemsAdapter extends
 
         FeaturedViewHolder(View v) {
             super(v);
+            mParentViewSeeAll =  v.findViewById(R.id.layout_item_parent_view);
             mParentView = v.findViewById(R.id.layout_item_product_parent_view);
             mProductImage = (ImageView) v.findViewById(R.id.layout_item_product_img);
             mProductPrice = (TextView) v.findViewById(R.id.layout_item_product_price);

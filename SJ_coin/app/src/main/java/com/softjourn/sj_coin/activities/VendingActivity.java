@@ -101,12 +101,7 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        return true;
-    }
-
+    //BaseMenuActivity abstract methods
     @Override
     public void logOut(@NonNull MenuItem item) {
         mVendingPresenter.logOut(Preferences.retrieveStringObject(REFRESH_TOKEN));
@@ -123,6 +118,13 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
         LeftSideMenuController leftSideMenuController = new LeftSideMenuController(mMenuView);
         leftSideMenuController.uncheckAllMenuItems(mMenuView);
         leftSideMenuController.addCategoriesToMenu(getMenu(), mVendingPresenter.getCategories());
+    }
+
+    //MainMenu methods
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

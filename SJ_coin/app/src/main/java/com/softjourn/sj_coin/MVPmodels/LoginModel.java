@@ -31,7 +31,6 @@ public class LoginModel extends BaseModel{
                     mEventBus.post(new OnTokenRefreshed(Const.TOKEN_NOT_REFRESHED));
                 } else {
                     Utils.storeSessionInfo(response.body());
-                    Log.d("TagRefreshToken", response.body().toString());
                     mEventBus.post(new OnTokenRefreshed(Const.TOKEN_REFRESHED));
                 }
             }
@@ -78,17 +77,14 @@ public class LoginModel extends BaseModel{
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
                     mEventBus.post(new OnTokenRevoked(false));
-                    Log.d("Tag", ""+response.code());
                 } else {
                     mEventBus.post(new OnTokenRevoked(true));
-                    Log.d("Tag", ""+response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 mEventBus.post(new OnTokenRevoked(false));
-                Log.d("Tag", t.toString());
             }
         };
         mApiProvider.makeRevokeRefreshToken(refreshToken, callback);

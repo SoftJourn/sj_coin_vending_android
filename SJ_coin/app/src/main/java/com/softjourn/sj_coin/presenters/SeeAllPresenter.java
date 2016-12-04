@@ -129,18 +129,19 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
                         break;
                 }
             }
-        }else {
+        } else {
             mView.hideProgress();
         }
     }
+
     @Subscribe
-    public void OnEvent(OnAmountReceivedEvent event){
+    public void OnEvent(OnAmountReceivedEvent event) {
         mView.hideProgress();
     }
 
     @Subscribe
     public void OnEvent(OnTokenRevoked event) {
-            mView.hideProgress();
-            mView.logOut();
+        mView.hideProgress();
+        mView.logOut();
     }
 }
