@@ -29,21 +29,21 @@ import com.softjourn.sj_coin.utils.Utils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProfileActivity extends BaseActivity implements ProfileContract.View, Const {
 
-    @Bind(R.id.profile_coins_label)
+    @BindView(R.id.profile_coins_label)
     TextView mCoinsLabel;
 
-    @Bind(R.id.profile_user_name)
+    @BindView(R.id.profile_user_name)
     TextView mUserName;
 
-    @Bind(R.id.profile_amount_available)
+    @BindView(R.id.profile_amount_available)
     TextView mUserBalance;
 
-    @Bind(R.id.list_items_recycler_view)
+    @BindView(R.id.list_items_recycler_view)
     RecyclerView mHistoryList;
 
     private ProfileContract.Presenter mPresenter;

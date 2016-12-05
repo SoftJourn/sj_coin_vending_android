@@ -25,7 +25,7 @@ import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
 import com.softjourn.sj_coin.events.OnProductBuyClickEvent;
-import com.softjourn.sj_coin.events.OnProductItemClickEvent;
+import com.softjourn.sj_coin.events.OnProductDetailsClick;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.SeeAllPresenter;
 import com.softjourn.sj_coin.utils.Const;
@@ -67,14 +67,17 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         mCategory = getIntent().getStringExtra(EXTRAS_CATEGORY);
         setTitle(mCategory);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
-        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        getSupportActionBar().setHomeButtonEnabled(true);*/
+
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }*/
+
+        /*getSupportActionBar().setHomeButtonEnabled(true);*/
 
         /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.see_all_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -312,8 +315,7 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     }
 
     @Subscribe
-    public void OnEvent(OnProductItemClickEvent event) {
-        //mView.navigateToBuyProduct(event.getProduct());
+    public void OnEvent(OnProductDetailsClick event) {
         Bundle args = new Bundle();
         args.putParcelable("PRODUCT_EXTRAS", event.getProduct());
 

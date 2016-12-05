@@ -36,14 +36,4 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/menu_user_icon" />
 
-    <!--<ImageView
-        android:id="@+id/menu_user_icon_small"
-        android:layout_width="@dimen/menu_icon_size_small"
-        android:layout_height="@dimen/menu_icon_size_small"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/menu_user_icon"
-        android:contentDescription="@string/menu_icon_description"
-        tools:src="@drawable/logo" />-->
-
 </RelativeLayout>

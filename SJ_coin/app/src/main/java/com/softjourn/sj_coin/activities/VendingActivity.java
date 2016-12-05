@@ -46,7 +46,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -58,13 +58,13 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
 
     private int viewCounter = 0;
 
-    @Bind(R.id.balance)
+    @BindView(R.id.balance)
     TextView mBalance;
 
-    @Bind(R.id.textViewFavoritesSeeAll)
+    @BindView(R.id.textViewFavoritesSeeAll)
     TextView seeAllFavorites;
 
-    @Bind(R.id.swipe_container)
+    @BindView(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override

@@ -17,6 +17,7 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.events.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.events.OnProductBuyClickEvent;
+import com.softjourn.sj_coin.events.OnProductDetailsClick;
 import com.softjourn.sj_coin.events.OnProductItemClickEvent;
 import com.softjourn.sj_coin.events.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.events.OnRemovedLastFavoriteEvent;
@@ -105,7 +106,7 @@ public class FeaturedProductItemsAdapter extends
             holder.mProductDescription.setText(product.getDescription());
         }
 
-            if (holder.mParentView != null) {
+        if (holder.mParentView != null) {
                 holder.mParentView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -117,13 +118,13 @@ public class FeaturedProductItemsAdapter extends
             holder.mParentViewSeeAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new OnProductItemClickEvent(mListProducts.get(holder.getAdapterPosition())));
+                    EventBus.getDefault().post(new OnProductDetailsClick(mListProducts.get(holder.getAdapterPosition())));
                 }
             });
         }
 
         /**
-         * Changing color of Buy TextView depands on is product in chosen machine or not
+         * Changing color of Buy TextView depends on is product in chosen machine or not
          * Also if product is not available in current machine there is no listener for click on TextView.
          */
             if (holder.mBuyProduct != null) {

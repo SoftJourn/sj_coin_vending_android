@@ -20,7 +20,7 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by omartynets on 01.12.2016.
@@ -28,10 +28,10 @@ import butterknife.Bind;
 
 public abstract class BaseMenuActivity extends BaseActivity {
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout mMenuLayout;
 
-    @Bind(R.id.left_side_menu)
+    @BindView(R.id.left_side_menu)
     public NavigationView mMenuView;
 
     private ActionBarDrawerToggle mMenuToggle;

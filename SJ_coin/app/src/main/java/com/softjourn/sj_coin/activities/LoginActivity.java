@@ -14,18 +14,18 @@ import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Utils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class LoginActivity extends BaseActivity implements LoginContract.View, Const {
 
-    @Bind(R.id.input_email)
+    @BindView(R.id.input_email)
     EditText mUserName;
-    @Bind(R.id.input_password)
+    @BindView(R.id.input_password)
     EditText mPasswordText;
-    @Bind(R.id.btn_login)
+    @BindView(R.id.btn_login)
     Button mLoginButton;
 
     private LoginContract.Presenter mPresenter;

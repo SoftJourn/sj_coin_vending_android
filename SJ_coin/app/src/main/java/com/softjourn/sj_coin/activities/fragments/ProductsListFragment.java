@@ -25,9 +25,10 @@ import com.softjourn.sj_coin.utils.Extras;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 
 public class ProductsListFragment extends BaseFragment implements VendingFragmentContract.View, Const, Extras {
 
@@ -57,22 +58,22 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         return fragment;
     }
 
-    @Bind(R.id.list_items_recycler_view)
+    @BindView(R.id.list_items_recycler_view)
     RecyclerView mMachineItems;
 
     @Nullable
-    @Bind(R.id.button_sort_name)
+    @BindView(R.id.button_sort_name)
     Button mButtonSortByName;
 
     @Nullable
-    @Bind(R.id.button_sort_price)
+    @BindView(R.id.button_sort_price)
     Button mButtonSortByPrice;
 
     @Nullable
-    @Bind(R.id.textViewNoProductsInCategory)
+    @BindView(R.id.textViewNoProductsInCategory)
     TextView mNoProductsInCategory;
 
-    @Nullable
+    @Optional
     @OnClick(R.id.button_sort_name)
     public void onClickSortByName() {
         if (mProductList != null && !mProductList.isEmpty()) {
@@ -80,7 +81,7 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         }
     }
 
-    @Nullable
+    @Optional
     @OnClick(R.id.button_sort_price)
     public void onClickSortByPrice() {
         if (mProductList != null && !mProductList.isEmpty()) {
