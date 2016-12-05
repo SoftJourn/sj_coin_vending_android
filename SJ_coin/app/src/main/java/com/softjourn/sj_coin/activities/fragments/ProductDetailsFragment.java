@@ -7,9 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
-import com.squareup.picasso.Picasso;
 
 import static com.softjourn.sj_coin.utils.Const.URL_VENDING_SERVICE;
 
@@ -73,7 +70,7 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
     @Override
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        View contentView = View.inflate(getContext(), R.layout.activity_product_details, null);
+        View contentView = View.inflate(getContext(), R.layout.fragment_product_details, null);
         dialog.setContentView(contentView);
         CoordinatorLayout.LayoutParams layoutParams =
                 (CoordinatorLayout.LayoutParams) ((View) contentView.getParent()).getLayoutParams();
