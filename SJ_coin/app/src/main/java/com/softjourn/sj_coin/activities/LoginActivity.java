@@ -9,10 +9,14 @@ import android.widget.EditText;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.LoginContract;
+import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.presenters.LoginPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,6 +96,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
         mPresenter = null;
         Navigation.goToVendingActivity(this);
         finish();
+
     }
 
     @Override
@@ -104,5 +109,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
     @Override
     public void showNoInternetError() {
         onNoInternetAvailable();
+    }
+
+    @Subscribe
+    public void onEvent(final OnServerErrorEvent event) {
+
+        hideProgress();
+        onCreateErrorDialog(ServerErrors.showErrorMessage(event.getMessage()));
     }
 }

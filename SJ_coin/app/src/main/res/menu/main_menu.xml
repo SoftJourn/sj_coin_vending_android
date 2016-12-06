@@ -23,5 +23,4 @@
             app:showAsAction="ifRoom"
             android:visible="false" />
 
-
 </menu>

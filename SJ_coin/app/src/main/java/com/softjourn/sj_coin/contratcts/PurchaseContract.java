@@ -5,7 +5,7 @@ import com.softjourn.sj_coin.base.BaseView;
 public interface PurchaseContract {
 
     interface View extends BaseView{
-
+        void activateProgressBar();
     }
     interface Presenter {
         void buyProduct(String id);

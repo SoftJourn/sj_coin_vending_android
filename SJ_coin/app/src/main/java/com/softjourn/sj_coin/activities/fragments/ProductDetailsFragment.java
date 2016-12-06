@@ -6,13 +6,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
@@ -35,7 +35,7 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
     TextView mProductLongDescription;
     ImageView mProductImage;
     TextView mProductPrice;
-    ConstraintLayout mLayout;
+    RelativeLayout mLayout;
 
     private Target target;
 
@@ -91,7 +91,7 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
         mProductLongDescription = (TextView) contentView.findViewById(R.id.details_product_description);
         mProductPrice = (TextView) contentView.findViewById(R.id.details_product_price);
         mProductImage = (ImageView) contentView.findViewById(R.id.details_product_image);
-        mLayout = (ConstraintLayout) contentView.findViewById(R.id.layout_header);
+        //mLayout = (RelativeLayout) contentView.findViewById(R.id.layout_header);
 
         //changeColorPalette();
         mProductName.setText(mProduct.getName());

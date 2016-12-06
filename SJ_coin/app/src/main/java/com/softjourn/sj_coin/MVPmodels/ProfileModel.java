@@ -62,4 +62,8 @@ public class ProfileModel extends BaseModel {
             }
         });
     }
+
+    public void cancelRequest() {
+        mCoinsApiProvider.cancelRequest();
+    }
 }

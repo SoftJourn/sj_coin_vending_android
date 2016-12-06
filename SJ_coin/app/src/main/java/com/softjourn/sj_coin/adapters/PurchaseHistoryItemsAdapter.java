@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
@@ -31,7 +30,7 @@ public class PurchaseHistoryItemsAdapter extends
         View v;
 
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_purchase_history, parent, false);
-        v.startAnimation(AnimationUtils.loadAnimation(App.getContext(),R.anim.slide_from_top));
+        //v.startAnimation(AnimationUtils.loadAnimation(App.getContext(),R.anim.slide_from_top));
         return new HistoryViewHolder(v);
     }
 

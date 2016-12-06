@@ -46,6 +46,8 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
                         return chain.proceed(orRequest);
                     }
                 })
+                .addInterceptor(getCacheInterceptor())
+                .cache(getCacheForOkHttpClient())
                 .sslSocketFactory(CustomHttpClient.trustCert(App.getContext()))
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override

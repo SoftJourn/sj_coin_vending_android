@@ -86,6 +86,11 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     }
 
     @Override
+    public void cancelRunningRequest() {
+        mProfileModel.cancelRequest();
+    }
+
+    @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
     }

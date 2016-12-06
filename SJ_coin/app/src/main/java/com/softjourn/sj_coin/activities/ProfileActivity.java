@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -32,6 +33,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+
 public class ProfileActivity extends BaseActivity implements ProfileContract.View, Const {
 
     @BindView(R.id.profile_coins_label)
@@ -45,6 +48,12 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
     @BindView(R.id.list_items_recycler_view)
     RecyclerView mHistoryList;
+
+    @BindView(R.id.textViewNoPurchases)
+    TextView mNoPurchasesTextView;
+
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
 
     private ProfileContract.Presenter mPresenter;
     private PurchaseHistoryItemsAdapter mHistoryAdapter;
@@ -178,7 +187,13 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
     @Override
     public void setData(List<History> history) {
-        mHistoryAdapter.setData(history);
+        if (history.size() > 0) {
+            mHistoryList.setVisibility(View.VISIBLE);
+            mHistoryList.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
+            mNoPurchasesTextView.setVisibility(GONE);
+            mNoPurchasesTextView.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_out));
+            mHistoryAdapter.setData(history);
+        }
     }
 
     @Override
@@ -190,12 +205,13 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
     @Override
     public void showProgress(String message) {
-        super.showProgress(message);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.animate();
     }
 
     @Override
     public void hideProgress() {
-        super.hideProgress();
+        mProgressBar.setVisibility(GONE);
     }
 
     @Override
@@ -208,4 +224,9 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         onNoInternetAvailable();
     }
 
+    @Override
+    public void onBackPressed() {
+        mPresenter.cancelRunningRequest();
+        super.onBackPressed();
+    }
 }

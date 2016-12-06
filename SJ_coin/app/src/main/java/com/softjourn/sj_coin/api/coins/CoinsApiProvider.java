@@ -15,4 +15,6 @@ public interface CoinsApiProvider {
     void getAmount(Callback<Balance> callback);
 
     void putMoneyInWallet(Cash scannedCode, Callback<DepositeTransaction> callback);
+
+    void cancelRequest();
 }

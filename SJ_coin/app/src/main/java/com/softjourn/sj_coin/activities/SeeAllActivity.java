@@ -246,6 +246,12 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         super.onBackPressed();
     }
 
+
+    @Override
+    public void activateProgressBar() {
+
+    }
+
     /**
      * Method to show correct fragment according to chosen in NavBar Menu
      *

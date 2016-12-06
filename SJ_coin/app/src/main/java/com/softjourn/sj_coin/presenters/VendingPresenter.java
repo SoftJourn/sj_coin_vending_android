@@ -78,11 +78,9 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
                 actionAfterRefresh = PRODUCTS_LIST;
             } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
             }
         }

@@ -1,4 +1,7 @@
 <resources>
+    <!--Profile Activity -->
+    <dimen name="purchase_header_bottom_margin">16dp</dimen>
+
     <!-- Activity margins. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>

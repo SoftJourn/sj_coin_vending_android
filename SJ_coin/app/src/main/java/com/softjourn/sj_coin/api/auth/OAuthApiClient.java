@@ -37,6 +37,8 @@ public class OAuthApiClient extends BaseApiClient implements OAuthApiProvider {
                         return chain.proceed(orRequest);
                     }
                 })
+                .addInterceptor(getCacheInterceptor())
+                .cache(getCacheForOkHttpClient())
                 .sslSocketFactory(CustomHttpClient.trustCert(App.getContext()))
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override

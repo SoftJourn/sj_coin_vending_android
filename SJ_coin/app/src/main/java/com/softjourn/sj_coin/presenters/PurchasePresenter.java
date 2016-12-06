@@ -1,7 +1,5 @@
 package com.softjourn.sj_coin.presenters;
 
-import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
@@ -37,11 +35,13 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                mView.activateProgressBar();
+                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 mLoginPresenter.refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
                 productId = id;
             } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                mView.activateProgressBar();
+                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mVendingModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id);
                 onDestroy();
             }

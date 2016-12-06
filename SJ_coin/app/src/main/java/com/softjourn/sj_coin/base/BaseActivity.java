@@ -215,6 +215,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final OnServerErrorEvent event) {
+
         hideProgress();
         onCreateErrorDialog(ServerErrors.showErrorMessage(event.getMessage()));
     }

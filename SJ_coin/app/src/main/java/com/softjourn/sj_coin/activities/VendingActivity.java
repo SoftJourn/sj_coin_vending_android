@@ -30,6 +30,7 @@ import com.softjourn.sj_coin.datastorage.FeaturesStorage;
 import com.softjourn.sj_coin.events.OnFavoritesListReceived;
 import com.softjourn.sj_coin.events.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.events.OnMachinesListReceived;
+import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.events.OnTokenRefreshed;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
@@ -82,7 +83,7 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));
 
         //makeActionOverflowMenuShown();
-
+        mSwipeRefreshLayout.setRefreshing(true);
         mVendingPresenter.isMachineSet();
     }
 
@@ -147,13 +148,13 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
         } else {
             removeContainers();
             loadProductList();
-            mSwipeRefreshLayout.setRefreshing(false);
         }
         }
 
     @Override
     public void showNoInternetError() {
         onNoInternetAvailable();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -316,6 +317,12 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
     }
 
     @Override
+    public void hideProgress() {
+        super.hideProgress();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mVendingPresenter.onDestroy();
@@ -332,9 +339,9 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
     public void hideContainer(int headers, int fragmentContainerId) {
         View view = findViewById(headers);
         View fragmentContainer = findViewById(fragmentContainerId);
-        assert fragmentContainer != null;
+        if (fragmentContainer != null)
         fragmentContainer.setVisibility(View.GONE);
-        assert view != null;
+        if (view != null)
         view.setVisibility(View.GONE);
     }
 
@@ -375,6 +382,17 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
         }
     }
 
+    @Override
+    public void onCreateErrorDialog(String message) {
+        super.onCreateErrorDialog(message);
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void activateProgressBar() {
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
     @Subscribe
     public void OnEvent(OnFeaturedProductsListReceived event) {
         removeContainers();
@@ -386,6 +404,7 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
     public void OnEvent(OnFavoritesListReceived event) {
         mVendingPresenter.getCategoriesFromDB();
         setTitle(Preferences.retrieveStringObject(SELECTED_MACHINE_NAME));
+        mSwipeRefreshLayout.setRefreshing(false);
         navigateToFragments();
     }
 
@@ -417,6 +436,13 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
             hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
             hideProgress();
         }
+    }
+
+    @Subscribe
+    public void onEvent(final OnServerErrorEvent event) {
+
+        hideProgress();
+        onCreateErrorDialog(ServerErrors.showErrorMessage(event.getMessage()));
     }
 
 }

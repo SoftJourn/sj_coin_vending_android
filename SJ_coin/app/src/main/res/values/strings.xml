@@ -92,6 +92,7 @@
     <string name="activity_order_processing">Your order is processing</string>
     <string name="activity_product_take_your_order_message">Please take your order</string>
     <string name="there_are_no_items">Currently there are no products in this category</string>
+    <string name="no_purchases_yet">Sorry... There is no purchases yet.</string>
     <string name="machine_not_selected_toast">Please choose machine for correct work of application</string>
 
     <!-- Confirmation Dialog-->
