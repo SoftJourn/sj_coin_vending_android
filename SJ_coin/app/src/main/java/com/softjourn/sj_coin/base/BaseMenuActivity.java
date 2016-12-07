@@ -29,7 +29,7 @@ import butterknife.BindView;
 public abstract class BaseMenuActivity extends BaseActivity {
 
     @BindView(R.id.drawer_layout)
-    DrawerLayout mMenuLayout;
+    public DrawerLayout mMenuLayout;
 
     @BindView(R.id.left_side_menu)
     public NavigationView mMenuView;
@@ -104,8 +104,8 @@ public abstract class BaseMenuActivity extends BaseActivity {
         }
 
         TextView usernameView = (TextView) headerView.findViewById(R.id.menu_user_name);
-        if (Preferences.retrieveStringObject(USER_EMAIL_PREFERENCES_KEY) != null) {
-            usernameView.setText(Preferences.retrieveStringObject(USER_EMAIL_PREFERENCES_KEY));
+        if (Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY) != null) {
+            usernameView.setText(Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY));
         } else {
             usernameView.setText(R.string.menu_default_username);
         }

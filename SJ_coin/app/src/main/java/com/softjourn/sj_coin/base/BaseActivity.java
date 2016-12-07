@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
+import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -155,14 +157,24 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
             mConfirmDialogIsVisible = true;
             mConfirmDialog.show();
         }
-
         Button okButton = (Button) mConfirmDialog.findViewById(R.id.dialogButtonOK);
+        if (product.getPrice() > Integer.parseInt(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY))) {
+            okButton.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorScreenBackground));
+        } else {
+            okButton.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorBlue));
+        }
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.buyProduct(String.valueOf(product.getId()));
-                mConfirmDialogIsVisible = false;
-                mConfirmDialog.dismiss();
+                if (product.getPrice() > Integer.parseInt(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY))) {
+                    /*mConfirmDialogIsVisible = false;
+                    mConfirmDialog.dismiss();*/
+                    showSnackBar(getString(R.string.server_error_40901));
+                } else {
+                    presenter.buyProduct(String.valueOf(product.getId()), BaseActivity.this);
+                    mConfirmDialogIsVisible = false;
+                    mConfirmDialog.dismiss();
+                }
             }
         });
 
@@ -212,6 +224,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
             dialog.show();
         }
     }
+
+    public abstract void showSnackBar(String message);
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(final OnServerErrorEvent event) {

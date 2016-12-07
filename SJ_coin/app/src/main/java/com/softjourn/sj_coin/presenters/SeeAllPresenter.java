@@ -6,7 +6,6 @@ import com.softjourn.sj_coin.api.models.products.Categories;
 import com.softjourn.sj_coin.contratcts.SeeAllContract;
 import com.softjourn.sj_coin.events.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.events.OnBoughtEvent;
 import com.softjourn.sj_coin.events.OnRemoveFavoriteEvent;
 import com.softjourn.sj_coin.events.OnTokenRefreshed;
 import com.softjourn.sj_coin.events.OnTokenRevoked;
@@ -47,10 +46,10 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
                 actionAfterRefresh = Const.ACTION_ADD_FAVORITE;
                 itemId = id;
 
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
             } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.addProductToFavorite(id);
             }
         }
@@ -85,10 +84,10 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
                 actionAfterRefresh = Const.ACTION_REMOVE_FAVORITE;
                 itemId = Integer.parseInt(id);
 
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
+                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
             } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mModel.removeProductFromFavorites(id);
             }
         }
@@ -97,11 +96,6 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     @Override
     public void refreshToken(String refreshToken) {
         mLoginPresenter.refreshToken(refreshToken);
-    }
-
-    @Subscribe
-    public void OnEvent(OnBoughtEvent event) {
-        mView.showSnackBar();
     }
 
     @Subscribe

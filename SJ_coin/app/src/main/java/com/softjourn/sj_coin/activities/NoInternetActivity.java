@@ -17,7 +17,7 @@ import com.softjourn.sj_coin.utils.Const;
 
 public class NoInternetActivity extends AppCompatActivity implements Const {
 
-    private BroadcastListener mBroadcastListener;
+    private InternetBroadcastListener mBroadcastListener;
 
     private AnimatedSvgView svgView;
 
@@ -25,7 +25,7 @@ public class NoInternetActivity extends AppCompatActivity implements Const {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.no_internet_activity);
-        mBroadcastListener = new BroadcastListener();
+        mBroadcastListener = new InternetBroadcastListener();
 
         //Draw svg image
         svgView = (AnimatedSvgView) findViewById(R.id.animated_svg_view);
@@ -50,7 +50,7 @@ public class NoInternetActivity extends AppCompatActivity implements Const {
      * Listener for Internet state. If Application was launched with no Internet
      * and internet state with changed to true start Launcher activity.
      */
-    private class BroadcastListener extends BroadcastReceiver {
+    private class InternetBroadcastListener extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {

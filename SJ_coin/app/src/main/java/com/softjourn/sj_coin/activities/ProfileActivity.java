@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -26,6 +25,7 @@ import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.Utils;
 
 import java.util.List;
@@ -52,9 +52,6 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     @BindView(R.id.textViewNoPurchases)
     TextView mNoPurchasesTextView;
 
-    @BindView(R.id.progressBar)
-    ProgressBar mProgressBar;
-
     private ProfileContract.Presenter mPresenter;
     private PurchaseHistoryItemsAdapter mHistoryAdapter;
 
@@ -70,6 +67,8 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
+
+        mUserName.setText(Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY));
 
         mPresenter = new ProfilePresenter(this);
 
@@ -176,7 +175,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     public void showBalance(String amount) {
         mCoinsLabel.setVisibility(View.VISIBLE);
         mUserBalance.setText(amount);
-        mUserBalance.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
+        mUserBalance.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
     }
 
     @Override
@@ -204,14 +203,8 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
     }
 
     @Override
-    public void showProgress(String message) {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mProgressBar.animate();
-    }
+    public void showSnackBar(String message) {
 
-    @Override
-    public void hideProgress() {
-        mProgressBar.setVisibility(GONE);
     }
 
     @Override

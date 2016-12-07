@@ -203,11 +203,6 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
     }
 
     @Override
-    public void showSnackBar() {
-        Utils.showSnackBar(findViewById(R.id.rootLayout), getString(R.string.activity_order_processing));
-    }
-
-    @Override
     public void logOut() {
         Utils.clearUsersData();
         Navigation.goToLoginActivity(this);
@@ -246,10 +241,9 @@ public class SeeAllActivity extends BaseActivity implements SeeAllContract.View,
         super.onBackPressed();
     }
 
-
     @Override
-    public void activateProgressBar() {
-
+    public void showSnackBar(String message) {
+        Utils.showSnackBar(findViewById(R.id.rootLayout), message);
     }
 
     /**

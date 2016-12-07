@@ -1,5 +1,7 @@
 package com.softjourn.sj_coin.presenters;
 
+import android.content.Context;
+
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
 import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
@@ -16,7 +18,8 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
     private final LoginPresenter mLoginPresenter;
     private final VendingModel mVendingModel;
 
-    private static String productId;
+    private static String sProductId;
+    private static Context sContext;
 
     public PurchasePresenter(PurchaseContract.View purchaseView) {
 
@@ -29,20 +32,16 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
 
 
     @Override
-    public void buyProduct(String id) {
-
+    public void buyProduct(String id, Context context) {
+        sContext = context;
         if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             if (Utils.checkExpirationDate()) {
-                mView.activateProgressBar();
-                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 mLoginPresenter.refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-                productId = id;
+                sProductId = id;
             } else {
-                mView.activateProgressBar();
-                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mVendingModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id);
+                mVendingModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id, sContext);
                 onDestroy();
             }
         }
@@ -50,9 +49,9 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
 
     @Override
     public void buyAfterRefresh() {
-        if (productId != null) {
-            buyProduct(productId);
-            productId = null;
+        if (sProductId != null) {
+            buyProduct(sProductId, sContext);
+            sProductId = null;
         }
     }
 

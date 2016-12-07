@@ -93,7 +93,7 @@ public class FeaturedProductItemsAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(final FeaturedViewHolder holder, int position) {
+    public void onBindViewHolder(final FeaturedViewHolder holder, final int position) {
 
         Product product = mListProducts.get(holder.getAdapterPosition());
 
@@ -176,7 +176,7 @@ public class FeaturedProductItemsAdapter extends
                             if (mCategory.equals(FAVORITES)) {
                                 mListProducts.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
-                                notifyItemRangeChanged(0, getItemCount()+1);
+                                notifyItemRangeChanged(position, getItemCount() + 1);
                                 if (getItemCount() < 1) {
                                     EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
                                 }

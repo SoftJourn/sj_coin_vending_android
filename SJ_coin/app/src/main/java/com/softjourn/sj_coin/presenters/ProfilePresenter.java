@@ -17,6 +17,7 @@ import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ServerErrors;
+import com.softjourn.sj_coin.utils.UIUtils;
 import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -48,7 +49,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
                 //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
                 refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
             } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
+                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
                 mProfileModel.makeAccountCall();
             }
         }
@@ -97,9 +98,13 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Subscribe
     public void OnEvent(OnAccountReceivedEvent event) {
+        String userName = UIUtils.getUserFullName(event.getAccount().getName(), event.getAccount().getSurname());
         mView.hideProgress();
         mView.showBalance(event.getAccount().getAmount());
-        mView.setUserName(event.getAccount().getName() + " " + event.getAccount().getSurname());
+        if (Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY) == null ||
+                !Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY).equals(userName)) {
+            mView.setUserName(userName);
+        }
         showHistory();
     }
 

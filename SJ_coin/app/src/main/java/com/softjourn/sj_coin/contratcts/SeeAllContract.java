@@ -14,8 +14,6 @@ public interface SeeAllContract {
 
         void navigateToBuyProduct(Product product);
 
-        void showSnackBar();
-
         void logOut();
     }
 

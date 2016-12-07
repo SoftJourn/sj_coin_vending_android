@@ -9,7 +9,6 @@ import com.softjourn.sj_coin.contratcts.VendingContract;
 import com.softjourn.sj_coin.events.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.events.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.events.OnBoughtEvent;
 import com.softjourn.sj_coin.events.OnProductItemClickEvent;
 import com.softjourn.sj_coin.events.OnTokenRevoked;
 import com.softjourn.sj_coin.mvpmodels.ProfileModel;
@@ -159,15 +158,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event) {
-        mView.hideProgress();
         mView.updateBalanceAmount(String.valueOf(event.getAmount().getAmount()));
-        mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
-    }
-
-    @Subscribe
-    public void OnEvent(OnBoughtEvent event) {
-        //mView.hideProgress();
-        mView.showSnackBar(App.getContext().getResources().getString(R.string.activity_order_processing));
     }
 
     @Subscribe
@@ -187,7 +178,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnAccountReceivedEvent event) {
-        Preferences.storeObject(USER_EMAIL_PREFERENCES_KEY, UIUtils.getUserFullName(event.getAccount().getName(), event.getAccount().getSurname()));
+        Preferences.storeObject(USER_NAME_PREFERENCES_KEY, UIUtils.getUserFullName(event.getAccount().getName(), event.getAccount().getSurname()));
     }
 
     @Subscribe

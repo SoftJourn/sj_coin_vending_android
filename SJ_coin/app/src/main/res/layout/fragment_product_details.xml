@@ -29,11 +29,11 @@
             app:civ_border_color="#FFFFFF"
             android:layout_gravity="center"
             android:src="@drawable/logo"
-            android:layout_below="@+id/add_to_favorite"
+            android:layout_below="@+id/details_add_to_favorite"
             android:layout_centerHorizontal="true" />
 
         <TextView
-            android:id="@+id/buy_product"
+            android:id="@+id/details_buy_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -48,15 +48,16 @@
             android:layout_marginStart="19dp" />
 
         <ImageView
-            android:id="@+id/add_to_favorite"
+            android:id="@+id/details_add_to_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_favorite_border_white"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/buy_product"
-            android:layout_toEndOf="@+id/buy_product"
+            android:layout_toRightOf="@+id/details_buy_product"
+            android:layout_toEndOf="@+id/details_buy_product"
             android:layout_alignBottom="@+id/details_product_name" />
 
     </RelativeLayout>

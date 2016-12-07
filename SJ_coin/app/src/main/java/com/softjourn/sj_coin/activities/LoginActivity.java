@@ -74,6 +74,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
     }
 
     @Override
+    public void showSnackBar(String message) {
+
+    }
+
+    @Override
     public void hideProgress() {
         super.hideProgress();
     }

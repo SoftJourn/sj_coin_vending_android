@@ -17,6 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label" >
+
+        <!-- Activities -->
         <activity
             android:name=".activities.VendingActivity"
             android:screenOrientation="portrait"
@@ -53,6 +55,11 @@
             android:name=".activities.NoInternetActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme" />
+
+        <!-- Services -->
+        <service
+            android:name=".services.PurchaseService"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -43,7 +42,6 @@ import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,9 +114,12 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
     // TODO: Add Unchecking all menu items before opening menu.
     @Override
     public void setUpNavigationViewContent() {
+        /*if (Preferences.retrieveStringObject(CATEGORIES_SIZE)== null ||
+                mVendingPresenter.getCategories().size()!=Integer.parseInt(Preferences.retrieveStringObject(CATEGORIES_SIZE))) {*/
         LeftSideMenuController leftSideMenuController = new LeftSideMenuController(mMenuView);
-        leftSideMenuController.uncheckAllMenuItems(mMenuView);
+        leftSideMenuController.unCheckAllMenuItems(mMenuView);
         leftSideMenuController.addCategoriesToMenu(getMenu(), mVendingPresenter.getCategories());
+        // }
     }
 
     //MainMenu methods
@@ -366,31 +367,10 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
         }
     }
 
-    //Method for showing overflow menu in actionbar
-    //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu by default
-
-    private void makeActionOverflowMenuShown() {
-        try {
-            ViewConfiguration config = ViewConfiguration.get(this);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onCreateErrorDialog(String message) {
         super.onCreateErrorDialog(message);
         mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void activateProgressBar() {
-        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Subscribe
@@ -440,7 +420,6 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
 
     @Subscribe
     public void onEvent(final OnServerErrorEvent event) {
-
         hideProgress();
         onCreateErrorDialog(ServerErrors.showErrorMessage(event.getMessage()));
     }
