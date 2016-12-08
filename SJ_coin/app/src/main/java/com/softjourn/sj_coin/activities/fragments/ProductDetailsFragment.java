@@ -1,33 +1,39 @@
 package com.softjourn.sj_coin.activities.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
+import com.softjourn.sj_coin.activities.SeeAllActivity;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.events.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.events.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.events.OnRemoveFavoriteEvent;
+import com.softjourn.sj_coin.events.OnRemoveItemFromCategoryFavorite;
 import com.softjourn.sj_coin.managers.DataManager;
 import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.PicassoTrustAdapter;
+import com.softjourn.sj_coin.utils.Preferences;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import static com.softjourn.sj_coin.utils.Const.FAVORITES;
 import static com.softjourn.sj_coin.utils.Const.URL_VENDING_SERVICE;
+import static com.softjourn.sj_coin.utils.Const.USER_BALANCE_PREFERENCES_KEY;
 
 /**
  * Created by home on 04.12.2016.
@@ -40,10 +46,11 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
     TextView mProductLongDescription;
     ImageView mProductImage;
     TextView mProductPrice;
-    RelativeLayout mLayout;
 
     ImageView mFavorites;
     TextView mBuyProduct;
+
+    private boolean isRemovedFromFavorite = false;
 
     private DataManager mDataManager = new DataManager();
     private List<Product> sFavoritesList = mDataManager.loadFavorites();
@@ -76,7 +83,6 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(View contentView, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(contentView, savedInstanceState);
-
     }
 
     @Override
@@ -104,6 +110,13 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
         mProductPrice.setText(String.format(getString(R.string.coins), mProduct.getPrice()));
         PicassoTrustAdapter.getInstance(App.getContext()).load(URL_VENDING_SERVICE + mProduct.getImageUrl()).into(mProductImage);
         loadFavoriteIcon();
+        if (mProduct.getPrice() > Integer.parseInt(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY))) {
+            mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorScreenBackground));
+            mBuyProduct.setEnabled(false);
+        } else {
+            mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.white));
+            mBuyProduct.setEnabled(true);
+        }
 
         mBuyProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +131,15 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
                 handleOnFavoriteClick();
             }
         });
+    }
+
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if ((getActivity()).getTitle().equals(FAVORITES) && isRemovedFromFavorite) {
+            EventBus.getDefault().post(new OnRemoveItemFromCategoryFavorite(mProduct.getId()));
+        }
     }
 
     private void loadFavoriteIcon() {
@@ -140,18 +162,20 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
     }
 
     private void handleOnFavoriteClick() {
-        mFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!(Boolean) mFavorites.getTag()) {
-                    EventBus.getDefault().post(new OnAddFavoriteEvent(mProduct));
-                } else {
-                    EventBus.getDefault().post(new OnRemoveFavoriteEvent(mProduct));
-                    if (NetworkUtils.isNetworkEnabled()) {
-                        loadFavoriteIcon();
-                    }
-                }
+        if (NetworkUtils.isNetworkEnabled()) {
+            if (!(Boolean) mFavorites.getTag()) {
+                EventBus.getDefault().post(new OnAddFavoriteEvent(mProduct));
+                Picasso.with(App.getContext()).load(R.drawable.ic_favorite_pink).into(mFavorites);
+                mFavorites.setTag(true);
+                isRemovedFromFavorite = false;
+            } else {
+                EventBus.getDefault().post(new OnRemoveFavoriteEvent(mProduct));
+                Picasso.with(App.getContext()).load(R.drawable.ic_favorite_border_white).into(mFavorites);
+                mFavorites.setTag(false);
+                isRemovedFromFavorite = true;
             }
-        });
+        } else {
+            ((SeeAllActivity) getActivity()).showNoInternetError();
+        }
     }
 }

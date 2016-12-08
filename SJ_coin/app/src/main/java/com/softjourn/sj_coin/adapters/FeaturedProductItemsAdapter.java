@@ -75,6 +75,16 @@ public class FeaturedProductItemsAdapter extends
         notifyDataSetChanged();
     }
 
+    public void removeItem(int id) {
+        for (int i = 0; i < mListProducts.size(); i++) {
+            if (mListProducts.get(i).getId().equals(id)) {
+                mListProducts.remove(mListProducts.get(i));
+                notifyItemRemoved(i);
+                notifyItemRangeChanged(0, getItemCount() + 1);
+            }
+        }
+    }
+
     @Override
     public FeaturedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;

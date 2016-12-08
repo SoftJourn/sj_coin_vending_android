@@ -19,9 +19,12 @@ import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
+import com.softjourn.sj_coin.events.OnRemoveItemFromCategoryFavorite;
 import com.softjourn.sj_coin.presenters.VendingFragmentPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -277,6 +280,11 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
         public void onChangeFavoriteIcon(String action) {
 
         }
+    }
+
+    @Subscribe
+    public void OnEvent(OnRemoveItemFromCategoryFavorite event) {
+        mProductAdapter.removeItem(event.getId());
     }
 
 }
