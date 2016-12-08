@@ -176,7 +176,7 @@ public class FeaturedProductItemsAdapter extends
                             if (mCategory.equals(FAVORITES)) {
                                 mListProducts.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
-                                notifyItemRangeChanged(position, getItemCount() + 1);
+                                notifyItemRangeChanged(0, getItemCount() + 1);
                                 if (getItemCount() < 1) {
                                     EventBus.getDefault().post(new OnRemovedLastFavoriteEvent(mListProducts));
                                 }
