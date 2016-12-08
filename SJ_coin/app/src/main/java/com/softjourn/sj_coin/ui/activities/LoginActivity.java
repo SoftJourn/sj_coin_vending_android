@@ -1,10 +1,12 @@
-package com.softjourn.sj_coin.activities;
+package com.softjourn.sj_coin.ui.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.base.BaseActivity;
@@ -13,6 +15,7 @@ import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.presenters.LoginPresenter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
+import com.softjourn.sj_coin.utils.Preferences;
 import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -31,12 +34,22 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
     EditText mPasswordText;
     @BindView(R.id.btn_login)
     Button mLoginButton;
+    @BindView(R.id.login_root)
+    LinearLayout mLinearLayout;
+    @BindView(R.id.link_to_welcome_activity)
+    ImageView mArrowToWelcome;
 
     private LoginContract.Presenter mPresenter;
 
     @OnClick(R.id.btn_login)
     public void loginProcess() {
         login();
+    }
+
+    @OnClick(R.id.link_to_welcome_activity)
+    public void goToWelcome() {
+        Navigation.goToWelcomeActivity(this);
+        finish();
     }
 
     @Override
@@ -48,13 +61,16 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
 
         mPresenter = new LoginPresenter(this);
 
+        if (Preferences.retrieveBooleanObject(Const.IS_FIRST_TIME_LAUNCH)) {
+            Navigation.goToWelcomeActivity(this);
+            this.finish();
+        }
+
     }
 
     private void login() {
-
         String userName = mUserName.getText().toString();
         String password = mPasswordText.getText().toString();
-
         mPresenter.login(userName, password);
     }
 
@@ -118,7 +134,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
 
     @Subscribe
     public void onEvent(final OnServerErrorEvent event) {
-
         hideProgress();
         onCreateErrorDialog(ServerErrors.showErrorMessage(event.getMessage()));
     }

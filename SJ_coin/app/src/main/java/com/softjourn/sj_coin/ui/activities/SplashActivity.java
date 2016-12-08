@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.activities;
+package com.softjourn.sj_coin.ui.activities;
 
 import android.text.TextUtils;
 

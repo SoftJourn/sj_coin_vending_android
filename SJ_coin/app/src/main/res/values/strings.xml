@@ -45,6 +45,8 @@
     <string name="menu_item_favorites">Favorites</string>
     <string name="menu_item_search">Search</string>
     <string name="main_menu_home">Home</string>
+    <string name="main_menu_scan_code">Scan code</string>
+    <string name="generate_qr_code">Generate Money</string>
 
     <!--Profile Screen-->
     <string name="profile_amount_available">9999</string>
@@ -128,8 +130,9 @@
     <string name="menu_default_username">John Smith</string>
     <string name="menu_header_label_categories">Categories</string>
     <string name="permissions_camera_message">Camera permissions needed</string>
-    <string name="order_processing_message">Processing...</string>
-    <string name="profile_updating_label">Updating...</string>
+    <string name="permissions_write_external_storage">Permission to write files to disk needed</string>
+    <string name="order_processing_message">Processing…</string>
+    <string name="profile_updating_label">Updating…</string>
 
     <string-array name="t_rex_strings">
         <item>M143,49.5l0,4.5 -4.5,0 -4.5,0 0,29 0,29 -4.5,0 -4.5,0 0,4.5 0,4.5 -7,0 -7,0 0,4.5 0,4.5 -6.5,0 -6.5,0 0,4.5 0,4.5 -4.5,0 -4.5,0 0,4.5 0,4.5 -9,0 -9,0 0,-4.5 0,-4.5 -4.5,0 -4.5,0 0,-3.5 0,-4.5 -4.5,0 -4.5,0 0,-9 0,-9 -4.5,0 -4.5,0 0,27 0,27 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,18 0,18 9,0 9,0 0,-4.5 0,-4.5 -4.5,0 -4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,13.5 0,13.5 9,0 9,0 0,-4.5 0,-4.5 -4.5,0 -4.5,0 0,-18 0,-18 4.5,0 4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,-6.5 0,-6.5 4.5,0 4.5,0 0,-16 0,-16 4.5,0 4.5,0 0,4.5 0,4.5 4.5,0 4.5,0 0,-9 0,-9 -9,0 -9,0 0,-9 0,-9 18,0 18,0 0,-4.5 0,-4.5 -13.5,0 -13.5,0 0,-4.5 0,-4.5 22.5,0 22.5,0 0,-20 0,-20 -4.5,0 -4.5,0 0,-4.5 0,-4.5 -36,0 -36,0 0,4.5zM162,62.5l0,4.5 -4.5,0 -4.5,0 0,-4.5 0,-4.5 4.5,0 4.5,0 0,4.5z</item>
@@ -155,5 +158,35 @@
         <item>@color/colorBlue</item>
     </integer-array>
 
+    <string name="title_activity_inform_page">SJ Coins</string>
+    <string name="action_settings">Settings</string>
 
+    <!-- Welcome Activity-->
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">How to Log In?</string>
+    <string name="slide_1_desc">Use your LDAP credentials to login. In case you can\'t find them in your mail you can ask sysadmin to help you with that!</string>
+
+    <string name="slide_2_title">Buy Products</string>
+    <string name="slide_2_desc">You can buy any product in case it is available and you have enough money! In case any issues e.g. product have stuck just ask responsible person and you will get your product as soon as possible</string>
+
+    <string name="slide_3_title">Want More Coins?</string>
+    <string name="slide_3_desc">No Problem! Ask our coins administrator to buy some coins for cash. By now exchange rate: 100 coins = 1 UAH</string>
+
+    <string name="slide_4_title">Add Favorites</string>
+    <string name="slide_4_desc">You can add products to favorites so they are always on the top of the screen. Don\'t forget to refresh your Product List to always keep in touch with the server!</string>
+
+    <string name="play_again">Play Again</string>
+
+
+    <!--Generate MoneyBarcode Activity-->
+    <string name="input_amount_hint">Amount</string>
+    <string name="button_generate">Generate</string>
+    <string name="generated_QR_code">Generated Qr Code</string>
+    <string name="empty_field_error">Field could not be empty</string>
+    <string name="float_number_error">Only Integer amount is allowed</string>
+    <string name="exceed_balance_error">Amount exceeds your actual balance</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.activities;
+package com.softjourn.sj_coin.ui.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -18,11 +18,11 @@ import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.adapters.PurchaseHistoryItemsAdapter;
 import com.softjourn.sj_coin.api.models.History;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.presenters.ProfilePresenter;
+import com.softjourn.sj_coin.ui.adapters.PurchaseHistoryItemsAdapter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Navigation;
 import com.softjourn.sj_coin.utils.Preferences;
@@ -99,6 +99,7 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.select_machine).setVisible(false);
         menu.findItem(R.id.scan_barcode).setVisible(true);
+        menu.findItem(R.id.generate_barcode).setVisible(true);
         return true;
     }
 
@@ -107,6 +108,9 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                return true;
+            case R.id.generate_barcode:
+                Navigation.toGenerateMoneyCodeActivity(this);
                 return true;
             case R.id.scan_barcode:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

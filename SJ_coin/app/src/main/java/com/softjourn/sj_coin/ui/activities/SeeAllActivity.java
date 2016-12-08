@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.activities;
+package com.softjourn.sj_coin.ui.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -18,8 +18,6 @@ import android.widget.EditText;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.fragments.ProductDetailsFragment;
-import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BaseActivity;
 import com.softjourn.sj_coin.contratcts.PurchaseContract;
@@ -28,6 +26,8 @@ import com.softjourn.sj_coin.events.OnProductBuyClickEvent;
 import com.softjourn.sj_coin.events.OnProductDetailsClick;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.SeeAllPresenter;
+import com.softjourn.sj_coin.ui.adapters.FeaturedProductItemsAdapter;
+import com.softjourn.sj_coin.ui.fragments.ProductDetailsFragment;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.Navigation;

@@ -70,6 +70,7 @@ dependencies {
 
     //Zebra Crossing
     compile "com.journeyapps:zxing-android-embedded:$ZXingVersion"
+    compile 'com.google.zxing:core:3.2.1'
     
     //ConstraintLayout
     compile "com.android.support.constraint:constraint-layout:$constraintLayotVersion"

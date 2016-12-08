@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.adapters;
+package com.softjourn.sj_coin.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

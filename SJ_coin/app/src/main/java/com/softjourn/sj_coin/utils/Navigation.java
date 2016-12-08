@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.LoginActivity;
-import com.softjourn.sj_coin.activities.NoInternetActivity;
-import com.softjourn.sj_coin.activities.ProfileActivity;
-import com.softjourn.sj_coin.activities.SeeAllActivity;
-import com.softjourn.sj_coin.activities.VendingActivity;
-import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
+import com.softjourn.sj_coin.ui.activities.GenerateBarcodeActivity;
+import com.softjourn.sj_coin.ui.activities.LoginActivity;
+import com.softjourn.sj_coin.ui.activities.NoInternetActivity;
+import com.softjourn.sj_coin.ui.activities.ProfileActivity;
+import com.softjourn.sj_coin.ui.activities.SeeAllActivity;
+import com.softjourn.sj_coin.ui.activities.VendingActivity;
+import com.softjourn.sj_coin.ui.activities.WelcomeActivity;
+import com.softjourn.sj_coin.ui.fragments.ProductsListFragment;
 
 public class Navigation implements Const,Extras {
 
@@ -40,6 +42,16 @@ public class Navigation implements Const,Extras {
     public static void goToSeeAllActivity(Context context, String category){
         Intent intent = new Intent(context, SeeAllActivity.class);
         intent.putExtra(EXTRAS_CATEGORY,category);
+        context.startActivity(intent);
+    }
+
+    public static void goToWelcomeActivity(Context context) {
+        Intent intent = new Intent(context, WelcomeActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void toGenerateMoneyCodeActivity(Context context) {
+        Intent intent = new Intent(context, GenerateBarcodeActivity.class);
         context.startActivity(intent);
     }
 

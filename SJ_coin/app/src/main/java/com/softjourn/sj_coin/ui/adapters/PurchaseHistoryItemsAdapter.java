@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.adapters;
+package com.softjourn.sj_coin.ui.adapters;
 
 
 import android.support.v7.widget.RecyclerView;

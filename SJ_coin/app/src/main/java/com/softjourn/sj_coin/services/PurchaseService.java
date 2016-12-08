@@ -11,12 +11,12 @@ import android.support.v7.app.NotificationCompat;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.VendingActivity;
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.models.Amount;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
 import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.events.OnServerErrorEvent;
+import com.softjourn.sj_coin.ui.activities.VendingActivity;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 import com.softjourn.sj_coin.utils.ServerErrors;

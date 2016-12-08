@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.activities.fragments;
+package com.softjourn.sj_coin.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.SeeAllActivity;
-import com.softjourn.sj_coin.activities.VendingActivity;
-import com.softjourn.sj_coin.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BaseFragment;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
 import com.softjourn.sj_coin.events.OnRemoveItemFromCategoryFavorite;
 import com.softjourn.sj_coin.presenters.VendingFragmentPresenter;
+import com.softjourn.sj_coin.ui.activities.SeeAllActivity;
+import com.softjourn.sj_coin.ui.activities.VendingActivity;
+import com.softjourn.sj_coin.ui.adapters.FeaturedProductItemsAdapter;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Extras;
 

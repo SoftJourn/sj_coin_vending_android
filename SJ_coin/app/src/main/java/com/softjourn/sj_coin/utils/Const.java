@@ -71,9 +71,6 @@ public interface Const {
     String ACTION_ADD_FAVORITE = "ADD";
     String ACTION_REMOVE_FAVORITE = "REMOVE";
 
-    //Statuses of Purchase
-    String STATUS_RUNNING = "PURCHASE_RUNNING";
-    String STATUS_FINISHED = "PURCHASE_SUCCESSFULL";
-    String STATUS_ERROR = "PURCHASE_FAILED";
+    String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
 }
 

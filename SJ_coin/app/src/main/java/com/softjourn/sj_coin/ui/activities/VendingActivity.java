@@ -1,4 +1,4 @@
-package com.softjourn.sj_coin.activities;
+package com.softjourn.sj_coin.ui.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -17,8 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.activities.fragments.ProductsListFragment;
-import com.softjourn.sj_coin.adapters.SelectMachineListAdapter;
 import com.softjourn.sj_coin.api.models.machines.Machines;
 import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BaseMenuActivity;
@@ -33,6 +31,8 @@ import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.events.OnTokenRefreshed;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
+import com.softjourn.sj_coin.ui.adapters.SelectMachineListAdapter;
+import com.softjourn.sj_coin.ui.fragments.ProductsListFragment;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.LeftSideMenuController;
 import com.softjourn.sj_coin.utils.Navigation;
@@ -65,6 +65,11 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @OnClick(R.id.balance)
+    public void onBalanceClick() {
+        Navigation.goToProfileActivity(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

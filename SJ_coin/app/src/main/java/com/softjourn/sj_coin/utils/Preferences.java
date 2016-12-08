@@ -14,6 +14,15 @@ public class Preferences implements Const {
         return sharedPreferences.getString(keyValue, null);
     }
 
+    public static boolean retrieveBooleanObject(String key) {
+        return sharedPreferences.getBoolean(key, true);
+    }
+
+    public static void storeBooleanObject(String key, boolean value) {
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
     public static void storeObject(String key, String value) {
         editor.putString(key, value);
         editor.commit();
