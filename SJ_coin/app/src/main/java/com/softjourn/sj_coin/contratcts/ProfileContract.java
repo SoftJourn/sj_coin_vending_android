@@ -32,8 +32,6 @@ public interface ProfileContract {
          */
         void showHistory();
 
-        void addMoney(String code);
-
         void cancelRunningRequest();
     }
 }

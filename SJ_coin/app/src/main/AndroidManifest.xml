@@ -56,10 +56,6 @@
             android:name=".ui.activities.WelcomeActivity"
             android:theme="@style/NoActionBarLoginTheme"
             android:label="" />
-        <activity
-            android:name=".ui.activities.GenerateBarcodeActivity"
-            android:label="Send Money"
-            android:theme="@style/GenerateActivityTheme" />
 
         <!-- Services -->
         <service

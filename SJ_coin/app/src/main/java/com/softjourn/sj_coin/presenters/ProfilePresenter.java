@@ -1,9 +1,7 @@
 package com.softjourn.sj_coin.presenters;
 
-import com.google.gson.Gson;
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.api.models.accountInfo.Cash;
 import com.softjourn.sj_coin.contratcts.ProfileContract;
 import com.softjourn.sj_coin.events.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
@@ -68,22 +66,6 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     @Override
     public void showHistory() {
         mVendingModel.getPurchaseHistory();
-    }
-
-    @Override
-    public void addMoney(String fromCode) {
-        if (!NetworkUtils.isNetworkEnabled()) {
-            mView.showNoInternetError();
-        } else {
-            if (Utils.checkExpirationDate()) {
-                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            } else {
-                Cash cash = new Gson().fromJson(fromCode, Cash.class);
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mProfileModel.putMoneyToWallet(cash);
-            }
-        }
     }
 
     @Override

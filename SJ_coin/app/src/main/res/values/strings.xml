@@ -181,12 +181,4 @@
 
     <string name="play_again">Play Again</string>
 
-
-    <!--Generate MoneyBarcode Activity-->
-    <string name="input_amount_hint">Amount</string>
-    <string name="button_generate">Generate</string>
-    <string name="generated_QR_code">Generated Qr Code</string>
-    <string name="empty_field_error">Field could not be empty</string>
-    <string name="float_number_error">Only Integer amount is allowed</string>
-    <string name="exceed_balance_error">Amount exceeds your actual balance</string>
 </resources>

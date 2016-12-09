@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.ui.activities.GenerateBarcodeActivity;
 import com.softjourn.sj_coin.ui.activities.LoginActivity;
 import com.softjourn.sj_coin.ui.activities.NoInternetActivity;
 import com.softjourn.sj_coin.ui.activities.ProfileActivity;
@@ -47,11 +46,6 @@ public class Navigation implements Const,Extras {
 
     public static void goToWelcomeActivity(Context context) {
         Intent intent = new Intent(context, WelcomeActivity.class);
-        context.startActivity(intent);
-    }
-
-    public static void toGenerateMoneyCodeActivity(Context context) {
-        Intent intent = new Intent(context, GenerateBarcodeActivity.class);
         context.startActivity(intent);
     }
 

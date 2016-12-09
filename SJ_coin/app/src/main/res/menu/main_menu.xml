@@ -15,18 +15,4 @@
             android:title="@string/machine_name"
             android:icon="@drawable/ic_select_machine"
             app:showAsAction="ifRoom"/>
-
-        <item
-            android:id="@+id/scan_barcode"
-            android:title="@string/main_menu_scan_code"
-            android:icon="@drawable/ic_scanner"
-            app:showAsAction="ifRoom"
-            android:visible="false" />
-
-        <item
-            android:id="@+id/generate_barcode"
-            android:title="@string/generate_qr_code"
-            android:icon="@drawable/ic_barcode"
-            app:showAsAction="ifRoom"
-            android:visible="false" />
 </menu>

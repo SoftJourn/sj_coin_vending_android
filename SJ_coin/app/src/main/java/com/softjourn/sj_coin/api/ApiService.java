@@ -5,8 +5,6 @@ import com.softjourn.sj_coin.api.models.History;
 import com.softjourn.sj_coin.api.models.Session;
 import com.softjourn.sj_coin.api.models.accountInfo.Account;
 import com.softjourn.sj_coin.api.models.accountInfo.Balance;
-import com.softjourn.sj_coin.api.models.accountInfo.Cash;
-import com.softjourn.sj_coin.api.models.accountInfo.DepositeTransaction;
 import com.softjourn.sj_coin.api.models.machines.Machines;
 import com.softjourn.sj_coin.api.models.products.Favorites;
 import com.softjourn.sj_coin.api.models.products.Featured;
@@ -15,7 +13,6 @@ import com.softjourn.sj_coin.api.models.products.Product;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -86,7 +83,4 @@ public interface ApiService {
 
     @GET("amount")
     Call<Balance> getAmount();
-
-    @POST("deposit")
-    Call<DepositeTransaction> putMoneyInWallet(@Body Cash scannedCode);
 }
