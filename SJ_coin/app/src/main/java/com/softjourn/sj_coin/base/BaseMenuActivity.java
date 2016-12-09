@@ -69,6 +69,8 @@ public abstract class BaseMenuActivity extends BaseActivity {
     }
 
     private void initNavigationDrawer() {
+        final View headerView = mMenuView.getHeaderView(0);
+
         mMenuView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -79,11 +81,11 @@ public abstract class BaseMenuActivity extends BaseActivity {
         mMenuLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
+                setBalance(headerView);
                 setUpNavigationViewContent();
             }
         });
 
-        View headerView = mMenuView.getHeaderView(0);
         headerView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDivider));
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +98,7 @@ public abstract class BaseMenuActivity extends BaseActivity {
         ImageView iconView = (ImageView) headerView.findViewById(R.id.menu_user_icon);
         iconView.setImageResource(R.drawable.logo);
 
-        TextView userBalanceView = (TextView) headerView.findViewById(R.id.user_balance);
-        if (Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY) != null) {
-            userBalanceView.setText(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY));
-        } else {
-            userBalanceView.setText("");
-        }
+        setBalance(headerView);
 
         TextView usernameView = (TextView) headerView.findViewById(R.id.menu_user_name);
         if (Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY) != null) {
@@ -110,6 +107,15 @@ public abstract class BaseMenuActivity extends BaseActivity {
             usernameView.setText(R.string.menu_default_username);
         }
         setUpNavigationViewContent();
+    }
+
+    private void setBalance(View headerView) {
+        TextView userBalanceView = (TextView) headerView.findViewById(R.id.user_balance);
+        if (Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY) != null) {
+            userBalanceView.setText(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY));
+        } else {
+            userBalanceView.setText("");
+        }
     }
 
     private boolean handleNavigation(@NonNull MenuItem item) {

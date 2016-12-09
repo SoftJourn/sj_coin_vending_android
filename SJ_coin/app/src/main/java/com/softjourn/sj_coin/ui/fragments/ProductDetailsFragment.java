@@ -88,7 +88,7 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
         mBuyProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new OnProductBuyClickEvent(mProduct));
+                handleBuyButton();
             }
         });
 
@@ -111,11 +111,17 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
 
     private void setBuyProductButton() {
         if (mProduct.getPrice() > Integer.parseInt(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY))) {
-            mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorScreenBackground));
-            mBuyProduct.setEnabled(false);
+            mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.colorDivider));
         } else {
             mBuyProduct.setTextColor(ContextCompat.getColor(App.getContext(), R.color.white));
-            mBuyProduct.setEnabled(true);
+        }
+    }
+
+    private void handleBuyButton() {
+        if (mProduct.getPrice() < Integer.parseInt(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY))) {
+            EventBus.getDefault().post(new OnProductBuyClickEvent(mProduct));
+        } else {
+            ((SeeAllActivity) getActivity()).onCreateErrorDialog(getString(R.string.server_error_40901));
         }
     }
 

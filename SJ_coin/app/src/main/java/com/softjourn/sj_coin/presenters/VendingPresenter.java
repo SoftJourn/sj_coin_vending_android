@@ -158,6 +158,7 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event) {
+        Preferences.storeObject(USER_BALANCE_PREFERENCES_KEY, String.valueOf(event.getAmount().getAmount()));
         mView.updateBalanceAmount(String.valueOf(event.getAmount().getAmount()));
     }
 

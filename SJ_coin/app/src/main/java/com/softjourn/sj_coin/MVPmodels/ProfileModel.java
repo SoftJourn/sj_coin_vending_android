@@ -11,6 +11,8 @@ import com.softjourn.sj_coin.events.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.events.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.events.OnBalanceUpdatedEvent;
 import com.softjourn.sj_coin.events.OnServerErrorEvent;
+import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.Preferences;
 
 public class ProfileModel extends BaseModel {
 
@@ -25,6 +27,7 @@ public class ProfileModel extends BaseModel {
         mCoinsApiProvider.getBalance(new com.softjourn.sj_coin.api.callbacks.Callback<Account>() {
             @Override
             public void onSuccess(Account response) {
+                Preferences.storeObject(Const.USER_BALANCE_PREFERENCES_KEY, response.getAmount());
                 mEventBus.post(new OnAccountReceivedEvent(response));
             }
 
