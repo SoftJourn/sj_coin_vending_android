@@ -8,7 +8,7 @@ public interface OAuthApiProvider {
 
     void makeLoginRequest(String email, String password, String type, Callback<Session> callback);
 
-    void makeRefreshToken(String refreshToken, String type, Callback<Session> callback);
+    Session makeRefreshToken(String refreshToken, String type);
 
     void makeRevokeRefreshToken(String refreshToken, Callback<Void> callback);
 }

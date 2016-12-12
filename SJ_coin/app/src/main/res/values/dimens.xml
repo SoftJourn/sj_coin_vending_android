@@ -35,4 +35,17 @@
     <dimen name="slide_title">30sp</dimen>
     <dimen name="slide_desc">16sp</dimen>
     <dimen name="desc_padding">40dp</dimen>
+    <dimen name="details_product_header_height">200dp</dimen>
+    <dimen name="details_product_product_name_width">240dp</dimen>
+    <dimen name="details_product_left_margin">16dp</dimen>
+    <dimen name="details_product_favorite_left_margin">24dp</dimen>
+    <dimen name="details_product_buy_left_margin">19dp</dimen>
+    <dimen name="details_product_image_width">120dp</dimen>
+    <dimen name="details_product_image_top_margin">6dp</dimen>
+    <dimen name="details_product_product_name_top_margin">8dp</dimen>
+    <dimen name="login_layout_root_padding_left">24dp</dimen>
+    <dimen name="login_layout_root_padding_top">56dp</dimen>
+    <dimen name="login_logo_image_margin_top">24dp</dimen>
+    <dimen name="login_text_input_margins_top_bottom">8dp</dimen>
+    <dimen name="login_button_margin_top">16dp</dimen>
 </resources>

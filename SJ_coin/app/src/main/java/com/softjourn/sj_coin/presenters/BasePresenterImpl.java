@@ -21,9 +21,6 @@ public class BasePresenterImpl implements BasePresenter{
     /**
      * Needs to be overriden in child Classes
      */
-    @Override
-    public void refreshToken(String refreshToken) {
-    }
 
     @Override
     public void logOut(String refreshToken) {

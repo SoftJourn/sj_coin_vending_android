@@ -12,8 +12,6 @@ public interface PurchaseContract {
     interface Presenter {
         void buyProduct(String id, Context context);
 
-        void buyAfterRefresh();
-
         void onDestroy();
     }
 }

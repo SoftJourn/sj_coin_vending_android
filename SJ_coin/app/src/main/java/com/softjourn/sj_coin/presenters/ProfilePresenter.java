@@ -7,16 +7,13 @@ import com.softjourn.sj_coin.events.OnAccountReceivedEvent;
 import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.events.OnBalanceUpdatedEvent;
 import com.softjourn.sj_coin.events.OnHistoryReceived;
-import com.softjourn.sj_coin.events.OnTokenRefreshed;
 import com.softjourn.sj_coin.events.OnTokenRevoked;
 import com.softjourn.sj_coin.mvpmodels.ProfileModel;
 import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.ServerErrors;
 import com.softjourn.sj_coin.utils.UIUtils;
-import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -35,7 +32,6 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         mProfileModel = new ProfileModel();
         mVendingModel = new VendingModel();
         mLoginPresenter = new LoginPresenter();
-        //mView.showProgress(App.getContext().getString(R.string.progress_loading));
     }
 
     @Override
@@ -43,13 +39,7 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
         if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (Utils.checkExpirationDate()) {
-                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-            } else {
-                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mProfileModel.makeAccountCall();
-            }
+            mProfileModel.makeAccountCall();
         }
     }
 
@@ -71,11 +61,6 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     @Override
     public void cancelRunningRequest() {
         mProfileModel.cancelRequest();
-    }
-
-    @Override
-    public void refreshToken(String refreshToken) {
-        mLoginPresenter.refreshToken(refreshToken);
     }
 
     @Subscribe
@@ -102,17 +87,6 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
     }
 
     @Subscribe
-    public void OnEvent(OnTokenRefreshed event) {
-        if (event.isSuccess()) {
-            mView.hideProgress();
-            mProfileModel.makeAccountCall();
-        } else {
-            mView.onCreateErrorDialog(ServerErrors.showErrorMessage("default"));
-            mView.hideProgress();
-        }
-    }
-
-    @Subscribe
     public void OnEvent(OnHistoryReceived event) {
         mView.setData(event.getHistoryList());
         mView.hideProgress();
@@ -120,8 +94,8 @@ public class ProfilePresenter extends BasePresenterImpl implements ProfileContra
 
     @Subscribe
     public void OnEvent(OnTokenRevoked event) {
-            mView.hideProgress();
-            mView.logOut();
+        mView.hideProgress();
+        mView.logOut();
     }
 }
 

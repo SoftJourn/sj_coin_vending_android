@@ -29,6 +29,7 @@ public class Navigation implements Const,Extras {
 
     public static void goToLoginActivity(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 

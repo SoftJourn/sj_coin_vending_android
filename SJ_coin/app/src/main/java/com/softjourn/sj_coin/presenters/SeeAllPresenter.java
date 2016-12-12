@@ -7,13 +7,9 @@ import com.softjourn.sj_coin.contratcts.SeeAllContract;
 import com.softjourn.sj_coin.events.OnAddFavoriteEvent;
 import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
 import com.softjourn.sj_coin.events.OnRemoveFavoriteEvent;
-import com.softjourn.sj_coin.events.OnTokenRefreshed;
 import com.softjourn.sj_coin.events.OnTokenRevoked;
 import com.softjourn.sj_coin.mvpmodels.VendingModel;
-import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkUtils;
-import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -24,9 +20,6 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     SeeAllContract.View mView;
     private final VendingModel mModel;
     private final LoginPresenter mLoginPresenter;
-
-    private static String actionAfterRefresh;
-    private static int itemId;
 
     public SeeAllPresenter(SeeAllContract.View vendingView) {
 
@@ -42,16 +35,7 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
         if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (Utils.checkExpirationDate()) {
-                actionAfterRefresh = Const.ACTION_ADD_FAVORITE;
-                itemId = id;
-
-                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
-            } else {
-                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.addProductToFavorite(id);
-            }
+            mModel.addProductToFavorite(id);
         }
     }
 
@@ -80,22 +64,8 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
         if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (Utils.checkExpirationDate()) {
-                actionAfterRefresh = Const.ACTION_REMOVE_FAVORITE;
-                itemId = Integer.parseInt(id);
-
-                //mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
-            } else {
-                //mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.removeProductFromFavorites(id);
-            }
+            mModel.removeProductFromFavorites(id);
         }
-    }
-
-    @Override
-    public void refreshToken(String refreshToken) {
-        mLoginPresenter.refreshToken(refreshToken);
     }
 
     @Subscribe
@@ -106,26 +76,6 @@ public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract
     @Subscribe
     public void OnEvent(OnRemoveFavoriteEvent event) {
         removeFromFavorite(String.valueOf(event.removeFavorite().getId()));
-    }
-
-    @Subscribe
-    public void OnEvent(OnTokenRefreshed event) {
-        if (event.isSuccess()) {
-            if (actionAfterRefresh != null) {
-                switch (actionAfterRefresh) {
-                    case Const.ACTION_ADD_FAVORITE:
-                        addToFavorite(itemId);
-                        break;
-                    case Const.ACTION_REMOVE_FAVORITE:
-                        removeFromFavorite(String.valueOf(itemId));
-                        break;
-                    default:
-                        break;
-                }
-            }
-        } else {
-            mView.hideProgress();
-        }
     }
 
     @Subscribe

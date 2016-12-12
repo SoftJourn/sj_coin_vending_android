@@ -4,6 +4,7 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
 import com.softjourn.sj_coin.api.models.Session;
 import com.softjourn.sj_coin.base.BaseApiClient;
+import com.softjourn.sj_coin.utils.Utils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Call;
 import retrofit2.Callback;
 
 public class OAuthApiClient extends BaseApiClient implements OAuthApiProvider {
@@ -58,8 +60,18 @@ public class OAuthApiClient extends BaseApiClient implements OAuthApiProvider {
     }
 
     @Override
-    public void makeRefreshToken(String refreshToken, String type, Callback<Session> callback) {
-        mApiService.getAccessTokenViaRefreshToken(refreshToken, type).enqueue(callback);
+    public Session makeRefreshToken(String refreshToken, String type) {
+        Session session = new Session();
+        try {
+            Call<Session> call = mApiService.getAccessTokenViaRefreshToken(refreshToken, type);
+            session = call.execute().body();
+            if (session != null) {
+                Utils.storeSessionInfo(session);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return session;
     }
 
     @Override

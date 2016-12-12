@@ -62,7 +62,7 @@ public class VendingModel extends BaseModel implements Const,Extras {
             @Override
             public void onSuccess(Featured response) {
                 FeaturesStorage.getInstance().setData(response);
-                //Preferences.storeObject(CATEGORIES_SIZE,String.valueOf(response.getCategories().size()));
+
                 mEventBus.post(new OnFeaturedProductsListReceived());
             }
 

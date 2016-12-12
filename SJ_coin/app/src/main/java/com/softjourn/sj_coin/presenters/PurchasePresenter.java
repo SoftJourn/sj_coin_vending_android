@@ -7,7 +7,6 @@ import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.Utils;
 
 import org.greenrobot.eventbus.NoSubscriberEvent;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,21 +36,8 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
         if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (Utils.checkExpirationDate()) {
-                mLoginPresenter.refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-                sProductId = id;
-            } else {
-                mVendingModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id, sContext);
-                onDestroy();
-            }
-        }
-    }
-
-    @Override
-    public void buyAfterRefresh() {
-        if (sProductId != null) {
-            buyProduct(sProductId, sContext);
-            sProductId = null;
+            mVendingModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id, sContext);
+            onDestroy();
         }
     }
 

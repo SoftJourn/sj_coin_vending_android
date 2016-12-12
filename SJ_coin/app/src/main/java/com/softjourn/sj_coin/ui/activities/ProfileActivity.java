@@ -104,7 +104,6 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
         }
     }
 
-
     @Override
     public void showBalance(String amount) {
         mCoinsLabel.setVisibility(View.VISIBLE);

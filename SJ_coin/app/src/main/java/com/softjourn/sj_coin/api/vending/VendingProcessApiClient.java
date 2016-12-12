@@ -2,6 +2,7 @@ package com.softjourn.sj_coin.api.vending;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
+import com.softjourn.sj_coin.api.TokenAuthenticator;
 import com.softjourn.sj_coin.api.callbacks.Callback;
 import com.softjourn.sj_coin.api.models.Amount;
 import com.softjourn.sj_coin.api.models.History;
@@ -46,6 +47,7 @@ public class VendingProcessApiClient extends BaseApiClient implements VendingApi
                         return chain.proceed(orRequest);
                     }
                 })
+                .addInterceptor(new TokenAuthenticator())
                 .addInterceptor(getCacheInterceptor())
                 .cache(getCacheForOkHttpClient())
                 .sslSocketFactory(CustomHttpClient.trustCert(App.getContext()))

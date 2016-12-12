@@ -5,9 +5,7 @@ import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.contratcts.LoginContract;
 import com.softjourn.sj_coin.events.OnLoginCallEvent;
 import com.softjourn.sj_coin.mvpmodels.LoginModel;
-import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.NetworkUtils;
-import com.softjourn.sj_coin.utils.Preferences;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -47,11 +45,6 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
     @Override
     public void logOut(String refreshToken) {
             mModel.revokeRefreshToken(refreshToken);
-    }
-
-    @Override
-    public void refreshToken(String refreshToken) {
-        mModel.makeRefreshToken(Preferences.retrieveStringObject(Const.REFRESH_TOKEN));
     }
 
     public boolean validateCredentials(String userName, String password) {

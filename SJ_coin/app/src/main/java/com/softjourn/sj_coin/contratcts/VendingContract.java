@@ -91,10 +91,5 @@ public interface VendingContract {
          * Get all categories loaded from server for dynamic creating views
          */
         void getCategoriesFromDB();
-
-        /**
-         * Decides which call needs to be proceed after refreshing token
-         */
-        void getActionAfterRefresh();
     }
 }

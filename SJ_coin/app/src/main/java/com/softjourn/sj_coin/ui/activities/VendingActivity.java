@@ -28,7 +28,6 @@ import com.softjourn.sj_coin.events.OnFavoritesListReceived;
 import com.softjourn.sj_coin.events.OnFeaturedProductsListReceived;
 import com.softjourn.sj_coin.events.OnMachinesListReceived;
 import com.softjourn.sj_coin.events.OnServerErrorEvent;
-import com.softjourn.sj_coin.events.OnTokenRefreshed;
 import com.softjourn.sj_coin.presenters.PurchasePresenter;
 import com.softjourn.sj_coin.presenters.VendingPresenter;
 import com.softjourn.sj_coin.ui.adapters.SelectMachineListAdapter;
@@ -405,21 +404,6 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
             }
         } else if (event.getMachinesList().size() > 1) {
             showMachinesSelector(event.getMachinesList());
-        }
-    }
-
-    @Subscribe
-    public void OnEvent(OnTokenRefreshed event) {
-        if (event.isSuccess()) {
-            mVendingPresenter.getActionAfterRefresh();
-            mPurchasePresenter.buyAfterRefresh();
-            hideProgress();
-        } else {
-            onCreateErrorDialog(ServerErrors.showErrorMessage(getString(R.string.default_error_message)));
-            hideContainer(R.id.favoritesHeader, R.id.container_fragment_products_list_favorites);
-            hideContainer(R.id.bestSellersHeader, R.id.container_fragment_products_list_best_sellers);
-            hideContainer(R.id.newProductsHeader, R.id.container_fragment_products_list_new_products);
-            hideProgress();
         }
     }
 
