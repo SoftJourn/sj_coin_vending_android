@@ -43,9 +43,6 @@ public interface Const {
     boolean CALL_FAILED = false;
     boolean CALL_SUCCEED = true;
 
-    boolean TOKEN_REFRESHED = true;
-    boolean TOKEN_NOT_REFRESHED = false;
-
     //Recycler View Types
     String DEFAULT_RECYCLER_VIEW = "DEFAULT";
     String SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW = "SEE_ALL_SNACKS_DRINKS";
@@ -63,10 +60,6 @@ public interface Const {
 
     String HEADER_CONTENT_TYPE_KEY = "Content-Type";
     String HEADER_CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded";
-
-    //Actions after refreshToken
-    String MACHINES_LIST = "MACHINES_LIST";
-    String PRODUCTS_LIST = "PRODUCTS_LIST";
 
     String ACTION_ADD_FAVORITE = "ADD";
     String ACTION_REMOVE_FAVORITE = "REMOVE";

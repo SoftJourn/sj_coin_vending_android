@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by omartynets on 04.11.2016.
+ * Storage of all products grabbed from server
  */
 public class ProductsStorage {
 

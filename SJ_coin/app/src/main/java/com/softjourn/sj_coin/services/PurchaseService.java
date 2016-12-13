@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by omartynets on 07.12.2016.
+ * Intent Service to handle purchase functionality to not block UI and working as notifications
  */
 
 public class PurchaseService extends IntentService implements Extras, Const {

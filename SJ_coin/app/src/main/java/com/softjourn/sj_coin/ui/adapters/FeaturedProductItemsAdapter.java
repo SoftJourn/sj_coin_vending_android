@@ -164,7 +164,7 @@ public class FeaturedProductItemsAdapter extends
             if (sFavoritesList != null && sFavoritesList.size() > 0) {
                 for (int i = 0; i < sFavoritesList.size(); i++) {
                     if (sFavoritesList.get(i).getId().equals(product.getId())) {
-                        Picasso.with(mContext).load(R.drawable.ic_favorite_filled).into(holder.mAddFavorite);
+                        Picasso.with(mContext).load(R.drawable.ic_favorite_pink).into(holder.mAddFavorite);
                         holder.mAddFavorite.setTag(true);
                         break;
                     } else {

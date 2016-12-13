@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/recycler_view_layout_left_margin"
+            android:layout_marginEnd="@dimen/recycler_view_layout_left_margin"
             android:text="@string/purchase_history_date"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -30,9 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="@dimen/see_all_item_bottom_top_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/see_all_item_bottom_top_margin"
             android:orientation="vertical">
 
                 <TextView
@@ -59,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:text="@string/purchase_history_price"
             android:textColor="@color/colorBlue"
             android:textSize="14sp" />

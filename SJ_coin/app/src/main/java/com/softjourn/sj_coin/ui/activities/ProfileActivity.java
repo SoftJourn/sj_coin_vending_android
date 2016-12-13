@@ -56,7 +56,9 @@ public class ProfileActivity extends BaseActivity implements ProfileContract.Vie
 
         super.mProfileIsVisible = true;
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         ButterKnife.bind(this);
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class SeeAllPresenter extends BasePresenterImpl implements SeeAllContract.Presenter {
 
-    SeeAllContract.View mView;
+    private SeeAllContract.View mView;
     private final VendingModel mModel;
     private final LoginPresenter mLoginPresenter;
 

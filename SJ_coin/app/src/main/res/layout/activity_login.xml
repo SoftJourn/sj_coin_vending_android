@@ -10,6 +10,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:contentDescription="@string/link_to_welcome_page"
             android:id="@+id/link_to_welcome_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,6 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="@dimen/menu_content_vertical_margins"
+            android:layout_marginStart="@dimen/menu_content_vertical_margins"
             android:layout_marginTop="@dimen/activity_horizontal_margin" />
 
         <LinearLayout

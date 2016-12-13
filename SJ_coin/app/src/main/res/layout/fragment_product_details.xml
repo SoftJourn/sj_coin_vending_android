@@ -50,6 +50,7 @@
             android:layout_marginStart="@dimen/details_product_buy_left_margin" />
 
         <ImageView
+            android:contentDescription="@string/favorites_image"
             android:id="@+id/details_add_to_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by omartynets on 04.11.2016.
+ * Storage for data from Featured call
  */
 public class FeaturesStorage {
 

@@ -34,17 +34,13 @@ import static com.softjourn.sj_coin.utils.Const.USER_BALANCE_PREFERENCES_KEY;
 
 /**
  * Created by home on 04.12.2016.
+ * Bottom Sheet Fragment for Details of Product
  */
 
 public class ProductDetailsFragment extends BottomSheetDialogFragment {
 
-    TextView mProductName;
-    TextView mProductLongDescription;
-    ImageView mProductImage;
-    TextView mProductPrice;
-
-    ImageView mFavorites;
-    TextView mBuyProduct;
+    private ImageView mFavorites;
+    private TextView mBuyProduct;
 
     private boolean isRemovedFromFavorite = false;
 
@@ -71,10 +67,10 @@ public class ProductDetailsFragment extends BottomSheetDialogFragment {
         View contentView = View.inflate(getContext(), R.layout.fragment_product_details, null);
         dialog.setContentView(contentView);
 
-        mProductName = (TextView) contentView.findViewById(R.id.details_product_name);
-        mProductLongDescription = (TextView) contentView.findViewById(R.id.details_product_description);
-        mProductPrice = (TextView) contentView.findViewById(R.id.details_product_price);
-        mProductImage = (ImageView) contentView.findViewById(R.id.details_product_image);
+        TextView mProductName = (TextView) contentView.findViewById(R.id.details_product_name);
+        TextView mProductLongDescription = (TextView) contentView.findViewById(R.id.details_product_description);
+        TextView mProductPrice = (TextView) contentView.findViewById(R.id.details_product_price);
+        ImageView mProductImage = (ImageView) contentView.findViewById(R.id.details_product_image);
         mFavorites = (ImageView) contentView.findViewById(R.id.details_add_to_favorite);
         mBuyProduct = (TextView) contentView.findViewById(R.id.details_buy_product);
 

@@ -56,6 +56,10 @@
             android:name=".ui.activities.WelcomeActivity"
             android:theme="@style/NoActionBarLoginTheme"
             android:label="" />
+        <activity
+            android:name=".ui.activities.NoInternetActivity"
+            android:theme="@style/NoActionBarLoginTheme"
+            android:label="" />
 
         <!-- Services -->
         <service

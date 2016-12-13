@@ -43,6 +43,8 @@ public class Utils {
         Preferences.clearStringObject(Const.REFRESH_TOKEN);
         Preferences.clearStringObject(Const.SELECTED_MACHINE_NAME);
         Preferences.clearStringObject(Const.SELECTED_MACHINE_ID);
+        Preferences.clearStringObject(Const.USER_BALANCE_PREFERENCES_KEY);
+        Preferences.clearStringObject(Const.USER_NAME_PREFERENCES_KEY);
     }
 
     /**

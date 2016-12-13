@@ -127,7 +127,6 @@ public class DataManager implements Const {
      * before showing on the screen.
      *
      * @param productList = list of products to be displayed.
-     * @return
      */
     private List<Product> sortBeforeReturning (List<Product> productList) {
         Collections.sort(productList, new Comparator<Product>() {

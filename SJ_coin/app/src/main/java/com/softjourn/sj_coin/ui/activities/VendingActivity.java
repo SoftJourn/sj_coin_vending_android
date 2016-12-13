@@ -404,6 +404,8 @@ public class VendingActivity extends BaseMenuActivity implements SwipeRefreshLay
             }
         } else if (event.getMachinesList().size() > 1) {
             showMachinesSelector(event.getMachinesList());
+        } else if (event.getMachinesList().size() < 1) {
+            showSnackBar(getString(R.string.no_available_machines_message));
         }
     }
 

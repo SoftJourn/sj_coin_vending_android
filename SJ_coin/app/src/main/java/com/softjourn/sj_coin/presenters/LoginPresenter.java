@@ -47,7 +47,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
             mModel.revokeRefreshToken(refreshToken);
     }
 
-    public boolean validateCredentials(String userName, String password) {
+    private boolean validateCredentials(String userName, String password) {
 
         if (password.isEmpty() && userName.isEmpty()) {
             mLoginView.setUsernameError();

@@ -18,11 +18,12 @@ import okhttp3.Response;
 
 /**
  * Created by omartynets on 12.12.2016.
+ * Interceptor created for automated Token Refreshing.
  */
 
 public class TokenAuthenticator implements Interceptor {
 
-    LoginModel mModel = new LoginModel();
+    private LoginModel mModel = new LoginModel();
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -34,7 +35,6 @@ public class TokenAuthenticator implements Interceptor {
 
         //Build new request
         Request.Builder builder = request.newBuilder();
-        //builder.header("Accept", "application/json"); //if necessary, say to consume JSON
 
         String token = Preferences.retrieveStringObject(Const.ACCESS_TOKEN); //save token of this request for future
         setAuthHeader(builder, token); //write current token to request
@@ -46,7 +46,6 @@ public class TokenAuthenticator implements Interceptor {
             String currentToken = Preferences.retrieveStringObject(Const.ACCESS_TOKEN); //get currently stored token
 
             if (currentToken != null && currentToken.equals(token)) { //compare current token with token that was stored before, if it was not updated - do update
-
                 String code = refreshToken(); //refresh token
             }
 
@@ -56,8 +55,6 @@ public class TokenAuthenticator implements Interceptor {
                 return chain.proceed(request); //repeat request with new token
             }
         }
-
-
         return response;
     }
 
@@ -68,7 +65,7 @@ public class TokenAuthenticator implements Interceptor {
 
     private void setAuthHeader(Request.Builder builder, String token) {
         if (token != null) //Add Auth token to each request if authorized
-            builder.header("Authorization", String.format("Bearer %s", token));
+            builder.header(Const.HEADER_AUTHORIZATION_KEY, String.format("Bearer %s", token));
     }
 
     private String refreshToken() {

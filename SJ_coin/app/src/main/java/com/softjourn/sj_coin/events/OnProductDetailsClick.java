@@ -4,6 +4,7 @@ import com.softjourn.sj_coin.api.models.products.Product;
 
 /**
  * Created by omartynets on 05.12.2016.
+ * Event to handle click on Product item in see all activity
  */
 
 public class OnProductDetailsClick {

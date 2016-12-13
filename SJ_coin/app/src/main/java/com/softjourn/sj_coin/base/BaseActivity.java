@@ -79,36 +79,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            /*case R.id.home:
-                Navigation.goToVendingActivity(this);
-                finish();
-                return true;
-            case R.id.menu_all_products:
-                if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
-                    this.getFragmentManager().beginTransaction()
-                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(ALL_ITEMS,0,0), TAG_ALL_PRODUCTS_FRAGMENT)
-                            .commit();
-                } else {
-                    Navigation.goToSeeAllActivity(this, ALL_ITEMS);
-                }
-                return true;
-            case R.id.menu_favorites:
-                if (this.getLocalClassName().equals("activities.SeeAllActivity")) {
-                    this.getFragmentManager().beginTransaction()
-                            .replace(R.id.container_for_see_all_products, ProductsListFragment.newInstance(FAVORITES,0,0), TAG_FAVORITES_FRAGMENT)
-                            .commit();
-                } else {
-                    Navigation.goToSeeAllActivity(this, FAVORITES);
-                }
-                return true;
-            case R.id.profile:
-                if (!mProfileIsVisible) {
-                    Navigation.goToProfileActivity(this);
-                    return true;
-                } else {
-                    return false;
-                }*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -167,8 +137,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Const {
             @Override
             public void onClick(View v) {
                 if (product.getPrice() > Integer.parseInt(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY))) {
-                    /*mConfirmDialogIsVisible = false;
-                    mConfirmDialog.dismiss();*/
                     showSnackBar(getString(R.string.server_error_40901));
                 } else {
                     presenter.buyProduct(String.valueOf(product.getId()), BaseActivity.this);

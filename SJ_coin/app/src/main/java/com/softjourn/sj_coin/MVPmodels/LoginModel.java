@@ -21,8 +21,7 @@ public class LoginModel extends BaseModel{
     public Session makeRefreshToken(String refreshToken) {
         createApiManager();
 
-        Session session = mApiProvider.makeRefreshToken(refreshToken, Const.GRANT_TYPE_REFRESH_TOKEN);
-        return session;
+        return mApiProvider.makeRefreshToken(refreshToken, Const.GRANT_TYPE_REFRESH_TOKEN);
     }
 
 

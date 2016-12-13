@@ -14,11 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class PurchasePresenter extends BasePresenterImpl implements PurchaseContract.Presenter, Const {
 
     private final PurchaseContract.View mView;
-    private final LoginPresenter mLoginPresenter;
     private final VendingModel mVendingModel;
-
-    private static String sProductId;
-    private static Context sContext;
 
     public PurchasePresenter(PurchaseContract.View purchaseView) {
 
@@ -26,17 +22,15 @@ public class PurchasePresenter extends BasePresenterImpl implements PurchaseCont
 
         mView = purchaseView;
         mVendingModel = new VendingModel();
-        mLoginPresenter = new LoginPresenter();
     }
 
 
     @Override
     public void buyProduct(String id, Context context) {
-        sContext = context;
         if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            mVendingModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id, sContext);
+            mVendingModel.buyProductByID(Preferences.retrieveStringObject(SELECTED_MACHINE_ID), id, context);
             onDestroy();
         }
     }

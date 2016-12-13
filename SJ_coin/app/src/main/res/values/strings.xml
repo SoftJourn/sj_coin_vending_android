@@ -6,7 +6,7 @@
     <string name="screen_login_password_hint">Password</string>
     <string name="screen_login_login_button">Login</string>
     <string name="activity_login_login_failed">Login failed</string>
-    <string name="activity_login_invalid_email">Login should contains only lower case alphabetical characters</string>
+    <string name="activity_login_invalid_email">Login should contain only lower case alphabetical characters</string>
     <string name="activity_login_invalid_password">Password should not be empty</string>
 
     <!--Vending Activity-->
@@ -40,13 +40,7 @@
 
     <!--Menu Main-->
     <string name="menu_log_out">Log Out</string>
-    <string name="main_menu_profile">Profile</string>
-    <string name="menu_item_all_products">All Items</string>
-    <string name="menu_item_favorites">Favorites</string>
     <string name="menu_item_search">Search</string>
-    <string name="main_menu_home">Home</string>
-    <string name="main_menu_scan_code">Scan code</string>
-    <string name="generate_qr_code">Generate Money</string>
 
     <!--Profile Screen-->
     <string name="profile_amount_available">9999</string>
@@ -83,7 +77,6 @@
     <string name="server_error_40903">Product is not in favorites</string>
     <string name="server_error_50901">Right now machine is locked by queue. We know it\'s annoying. But please try again later. </string>
     <string name="server_error_other">Unfortunately service is not available right now. Just try again later</string>
-    <string name="default_error_message">default</string>
 
     <!--Sorting Button Bar-->
     <string name="button_sort_name">Name</string>
@@ -91,10 +84,9 @@
 
     <!--Toast Messages-->
     <string name="internet_turned_off">No Internet connection</string>
-    <string name="activity_order_processing">Your order is processing</string>
     <string name="activity_product_take_your_order_message">Please take your order</string>
     <string name="there_are_no_items">Currently there are no products in this category</string>
-    <string name="no_purchases_yet">Sorry... There is no purchases yet.</string>
+    <string name="no_purchases_yet">Sorry… There is no purchases yet.</string>
     <string name="machine_not_selected_toast">Please choose machine for correct work of application</string>
 
     <!-- Confirmation Dialog-->
@@ -122,15 +114,12 @@
     <!-- Select Machine functionality-->
     <string name="machine_name">Select Machine</string>
     <string name="dialog_select_machine_title">Select Machine</string>
-    <string name="no_internet_image_description">NoInternetConnectionImageDesc</string>
     <string name="product_is_not_available_in_machine">Chosen product is not available in current vending machine</string>
     <string name="profile_activity_label">Profile</string>
     <string name="see_all_activity_label">All Products</string>
     <string name="menu_icon_description">profile_image</string>
     <string name="menu_default_username">John Smith</string>
     <string name="menu_header_label_categories">Categories</string>
-    <string name="permissions_camera_message">Camera permissions needed</string>
-    <string name="permissions_write_external_storage">Permission to write files to disk needed</string>
     <string name="order_processing_message">Processing…</string>
     <string name="profile_updating_label">Updating…</string>
 
@@ -158,11 +147,9 @@
         <item>@color/colorBlue</item>
     </integer-array>
 
-    <string name="title_activity_inform_page">SJ Coins</string>
     <string name="action_settings">Settings</string>
 
     <!-- Welcome Activity-->
-    <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
@@ -179,6 +166,10 @@
     <string name="slide_4_title">Add Favorites</string>
     <string name="slide_4_desc">You can add products to favorites so they are always on the top of the screen. Don\'t forget to refresh your Product List to always keep in touch with the server!</string>
 
-    <string name="play_again">Play Again</string>
+    <!-- Content description-->
+    <string name="link_to_welcome_page">Link to Welcome Page</string>
+    <string name="welcome_page_image">Welcome Page Image</string>
+    <string name="favorites_image">Favorites Image</string>
+    <string name="no_available_machines_message">Currently there is no available machines</string>
 
 </resources>

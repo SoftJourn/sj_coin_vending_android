@@ -24,6 +24,7 @@ import butterknife.BindView;
 
 /**
  * Created by omartynets on 01.12.2016.
+ * Base Class for Activities with Left Side Menu
  */
 
 public abstract class BaseMenuActivity extends BaseActivity {
@@ -61,8 +62,10 @@ public abstract class BaseMenuActivity extends BaseActivity {
                 this, mMenuLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         mMenuLayout.addDrawerListener(mMenuToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         mMenuToggle.syncState();
 
@@ -156,7 +159,6 @@ public abstract class BaseMenuActivity extends BaseActivity {
 
     public abstract void onCategorySelected(@NonNull MenuItem item);
 
-    // TODO: add updating menu instead of fully clearing it
     public abstract void setUpNavigationViewContent();
 
     @Override

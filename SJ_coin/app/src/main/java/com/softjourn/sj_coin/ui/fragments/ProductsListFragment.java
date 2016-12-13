@@ -234,7 +234,6 @@ public class ProductsListFragment extends BaseFragment implements VendingFragmen
             View view = inflater.inflate(R.layout.fragment_product_see_all_snacks_drinks, container, false);
             ButterKnife.bind(ProductsListFragment.this, view);
             (getActivity()).setTitle(mProductsCategory);
-            ((SeeAllActivity) getActivity()).setNavigationItemChecked(mProductsCategory);
 
             mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             mProductAdapter = new FeaturedProductItemsAdapter(mProductsCategory, SEE_ALL_SNACKS_DRINKS_RECYCLER_VIEW, getActivity());
