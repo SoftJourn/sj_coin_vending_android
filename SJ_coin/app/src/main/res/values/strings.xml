@@ -154,17 +154,17 @@
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
 
-    <string name="slide_1_title">How to Log In?</string>
-    <string name="slide_1_desc">Use your LDAP credentials to login. In case you can\'t find them in your mail you can ask sysadmin to help you with that!</string>
+    <string name="slide_1_title">How to Log in?</string>
+    <string name="slide_1_desc">Use your LDAP credentials to log in. In case you can\'t find them in your mail you can ask a sysadmin to help you with that!</string>
 
     <string name="slide_2_title">Buy Products</string>
-    <string name="slide_2_desc">You can buy any product in case it is available and you have enough money! In case any issues e.g. product have stuck just ask responsible person and you will get your product as soon as possible</string>
+    <string name="slide_2_desc">You can buy any product as long as it is available and you have enough money! In case of any issues, e.g. the product has got stuck just ask the person responsible and you will get your product as soon as possible.</string>
 
     <string name="slide_3_title">Want More Coins?</string>
-    <string name="slide_3_desc">No Problem! Ask our coins administrator to buy some coins for cash. By now exchange rate: 100 coins = 1 UAH</string>
+    <string name="slide_3_desc">No Problem! Ask our coins administrator to buy some coins for cash. The current exchange rate: 100 coins = 1 UAH</string>
 
     <string name="slide_4_title">Add Favorites</string>
-    <string name="slide_4_desc">You can add products to favorites so they are always on the top of the screen. Don\'t forget to refresh your Product List to always keep in touch with the server!</string>
+    <string name="slide_4_desc">You can add products to favorite so they are always on the top of the screen. Don\'t forget to refresh your Product List to always keep in touch with the server!</string>
 
     <!-- Content description-->
     <string name="link_to_welcome_page">Link to Welcome Page</string>

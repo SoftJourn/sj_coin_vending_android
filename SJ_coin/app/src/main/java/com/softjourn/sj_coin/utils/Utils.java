@@ -46,11 +46,4 @@ public class Utils {
         Preferences.clearStringObject(Const.USER_BALANCE_PREFERENCES_KEY);
         Preferences.clearStringObject(Const.USER_NAME_PREFERENCES_KEY);
     }
-
-    /**
-     * @return true if Token have expired
-     */
-    public static boolean checkExpirationDate() {
-        return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(Const.EXPIRATION_DATE)));
-    }
 }
