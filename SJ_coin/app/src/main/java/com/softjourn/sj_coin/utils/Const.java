@@ -14,8 +14,6 @@ public interface Const {
     String USER_NAME_PREFERENCES_KEY = "USER_NAME_PREFERENCES_KEY";
     String USER_BALANCE_PREFERENCES_KEY = "USER_BALANCE_PREFERENCES_KEY";
 
-    String CATEGORIES_SIZE = "CATEGORIES_SIZE";
-
     //Fragments tags
     String TAG_PRODUCTS_LAST_ADDED_FRAGMENT = "TAG_PRODUCTS_LAST_ADDED_FRAGMENT";
     String TAG_PRODUCTS_BEST_SELLERS_FRAGMENT = "TAG_PRODUCTS_BEST_SELLERS_FRAGMENT";
@@ -23,9 +21,9 @@ public interface Const {
     String TAG_ALL_PRODUCTS_FRAGMENT = "TAG_ALL_PRODUCTS_FRAGMENT";
 
     //URLs
-    //String BASE_URL = "https://vending.softjourn.if.ua/api";
+    String BASE_URL = "https://vending.softjourn.if.ua/api";
     //URL for testing server
-    String BASE_URL = "https://sjcoins-testing.softjourn.if.ua";
+    //String BASE_URL = "https://sjcoins-testing.softjourn.if.ua";
 
     //Test URL
     //String BASE_URL = "http://192.168.102.251:8111";

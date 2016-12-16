@@ -10,6 +10,7 @@ import com.softjourn.sj_coin.events.OnBalanceReceivedEvent;
 import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Preferences;
+import com.softjourn.sj_coin.utils.UIUtils;
 
 public class ProfileModel extends BaseModel {
 
@@ -25,6 +26,7 @@ public class ProfileModel extends BaseModel {
             @Override
             public void onSuccess(Account response) {
                 Preferences.storeObject(Const.USER_BALANCE_PREFERENCES_KEY, response.getAmount());
+                Preferences.storeObject(Const.USER_NAME_PREFERENCES_KEY, UIUtils.getUserFullName(response.getName(), response.getSurname()));
                 mEventBus.post(new OnAccountReceivedEvent(response));
             }
 

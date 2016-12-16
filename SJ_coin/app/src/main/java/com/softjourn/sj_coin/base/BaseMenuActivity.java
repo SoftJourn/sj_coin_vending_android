@@ -85,6 +85,7 @@ public abstract class BaseMenuActivity extends BaseActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 setBalance(headerView);
+                setUserName(headerView);
                 setUpNavigationViewContent();
             }
         });
@@ -102,14 +103,7 @@ public abstract class BaseMenuActivity extends BaseActivity {
         iconView.setImageResource(R.drawable.logo);
 
         setBalance(headerView);
-
-        TextView usernameView = (TextView) headerView.findViewById(R.id.menu_user_name);
-        if (Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY) != null) {
-            usernameView.setText(Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY));
-        } else {
-            usernameView.setText(R.string.menu_default_username);
-        }
-        setUpNavigationViewContent();
+        setUserName(headerView);
     }
 
     private void setBalance(View headerView) {
@@ -118,6 +112,15 @@ public abstract class BaseMenuActivity extends BaseActivity {
             userBalanceView.setText(Preferences.retrieveStringObject(USER_BALANCE_PREFERENCES_KEY));
         } else {
             userBalanceView.setText("");
+        }
+    }
+
+    private void setUserName(View headerView) {
+        TextView userNameView = (TextView) headerView.findViewById(R.id.menu_user_name);
+        if (Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY) != null) {
+            userNameView.setText(Preferences.retrieveStringObject(USER_NAME_PREFERENCES_KEY));
+        } else {
+            userNameView.setText("");
         }
     }
 
