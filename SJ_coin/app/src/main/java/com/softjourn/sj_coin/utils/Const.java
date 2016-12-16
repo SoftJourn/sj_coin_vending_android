@@ -11,6 +11,9 @@ public interface Const {
     String SELECTED_MACHINE_NAME = "SELECTED_MACHINE_NAME";
     String SELECTED_MACHINE_ID = "SELECTED_MACHINE_ID";
 
+    String USER_NAME_PREFERENCES_KEY = "USER_NAME_PREFERENCES_KEY";
+    String USER_BALANCE_PREFERENCES_KEY = "USER_BALANCE_PREFERENCES_KEY";
+
     //Fragments tags
     String TAG_PRODUCTS_LAST_ADDED_FRAGMENT = "TAG_PRODUCTS_LAST_ADDED_FRAGMENT";
     String TAG_PRODUCTS_BEST_SELLERS_FRAGMENT = "TAG_PRODUCTS_BEST_SELLERS_FRAGMENT";
@@ -21,6 +24,9 @@ public interface Const {
     String BASE_URL = "https://vending.softjourn.if.ua/api";
     //URL for testing server
     //String BASE_URL = "https://sjcoins-testing.softjourn.if.ua";
+
+    //Test URL
+    //String BASE_URL = "http://192.168.102.251:8111";
 
     String VENDING_API_VERSION = "v1/";
     String COINS_API_VERSION = "api/v1/";
@@ -34,9 +40,6 @@ public interface Const {
 
     boolean CALL_FAILED = false;
     boolean CALL_SUCCEED = true;
-
-    boolean TOKEN_REFRESHED = true;
-    boolean TOKEN_NOT_REFRESHED = false;
 
     //Recycler View Types
     String DEFAULT_RECYCLER_VIEW = "DEFAULT";
@@ -56,11 +59,9 @@ public interface Const {
     String HEADER_CONTENT_TYPE_KEY = "Content-Type";
     String HEADER_CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded";
 
-    //Actions after refreshToken
-    String MACHINES_LIST = "MACHINES_LIST";
-    String PRODUCTS_LIST = "PRODUCTS_LIST";
-
     String ACTION_ADD_FAVORITE = "ADD";
     String ACTION_REMOVE_FAVORITE = "REMOVE";
+
+    String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
 }
 

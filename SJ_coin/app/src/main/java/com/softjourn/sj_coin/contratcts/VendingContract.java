@@ -1,7 +1,8 @@
 package com.softjourn.sj_coin.contratcts;
 
-import com.softjourn.sj_coin.api_models.machines.Machines;
-import com.softjourn.sj_coin.api_models.products.Product;
+import com.softjourn.sj_coin.api.models.machines.Machines;
+import com.softjourn.sj_coin.api.models.products.Categories;
+import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.base.BasePresenter;
 import com.softjourn.sj_coin.base.BaseView;
 
@@ -84,14 +85,11 @@ public interface VendingContract {
 
         void getBalance();
 
+        List<Categories> getCategories();
+
         /**
          * Get all categories loaded from server for dynamic creating views
          */
         void getCategoriesFromDB();
-
-        /**
-         * Decides which call needs to be proceed after refreshing token
-         */
-        void getActionAfterRefresh();
     }
 }

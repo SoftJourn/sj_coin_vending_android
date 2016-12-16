@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 24
@@ -6,10 +7,10 @@ android {
 
     defaultConfig {
         applicationId "com.softjourn.sj_coin"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
     }
     buildTypes {
         release {
@@ -24,6 +25,15 @@ ext {
     supportLibraryVersion = '24.+'
     designLibraryVersion = '24.+'
     recyclerViewVersion = '24.2.0'
+    constraintLayotVersion = '1.0.0-beta4'
+    butterknifeVersion = '8.4.0'
+    circledImageVersion = '2.1.0'
+    awesomeSplashVersion = 'v1.0.0'
+    okHttpVersion = '2.7.5'
+    lombokVersion = '1.12.6'
+    evenBusVersion = '3.0.0'
+    picassoVersion = '2.5.2'
+    animatedSVGViewVersion = '1.0.0'
 }
 
 dependencies {
@@ -32,27 +42,37 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:design:$designLibraryVersion"
     compile "com.android.support:recyclerview-v7:$recyclerViewVersion"
+    compile "com.android.support:palette-v7:$designLibraryVersion"
+
+    //CircleImageView
+    compile "de.hdodenhof:circleimageview:$circledImageVersion"
 
     //ButterKnife
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    compile 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
+    //Library for Splash Screen Animation
+    compile "com.github.ViksaaSkool:AwesomeSplash:$awesomeSplashVersion"
 
     //Retrofit
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.7.5'
+    compile "com.squareup.okhttp:okhttp:$okHttpVersion"
+    compile "com.squareup.okhttp:okhttp-urlconnection:$okHttpVersion"
 
     //Lombok
-    provided "org.projectlombok:lombok:1.12.6"
+    provided "org.projectlombok:lombok:$lombokVersion"
 
     //EventBus
-    compile "org.greenrobot:eventbus:3.0.0"
+    compile "org.greenrobot:eventbus:$evenBusVersion"
 
     //Picasso
-    compile "com.squareup.picasso:picasso:2.5.2"
+    compile "com.squareup.picasso:picasso:$picassoVersion"
 
-    compile 'com.jaredrummler:animated-svg-view:1.0.0'
-    compile 'com.android.support:animated-vector-drawable:24.+'
+    //SVG Animation
+    compile "com.jaredrummler:animated-svg-view:$animatedSVGViewVersion"
+    compile "com.android.support:animated-vector-drawable:$supportLibraryVersion"
+
+    //ConstraintLayout
+    compile "com.android.support.constraint:constraint-layout:$constraintLayotVersion"
 }

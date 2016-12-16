@@ -11,15 +11,20 @@ import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.R;
 import com.softjourn.sj_coin.contratcts.VendingFragmentContract;
 
+import org.greenrobot.eventbus.EventBus;
+
 public abstract class BaseFragment extends Fragment {
 
     protected boolean mSortingByNameForward = false;
     protected boolean mSortingByPriceForward = true;
 
+    private final EventBus mEventBus = EventBus.getDefault();
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mEventBus.register(this);
     }
 
     @Override
@@ -28,9 +33,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mEventBus.unregister(this);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-
     }
 
     protected void sortByName(boolean isSortingForward, String productsCategory, VendingFragmentContract.Presenter presenter, Button buttonName, Button buttonPrice) {

@@ -2,9 +2,10 @@ package com.softjourn.sj_coin.api.coins;
 
 import com.softjourn.sj_coin.App;
 import com.softjourn.sj_coin.api.CustomHttpClient;
+import com.softjourn.sj_coin.api.TokenAuthenticator;
 import com.softjourn.sj_coin.api.callbacks.Callback;
-import com.softjourn.sj_coin.api_models.accountInfo.Account;
-import com.softjourn.sj_coin.api_models.accountInfo.Balance;
+import com.softjourn.sj_coin.api.models.accountInfo.Account;
+import com.softjourn.sj_coin.api.models.accountInfo.Balance;
 import com.softjourn.sj_coin.base.BaseApiClient;
 import com.softjourn.sj_coin.utils.Preferences;
 
@@ -27,6 +28,8 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
         super(URL_COIN_SERVICE);
     }
 
+    private Call mCall;
+
     @Override
     public OkHttpClient createOkHttpClient() {
         return new OkHttpClient.Builder()
@@ -40,6 +43,9 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
                         return chain.proceed(orRequest);
                     }
                 })
+                .addInterceptor(new TokenAuthenticator())
+                .addInterceptor(getCacheInterceptor())
+                .cache(getCacheForOkHttpClient())
                 .sslSocketFactory(CustomHttpClient.trustCert(App.getContext()))
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
@@ -63,7 +69,8 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
 
     @Override
     public void getBalance(final Callback<Account> callback) {
-        mApiService.getBalance().enqueue(new retrofit2.Callback<Account>() {
+        mCall = mApiService.getBalance();
+        mCall.enqueue(new retrofit2.Callback<Account>() {
             @Override
             public void onResponse(Call<Account> call, retrofit2.Response<Account> response) {
                 sendCallBack(callback, response);
@@ -71,14 +78,17 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
 
             @Override
             public void onFailure(Call<Account> call, Throwable t) {
-                callback.onError(t.getMessage());
+                if (!call.isCanceled()) {
+                    callback.onError(t.getMessage());
+                }
             }
         });
     }
 
     @Override
     public void getAmount(final Callback<Balance> callback) {
-        mApiService.getAmount().enqueue(new retrofit2.Callback<Balance>() {
+        mCall = mApiService.getAmount();
+        mCall.enqueue(new retrofit2.Callback<Balance>() {
             @Override
             public void onResponse(Call<Balance> call, retrofit2.Response<Balance> response) {
                 sendCallBack(callback, response);
@@ -86,10 +96,15 @@ public class CoinsApiClient extends BaseApiClient implements CoinsApiProvider {
 
             @Override
             public void onFailure(Call<Balance> call, Throwable t) {
-                callback.onError(t.getMessage());
+                if (!call.isCanceled()) {
+                    callback.onError(t.getMessage());
+                }
             }
         });
     }
 
+    public void cancelRequest() {
+        mCall.cancel();
+    }
 
 }

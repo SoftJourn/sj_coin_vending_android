@@ -3,20 +3,20 @@ package com.softjourn.sj_coin.presenters;
 import android.text.TextUtils;
 
 import com.softjourn.sj_coin.App;
-import com.softjourn.sj_coin.MVPmodels.ProfileModel;
-import com.softjourn.sj_coin.MVPmodels.VendingModel;
 import com.softjourn.sj_coin.R;
-import com.softjourn.sj_coin.api_models.products.Categories;
-import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnBalanceReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
-import com.softjourn.sj_coin.callbacks.OnProductItemClickEvent;
-import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
+import com.softjourn.sj_coin.api.models.products.Categories;
 import com.softjourn.sj_coin.contratcts.VendingContract;
+import com.softjourn.sj_coin.events.OnAccountReceivedEvent;
+import com.softjourn.sj_coin.events.OnAmountReceivedEvent;
+import com.softjourn.sj_coin.events.OnBalanceReceivedEvent;
+import com.softjourn.sj_coin.events.OnProductItemClickEvent;
+import com.softjourn.sj_coin.events.OnTokenRevoked;
+import com.softjourn.sj_coin.mvpmodels.ProfileModel;
+import com.softjourn.sj_coin.mvpmodels.VendingModel;
 import com.softjourn.sj_coin.utils.Const;
-import com.softjourn.sj_coin.utils.NetworkManager;
+import com.softjourn.sj_coin.utils.NetworkUtils;
 import com.softjourn.sj_coin.utils.Preferences;
-import com.softjourn.sj_coin.utils.Utils;
+import com.softjourn.sj_coin.utils.UIUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -46,17 +46,11 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getMachinesList() {
 
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (Utils.checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-                actionAfterRefresh = MACHINES_LIST;
-            } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.callMachinesList();
-            }
+            mView.showProgress(App.getContext().getString(R.string.progress_loading));
+            mModel.callMachinesList();
         }
     }
 
@@ -72,17 +66,10 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
     @Override
     public void getFeaturedProductsList() {
 
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
-            if (Utils.checkExpirationDate()) {
-                mView.showProgress(App.getContext().getString(R.string.progress_authenticating));
-                refreshToken(Preferences.retrieveStringObject(REFRESH_TOKEN));
-                actionAfterRefresh = PRODUCTS_LIST;
-            } else {
-                mView.showProgress(App.getContext().getString(R.string.progress_loading));
-                mModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
-            }
+            mModel.callFeaturedProductsList(Preferences.retrieveStringObject(SELECTED_MACHINE_ID));
         }
     }
 
@@ -93,23 +80,15 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Override
     public void getBalance() {
-        if (NetworkManager.isNetworkEnabled()) {
-            if (Utils.checkExpirationDate()) {
-                refreshToken(REFRESH_TOKEN);
-            } else {
-                mProfileModel.makeBalanceCall();
-            }
+        if (NetworkUtils.isNetworkEnabled()) {
+            mProfileModel.makeBalanceCall();
+            mProfileModel.makeAccountCall();
         }
     }
 
     @Override
-    public void refreshToken(String refreshToken) {
-        mLoginPresenter.refreshToken(refreshToken);
-    }
-
-    @Override
     public void logOut(String refreshToken) {
-        if (!NetworkManager.isNetworkEnabled()) {
+        if (!NetworkUtils.isNetworkEnabled()) {
             mView.showNoInternetError();
         } else {
             mView.showProgress(App.getContext().getString(R.string.progress_loading));
@@ -133,34 +112,15 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
         mView.hideProgress();
     }
 
-    public void getActionAfterRefresh() {
-        if (actionAfterRefresh != null) {
-            switch (actionAfterRefresh) {
-                case MACHINES_LIST:
-                    mView.getMachinesList();
-                    actionAfterRefresh = null;
-                    break;
-                case PRODUCTS_LIST:
-                    mView.loadProductList();
-                    actionAfterRefresh = null;
-                    break;
-                default:
-                    break;
-            }
-        }
+    @Override
+    public List<Categories> getCategories() {
+        return mModel.loadCategories();
     }
 
     @Subscribe
     public void OnEvent(OnAmountReceivedEvent event) {
-        mView.hideProgress();
+        Preferences.storeObject(USER_BALANCE_PREFERENCES_KEY, String.valueOf(event.getAmount().getAmount()));
         mView.updateBalanceAmount(String.valueOf(event.getAmount().getAmount()));
-        mView.showToastMessage(App.getContext().getString(R.string.activity_product_take_your_order_message));
-    }
-
-    @Subscribe
-    public void OnEvent(OnBoughtEvent event) {
-        //mView.hideProgress();
-        mView.showSnackBar(App.getContext().getResources().getString(R.string.activity_order_processing));
     }
 
     @Subscribe
@@ -174,12 +134,18 @@ public class VendingPresenter extends BasePresenterImpl implements VendingContra
 
     @Subscribe
     public void OnEvent(OnBalanceReceivedEvent event) {
+        Preferences.storeObject(USER_BALANCE_PREFERENCES_KEY, event.getBalance());
         mView.updateBalanceAmount(event.getBalance());
     }
 
     @Subscribe
+    public void OnEvent(OnAccountReceivedEvent event) {
+        Preferences.storeObject(USER_NAME_PREFERENCES_KEY, UIUtils.getUserFullName(event.getAccount().getName(), event.getAccount().getSurname()));
+    }
+
+    @Subscribe
     public void OnEvent(OnTokenRevoked event) {
-            mView.hideProgress();
-            mView.logOut();
+        mView.hideProgress();
+        mView.logOut();
     }
 }

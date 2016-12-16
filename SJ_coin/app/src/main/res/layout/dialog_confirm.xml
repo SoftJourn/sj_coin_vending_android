@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:text="@string/confirm_purchase"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/dots_margin_bottom"
+        android:layout_marginTop="@dimen/see_all_item_left_margin"
         android:textStyle="bold"
         android:textSize="20sp"
         android:textColor="@color/colorBlue" />
@@ -28,8 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginRight="@dimen/see_all_item_left_margin"
+            android:layout_marginLeft="@dimen/see_all_item_left_margin" />
 
         <TextView
             android:id="@+id/text"
@@ -57,8 +58,9 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:textColor="@color/colorBlue"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/see_all_item_left_margin"
+            android:layout_marginEnd="@dimen/see_all_item_left_margin"
+            android:layout_marginTop="@dimen/see_all_item_bottom_top_margin"
             android:layout_gravity="right"
             android:text="@string/confirm_dialog_cancel" />
 
@@ -68,8 +70,9 @@
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:textColor="@color/colorBlue"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/see_all_item_left_margin"
+            android:layout_marginEnd="@dimen/see_all_item_left_margin"
+            android:layout_marginTop="@dimen/see_all_item_bottom_top_margin"
             android:layout_gravity="right"
             android:text="@string/confirm_dialog_ok" />
     </LinearLayout>

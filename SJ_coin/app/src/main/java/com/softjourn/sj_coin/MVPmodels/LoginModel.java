@@ -1,15 +1,12 @@
-package com.softjourn.sj_coin.MVPmodels;
+package com.softjourn.sj_coin.mvpmodels;
 
-
-import android.util.Log;
 
 import com.softjourn.sj_coin.api.ApiManager;
 import com.softjourn.sj_coin.api.auth.OAuthApiProvider;
-import com.softjourn.sj_coin.api_models.Session;
+import com.softjourn.sj_coin.api.models.Session;
 import com.softjourn.sj_coin.base.BaseModel;
-import com.softjourn.sj_coin.callbacks.OnLoginCallEvent;
-import com.softjourn.sj_coin.callbacks.OnTokenRefreshed;
-import com.softjourn.sj_coin.callbacks.OnTokenRevoked;
+import com.softjourn.sj_coin.events.OnLoginCallEvent;
+import com.softjourn.sj_coin.events.OnTokenRevoked;
 import com.softjourn.sj_coin.utils.Const;
 import com.softjourn.sj_coin.utils.Utils;
 
@@ -21,27 +18,10 @@ public class LoginModel extends BaseModel{
 
     private OAuthApiProvider mApiProvider;
 
-    public void makeRefreshToken(String refreshToken) {
+    public Session makeRefreshToken(String refreshToken) {
         createApiManager();
 
-        Callback<Session> callback = new Callback<Session>() {
-            @Override
-            public void onResponse(Call<Session> call, Response<Session> response) {
-                if (!response.isSuccessful()) {
-                    mEventBus.post(new OnTokenRefreshed(Const.TOKEN_NOT_REFRESHED));
-                } else {
-                    Utils.storeSessionInfo(response.body());
-                    mEventBus.post(new OnTokenRefreshed(Const.TOKEN_REFRESHED));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Session> call, Throwable t) {
-                mEventBus.post(new OnTokenRefreshed(Const.TOKEN_NOT_REFRESHED));
-
-            }
-        };
-        mApiProvider.makeRefreshToken(refreshToken, Const.GRANT_TYPE_REFRESH_TOKEN, callback);
+        return mApiProvider.makeRefreshToken(refreshToken, Const.GRANT_TYPE_REFRESH_TOKEN);
     }
 
 
@@ -77,17 +57,14 @@ public class LoginModel extends BaseModel{
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
                     mEventBus.post(new OnTokenRevoked(false));
-                    Log.d("Tag", ""+response.code());
                 } else {
                     mEventBus.post(new OnTokenRevoked(true));
-                    Log.d("Tag", ""+response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 mEventBus.post(new OnTokenRevoked(false));
-                Log.d("Tag", t.toString());
             }
         };
         mApiProvider.makeRevokeRefreshToken(refreshToken, callback);

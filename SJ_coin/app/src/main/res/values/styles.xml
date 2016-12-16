@@ -15,7 +15,8 @@
     <style name="AppThemeForCustomToolbar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorBlue</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
@@ -98,6 +99,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextColor">@android:color/white</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
     <style name="ActionBar">
         <item name="android:colorBackground">@color/white</item>
         <item name="android:textColorPrimary">@color/menuBackground</item>
@@ -106,6 +112,8 @@
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="MachinesDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_from_bottom</item>

@@ -1,39 +1,41 @@
-package com.softjourn.sj_coin.MVPmodels;
+package com.softjourn.sj_coin.mvpmodels;
 
+
+import android.content.Context;
+import android.content.Intent;
 
 import com.softjourn.sj_coin.api.ApiManager;
+import com.softjourn.sj_coin.api.models.History;
+import com.softjourn.sj_coin.api.models.machines.Machines;
+import com.softjourn.sj_coin.api.models.products.Categories;
+import com.softjourn.sj_coin.api.models.products.Favorites;
+import com.softjourn.sj_coin.api.models.products.Featured;
+import com.softjourn.sj_coin.api.models.products.Product;
 import com.softjourn.sj_coin.api.vending.VendingApiProvider;
-import com.softjourn.sj_coin.api_models.Amount;
-import com.softjourn.sj_coin.api_models.History;
-import com.softjourn.sj_coin.api_models.machines.Machines;
-import com.softjourn.sj_coin.api_models.products.Categories;
-import com.softjourn.sj_coin.api_models.products.Favorites;
-import com.softjourn.sj_coin.api_models.products.Featured;
-import com.softjourn.sj_coin.api_models.products.Product;
 import com.softjourn.sj_coin.base.BaseModel;
-import com.softjourn.sj_coin.callbacks.OnAddedToFavorites;
-import com.softjourn.sj_coin.callbacks.OnAmountReceivedEvent;
-import com.softjourn.sj_coin.callbacks.OnBoughtEvent;
-import com.softjourn.sj_coin.callbacks.OnFavoritesListReceived;
-import com.softjourn.sj_coin.callbacks.OnFeaturedProductsListReceived;
-import com.softjourn.sj_coin.callbacks.OnHistoryReceived;
-import com.softjourn.sj_coin.callbacks.OnMachinesListReceived;
-import com.softjourn.sj_coin.callbacks.OnRemovedFromFavorites;
-import com.softjourn.sj_coin.callbacks.OnServerErrorEvent;
-import com.softjourn.sj_coin.dataStorage.FavoritesStorage;
-import com.softjourn.sj_coin.dataStorage.FeaturesStorage;
+import com.softjourn.sj_coin.datastorage.FavoritesStorage;
+import com.softjourn.sj_coin.datastorage.FeaturesStorage;
+import com.softjourn.sj_coin.events.OnAddedToFavorites;
+import com.softjourn.sj_coin.events.OnFavoritesListReceived;
+import com.softjourn.sj_coin.events.OnFeaturedProductsListReceived;
+import com.softjourn.sj_coin.events.OnHistoryReceived;
+import com.softjourn.sj_coin.events.OnMachinesListReceived;
+import com.softjourn.sj_coin.events.OnRemovedFromFavorites;
+import com.softjourn.sj_coin.events.OnServerErrorEvent;
 import com.softjourn.sj_coin.managers.DataManager;
+import com.softjourn.sj_coin.services.PurchaseService;
 import com.softjourn.sj_coin.utils.Const;
+import com.softjourn.sj_coin.utils.Extras;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class VendingModel extends BaseModel implements Const {
+public class VendingModel extends BaseModel implements Const,Extras {
 
     private final VendingApiProvider mApiProvider;
 
-    private DataManager mDataManager = new DataManager();
+    private final DataManager mDataManager = new DataManager();
 
     public VendingModel() {
         mApiProvider = ApiManager.getInstance().getVendingProcessApiProvider();
@@ -60,6 +62,7 @@ public class VendingModel extends BaseModel implements Const {
             @Override
             public void onSuccess(Featured response) {
                 FeaturesStorage.getInstance().setData(response);
+
                 mEventBus.post(new OnFeaturedProductsListReceived());
             }
 
@@ -70,20 +73,16 @@ public class VendingModel extends BaseModel implements Const {
         });
     }
 
-    public void buyProductByID(String machineID, String id) {
-        mEventBus.post(new OnBoughtEvent(true));
-        mApiProvider.buyProductByID(machineID, id, new com.softjourn.sj_coin.api.callbacks.Callback<Amount>() {
+    public void buyProductByID(String machineID, String id, Context context) {
 
-            @Override
-            public void onSuccess(Amount response) {
-                mEventBus.post(new OnAmountReceivedEvent(response));
-            }
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, context, PurchaseService.class);
 
-            @Override
-            public void onError(String errorMsg) {
-                mEventBus.post(new OnServerErrorEvent(errorMsg));
-            }
-        });
+        /* Send optional extras to Purchase IntentService */
+        intent.putExtra("requestId", 101);
+        intent.putExtra(EXTRAS_MACHINE_ID, machineID);
+        intent.putExtra(EXTRAS_PRODUCT_ID, id);
+
+        context.startService(intent);
     }
 
     public void callListFavorites() {

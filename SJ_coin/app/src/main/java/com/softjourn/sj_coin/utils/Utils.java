@@ -6,8 +6,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.softjourn.sj_coin.api_models.Session;
-import com.softjourn.sj_coin.api_models.machines.Machines;
+import com.softjourn.sj_coin.api.models.Session;
+import com.softjourn.sj_coin.api.models.machines.Machines;
 
 import java.util.Date;
 
@@ -24,7 +24,6 @@ public class Utils {
     public static void showSnackBar(View view, String message){
         Snackbar snackbar = Snackbar
                 .make(view, message, Snackbar.LENGTH_LONG);
-
         snackbar.show();
     }
 
@@ -44,12 +43,7 @@ public class Utils {
         Preferences.clearStringObject(Const.REFRESH_TOKEN);
         Preferences.clearStringObject(Const.SELECTED_MACHINE_NAME);
         Preferences.clearStringObject(Const.SELECTED_MACHINE_ID);
-    }
-
-    /**
-     * @return true if Token have expired
-     */
-    public static boolean checkExpirationDate() {
-        return (new Date().getTime() / 1000 >= Long.parseLong(Preferences.retrieveStringObject(Const.EXPIRATION_DATE)));
+        Preferences.clearStringObject(Const.USER_BALANCE_PREFERENCES_KEY);
+        Preferences.clearStringObject(Const.USER_NAME_PREFERENCES_KEY);
     }
 }

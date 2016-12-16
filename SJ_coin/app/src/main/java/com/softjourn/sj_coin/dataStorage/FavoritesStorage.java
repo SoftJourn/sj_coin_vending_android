@@ -1,7 +1,7 @@
-package com.softjourn.sj_coin.dataStorage;
+package com.softjourn.sj_coin.datastorage;
 
-import com.softjourn.sj_coin.api_models.products.Favorites;
-import com.softjourn.sj_coin.api_models.products.Product;
+import com.softjourn.sj_coin.api.models.products.Favorites;
+import com.softjourn.sj_coin.api.models.products.Product;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +15,7 @@ public class FavoritesStorage {
 
     private List<Favorites> mFavoritesList;
 
-    private static FavoritesStorage ourInstance = new FavoritesStorage();
+    private static final FavoritesStorage ourInstance = new FavoritesStorage();
 
     public static FavoritesStorage getInstance() {
         return ourInstance;
@@ -32,7 +32,7 @@ public class FavoritesStorage {
         return mFavoritesList == null ? Collections.<Favorites>emptyList() : mFavoritesList;
     }
 
-    public void LocalAddToFavorites(Integer id) {
+    public void localAddToFavorites(Integer id) {
         List<Product> productList = ProductsStorage.getInstance().getData();
 
         if (mFavoritesList != null) {
