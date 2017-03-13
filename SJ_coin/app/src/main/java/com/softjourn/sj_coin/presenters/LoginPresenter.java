@@ -54,7 +54,7 @@ public class LoginPresenter extends BasePresenterImpl implements LoginContract.P
             return false;
         }
 
-        if (userName.isEmpty() || !userName.matches("^[a-z]+(?:[ _-][a-z]+)*$")) {
+        if (userName.isEmpty()) {
             mLoginView.setUsernameError();
             return false;
         }
